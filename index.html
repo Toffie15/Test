@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>[Unternehmensname] - Karriere und Dienstleistungen</title>
+  <title>[Unternehmensname] - Karriere</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    /* Grundlegende Variablen für das Design */
     :root {
       --bg-dark: #0f1117;
       --card-dark: #1b1e24;
@@ -39,10 +40,6 @@
       position: sticky;
       top: 0;
       z-index: 100;
-    }
-
-    header img {
-      height: 50px; /* Set logo size */
     }
 
     nav {
@@ -97,6 +94,27 @@
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
     }
 
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    input, textarea {
+      padding: 14px 18px;
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      background-color: var(--input-bg);
+      color: #fff;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      outline: 2px solid var(--accent);
+    }
+
     footer {
       margin-top: auto;
       font-size: 0.85em;
@@ -106,11 +124,40 @@
       text-align: center;
     }
 
+    .bewerbung-eintrag {
+      background-color: var(--input-bg);
+      margin: 15px 0;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: left;
+      position: relative;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .delete-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: var(--danger);
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .delete-button:hover {
+      background-color: var(--danger-hover);
+    }
+
     .dark-mode {
       background-color: #121212;
       color: #fff;
     }
 
+    /* Responsivität */
     @media (max-width: 768px) {
       body {
         padding: 10px;
@@ -136,13 +183,13 @@
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="Unternehmensname" /> <!-- Unternehmenslogo -->
     <h1>[Unternehmensname]</h1>
     <nav>
-      <a href="#start" class="active">Startseite</a>
-      <a href="#karriere">Karriere</a>
-      <a href="#ueber-uns">Über uns</a>
-      <a href="#kontakt">Kontakt</a>
+      <a href="#start" onclick="changeLang('de')" class="active">Startseite</a>
+      <a href="#login" onclick="changeLang('de')">Login</a>
+      <a href="#karriere" onclick="changeLang('de')">Karriere</a>
+      <a href="#management" onclick="changeLang('de')">Management</a>
+      <a href="#start" onclick="changeLang('en')">EN</a>
       <button onclick="toggleDarkMode()">🌙 / 🌞</button>
     </nav>
   </header>
@@ -165,33 +212,123 @@
       <button onclick="window.location.href='#bewerbung'">Jetzt bewerben</button>
     </section>
 
-    <section id="ueber-uns">
-      <h2>Über uns</h2>
-      <p>Wir sind ein führendes Unternehmen in der [Branche] mit einer klaren Vision und Mission. Unser Ziel ist es, innovative Lösungen zu bieten, die unseren Kunden helfen, in einer dynamischen Welt erfolgreich zu sein.</p>
-      <h3>Unser Team</h3>
-      <p>Unser Team besteht aus hochqualifizierten Experten, die sich für den Erfolg unserer Kunden einsetzen.</p>
+    <section id="bewerbung">
+      <h2>Online Bewerbung</h2>
+      <form onsubmit="handleBewerbung(event)">
+        <input type="text" id="bewerberName" placeholder="Dein Name" required />
+        <input type="email" id="bewerberEmail" placeholder="Deine E-Mail-Adresse" required />
+        <textarea id="bewerberNachricht" placeholder="Deine Nachricht..." rows="5" required></textarea>
+        <input type="file" id="lebenslauf" accept="application/pdf" required />
+        <button type="submit">Bewerbung absenden</button>
+      </form>
     </section>
 
-    <section id="kontakt">
-      <h2>Kontaktieren Sie uns</h2>
-      <p>Haben Sie Fragen? Kontaktieren Sie uns über das folgende Formular oder besuchen Sie uns an einem unserer Standorte.</p>
-      <form action="#">
-        <input type="text" placeholder="Ihr Name" required />
-        <input type="email" placeholder="Ihre E-Mail-Adresse" required />
-        <textarea placeholder="Ihre Nachricht" rows="4" required></textarea>
-        <button type="submit">Nachricht senden</button>
-      </form>
+    <section id="management">
+      <h2>Management</h2>
+      <p>Verwalte deine Bewerbungen bequem an einem Ort.</p>
+    </section>
+
+    <section id="admin-section">
+      <h2>Admin Dashboard</h2>
+      <p>Verwalte alle eingegangenen Bewerbungen hier:</p>
+      <div id="bewerbungsliste"></div>
+      <button onclick="exportBewerbungen()">Export als CSV</button>
     </section>
   </main>
 
   <footer>
     <p>&copy; 2025 [Unternehmensname] – Alle Rechte vorbehalten</p>
-    <p><a href="#">Impressum</a> | <a href="#">Datenschutz</a></p>
   </footer>
 
   <script>
+    let isAdmin = false;
+    const bewerbungsliste = [];
+
+    function handleLogin(event) {
+      event.preventDefault();
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+
+      if (user === "admin" && pass === "passwort") {
+        alert("Login erfolgreich!");
+        isAdmin = true;
+        document.getElementById("admin-section").style.display = "block";
+        zeigeBewerbungen();
+        document.getElementById("login").style.display = "none";
+      } else {
+        alert("Login fehlgeschlagen. Bitte überprüfe deine Eingaben.");
+      }
+    }
+
+    function handleBewerbung(event) {
+      event.preventDefault();
+      const name = document.getElementById('bewerberName').value;
+      const email = document.getElementById('bewerberEmail').value;
+      const nachricht = document.getElementById('bewerberNachricht').value;
+      const fileInput = document.getElementById('lebenslauf');
+      const datei = fileInput.files[0] ? fileInput.files[0].name : "Keine Datei";
+
+      const eintrag = {
+        name,
+        email,
+        nachricht,
+        datei,
+        status: "In Bearbeitung"
+      };
+
+      bewerbungsliste.push(eintrag);
+
+      alert("Bewerbung erfolgreich übermittelt!");
+
+      document.getElementById('bewerberName').value = "";
+      document.getElementById('bewerberEmail').value = "";
+      document.getElementById('bewerberNachricht').value = "";
+      document.getElementById('lebenslauf').value = "";
+
+      if (isAdmin) {
+        zeigeBewerbungen();
+      }
+    }
+
+    function zeigeBewerbungen() {
+      const liste = document.getElementById("bewerbungsliste");
+      liste.innerHTML = "";
+      bewerbungsliste.forEach((b, index) => {
+        const eintrag = document.createElement("div");
+        eintrag.classList.add("bewerbung-eintrag");
+        eintrag.innerHTML = `
+          <strong>${b.name}</strong><br>
+          <small>${b.email}</small>
+          <p>${b.nachricht}</p>
+          <p><em>Lebenslauf: ${b.datei}</em></p>
+          <p>Status: ${b.status}</p>
+          <button class="delete-button" onclick="loescheBewerbung(${index})">Löschen</button>
+        `;
+        liste.appendChild(eintrag);
+      });
+    }
+
+    function loescheBewerbung(index) {
+      if (confirm("Möchtest du diese Bewerbung wirklich löschen?")) {
+        bewerbungsliste.splice(index, 1);
+        zeigeBewerbungen();
+      }
+    }
+
+    function exportBewerbungen() {
+      const csvContent = "data:text/csv;charset=utf-8,Name,Email,Nachricht,Lebenslauf,Status\n" +
+        bewerbungsliste.map(b => `${b.name},${b.email},${b.nachricht},${b.datei},${b.status}`).join("\n");
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "bewerbungen.csv");
+      document.body.appendChild(link);
+      link.click();
+    }
+
     function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
+      document.body.classList.toggle("dark-mode");
     }
   </script>
 </body>
