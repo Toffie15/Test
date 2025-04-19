@@ -1,44 +1,32 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kontakt</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kontakt</title>
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="index.html">Startseite</a></li>
-                <li><a href="kontakt.html">Kontakt</a></li>
-            </ul>
-        </nav>
-    </header>
+  <header class="navbar">
+    <div class="logo">✨ MySite</div>
+    <nav>
+      <a href="index.html">Start</a>
+      <a href="kontakt.html" class="active">Kontakt</a>
+    </nav>
+  </header>
 
-    <main>
-        <section class="contact-form">
-            <h1>Kontaktformular</h1>
-            <form action="#" method="POST">
-                <div class="input-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="input-group">
-                    <label for="email">E-Mail:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="input-group">
-                    <label for="message">Nachricht:</label>
-                    <textarea id="message" name="message" rows="4" required></textarea>
-                </div>
-                <button type="submit" class="cta-button">Absenden</button>
-            </form>
-        </section>
-    </main>
+  <section class="contact">
+    <h1>Kontaktiere uns</h1>
+    <form>
+      <input type="text" placeholder="Dein Name" required />
+      <input type="email" placeholder="Deine E-Mail" required />
+      <textarea placeholder="Deine Nachricht" required></textarea>
+      <button type="submit">Absenden</button>
+    </form>
+  </section>
 
-    <footer>
-        <p>&copy; 2025 Moderne Website</p>
-    </footer>
+  <footer>
+    <p>&copy; 2025 MySite. Alle Rechte vorbehalten.</p>
+  </footer>
 </body>
 </html>
