@@ -1,10 +1,13 @@
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  background-color: #121212;
+  color: #eee;
 }
 .navbar {
-  background: #333;
+  background: #1f1f1f;
   color: white;
   padding: 1rem;
   display: flex;
@@ -18,47 +21,42 @@ body {
 }
 .hero {
   padding: 3rem;
-  background: #eee;
+  background: #1a1a1a;
   text-align: center;
 }
 .contact {
   padding: 2rem;
+  background: #1a1a1a;
 }
 input, textarea {
   display: block;
   width: 100%;
   margin-bottom: 1rem;
   padding: 0.5rem;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: white;
 }
 button {
   padding: 0.5rem 1rem;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #444;
 }
 footer {
   text-align: center;
   padding: 1rem;
-  background: #222;
+  background: #1f1f1f;
   color: white;
 }
-/* Dark mode */
-body.dark {
-  background-color: #121212;
-  color: #eee;
-}
-body.dark .navbar {
-  background: #1e1e1e;
-}
-body.dark .hero {
-  background: #1a1a1a;
-}
-body.dark .contact {
-  background: #1a1a1a;
-}
-body.dark input, body.dark textarea {
-  background: #333;
-  color: white;
-}
-body.dark footer {
-  background: #1a1a1a;
+pre {
+  background-color: #1e1e1e;
+  padding: 1rem;
+  border-radius: 8px;
 }
 .toggle-btn {
   background: none;
@@ -66,4 +64,7 @@ body.dark footer {
   font-size: 1.2rem;
   color: white;
   cursor: pointer;
+}
+a {
+  color: #84caff;
 }
