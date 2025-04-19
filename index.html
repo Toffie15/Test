@@ -1,72 +1,42 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Professionelle Website</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professionelle Website</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="logo">MeinShop</div>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <h1>Meine Professionelle Website</h1>
+      <nav>
         <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#shop">Shop</a></li>
-            <li><a href="#contact">Kontakt</a></li>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Über uns</a></li>
+          <li><a href="#">Dienstleistungen</a></li>
+          <li><a href="#">Kontakt</a></li>
         </ul>
-    </nav>
+      </nav>
+    </div>
+  </header>
 
-    <!-- Hero Section -->
-    <header>
-        <div class="hero-text">
-            <h1>Willkommen bei MeinShop</h1>
-            <p>Finde die besten Produkte für dich!</p>
-        </div>
-    </header>
+  <!-- Main Section -->
+  <section class="hero">
+    <div class="container">
+      <h2>Willkommen auf unserer Website</h2>
+      <p>Wir bieten professionelle Dienstleistungen für Unternehmen und Einzelpersonen.</p>
+      <a href="#" class="cta-btn">Erfahren Sie mehr</a>
+    </div>
+  </section>
 
-    <!-- Shop Section -->
-    <section id="shop">
-        <h2>Unsere Produkte</h2>
-        <div class="product">
-            <img src="https://via.placeholder.com/150" alt="Produkt 1">
-            <h3>Produkt 1</h3>
-            <p>Beschreibung des Produkts</p>
-            <button class="buy-button">Jetzt kaufen</button>
-        </div>
-        <div class="product">
-            <img src="https://via.placeholder.com/150" alt="Produkt 2">
-            <h3>Produkt 2</h3>
-            <p>Beschreibung des Produkts</p>
-            <button class="buy-button">Jetzt kaufen</button>
-        </div>
-    </section>
-
-    <!-- Social Media Section -->
-    <section id="social-media">
-        <h2>Folge uns auf Social Media</h2>
-        <ul>
-            <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
-            <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
-            <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
-        </ul>
-    </section>
-
-    <!-- Kontakt Section -->
-    <section id="contact">
-        <h2>Kontakt</h2>
-        <form action="submit-form.php" method="POST">
-            <input type="text" name="name" placeholder="Dein Name" required>
-            <input type="email" name="email" placeholder="Deine E-Mail" required>
-            <textarea name="message" placeholder="Nachricht" required></textarea>
-            <button type="submit">Absenden</button>
-        </form>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 MeinShop</p>
-    </footer>
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Meine Professionelle Website. Alle Rechte vorbehalten.</p>
+    </div>
+  </footer>
 </body>
 </html>
