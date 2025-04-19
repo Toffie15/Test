@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>[Unternehmensname] - Karriere & Bewerbungen</title>
+  <title>[Unternehmensname] - Karriere und Dienstleistungen</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -39,6 +39,10 @@
       position: sticky;
       top: 0;
       z-index: 100;
+    }
+
+    header img {
+      height: 50px; /* Set logo size */
     }
 
     nav {
@@ -93,27 +97,6 @@
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
     }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    input, textarea {
-      padding: 14px 18px;
-      width: 100%;
-      border: none;
-      border-radius: 10px;
-      background-color: var(--input-bg);
-      color: #fff;
-      font-size: 1rem;
-      transition: background-color 0.3s ease;
-    }
-
-    input:focus, textarea:focus {
-      outline: 2px solid var(--accent);
-    }
-
     footer {
       margin-top: auto;
       font-size: 0.85em;
@@ -121,34 +104,6 @@
       background-color: var(--card-dark);
       padding: 20px;
       text-align: center;
-    }
-
-    .bewerbung-eintrag {
-      background-color: var(--input-bg);
-      margin: 15px 0;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: left;
-      position: relative;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .delete-button {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: var(--danger);
-      border: none;
-      color: white;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .delete-button:hover {
-      background-color: var(--danger-hover);
     }
 
     .dark-mode {
@@ -181,12 +136,11 @@
 </head>
 <body>
   <header>
+    <img src="logo.png" alt="Unternehmensname" /> <!-- Unternehmenslogo -->
     <h1>[Unternehmensname]</h1>
-    <p>Ihr Partner für [Dienstleistung]</p>
     <nav>
       <a href="#start" class="active">Startseite</a>
       <a href="#karriere">Karriere</a>
-      <a href="#bewerbung">Bewerbung</a>
       <a href="#ueber-uns">Über uns</a>
       <a href="#kontakt">Kontakt</a>
       <button onclick="toggleDarkMode()">🌙 / 🌞</button>
@@ -196,7 +150,7 @@
   <main>
     <section id="start">
       <h2>Willkommen bei [Unternehmensname]</h2>
-      <p>Wir bieten innovative Lösungen für [Branchenspezifische Dienstleistung oder Produkt]. Werden Sie Teil unseres Teams und gestalten Sie die Zukunft mit uns!</p>
+      <p>Wir sind Ihr zuverlässiger Partner für [Dienstleistung oder Produkt]. Mit jahrelanger Erfahrung und einem starken Team bieten wir innovative Lösungen, die Ihr Business voranbringen.</p>
       <button onclick="window.location.href='#karriere'">Jetzt Karriere starten</button>
     </section>
 
@@ -206,56 +160,38 @@
       <ul>
         <li><a href="#">Marketing Manager (m/w/d)</a></li>
         <li><a href="#">Softwareentwickler (m/w/d)</a></li>
+        <!-- Weitere Jobangebote -->
       </ul>
       <button onclick="window.location.href='#bewerbung'">Jetzt bewerben</button>
     </section>
 
-    <section id="bewerbung">
-      <h2>Online Bewerbung</h2>
-      <form onsubmit="handleBewerbung(event)">
-        <input type="text" id="bewerberName" placeholder="Dein Name" required />
-        <input type="email" id="bewerberEmail" placeholder="Deine E-Mail-Adresse" required />
-        <textarea id="bewerberNachricht" placeholder="Deine Nachricht..." rows="5" required></textarea>
-        <input type="file" id="lebenslauf" accept="application/pdf" required />
-        <button type="submit">Bewerbung absenden</button>
-      </form>
-    </section>
-
     <section id="ueber-uns">
       <h2>Über uns</h2>
-      <p>[Unternehmensname] wurde mit der Vision gegründet, [Unternehmensziel] zu erreichen. Mit einem engagierten Team bieten wir Lösungen für [Branchenspezifische Produkte/Dienstleistungen].</p>
-      <p>Erfahren Sie mehr über unsere Werte und unsere Geschichte.</p>
+      <p>Wir sind ein führendes Unternehmen in der [Branche] mit einer klaren Vision und Mission. Unser Ziel ist es, innovative Lösungen zu bieten, die unseren Kunden helfen, in einer dynamischen Welt erfolgreich zu sein.</p>
+      <h3>Unser Team</h3>
+      <p>Unser Team besteht aus hochqualifizierten Experten, die sich für den Erfolg unserer Kunden einsetzen.</p>
     </section>
 
     <section id="kontakt">
-      <h2>Kontakt</h2>
-      <form>
+      <h2>Kontaktieren Sie uns</h2>
+      <p>Haben Sie Fragen? Kontaktieren Sie uns über das folgende Formular oder besuchen Sie uns an einem unserer Standorte.</p>
+      <form action="#">
         <input type="text" placeholder="Ihr Name" required />
         <input type="email" placeholder="Ihre E-Mail-Adresse" required />
-        <textarea placeholder="Ihre Nachricht" rows="5" required></textarea>
+        <textarea placeholder="Ihre Nachricht" rows="4" required></textarea>
         <button type="submit">Nachricht senden</button>
       </form>
     </section>
-
   </main>
 
   <footer>
     <p>&copy; 2025 [Unternehmensname] – Alle Rechte vorbehalten</p>
-    <p><a href="https://www.linkedin.com/company/[Unternehmensname]" target="_blank">LinkedIn</a> | <a href="https://www.twitter.com/[Unternehmensname]" target="_blank">Twitter</a> | <a href="https://www.instagram.com/[Unternehmensname]" target="_blank">Instagram</a></p>
+    <p><a href="#">Impressum</a> | <a href="#">Datenschutz</a></p>
   </footer>
 
   <script>
     function toggleDarkMode() {
       document.body.classList.toggle('dark-mode');
-    }
-
-    function handleBewerbung(event) {
-      event.preventDefault();
-      alert("Bewerbung erfolgreich übermittelt!");
-      document.getElementById('bewerberName').value = "";
-      document.getElementById('bewerberEmail').value = "";
-      document.getElementById('bewerberNachricht').value = "";
-      document.getElementById('lebenslauf').value = "";
     }
   </script>
 </body>
