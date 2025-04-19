@@ -1,42 +1,29 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Professionelle Website</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meine Persönliche Website</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <div class="container">
-      <h1>Meine Professionelle Website</h1>
-      <nav>
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Über uns</a></li>
-          <li><a href="#">Dienstleistungen</a></li>
-          <li><a href="#">Kontakt</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
 
-  <!-- Main Section -->
-  <section class="hero">
-    <div class="container">
-      <h2>Willkommen auf unserer Website</h2>
-      <p>Wir bieten professionelle Dienstleistungen für Unternehmen und Einzelpersonen.</p>
-      <a href="#" class="cta-btn">Erfahren Sie mehr</a>
-    </div>
-  </section>
+    <header>
+        <h1>Willkommen auf meiner Website</h1>
+    </header>
 
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <p>&copy; 2025 Meine Professionelle Website. Alle Rechte vorbehalten.</p>
-    </div>
-  </footer>
+    <section>
+        <h2>Benutzeranmeldung</h2>
+        <form action="login.php" method="POST">
+            <label for="username">Benutzername:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Passwort:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Anmelden</button>
+        </form>
+    </section>
+
 </body>
 </html>
