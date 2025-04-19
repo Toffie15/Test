@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mein Forum</title>
+    <title>GTA5Grand Forum</title>
     <style>
+        /* Einfache CSS-Regeln für Layout */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
         }
-        header, footer {
+        header {
             background-color: #333;
             color: white;
+            padding: 10px;
             text-align: center;
-            padding: 10px 0;
         }
         nav {
             background-color: #444;
@@ -24,78 +25,74 @@
         }
         nav a {
             color: white;
-            text-decoration: none;
             margin: 0 15px;
-            font-size: 18px;
+            text-decoration: none;
         }
-        nav a:hover {
-            text-decoration: underline;
-        }
-        .forum {
+        .container {
             display: flex;
             justify-content: space-between;
             padding: 20px;
         }
-        .forum-section {
-            width: 48%;
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 8px;
+        .main-content {
+            width: 70%;
+            background-color: white;
+            padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .forum-section h2 {
-            font-size: 24px;
-            color: #333;
+        .sidebar {
+            width: 25%;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .forum-section ul {
-            list-style: none;
-            padding: 0;
-        }
-        .forum-section li {
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
             padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-        .forum-section li:last-child {
-            border-bottom: none;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Willkommen im Forum</h1>
+    <h1>GTA5Grand Forum</h1>
 </header>
 
 <nav>
-    <a href="#home">Startseite</a>
-    <a href="#new-posts">Neue Beiträge</a>
-    <a href="#members">Mitglieder</a>
-    <a href="#search">Suche</a>
+    <a href="#">Home</a>
+    <a href="#">Forum</a>
+    <a href="#">Neueste Beiträge</a>
+    <a href="#">Mitglieder</a>
+    <a href="#">Registrieren</a>
 </nav>
 
-<div class="forum">
-    <div class="forum-section">
-        <h2>Server #1</h2>
+<div class="container">
+    <div class="main-content">
+        <h2>Willkommen im Forum</h2>
+        <p>Diskutiere, teile und chatte mit anderen Mitgliedern der Community.</p>
+        <h3>Neue Beiträge</h3>
         <ul>
-            <li><a href="#">Regeln</a></li>
-            <li><a href="#">Beschwerden</a></li>
-            <li><a href="#">Bewerbungen</a></li>
-            <li><a href="#">Organisationen</a></li>
+            <li><a href="#">Beitrag 1</a></li>
+            <li><a href="#">Beitrag 2</a></li>
+            <li><a href="#">Beitrag 3</a></li>
         </ul>
     </div>
-    <div class="forum-section">
-        <h2>Server #2</h2>
+    <div class="sidebar">
+        <h3>Aktuelle Themen</h3>
         <ul>
-            <li><a href="#">Regeln</a></li>
-            <li><a href="#">Beschwerden</a></li>
-            <li><a href="#">Bewerbungen</a></li>
-            <li><a href="#">Organisationen</a></li>
+            <li><a href="#">Thema 1</a></li>
+            <li><a href="#">Thema 2</a></li>
+            <li><a href="#">Thema 3</a></li>
         </ul>
     </div>
 </div>
 
 <footer>
-    <p>&copy; 2025 Mein Forum. Alle Rechte vorbehalten.</p>
+    <p>&copy; 2025 GTA5Grand Forum</p>
 </footer>
 
 </body>
