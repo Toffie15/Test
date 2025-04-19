@@ -93,27 +93,6 @@
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
     }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    input, textarea {
-      padding: 14px 18px;
-      width: 100%;
-      border: none;
-      border-radius: 10px;
-      background-color: var(--input-bg);
-      color: #fff;
-      font-size: 1rem;
-      transition: background-color 0.3s ease;
-    }
-
-    input:focus, textarea:focus {
-      outline: 2px solid var(--accent);
-    }
-
     footer {
       margin-top: auto;
       font-size: 0.85em;
@@ -123,59 +102,9 @@
       text-align: center;
     }
 
-    .bewerbung-eintrag {
-      background-color: var(--input-bg);
-      margin: 15px 0;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: left;
-      position: relative;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .delete-button {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: var(--danger);
-      border: none;
-      color: white;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .delete-button:hover {
-      background-color: var(--danger-hover);
-    }
-
     .dark-mode {
       background-color: #121212;
       color: #fff;
-    }
-
-    @media (max-width: 768px) {
-      body {
-        padding: 10px;
-      }
-
-      header {
-        padding: 10px;
-      }
-
-      section {
-        padding: 20px;
-      }
-
-      form input, form textarea {
-        font-size: 0.9rem;
-      }
-
-      button {
-        padding: 12px 24px;
-      }
     }
   </style>
 </head>
@@ -184,78 +113,29 @@
     <h1>[Unternehmensname]</h1>
     <p>Ihr Partner für [Dienstleistung]</p>
     <nav>
-      <a href="#start" class="active">Startseite</a>
-      <a href="#karriere">Karriere</a>
-      <a href="#bewerbung">Bewerbung</a>
-      <a href="#ueber-uns">Über uns</a>
-      <a href="#kontakt">Kontakt</a>
-      <button onclick="toggleDarkMode()">🌙 / 🌞</button>
+      <a href="index.html">Startseite</a>
+      <a href="karriere.html">Karriere</a>
+      <a href="bewerbung.html">Bewerbung</a>
+      <a href="ueber-uns.html">Über uns</a>
+      <a href="kontakt.html">Kontakt</a>
     </nav>
   </header>
 
   <main>
-    <section id="start">
+    <section>
       <h2>Willkommen bei [Unternehmensname]</h2>
       <p>Wir bieten innovative Lösungen für [Branchenspezifische Dienstleistung oder Produkt]. Werden Sie Teil unseres Teams und gestalten Sie die Zukunft mit uns!</p>
-      <button onclick="window.location.href='#karriere'">Jetzt Karriere starten</button>
+      <button onclick="window.location.href='karriere.html'">Jetzt Karriere starten</button>
     </section>
-
-    <section id="karriere">
-      <h2>Unsere offenen Stellen</h2>
-      <p>Werden Sie Teil eines erfolgreichen Teams. Entdecken Sie unsere aktuellen Jobangebote.</p>
-      <ul>
-        <li><a href="#">Marketing Manager (m/w/d)</a></li>
-        <li><a href="#">Softwareentwickler (m/w/d)</a></li>
-      </ul>
-      <button onclick="window.location.href='#bewerbung'">Jetzt bewerben</button>
-    </section>
-
-    <section id="bewerbung">
-      <h2>Online Bewerbung</h2>
-      <form onsubmit="handleBewerbung(event)">
-        <input type="text" id="bewerberName" placeholder="Dein Name" required />
-        <input type="email" id="bewerberEmail" placeholder="Deine E-Mail-Adresse" required />
-        <textarea id="bewerberNachricht" placeholder="Deine Nachricht..." rows="5" required></textarea>
-        <input type="file" id="lebenslauf" accept="application/pdf" required />
-        <button type="submit">Bewerbung absenden</button>
-      </form>
-    </section>
-
-    <section id="ueber-uns">
-      <h2>Über uns</h2>
-      <p>[Unternehmensname] wurde mit der Vision gegründet, [Unternehmensziel] zu erreichen. Mit einem engagierten Team bieten wir Lösungen für [Branchenspezifische Produkte/Dienstleistungen].</p>
-      <p>Erfahren Sie mehr über unsere Werte und unsere Geschichte.</p>
-    </section>
-
-    <section id="kontakt">
-      <h2>Kontakt</h2>
-      <form>
-        <input type="text" placeholder="Ihr Name" required />
-        <input type="email" placeholder="Ihre E-Mail-Adresse" required />
-        <textarea placeholder="Ihre Nachricht" rows="5" required></textarea>
-        <button type="submit">Nachricht senden</button>
-      </form>
-    </section>
-
   </main>
 
   <footer>
     <p>&copy; 2025 [Unternehmensname] – Alle Rechte vorbehalten</p>
-    <p><a href="https://www.linkedin.com/company/[Unternehmensname]" target="_blank">LinkedIn</a> | <a href="https://www.twitter.com/[Unternehmensname]" target="_blank">Twitter</a> | <a href="https://www.instagram.com/[Unternehmensname]" target="_blank">Instagram</a></p>
   </footer>
 
   <script>
     function toggleDarkMode() {
       document.body.classList.toggle('dark-mode');
-    }
-
-    function handleBewerbung(event) {
-      event.preventDefault();
-      alert("Bewerbung erfolgreich übermittelt!");
-      document.getElementById('bewerberName').value = "";
-      document.getElementById('bewerberEmail').value = "";
-      document.getElementById('bewerberNachricht').value = "";
-      document.getElementById('lebenslauf').value = "";
     }
   </script>
 </body>
