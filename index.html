@@ -3,27 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meine Persönliche Website</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Meine Freunde und Ich</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        section {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        section h2 {
+            font-size: 36px;
+            color: #333;
+        }
+
+        section p {
+            font-size: 18px;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
 </head>
 <body>
 
     <header>
-        <h1>Willkommen auf meiner Website</h1>
+        <h1>Willkommen bei "Meine Freunde und Ich"</h1>
     </header>
 
-    <section>
-        <h2>Benutzeranmeldung</h2>
-        <form action="login.php" method="POST">
-            <label for="username">Benutzername:</label>
-            <input type="text" id="username" name="username" required>
+    <nav>
+        <a href="#section1">Über uns</a>
+        <a href="#section2">Aktivitäten</a>
+        <a href="#section3">Kontakt</a>
+    </nav>
 
-            <label for="password">Passwort:</label>
-            <input type="password" id="password" name="password" required>
-
-            <button type="submit">Anmelden</button>
-        </form>
+    <section id="section1">
+        <h2>Über uns</h2>
+        <p>Hier könntest du etwas über dich und deine Freunde erzählen. Welche gemeinsamen Interessen habt ihr? Was verbindet euch?</p>
     </section>
+
+    <section id="section2">
+        <h2>Aktivitäten</h2>
+        <p>Beschreibe hier, was du und deine Freunde gerne zusammen unternehmen. Welche Hobbys oder Freizeitaktivitäten sind euch wichtig?</p>
+    </section>
+
+    <section id="section3">
+        <h2>Kontakt</h2>
+        <p>Hier kannst du ein Kontaktformular oder eine E-Mail-Adresse einfügen, um mit Besuchern der Seite in Kontakt zu treten.</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Meine Freunde und Ich. Alle Rechte vorbehalten.</p>
+    </footer>
 
 </body>
 </html>
