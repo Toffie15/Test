@@ -18,10 +18,10 @@
 
   <section class="contact">
     <h1>Kontaktiere uns</h1>
-    <form>
-      <input type="text" placeholder="Dein Name" required />
-      <input type="email" placeholder="Deine E-Mail" required />
-      <textarea placeholder="Deine Nachricht" required></textarea>
+    <form method="POST" action="kontakt.php">
+      <input type="text" name="name" placeholder="Dein Name" required />
+      <input type="email" name="email" placeholder="Deine E-Mail" required />
+      <textarea name="message" placeholder="Deine Nachricht" required></textarea>
       <button type="submit">Absenden</button>
     </form>
   </section>
