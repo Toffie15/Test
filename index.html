@@ -6,177 +6,154 @@
   <title>[Unternehmensname] - Karriere</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* Grundlegende Variablen für das Design */
+    /* Variablen für Farbthemen */
     :root {
-      --bg-dark: #0f1117;
-      --card-dark: #1b1e24;
-      --accent: #00bcd4;
-      --accent-hover: #00acc1;
+      --bg-dark: #1d1f23;
+      --card-bg: #2c2f36;
+      --accent-color: #00bcd4;
+      --accent-color-hover: #0097a7;
       --text-light: #f9f9f9;
-      --input-bg: #2a2d34;
-      --danger: #e53935;
-      --danger-hover: #c62828;
+      --text-dark: #333;
+      --input-bg: #3a3f47;
+      --border-radius: 8px;
+      --button-hover-bg: #0097a7;
+      --shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
       font-family: 'Inter', sans-serif;
       background-color: var(--bg-dark);
       color: var(--text-light);
+      line-height: 1.6;
+      padding: 0 20px;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
 
     header {
-      background-color: var(--card-dark);
+      background-color: var(--card-bg);
       padding: 20px;
       text-align: center;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+
+    header h1 {
+      font-size: 2rem;
+      color: var(--accent-color);
     }
 
     nav {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      gap: 30px;
+      margin-top: 20px;
     }
 
     nav a {
-      color: #ffffff;
+      color: var(--text-light);
       text-decoration: none;
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 600;
-      transition: color 0.3s ease;
-    }
-
-    nav a.active {
-      color: var(--accent);
+      transition: color 0.3s ease, transform 0.2s ease;
     }
 
     nav a:hover {
-      color: var(--accent);
+      color: var(--accent-color);
+      transform: scale(1.05);
     }
 
     button {
-      background-color: var(--accent);
-      color: #121212;
-      padding: 14px 30px;
+      background-color: var(--accent-color);
+      color: var(--text-dark);
+      padding: 12px 30px;
       font-weight: 600;
       border: none;
-      border-radius: 10px;
+      border-radius: var(--border-radius);
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
 
     button:hover {
-      background-color: var(--accent-hover);
+      background-color: var(--accent-color-hover);
     }
 
     main {
-      margin-top: 20px;
-      padding: 20px;
       flex-grow: 1;
+      padding: 30px 0;
     }
 
     section {
-      margin: 40px auto;
-      max-width: 900px;
-      padding: 30px;
-      background-color: var(--card-dark);
-      border-radius: 16px;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+      margin-bottom: 40px;
+      background-color: var(--card-bg);
+      padding: 40px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
     }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+    section h2 {
+      font-size: 1.8rem;
+      color: var(--text-light);
+      margin-bottom: 20px;
     }
 
-    input, textarea {
-      padding: 14px 18px;
-      width: 100%;
-      border: none;
-      border-radius: 10px;
+    .bewerbung-eintrag {
       background-color: var(--input-bg);
-      color: #fff;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      margin-bottom: 15px;
+      box-shadow: var(--shadow);
+    }
+
+    footer {
+      background-color: var(--card-bg);
+      padding: 20px;
+      text-align: center;
+      opacity: 0.8;
+      font-size: 0.9rem;
+    }
+
+    /* Formularelemente */
+    input, textarea {
+      width: 100%;
+      padding: 12px 18px;
+      background-color: var(--input-bg);
+      border: none;
+      border-radius: var(--border-radius);
+      color: var(--text-light);
       font-size: 1rem;
       transition: background-color 0.3s ease;
     }
 
     input:focus, textarea:focus {
-      outline: 2px solid var(--accent);
+      outline: none;
+      background-color: var(--accent-color);
     }
 
-    footer {
-      margin-top: auto;
-      font-size: 0.85em;
-      opacity: 0.6;
-      background-color: var(--card-dark);
-      padding: 20px;
-      text-align: center;
+    textarea {
+      resize: vertical;
     }
 
-    .bewerbung-eintrag {
-      background-color: var(--input-bg);
-      margin: 15px 0;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: left;
-      position: relative;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .delete-button {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: var(--danger);
-      border: none;
-      color: white;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .delete-button:hover {
-      background-color: var(--danger-hover);
-    }
-
-    .dark-mode {
-      background-color: #121212;
-      color: #fff;
-    }
-
-    /* Responsivität */
+    /* Responsive Design */
     @media (max-width: 768px) {
-      body {
-        padding: 10px;
-      }
-
-      header {
-        padding: 10px;
+      nav {
+        flex-direction: column;
+        align-items: center;
       }
 
       section {
-        padding: 20px;
-      }
-
-      form input, form textarea {
-        font-size: 0.9rem;
+        padding: 25px;
       }
 
       button {
-        padding: 12px 24px;
+        width: 100%;
+        padding: 12px;
       }
     }
   </style>
@@ -185,25 +162,23 @@
   <header>
     <h1>[Unternehmensname]</h1>
     <nav>
-      <a href="#start" onclick="changeLang('de')" class="active">Startseite</a>
-      <a href="#login" onclick="changeLang('de')">Login</a>
-      <a href="#karriere" onclick="changeLang('de')">Karriere</a>
-      <a href="#management" onclick="changeLang('de')">Management</a>
-      <a href="#start" onclick="changeLang('en')">EN</a>
-      <button onclick="toggleDarkMode()">🌙 / 🌞</button>
+      <a href="#start" class="active">Startseite</a>
+      <a href="#karriere">Karriere</a>
+      <a href="#bewerbung">Bewerbung</a>
+      <a href="#management">Management</a>
     </nav>
   </header>
 
   <main>
     <section id="start">
       <h2>Willkommen bei [Unternehmensname]</h2>
-      <p>Wir sind Ihr zuverlässiger Partner für [Dienstleistung oder Produkt]. Mit jahrelanger Erfahrung und einem starken Team bieten wir innovative Lösungen, die Ihr Business voranbringen.</p>
-      <button onclick="window.location.href='#karriere'">Jetzt Karriere starten</button>
+      <p>Wir bieten innovative Lösungen und ein dynamisches Arbeitsumfeld, in dem Ihr Talent geschätzt wird. Lernen Sie unser Unternehmen und die verfügbaren Karrierechancen kennen.</p>
+      <button onclick="window.location.href='#karriere'">Karriere entdecken</button>
     </section>
 
     <section id="karriere">
-      <h2>Unsere offenen Stellen</h2>
-      <p>Werden Sie Teil eines erfolgreichen Teams. Entdecken Sie unsere aktuellen Jobangebote.</p>
+      <h2>Offene Stellen</h2>
+      <p>Werden Sie Teil eines talentierten Teams und bringen Sie Ihre Karriere auf das nächste Level. Sehen Sie sich unsere aktuellen Jobangebote an.</p>
       <ul>
         <li><a href="#">Marketing Manager (m/w/d)</a></li>
         <li><a href="#">Softwareentwickler (m/w/d)</a></li>
@@ -214,25 +189,20 @@
 
     <section id="bewerbung">
       <h2>Online Bewerbung</h2>
-      <form onsubmit="handleBewerbung(event)">
-        <input type="text" id="bewerberName" placeholder="Dein Name" required />
-        <input type="email" id="bewerberEmail" placeholder="Deine E-Mail-Adresse" required />
-        <textarea id="bewerberNachricht" placeholder="Deine Nachricht..." rows="5" required></textarea>
+      <p>Nutzen Sie unser Bewerbungsformular, um Ihre Bewerbung direkt online einzureichen. Wir freuen uns darauf, von Ihnen zu hören!</p>
+      <form id="bewerbungsform" onsubmit="handleBewerbung(event)">
+        <input type="text" id="bewerberName" placeholder="Ihr Name" required />
+        <input type="email" id="bewerberEmail" placeholder="Ihre E-Mail-Adresse" required />
+        <textarea id="bewerberNachricht" placeholder="Ihre Nachricht" rows="5" required></textarea>
         <input type="file" id="lebenslauf" accept="application/pdf" required />
         <button type="submit">Bewerbung absenden</button>
       </form>
     </section>
 
     <section id="management">
-      <h2>Management</h2>
-      <p>Verwalte deine Bewerbungen bequem an einem Ort.</p>
-    </section>
-
-    <section id="admin-section">
-      <h2>Admin Dashboard</h2>
-      <p>Verwalte alle eingegangenen Bewerbungen hier:</p>
-      <div id="bewerbungsliste"></div>
-      <button onclick="exportBewerbungen()">Export als CSV</button>
+      <h2>Management-Dashboard</h2>
+      <p>Verwalten Sie Ihre Bewerbungen und treffen Sie Entscheidungen effizient. Alles an einem Ort!</p>
+      <button onclick="zeigeBewerbungen()">Bewerbungen anzeigen</button>
     </section>
   </main>
 
@@ -241,24 +211,7 @@
   </footer>
 
   <script>
-    let isAdmin = false;
     const bewerbungsliste = [];
-
-    function handleLogin(event) {
-      event.preventDefault();
-      const user = document.getElementById('username').value;
-      const pass = document.getElementById('password').value;
-
-      if (user === "admin" && pass === "passwort") {
-        alert("Login erfolgreich!");
-        isAdmin = true;
-        document.getElementById("admin-section").style.display = "block";
-        zeigeBewerbungen();
-        document.getElementById("login").style.display = "none";
-      } else {
-        alert("Login fehlgeschlagen. Bitte überprüfe deine Eingaben.");
-      }
-    }
 
     function handleBewerbung(event) {
       event.preventDefault();
@@ -280,19 +233,13 @@
 
       alert("Bewerbung erfolgreich übermittelt!");
 
-      document.getElementById('bewerberName').value = "";
-      document.getElementById('bewerberEmail').value = "";
-      document.getElementById('bewerberNachricht').value = "";
-      document.getElementById('lebenslauf').value = "";
-
-      if (isAdmin) {
-        zeigeBewerbungen();
-      }
+      // Formular zurücksetzen
+      document.getElementById('bewerbungsform').reset();
     }
 
     function zeigeBewerbungen() {
-      const liste = document.getElementById("bewerbungsliste");
-      liste.innerHTML = "";
+      const liste = document.getElementById("management");
+      liste.innerHTML = "<h2>Alle Bewerbungen</h2>";
       bewerbungsliste.forEach((b, index) => {
         const eintrag = document.createElement("div");
         eintrag.classList.add("bewerbung-eintrag");
@@ -302,33 +249,9 @@
           <p>${b.nachricht}</p>
           <p><em>Lebenslauf: ${b.datei}</em></p>
           <p>Status: ${b.status}</p>
-          <button class="delete-button" onclick="loescheBewerbung(${index})">Löschen</button>
         `;
         liste.appendChild(eintrag);
       });
-    }
-
-    function loescheBewerbung(index) {
-      if (confirm("Möchtest du diese Bewerbung wirklich löschen?")) {
-        bewerbungsliste.splice(index, 1);
-        zeigeBewerbungen();
-      }
-    }
-
-    function exportBewerbungen() {
-      const csvContent = "data:text/csv;charset=utf-8,Name,Email,Nachricht,Lebenslauf,Status\n" +
-        bewerbungsliste.map(b => `${b.name},${b.email},${b.nachricht},${b.datei},${b.status}`).join("\n");
-
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "bewerbungen.csv");
-      document.body.appendChild(link);
-      link.click();
-    }
-
-    function toggleDarkMode() {
-      document.body.classList.toggle("dark-mode");
     }
   </script>
 </body>
