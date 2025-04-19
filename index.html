@@ -1,143 +1,279 @@
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Daten von Formular empfangen
-    $name = htmlspecialchars($_POST['name']);
-    $alter = htmlspecialchars($_POST['alter']);
-    $berufserfahrung = htmlspecialchars($_POST['berufserfahrung']);
-    $motivationsschreiben = htmlspecialchars($_POST['motivationsschreiben']);
-    $discord = htmlspecialchars($_POST['discord']);
-    $discord_id = htmlspecialchars($_POST['discord_id']);
-
-    // Hier kannst du die Daten z.B. in einer Datenbank speichern oder als Textdatei exportieren
-    // Beispiel: Speichern in einer Textdatei
-    $bewerbung = "Name: $name\nAlter: $alter\nBerufserfahrung: $berufserfahrung\nMotivation: $motivationsschreiben\nDiscord: $discord\nDiscord ID: $discord_id\n\n";
-    
-    file_put_contents("bewerbungen.txt", $bewerbung, FILE_APPEND);
-
-    $message = "Bewerbung erfolgreich eingereicht!";
-}
-?>
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bewerbung für State Prison - GTA RP</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bewerbungsportal - [Firma Name]</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Grundlegende Variablen für das Design */
+    :root {
+      --bg-dark: #0f1117;
+      --card-dark: #1b1e24;
+      --accent: #00bcd4;
+      --accent-hover: #00acc1;
+      --text-light: #f9f9f9;
+      --input-bg: #2a2d34;
+      --danger: #e53935;
+      --danger-hover: #c62828;
+      --primary-color: #007bff;
+      --secondary-color: #f8f9fa;
+    }
 
-        header {
-            background-color: #333;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        h1 {
-            margin: 0;
-        }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-        main {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
+    header {
+      background-color: var(--card-dark);
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
 
-        .bewerbungsformular {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 50%;
-            max-width: 600px;
-        }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
+    nav a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
 
-        input[type="text"],
-        input[type="number"],
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
+    nav a.active {
+      color: var(--accent);
+    }
 
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-        }
+    nav a:hover {
+      color: var(--accent);
+    }
 
-        button:hover {
-            background-color: #45a049;
-        }
+    button {
+      background-color: var(--accent);
+      color: #121212;
+      padding: 14px 30px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
 
-        footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #333;
-            color: white;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
-    </style>
+    button:hover {
+      background-color: var(--accent-hover);
+    }
+
+    main {
+      margin-top: 20px;
+      padding: 20px;
+      flex-grow: 1;
+    }
+
+    section {
+      margin: 40px auto;
+      max-width: 900px;
+      padding: 30px;
+      background-color: var(--card-dark);
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    input, textarea {
+      padding: 14px 18px;
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      background-color: var(--input-bg);
+      color: #fff;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      outline: 2px solid var(--accent);
+    }
+
+    footer {
+      margin-top: auto;
+      font-size: 0.85em;
+      opacity: 0.6;
+      background-color: var(--card-dark);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .bewerbung-eintrag {
+      background-color: var(--input-bg);
+      margin: 15px 0;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: left;
+      position: relative;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .delete-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: var(--danger);
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .delete-button:hover {
+      background-color: var(--danger-hover);
+    }
+
+    .dark-mode {
+      background-color: #121212;
+      color: #fff;
+    }
+
+    /* Responsivität */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      header {
+        padding: 10px;
+      }
+
+      section {
+        padding: 20px;
+      }
+
+      form input, form textarea {
+        font-size: 0.9rem;
+      }
+
+      button {
+        padding: 12px 24px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Bewerbung für den Job im State Prison</h1>
-    </header>
+  <header>
+    <h1>[Firma Name] Bewerbungsportal</h1>
+    <nav>
+      <a href="#start" onclick="changeLang('de')" class="active">Startseite</a>
+      <a href="#login" onclick="changeLang('de')">Login</a>
+      <a href="#bewerbung" onclick="changeLang('de')">Bewerbung</a>
+      <a href="#stellenanzeigen" onclick="changeLang('de')">Offene Stellen</a>
+      <a href="#management" onclick="changeLang('de')">Management</a>
+      <button onclick="toggleDarkMode()">🌙 / 🌞</button>
+    </nav>
+  </header>
 
-    <main>
-        <form action="" method="POST" class="bewerbungsformular">
-            <label for="name">Vollständiger Name:</label>
-            <input type="text" id="name" name="name" required>
+  <main>
+    <section id="start">
+      <h2>Willkommen bei [Firma Name]</h2>
+      <p>Wir sind immer auf der Suche nach talentierten Menschen, die mit uns zusammenarbeiten wollen. Entdecke spannende Karrieremöglichkeiten und bewirb dich bei uns!</p>
+      <button onclick="window.location.href='#stellenanzeigen'">Jetzt offene Stellen ansehen</button>
+    </section>
 
-            <label for="alter">Alter:</label>
-            <input type="number" id="alter" name="alter" required>
+    <section id="stellenanzeigen">
+      <h2>Unsere offenen Stellen</h2>
+      <div class="job-listing">
+        <h3>Softwareentwickler (m/w/d)</h3>
+        <p>Ort: Berlin, Vollzeit</p>
+        <p>Als Softwareentwickler wirst du unser Entwicklungsteam bei der Gestaltung innovativer Lösungen unterstützen.</p>
+        <button onclick="window.location.href='#bewerbung'">Jetzt bewerben</button>
+      </div>
+      <div class="job-listing">
+        <h3>Marketing Manager (m/w/d)</h3>
+        <p>Ort: München, Vollzeit</p>
+        <p>Du wirst kreative Marketingstrategien entwickeln und unser Markenimage stärken.</p>
+        <button onclick="window.location.href='#bewerbung'">Jetzt bewerben</button>
+      </div>
+    </section>
 
-            <label for="berufserfahrung">Berufserfahrung im RP (falls vorhanden):</label>
-            <textarea id="berufserfahrung" name="berufserfahrung" rows="4" required></textarea>
+    <section id="bewerbung">
+      <h2>Online Bewerbung</h2>
+      <form onsubmit="handleBewerbung(event)">
+        <input type="text" id="bewerberName" placeholder="Dein Name" required />
+        <input type="email" id="bewerberEmail" placeholder="Deine E-Mail-Adresse" required />
+        <input type="file" id="lebenslauf" accept="application/pdf" required />
+        <textarea id="bewerberNachricht" placeholder="Warum möchtest du bei uns arbeiten?" rows="5" required></textarea>
+        <button type="submit">Bewerbung absenden</button>
+      </form>
+    </section>
 
-            <label for="motivationsschreiben">Warum möchtest du im State Prison arbeiten?</label>
-            <textarea id="motivationsschreiben" name="motivationsschreiben" rows="6" required></textarea>
+    <section id="admin-section">
+      <h2>Admin Dashboard</h2>
+      <p>Verwalte alle eingegangenen Bewerbungen hier:</p>
+      <div id="bewerbungsliste"></div>
+      <button onclick="exportBewerbungen()">Export als CSV</button>
+    </section>
+  </main>
 
-            <label for="discord">Discord Name:</label>
-            <input type="text" id="discord" name="discord" required>
+  <footer>
+    <p>&copy; 2025 [Firma Name] – Alle Rechte vorbehalten</p>
+  </footer>
 
-            <label for="discord_id">Discord ID:</label>
-            <input type="text" id="discord_id" name="discord_id" required>
+  <script>
+    let isAdmin = false;
+    const bewerbungsliste = [];
 
-            <button type="submit">Bewerbung Absenden</button>
-        </form>
-        
-        <?php
-        if (isset($message)) {
-            echo "<p style='color: green; text-align: center;'>$message</p>";
-        }
-        ?>
-    </main>
+    function handleBewerbung(event) {
+      event.preventDefault();
+      const name = document.getElementById('bewerberName').value;
+      const email = document.getElementById('bewerberEmail').value;
+      const nachricht = document.getElementById('bewerberNachricht').value;
+      const fileInput = document.getElementById('lebenslauf');
+      const datei = fileInput.files[0] ? fileInput.files[0].name : "Keine Datei";
 
-    <footer>
-        <p>&copy; 2025 GTA RP - State Prison Bewerbungen</p>
-    </footer>
-</body>
-</html>
+      const eintrag = {
+        name,
+        email,
+        nachricht,
+        datei,
+        status: "In Bearbeitung"
+      };
+
+      bewerbungsliste.push(eintrag);
+
+      alert("Bewerbung erfolgreich übermittelt!");
+
+      document.getElementById('bewerberName').value = "";
+      document.getElementById('bewerberEmail').value = "";
+      document.getElementById('bewerberNachricht').value = "";
+      document.getElementById('lebenslauf').value = "";
+
+      if (isAdmin) {
+        zeigeBewerbungen();
+      }
+    }
+
+    function zeigeBewer
