@@ -1,16 +1,35 @@
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Daten von Formular empfangen
+    $name = htmlspecialchars($_POST['name']);
+    $alter = htmlspecialchars($_POST['alter']);
+    $berufserfahrung = htmlspecialchars($_POST['berufserfahrung']);
+    $motivationsschreiben = htmlspecialchars($_POST['motivationsschreiben']);
+    $discord = htmlspecialchars($_POST['discord']);
+    $discord_id = htmlspecialchars($_POST['discord_id']);
+
+    // Hier kannst du die Daten z.B. in einer Datenbank speichern oder als Textdatei exportieren
+    // Beispiel: Speichern in einer Textdatei
+    $bewerbung = "Name: $name\nAlter: $alter\nBerufserfahrung: $berufserfahrung\nMotivation: $motivationsschreiben\nDiscord: $discord\nDiscord ID: $discord_id\n\n";
+    
+    file_put_contents("bewerbungen.txt", $bewerbung, FILE_APPEND);
+
+    $message = "Bewerbung erfolgreich eingereicht!";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GTA RP Job Bewerbung</title>
+    <title>Bewerbung für State Prison - GTA RP</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
         }
 
         header {
@@ -24,113 +43,101 @@
             margin: 0;
         }
 
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
+        main {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
         }
 
-        .form-container {
+        .bewerbungsformular {
             background-color: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-container h2 {
-            margin-top: 0;
+            width: 50%;
+            max-width: 600px;
         }
 
         label {
-            font-size: 1.1em;
-            margin-top: 10px;
             display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
         }
 
-        input, textarea, select {
+        input[type="text"],
+        input[type="number"],
+        textarea {
             width: 100%;
             padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
 
         button {
-            padding: 10px 20px;
-            background-color: #333;
+            background-color: #4CAF50;
             color: white;
+            padding: 15px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            width: 100%;
+            font-size: 16px;
         }
 
         button:hover {
-            background-color: #444;
+            background-color: #45a049;
         }
 
-        .footer {
-            background-color: #333;
-            color: white;
+        footer {
             text-align: center;
             padding: 10px;
-            position: absolute;
+            background-color: #333;
+            color: white;
+            position: fixed;
             width: 100%;
             bottom: 0;
-        }
-
-        .faq {
-            margin-top: 20px;
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1>Bewerbung für den Job im State Prison</h1>
+    </header>
 
-<header>
-    <h1>GTA RP Job Bewerbung</h1>
-    <p>Bewirb dich für einen Job auf unserem GTA RP-Server!</p>
-</header>
-
-<div class="container">
-    <div class="form-container">
-        <h2>Bewerbungsformular</h2>
-        <form action="#" method="POST">
-            <label for="name">Dein Name:</label>
+    <main>
+        <form action="" method="POST" class="bewerbungsformular">
+            <label for="name">Vollständiger Name:</label>
             <input type="text" id="name" name="name" required>
 
-            <label for="age">Alter:</label>
-            <input type="number" id="age" name="age" required>
+            <label for="alter">Alter:</label>
+            <input type="number" id="alter" name="alter" required>
 
-            <label for="experience">GTA RP Erfahrung:</label>
-            <textarea id="experience" name="experience" rows="4" required></textarea>
+            <label for="berufserfahrung">Berufserfahrung im RP (falls vorhanden):</label>
+            <textarea id="berufserfahrung" name="berufserfahrung" rows="4" required></textarea>
 
-            <label for="job">Bevorzugter Job:</label>
-            <select id="job" name="job" required>
-                <option value="police">Polizei</option>
-                <option value="ems">Sanitäter</option>
-                <option value="mechanic">Mechaniker</option>
-                <option value="criminal">Verbrecher</option>
-            </select>
+            <label for="motivationsschreiben">Warum möchtest du im State Prison arbeiten?</label>
+            <textarea id="motivationsschreiben" name="motivationsschreiben" rows="6" required></textarea>
 
-            <label for="availability">Verfügbarkeit:</label>
-            <input type="text" id="availability" name="availability" required>
+            <label for="discord">Discord Name:</label>
+            <input type="text" id="discord" name="discord" required>
 
-            <label for="video">Bewerbungsvideo (optional):</label>
-            <input type="file" id="video" name="video" accept="video/*">
+            <label for="discord_id">Discord ID:</label>
+            <input type="text" id="discord_id" name="discord_id" required>
 
             <button type="submit">Bewerbung Absenden</button>
         </form>
-    </div>
+        
+        <?php
+        if (isset($message)) {
+            echo "<p style='color: green; text-align: center;'>$message</p>";
+        }
+        ?>
+    </main>
 
-    <div class="faq">
-        <h3>Häufig gestellte Fragen</h3>
-        <p>Hier kannst du mehr über die Bewerbung und den Job erfahren.</p>
-    </div>
-</div>
-
-<div class="footer">
-    <p>&copy; 2025 GTA RP Server | Alle Rechte vorbehalten</p>
-</div>
-
+    <footer>
+        <p>&copy; 2025 GTA RP - State Prison Bewerbungen</p>
+    </footer>
 </body>
 </html>
