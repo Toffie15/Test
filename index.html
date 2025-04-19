@@ -1,91 +1,136 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>[Unternehmensname] - Karriere</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    /* (CSS bleibt unverändert, außer für den Login-Bereich) */
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTA RP Job Bewerbung</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            margin-top: 0;
+        }
+
+        label {
+            font-size: 1.1em;
+            margin-top: 10px;
+            display: block;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #444;
+        }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .faq {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>[Unternehmensname]</h1>
-    <nav>
-      <a href="#start" class="active">Startseite</a>
-      <a href="#karriere">Karriere</a>
-      <a href="#bewerbung">Bewerbung</a>
-      <a href="#management">Management</a>
-      <a href="#login">Login</a>
-    </nav>
-  </header>
 
-  <main>
-    <!-- Startseite, Karriere, Bewerbung bleiben unverändert -->
+<header>
+    <h1>GTA RP Job Bewerbung</h1>
+    <p>Bewirb dich für einen Job auf unserem GTA RP-Server!</p>
+</header>
 
-    <section id="login">
-      <h2>Login</h2>
-      <p>Bitte melden Sie sich an, um auf Ihr Dashboard zuzugreifen.</p>
-      <form id="loginForm" onsubmit="handleLogin(event)">
-        <input type="email" id="loginEmail" placeholder="E-Mail-Adresse" required />
-        <input type="password" id="loginPassword" placeholder="Passwort" required />
-        <button type="submit">Login</button>
-      </form>
-    </section>
+<div class="container">
+    <div class="form-container">
+        <h2>Bewerbungsformular</h2>
+        <form action="#" method="POST">
+            <label for="name">Dein Name:</label>
+            <input type="text" id="name" name="name" required>
 
-    <section id="management" style="display: none;">
-      <h2>Management-Dashboard</h2>
-      <p>Willkommen im Dashboard! Sie haben sich erfolgreich eingeloggt.</p>
-      <button onclick="zeigeBewerbungen()">Bewerbungen anzeigen</button>
-    </section>
-  </main>
+            <label for="age">Alter:</label>
+            <input type="number" id="age" name="age" required>
 
-  <footer>
-    <p>&copy; 2025 [Unternehmensname] – Alle Rechte vorbehalten</p>
-  </footer>
+            <label for="experience">GTA RP Erfahrung:</label>
+            <textarea id="experience" name="experience" rows="4" required></textarea>
 
-  <script>
-    // Beispiel-Daten für den Login (normalerweise aus einer Datenbank)
-    const validUser = {
-      email: 'admin@example.com',
-      password: '12345', // Passwörter sollten niemals im Klartext gespeichert werden
-    };
+            <label for="job">Bevorzugter Job:</label>
+            <select id="job" name="job" required>
+                <option value="police">Polizei</option>
+                <option value="ems">Sanitäter</option>
+                <option value="mechanic">Mechaniker</option>
+                <option value="criminal">Verbrecher</option>
+            </select>
 
-    function handleLogin(event) {
-      event.preventDefault();
+            <label for="availability">Verfügbarkeit:</label>
+            <input type="text" id="availability" name="availability" required>
 
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
+            <label for="video">Bewerbungsvideo (optional):</label>
+            <input type="file" id="video" name="video" accept="video/*">
 
-      if (email === validUser.email && password === validUser.password) {
-        alert("Login erfolgreich!");
-        document.getElementById('login').style.display = 'none'; // Login-Form ausblenden
-        document.getElementById('management').style.display = 'block'; // Dashboard anzeigen
-      } else {
-        alert("Falsche E-Mail oder Passwort!");
-      }
-    }
+            <button type="submit">Bewerbung Absenden</button>
+        </form>
+    </div>
 
-    // Die Bewerbungen (Admin-Ansicht) bleiben unverändert
-    const bewerbungsliste = [];
+    <div class="faq">
+        <h3>Häufig gestellte Fragen</h3>
+        <p>Hier kannst du mehr über die Bewerbung und den Job erfahren.</p>
+    </div>
+</div>
 
-    function zeigeBewerbungen() {
-      const liste = document.getElementById("management");
-      liste.innerHTML = "<h2>Alle Bewerbungen</h2>";
-      bewerbungsliste.forEach((b, index) => {
-        const eintrag = document.createElement("div");
-        eintrag.classList.add("bewerbung-eintrag");
-        eintrag.innerHTML = `
-          <strong>${b.name}</strong><br>
-          <small>${b.email}</small>
-          <p>${b.nachricht}</p>
-          <p><em>Lebenslauf: ${b.datei}</em></p>
-          <p>Status: ${b.status}</p>
-        `;
-        liste.appendChild(eintrag);
-      });
-    }
-  </script>
+<div class="footer">
+    <p>&copy; 2025 GTA RP Server | Alle Rechte vorbehalten</p>
+</div>
+
 </body>
 </html>
