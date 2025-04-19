@@ -20,16 +20,19 @@
         <section class="contact-form">
             <h1>Kontaktformular</h1>
             <form action="#" method="POST">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-
-                <label for="email">E-Mail:</label>
-                <input type="email" id="email" name="email" required>
-
-                <label for="message">Nachricht:</label>
-                <textarea id="message" name="message" rows="4" required></textarea>
-
-                <button type="submit">Absenden</button>
+                <div class="input-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="input-group">
+                    <label for="email">E-Mail:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="input-group">
+                    <label for="message">Nachricht:</label>
+                    <textarea id="message" name="message" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="cta-button">Absenden</button>
             </form>
         </section>
     </main>
