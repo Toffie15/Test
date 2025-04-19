@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meine Freunde und Ich</title>
+    <title>Mein Forum</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,90 +11,92 @@
             margin: 0;
             padding: 0;
         }
-
-        header {
+        header, footer {
             background-color: #333;
             color: white;
             text-align: center;
-            padding: 20px 0;
-        }
-
-        nav {
-            display: flex;
-            justify-content: center;
-            background-color: #444;
             padding: 10px 0;
         }
-
+        nav {
+            background-color: #444;
+            padding: 10px;
+            text-align: center;
+        }
         nav a {
             color: white;
             text-decoration: none;
             margin: 0 15px;
             font-size: 18px;
         }
-
         nav a:hover {
             text-decoration: underline;
         }
-
-        section {
-            padding: 40px 20px;
-            text-align: center;
+        .forum {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
         }
-
-        section h2 {
-            font-size: 36px;
+        .forum-section {
+            width: 48%;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .forum-section h2 {
+            font-size: 24px;
             color: #333;
         }
-
-        section p {
-            font-size: 18px;
-            color: #666;
-            max-width: 800px;
-            margin: 0 auto;
+        .forum-section ul {
+            list-style: none;
+            padding: 0;
         }
-
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
+        .forum-section li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .forum-section li:last-child {
+            border-bottom: none;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Willkommen bei "Meine Freunde und Ich"</h1>
-    </header>
+<header>
+    <h1>Willkommen im Forum</h1>
+</header>
 
-    <nav>
-        <a href="#section1">Über uns</a>
-        <a href="#section2">Aktivitäten</a>
-        <a href="#section3">Kontakt</a>
-    </nav>
+<nav>
+    <a href="#home">Startseite</a>
+    <a href="#new-posts">Neue Beiträge</a>
+    <a href="#members">Mitglieder</a>
+    <a href="#search">Suche</a>
+</nav>
 
-    <section id="section1">
-        <h2>Über uns</h2>
-        <p>Hier könntest du etwas über dich und deine Freunde erzählen. Welche gemeinsamen Interessen habt ihr? Was verbindet euch?</p>
-    </section>
+<div class="forum">
+    <div class="forum-section">
+        <h2>Server #1</h2>
+        <ul>
+            <li><a href="#">Regeln</a></li>
+            <li><a href="#">Beschwerden</a></li>
+            <li><a href="#">Bewerbungen</a></li>
+            <li><a href="#">Organisationen</a></li>
+        </ul>
+    </div>
+    <div class="forum-section">
+        <h2>Server #2</h2>
+        <ul>
+            <li><a href="#">Regeln</a></li>
+            <li><a href="#">Beschwerden</a></li>
+            <li><a href="#">Bewerbungen</a></li>
+            <li><a href="#">Organisationen</a></li>
+        </ul>
+    </div>
+</div>
 
-    <section id="section2">
-        <h2>Aktivitäten</h2>
-        <p>Beschreibe hier, was du und deine Freunde gerne zusammen unternehmen. Welche Hobbys oder Freizeitaktivitäten sind euch wichtig?</p>
-    </section>
-
-    <section id="section3">
-        <h2>Kontakt</h2>
-        <p>Hier kannst du ein Kontaktformular oder eine E-Mail-Adresse einfügen, um mit Besuchern der Seite in Kontakt zu treten.</p>
-    </section>
-
-    <footer>
-        <p>&copy; 2025 Meine Freunde und Ich. Alle Rechte vorbehalten.</p>
-    </footer>
+<footer>
+    <p>&copy; 2025 Mein Forum. Alle Rechte vorbehalten.</p>
+</footer>
 
 </body>
 </html>
