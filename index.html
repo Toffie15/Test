@@ -1,99 +1,262 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GTA5Grand Forum</title>
-    <style>
-        /* Einfache CSS-Regeln für Layout */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #333;
-            color: white;
-            padding: 10px;
-            text-align: center;
-        }
-        nav {
-            background-color: #444;
-            padding: 10px;
-            text-align: center;
-        }
-        nav a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-        }
-        .container {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-        }
-        .main-content {
-            width: 70%;
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .sidebar {
-            width: 25%;
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[Unternehmensname] - Karriere & Bewerbungen</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0f1117;
+      --card-dark: #1b1e24;
+      --accent: #00bcd4;
+      --accent-hover: #00acc1;
+      --text-light: #f9f9f9;
+      --input-bg: #2a2d34;
+      --danger: #e53935;
+      --danger-hover: #c62828;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: var(--card-dark);
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    nav a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    nav a.active {
+      color: var(--accent);
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    button {
+      background-color: var(--accent);
+      color: #121212;
+      padding: 14px 30px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: var(--accent-hover);
+    }
+
+    main {
+      margin-top: 20px;
+      padding: 20px;
+      flex-grow: 1;
+    }
+
+    section {
+      margin: 40px auto;
+      max-width: 900px;
+      padding: 30px;
+      background-color: var(--card-dark);
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    input, textarea {
+      padding: 14px 18px;
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      background-color: var(--input-bg);
+      color: #fff;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      outline: 2px solid var(--accent);
+    }
+
+    footer {
+      margin-top: auto;
+      font-size: 0.85em;
+      opacity: 0.6;
+      background-color: var(--card-dark);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .bewerbung-eintrag {
+      background-color: var(--input-bg);
+      margin: 15px 0;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: left;
+      position: relative;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .delete-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: var(--danger);
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .delete-button:hover {
+      background-color: var(--danger-hover);
+    }
+
+    .dark-mode {
+      background-color: #121212;
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      header {
+        padding: 10px;
+      }
+
+      section {
+        padding: 20px;
+      }
+
+      form input, form textarea {
+        font-size: 0.9rem;
+      }
+
+      button {
+        padding: 12px 24px;
+      }
+    }
+  </style>
 </head>
 <body>
+  <header>
+    <h1>[Unternehmensname]</h1>
+    <p>Ihr Partner für [Dienstleistung]</p>
+    <nav>
+      <a href="#start" class="active">Startseite</a>
+      <a href="#karriere">Karriere</a>
+      <a href="#bewerbung">Bewerbung</a>
+      <a href="#ueber-uns">Über uns</a>
+      <a href="#kontakt">Kontakt</a>
+      <button onclick="toggleDarkMode()">🌙 / 🌞</button>
+    </nav>
+  </header>
 
-<header>
-    <h1>GTA5Grand Forum</h1>
-</header>
+  <main>
+    <section id="start">
+      <h2>Willkommen bei [Unternehmensname]</h2>
+      <p>Wir bieten innovative Lösungen für [Branchenspezifische Dienstleistung oder Produkt]. Werden Sie Teil unseres Teams und gestalten Sie die Zukunft mit uns!</p>
+      <button onclick="window.location.href='#karriere'">Jetzt Karriere starten</button>
+    </section>
 
-<nav>
-    <a href="#">Home</a>
-    <a href="#">Forum</a>
-    <a href="#">Neueste Beiträge</a>
-    <a href="#">Mitglieder</a>
-    <a href="#">Registrieren</a>
-</nav>
+    <section id="karriere">
+      <h2>Unsere offenen Stellen</h2>
+      <p>Werden Sie Teil eines erfolgreichen Teams. Entdecken Sie unsere aktuellen Jobangebote.</p>
+      <ul>
+        <li><a href="#">Marketing Manager (m/w/d)</a></li>
+        <li><a href="#">Softwareentwickler (m/w/d)</a></li>
+      </ul>
+      <button onclick="window.location.href='#bewerbung'">Jetzt bewerben</button>
+    </section>
 
-<div class="container">
-    <div class="main-content">
-        <h2>Willkommen im Forum</h2>
-        <p>Diskutiere, teile und chatte mit anderen Mitgliedern der Community.</p>
-        <h3>Neue Beiträge</h3>
-        <ul>
-            <li><a href="#">Beitrag 1</a></li>
-            <li><a href="#">Beitrag 2</a></li>
-            <li><a href="#">Beitrag 3</a></li>
-        </ul>
-    </div>
-    <div class="sidebar">
-        <h3>Aktuelle Themen</h3>
-        <ul>
-            <li><a href="#">Thema 1</a></li>
-            <li><a href="#">Thema 2</a></li>
-            <li><a href="#">Thema 3</a></li>
-        </ul>
-    </div>
-</div>
+    <section id="bewerbung">
+      <h2>Online Bewerbung</h2>
+      <form onsubmit="handleBewerbung(event)">
+        <input type="text" id="bewerberName" placeholder="Dein Name" required />
+        <input type="email" id="bewerberEmail" placeholder="Deine E-Mail-Adresse" required />
+        <textarea id="bewerberNachricht" placeholder="Deine Nachricht..." rows="5" required></textarea>
+        <input type="file" id="lebenslauf" accept="application/pdf" required />
+        <button type="submit">Bewerbung absenden</button>
+      </form>
+    </section>
 
-<footer>
-    <p>&copy; 2025 GTA5Grand Forum</p>
-</footer>
+    <section id="ueber-uns">
+      <h2>Über uns</h2>
+      <p>[Unternehmensname] wurde mit der Vision gegründet, [Unternehmensziel] zu erreichen. Mit einem engagierten Team bieten wir Lösungen für [Branchenspezifische Produkte/Dienstleistungen].</p>
+      <p>Erfahren Sie mehr über unsere Werte und unsere Geschichte.</p>
+    </section>
 
+    <section id="kontakt">
+      <h2>Kontakt</h2>
+      <form>
+        <input type="text" placeholder="Ihr Name" required />
+        <input type="email" placeholder="Ihre E-Mail-Adresse" required />
+        <textarea placeholder="Ihre Nachricht" rows="5" required></textarea>
+        <button type="submit">Nachricht senden</button>
+      </form>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 [Unternehmensname] – Alle Rechte vorbehalten</p>
+    <p><a href="https://www.linkedin.com/company/[Unternehmensname]" target="_blank">LinkedIn</a> | <a href="https://www.twitter.com/[Unternehmensname]" target="_blank">Twitter</a> | <a href="https://www.instagram.com/[Unternehmensname]" target="_blank">Instagram</a></p>
+  </footer>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+
+    function handleBewerbung(event) {
+      event.preventDefault();
+      alert("Bewerbung erfolgreich übermittelt!");
+      document.getElementById('bewerberName').value = "";
+      document.getElementById('bewerberEmail').value = "";
+      document.getElementById('bewerberNachricht').value = "";
+      document.getElementById('lebenslauf').value = "";
+    }
+  </script>
 </body>
 </html>
