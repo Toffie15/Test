@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Feedback</title>
+<style>
+  body {
+    background-color: #121212;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+  }
+  body.light {
+    background-color: #f9f9f9;
+    color: #222;
+  }
+  nav {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  nav a {
+    color: #4da3ff;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+  }
+  nav a:hover {
+    text-decoration: underline;
+  }
+  label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: none;
+    box-sizing: border-box;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  button {
+    margin-top: 15px;
+    background-color: #4da3ff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  button:hover {
+    background-color: #368de3;
+  }
+  #message {
+    margin-top: 15px;
+    color: #4da3ff;
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html">Startseite</a>
+  <a href="mit.html">Mitarbeiterliste</a>
+</nav>
+
+<h1>Feedback</h1>
+<form id="feedbackForm">
+  <label for="name">Name:</label>
+  <input type="text" id="name" required />
+  <label for="email">E-Mail:</label>
+  <input type="email" id="email" required />
+  <label for="feedback">Dein Feedback:</label>
+  <textarea id="feedback" required></textarea>
+  <button type="submit">Absenden</button>
+</form>
+<p id="message"></p>
+
+<script>
+  if(localStorage.getItem('mode') === 'light'){
+    document.body.classList.add('light');
+  }
+
+  const form = document.getElementById('feedbackForm');
+  const msg = document.getElementById('message');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const data = {
+      name: form.name.value.trim(),
+      email: form.email.value.trim(),
+      feedback: form.feedback.value.trim(),
+      date: new Date().toISOString()
+    };
+    if(!data.name || !data.email || !data.feedback) return;
+
+    let feedbackList = JSON.parse(localStorage.getItem('feedbackList') || '[]');
+    feedbackList.push(data);
+    localStorage.setItem('feedbackList', JSON.stringify(feedbackList));
+
+    form.reset();
+    msg.textContent = 'Danke für dein Feedback!';
+    setTimeout(() => msg.textContent = '', 3000);
+  });
+</script>
+</body>
+</html>

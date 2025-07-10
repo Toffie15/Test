@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tools</title>
+<style>
+  body {
+    background-color: #121212;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+  }
+  body.light {
+    background-color: #f9f9f9;
+    color: #222;
+  }
+  nav {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  nav a {
+    color: #4da3ff;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+  }
+  nav a:hover {
+    text-decoration: underline;
+  }
+  section {
+    margin-bottom: 40px;
+  }
+  label {
+    font-weight: bold;
+  }
+  input, button, select {
+    margin: 10px 0 10px 0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+  button {
+    background-color: #4da3ff;
+    color: white;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #368de3;
+  }
+  #passwordOutput, #calcResult {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #4da3ff;
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html">Startseite</a>
+  <a href="feedback.html">Feedback</a>
+</nav>
+
+<h1>Tools</h1>
+
+<section>
+  <h2>Passwortgenerator</h2>
+  <label for="length">Länge:</label>
+  <input type="number" id="length" value="12" min="4" max="64" />
+  <br />
+  <label><input type="checkbox" id="useUpper" checked /> Großbuchstaben</label><br />
+  <label><input type="checkbox" id="useLower" checked /> Kleinbuchstaben</label><br />
+  <label><input type="checkbox" id="useNumbers" checked /> Zahlen</label><br />
+  <label><input type="checkbox" id="useSymbols" /> Sonderzeichen</label><br />
+  <button onclick="generatePassword()">Generieren</button>
+  <div id="passwordOutput"></div>
+</section>
+
+<section>
+  <h2>Einfacher Rechner</h2>
+  <input type="number" id="num1" placeholder="Zahl 1" />
+  <select id="operator">
+    <option value="+">+</option>
+    <option value="-">−</option>
+    <option value="*">×</option>
+    <option value="/">÷</option>
+  </select>
+  <input type="number" id="num2" placeholder="Zahl 2" />
+  <button onclick="calculate()">Berechnen</button>
+  <div id="calcResult"></div>
+</section>
+
+<script>
+  if(localStorage.getItem('mode') === 'light'){
+    document.body.classList.add('light');
+  }
+
+  function generatePassword() {
+    const length = parseInt(document.getElementById('length').value);
+    const useUpper = document.getElementById('useUpper').checked;
+    const useLower = document.getElementById('useLower').checked;
+    const useNumbers = document.getElementById('useNumbers').checked;
+    const useSymbols = document.getElementById('useSymbols').checked;
+
+    let chars = '';
+    if(useUpper) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    if(useLower) chars += 'abcdefghijklmnopqrstuvwxyz';
+    if(useNumbers) chars += '0123456789';
+    if(useSymbols) chars += '!@#$%^&*()-_=+[]{}|;:",.<>?';
+
+    if(chars.length === 0) {
+      alert('Bitte mindestens eine Zeichenart auswählen!');
+      return;
+    }
+
+    let pwd = '';
+    for(let i=0; i<length; i++){
+      pwd += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    document.getElementById('passwordOutput').textContent = 'Passwort: ' + pwd;
+  }
+
+  function calculate() {
+    const n1 = parseFloat(document.getElementById('num1').value);
+    const n2 = parseFloat(document.getElementById('num2').value);
+    const op = document.getElementById('operator').value;
+    let res;
+
+    if(isNaN(n1) || isNaN(n2)) {
+      alert('Bitte gültige Zahlen eingeben!');
+      return;
+    }
+
+    switch(op) {
+      case '+': res = n1 + n2; break;
+      case '-': res = n1 - n2; break;
+      case '*': res = n1 * n2; break;
+      case '/':
+        if(n2 === 0) {
+          alert('Division durch Null nicht erlaubt!');
+          return;
+        }
+        res = n1 / n2;
+        break;
+    }
+
+    document.getElementById('calcResult').textContent = 'Ergebnis: ' + res;
+  }
+</script>
+
+</body>
+</html>
