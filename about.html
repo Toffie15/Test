@@ -64,6 +64,7 @@
 
   <p id="clock"></p>
   <p id="visits"></p>
+  <p id="weekday"></p>
 
   <h3>Kontakt</h3>
   <form>
@@ -80,6 +81,10 @@
   <div id="lightbox" onclick="this.style.display='none'">
     <img src="" id="lightbox-img" />
   </div>
+
+  <br>
+  <button onclick="document.getElementById('sound').play()">Sound abspielen</button>
+  <audio id="sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
 
   <script>
     // Theme Toggle
@@ -115,6 +120,12 @@
       document.getElementById('lightbox-img').src = src;
       document.getElementById('lightbox').style.display = 'flex';
     }
+
+    // Wochentag anzeigen
+    const tage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+    const heute = new Date();
+    document.getElementById('weekday').textContent =
+      'Heute ist: ' + tage[heute.getDay()];
   </script>
 </body>
 </html>
