@@ -53,6 +53,31 @@
       width: 80%;
       max-width: 600px;
     }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #555;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      cursor: pointer;
+      background-color: #333;
+    }
+    input[type="text"] {
+      padding: 8px;
+      width: 100%;
+      max-width: 300px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      background-color: #1e1e2f;
+      color: #eee;
+      border: 1px solid #555;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body class="dark">
@@ -85,6 +110,23 @@
   <br>
   <button onclick="document.getElementById('sound').play()">Sound abspielen</button>
   <audio id="sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+
+  <h3>Mitarbeiterliste</h3>
+  <input type="text" id="search" placeholder="Suche nach Name...">
+  <table id="mitarbeiter">
+    <thead>
+      <tr>
+        <th onclick="sortTable(0)">Name</th>
+        <th onclick="sortTable(1)">Rolle</th>
+        <th onclick="sortTable(2)">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Luca</td><td>Admin</td><td>Aktiv</td></tr>
+      <tr><td>Tom</td><td>Support</td><td>Inaktiv</td></tr>
+      <tr><td>Anna</td><td>Entwicklung</td><td>Aktiv</td></tr>
+    </tbody>
+  </table>
 
   <script>
     // Theme Toggle
@@ -126,6 +168,31 @@
     const heute = new Date();
     document.getElementById('weekday').textContent =
       'Heute ist: ' + tage[heute.getDay()];
+
+    // Mitarbeitersuche
+    document.getElementById('search').addEventListener('input', function () {
+      const filter = this.value.toLowerCase();
+      const rows = document.querySelectorAll('#mitarbeiter tbody tr');
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(filter) ? '' : 'none';
+      });
+    });
+
+    // Mitarbeitersortierung
+    function sortTable(n) {
+      const table = document.getElementById('mitarbeiter');
+      const rows = Array.from(table.rows).slice(1);
+      let asc = table.getAttribute('data-sort') !== 'asc';
+      rows.sort((a, b) => {
+        const A = a.cells[n].innerText.toLowerCase();
+        const B = b.cells[n].innerText.toLowerCase();
+        return asc ? A.localeCompare(B) : B.localeCompare(A);
+      });
+      const tbody = table.tBodies[0];
+      rows.forEach(row => tbody.appendChild(row));
+      table.setAttribute('data-sort', asc ? 'asc' : 'desc');
+    }
   </script>
 </body>
 </html>
