@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Login</title>
+<style>
+  body {
+    background-color: #121212;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  body.light {
+    background-color: #f9f9f9;
+    color: #222;
+  }
+  #loginBox {
+    background-color: #222;
+    padding: 30px;
+    border-radius: 8px;
+    width: 320px;
+    box-sizing: border-box;
+  }
+  body.light #loginBox {
+    background-color: #ddd;
+  }
+  label {
+    display: block;
+    margin: 15px 0 5px;
+  }
+  input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: none;
+    box-sizing: border-box;
+  }
+  button {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #4da3ff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #368de3;
+  }
+  #message {
+    margin-top: 15px;
+    color: #f55;
+  }
+</style>
+</head>
+<body>
+<div id="loginBox">
+  <h2>Login</h2>
+  <label for="user">Benutzername:</label>
+  <input type="text" id="user" autocomplete="off" />
+  <label for="pass">Passwort:</label>
+  <input type="password" id="pass" autocomplete="off" />
+  <button onclick="login()">Einloggen</button>
+  <div id="message"></div>
+</div>
+
+<script>
+  // Darkmode von index übernehmen
+  if(localStorage.getItem('mode') === 'light'){
+    document.body.classList.add('light');
+  }
+
+  function login() {
+    const user = document.getElementById('user').value.trim();
+    const pass = document.getElementById('pass').value.trim();
+    const msg = document.getElementById('message');
+    if(user === 'admin' && pass === '1234'){
+      msg.style.color = 'limegreen';
+      msg.textContent = 'Erfolgreich eingeloggt! (Dies ist nur Demo)';
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1200);
+    } else {
+      msg.style.color = '#f55';
+      msg.textContent = 'Falscher Benutzername oder Passwort!';
+    }
+  }
+</script>
+</body>
+</html>

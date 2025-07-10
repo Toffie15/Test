@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>To-Do Liste</title>
+<style>
+  body {
+    background-color: #121212;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+  }
+  body.light {
+    background-color: #f9f9f9;
+    color: #222;
+  }
+  h1 {
+    color: #4da3ff;
+    text-align: center;
+  }
+  input[type=text] {
+    width: 70%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin-right: 5px;
+    box-sizing: border-box;
+  }
+  button {
+    padding: 10px 15px;
+    background-color: #4da3ff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #368de3;
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+  }
+  li {
+    background-color: #222;
+    margin: 8px 0;
+    padding: 12px 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  li.completed {
+    text-decoration: line-through;
+    opacity: 0.6;
+  }
+  li button {
+    background: transparent;
+    border: none;
+    color: #f55;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  nav {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  nav a {
+    color: #4da3ff;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+  }
+  nav a:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html">Startseite</a>
+  <a href="login.html">Login</a>
+</nav>
+
+<h1>To-Do Liste</h1>
+<div>
+  <input type="text" id="taskInput" placeholder="Neue Aufgabe..." />
+  <button onclick="addTask()">Hinzufügen</button>
+</div>
+<ul id="taskList"></ul>
+
+<script>
+  if(localStorage.getItem('mode') === 'light'){
+    document.body.classList.add('light');
+  }
+
+  let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+
+  function renderTasks() {
+    const list = document.getElementById('taskList');
+    list.innerHTML = '';
+    tasks.forEach((task, i) => {
+      const li = document.createElement('li');
+      li.className = task.done ? 'completed' : '';
+      li.innerHTML = `
+        <span onclick="toggleDone(${i})" style="cursor:pointer">${task.text}</span>
+        <button onclick="removeTask(${i})">×</button>
+      `;
+      list.appendChild(li);
+    });
+  }
+
+  function addTask() {
+    const input = document.getElementById('taskInput');
+    const text = input.value.trim();
+    if(!text) return;
+    tasks.push({text: text, done: false});
+    input.value = '';
+    saveAndRender();
+  }
+
+  function toggleDone(i) {
+    tasks[i].done = !tasks[i].done;
+    saveAndRender();
+  }
+
+  function removeTask(i) {
+    tasks.splice(i,1);
+    saveAndRender();
+  }
+
+  function saveAndRender() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    renderTasks();
+  }
+
+  renderTasks();
+</script>
+</body>
+</html>

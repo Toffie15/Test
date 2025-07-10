@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kalender</title>
+<style>
+  body {
+    background-color: #121212;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+  }
+  body.light {
+    background-color: #f9f9f9;
+    color: #222;
+  }
+  nav {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  nav a {
+    color: #4da3ff;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+  }
+  nav a:hover {
+    text-decoration: underline;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    width: 14.28%;
+    border: 1px solid #555;
+    padding: 8px;
+    vertical-align: top;
+    height: 100px;
+    cursor: pointer;
+    position: relative;
+  }
+  body.light table th, body.light table td {
+    border-color: #aaa;
+  }
+  th {
+    background-color: #4da3ff;
+    color: white;
+  }
+  body.light th {
+    background-color: #368de3;
+  }
+  td:hover {
+    background-color: #2e2e2e;
+  }
+  body.light td:hover {
+    background-color: #ddd;
+  }
+  .date-num {
+    font-weight: bold;
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    font-size: 14px;
+  }
+  .event {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    white-space: pre-line;
+    color: #4da3ff;
+  }
+  #eventInput {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px;
+    border-radius: 5px;
+    border: none;
+    margin-top: 10px;
+  }
+  #saveEvent {
+    margin-top: 8px;
+    padding: 6px 12px;
+    background-color: #4da3ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  #saveEvent:hover {
+    background-color: #368de3;
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html">Startseite</a>
+  <a href="notes.html">Notizen</a>
+</nav>
+
+<h1>Kalender</h1>
+<div style="text-align:center; margin-bottom: 10px;">
+  <button onclick="changeMonth(-1)">&#8592; Vorheriger Monat</button>
+  <span id="monthYear" style="font-weight:bold; margin: 0 15px;"></span>
+  <button onclick="changeMonth(1)">Nächster Monat &#8594;</button>
+</div>
+<table id="calendar">
+  <thead>
+    <tr>
+      <th>So</th><th>Mo</th><th>Di</th><th>Mi</th><th>Do</th><th>Fr</th><th>Sa</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<div id="eventEditor" style="display:none; max-width: 400px; margin: 20px auto; border: 1px solid #4da3ff; padding: 15px; border-radius: 8px;">
+  <h3>Termin für <span id="selectedDate"></span></h3>
+  <textarea id="eventInput" rows="4" placeholder="Terminbeschreibung"></textarea><br />
+  <button id="saveEvent">Speichern</button>
+  <button onclick="closeEditor()" style="margin-left: 10px; padding: 6px 12px;">Abbrechen</button>
+</div>
+
+<script>
+  if(localStorage.getItem('mode') === 'light'){
+    document.body.classList.add('light');
+  }
+
+  const calendarBody = document.querySelector('#calendar tbody');
+  const monthYearEl = document.getElementById('monthYear');
+  const eventEditor = document.getElementById('eventEditor');
+  const eventInput = document.getElementById('eventInput');
+  const selectedDateSpan = document.getElementById('selectedDate');
+  const saveEventBtn = document.getElementById('saveEvent');
+
+  let current = new Date();
+  let events = JSON.parse(localStorage.getItem('calendarEvents') || '{}');
+  let selectedDate = null;
+
+  function daysInMonth(year, month) {
+    return new Date(year, month + 1, 0).getDate();
+  }
+
+  function renderCalendar() {
+    calendarBody.innerHTML = '';
+    const year = current.getFullYear();
+    const month = current.getMonth();
+    monthYearEl.textContent = current.toLocaleDateString('de-DE', { year: 'numeric', month: 'long' });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const totalDays = daysInMonth(year, month);
+
+    let row = document.createElement('tr');
+    // Leere Tage vor Monatsbeginn
+    for(let i = 0; i < firstDay; i++) {
+      let cell = document.createElement('td');
+      row.appendChild(cell);
+    }
+    for(let day = 1; day <= totalDays; day++) {
+      if(row.children.length === 7){
+        calendarBody.appendChild(row);
+        row = document.createElement('tr');
+      }
+      let cell = document.createElement('td');
+      cell.innerHTML = `<div class="date-num">${day}</div>`;
+      const dateKey = `${year}-${month+1}-${day}`;
+      if(events[dateKey]) {
+        cell.innerHTML += `<div class="event">${events[dateKey]}</div>`;
+      }
+      cell.onclick = () => openEditor(dateKey);
+      row.appendChild(cell);
+    }
+    // Leere Zellen am Ende (falls nötig)
+    while(row.children.length < 7) {
+      row.appendChild(document.createElement('td'));
+    }
+    calendarBody.appendChild(row);
+  }
+
+  function changeMonth(dir) {
+    current.setMonth(current.getMonth() + dir);
+    renderCalendar();
+  }
+
+  function openEditor(dateKey) {
+    selectedDate = dateKey;
+    selectedDateSpan.textContent = new Date(dateKey).toLocaleDateString('de-DE', { year:'numeric', month:'long', day:'numeric' });
+    eventInput.value = events[dateKey] || '';
+    eventEditor.style.display = 'block';
+  }
+
+  function closeEditor() {
+    eventEditor.style.display = 'none';
+    selectedDate = null;
+  }
+
+  saveEventBtn.onclick = () => {
+    if(selectedDate === null) return;
+    const val = eventInput.value.trim();
+    if(val) {
+      events[selectedDate] = val;
+    } else {
+      delete events[selectedDate];
+    }
+    localStorage.setItem('calendarEvents', JSON.stringify(events));
+    closeEditor();
+    renderCalendar();
+  }
+
+  renderCalendar();
+</script>
+</body>
+</html>
