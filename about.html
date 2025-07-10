@@ -4,11 +4,18 @@
   <meta charset="UTF-8" />
   <title>Über mich</title>
   <style>
-    body {
+    body.light {
+      background-color: #f4f4f4;
+      color: #222;
+    }
+    body.dark {
       background-color: #121212;
       color: #eee;
+    }
+    body {
       font-family: Arial, sans-serif;
       padding: 20px;
+      transition: background-color 0.3s, color 0.3s;
     }
     a {
       color: #4da3ff;
@@ -17,11 +24,97 @@
     a:hover {
       text-decoration: underline;
     }
+    .toggle-btn {
+      margin-top: 10px;
+      padding: 5px 10px;
+      background-color: #4da3ff;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    img {
+      width: 200px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    #lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+    }
+    #lightbox img {
+      width: 80%;
+      max-width: 600px;
+    }
   </style>
 </head>
-<body>
+<body class="dark">
   <a href="index.html">Zurück</a> <br><br>
   <h1>Über mich</h1>
-  Mein Name ist Luca
+  Mein Name ist Luca<br><br>
+
+  <button class="toggle-btn" onclick="toggleTheme()">Theme wechseln</button><br><br>
+
+  <p id="clock"></p>
+  <p id="visits"></p>
+
+  <h3>Kontakt</h3>
+  <form>
+    <label for="name">Name:</label><br />
+    <input type="text" id="name"><br /><br />
+    <label for="nachricht">Nachricht:</label><br />
+    <textarea id="nachricht" rows="4"></textarea><br /><br />
+    <button type="submit">Absenden</button>
+  </form>
+
+  <h3>Mein Bild</h3>
+  <img src="https://via.placeholder.com/200" alt="Bild" onclick="openLightbox(this.src)" />
+
+  <div id="lightbox" onclick="this.style.display='none'">
+    <img src="" id="lightbox-img" />
+  </div>
+
+  <script>
+    // Theme Toggle
+    function toggleTheme() {
+      const body = document.body;
+      if (body.classList.contains('dark')) {
+        body.classList.remove('dark');
+        body.classList.add('light');
+      } else {
+        body.classList.remove('light');
+        body.classList.add('dark');
+      }
+    }
+
+    // Uhrzeit
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').textContent =
+        'Aktuelle Uhrzeit: ' + now.toLocaleTimeString('de-DE');
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Besucherzähler
+    let count = localStorage.getItem('visits') || 0;
+    count++;
+    localStorage.setItem('visits', count);
+    document.getElementById('visits').textContent =
+      `Du hast diese Seite ${count}x besucht.`;
+
+    // Lightbox
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox').style.display = 'flex';
+    }
+  </script>
 </body>
 </html>
