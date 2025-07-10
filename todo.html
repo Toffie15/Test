@@ -5,137 +5,202 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>To-Do Liste</title>
 <style>
+  :root {
+    --bg-dark: #121212;
+    --text-dark: #eee;
+    --btn-dark: #4da3ff;
+    --btn-hover-dark: #368de3;
+    --input-bg-dark: #1e1e2f;
+
+    --bg-light: #f5f5f5;
+    --text-light: #111;
+    --btn-light: #007bff;
+    --btn-hover-light: #0056b3;
+    --input-bg-light: #fff;
+  }
   body {
-    background-color: #121212;
-    color: #eee;
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    max-width: 600px;
-    margin: auto;
+    margin:0; padding:20px; font-family: Arial, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+    transition: background-color 0.3s, color 0.3s;
   }
   body.light {
-    background-color: #f9f9f9;
-    color: #222;
+    background-color: var(--bg-light);
+    color: var(--text-light);
   }
-  h1 {
-    color: #4da3ff;
-    text-align: center;
+  nav {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
   }
-  input[type=text] {
-    width: 70%;
+  nav a {
+    text-decoration: none;
+    background-color: var(--btn-dark);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  body.light nav a {
+    background-color: var(--btn-light);
+  }
+  nav a:hover {
+    background-color: var(--btn-hover-dark);
+  }
+  body.light nav a:hover {
+    background-color: var(--btn-hover-light);
+  }
+  button#themeToggle {
+    cursor: pointer;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--btn-dark);
+    color: white;
+    margin-left: auto;
+    transition: background-color 0.3s;
+  }
+  body.light button#themeToggle {
+    background-color: var(--btn-light);
+  }
+  button#themeToggle:hover {
+    background-color: var(--btn-hover-dark);
+  }
+  body.light button#themeToggle:hover {
+    background-color: var(--btn-hover-light);
+  }
+  input[type="text"] {
     padding: 10px;
+    width: 70%;
     border-radius: 5px;
     border: none;
-    margin-right: 5px;
+    margin-right: 10px;
     box-sizing: border-box;
   }
-  button {
-    padding: 10px 15px;
-    background-color: #4da3ff;
-    border: none;
+  button#addTask {
+    padding: 10px 16px;
     border-radius: 5px;
+    border: none;
+    background-color: var(--btn-dark);
     color: white;
     cursor: pointer;
   }
-  button:hover {
-    background-color: #368de3;
+  body.light button#addTask {
+    background-color: var(--btn-light);
   }
-  ul {
-    list-style-type: none;
+  button#addTask:hover {
+    background-color: var(--btn-hover-dark);
+  }
+  body.light button#addTask:hover {
+    background-color: var(--btn-hover-light);
+  }
+  ul#taskList {
+    list-style: none;
     padding: 0;
     margin-top: 20px;
   }
-  li {
-    background-color: #222;
-    margin: 8px 0;
-    padding: 12px 10px;
+  ul#taskList li {
+    background-color: var(--input-bg-dark);
+    margin-bottom: 10px;
+    padding: 10px;
     border-radius: 5px;
+    cursor: pointer;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
   }
-  li.completed {
+  body.light ul#taskList li {
+    background-color: var(--input-bg-light);
+  }
+  ul#taskList li.completed {
     text-decoration: line-through;
     opacity: 0.6;
   }
-  li button {
-    background: transparent;
+  ul#taskList li button {
+    background-color: #f44336;
     border: none;
-    color: #f55;
-    font-weight: bold;
+    color: white;
+    padding: 5px 8px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 18px;
-  }
-  nav {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  nav a {
-    color: #4da3ff;
-    text-decoration: none;
-    margin: 0 10px;
-    font-weight: bold;
-  }
-  nav a:hover {
-    text-decoration: underline;
   }
 </style>
 </head>
 <body>
 <nav>
   <a href="index.html">Startseite</a>
+  <a href="about.html">Über mich</a>
+  <a href="Mit.html">Mitarbeiter</a>
+  <a href="todo.html">To-Do</a>
+  <a href="notes.html">Notizen</a>
+  <a href="calendar.html">Kalender</a>
+  <a href="tools.html">Tools</a>
+  <a href="feedback.html">Feedback</a>
+  <a href="visitors.html">Besucher</a>
   <a href="login.html">Login</a>
+  <button id="themeToggle" onclick="toggleTheme()">🌓</button>
 </nav>
 
 <h1>To-Do Liste</h1>
 <div>
-  <input type="text" id="taskInput" placeholder="Neue Aufgabe..." />
-  <button onclick="addTask()">Hinzufügen</button>
+  <input type="text" id="taskInput" placeholder="Neue Aufgabe eingeben..." />
+  <button id="addTask" onclick="addTask()">Hinzufügen</button>
 </div>
 <ul id="taskList"></ul>
 
 <script>
-  if(localStorage.getItem('mode') === 'light'){
+  function toggleTheme() {
+    document.body.classList.toggle('light');
+    localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+  }
+  if(localStorage.getItem('theme') === 'light'){
     document.body.classList.add('light');
   }
 
+  const taskInput = document.getElementById('taskInput');
+  const taskList = document.getElementById('taskList');
+
   let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
 
+  function saveTasks() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
+
   function renderTasks() {
-    const list = document.getElementById('taskList');
-    list.innerHTML = '';
+    taskList.innerHTML = '';
     tasks.forEach((task, i) => {
       const li = document.createElement('li');
-      li.className = task.done ? 'completed' : '';
-      li.innerHTML = `
-        <span onclick="toggleDone(${i})" style="cursor:pointer">${task.text}</span>
-        <button onclick="removeTask(${i})">×</button>
-      `;
-      list.appendChild(li);
+      li.textContent = task.text;
+      if(task.completed) li.classList.add('completed');
+      li.onclick = () => toggleComplete(i);
+      
+      const delBtn = document.createElement('button');
+      delBtn.textContent = 'X';
+      delBtn.onclick = (e) => {
+        e.stopPropagation();
+        deleteTask(i);
+      };
+      li.appendChild(delBtn);
+      taskList.appendChild(li);
     });
   }
 
   function addTask() {
-    const input = document.getElementById('taskInput');
-    const text = input.value.trim();
+    const text = taskInput.value.trim();
     if(!text) return;
-    tasks.push({text: text, done: false});
-    input.value = '';
-    saveAndRender();
+    tasks.push({text, completed:false});
+    taskInput.value = '';
+    saveTasks();
+    renderTasks();
   }
 
-  function toggleDone(i) {
-    tasks[i].done = !tasks[i].done;
-    saveAndRender();
+  function toggleComplete(index) {
+    tasks[index].completed = !tasks[index].completed;
+    saveTasks();
+    renderTasks();
   }
 
-  function removeTask(i) {
-    tasks.splice(i,1);
-    saveAndRender();
-  }
-
-  function saveAndRender() {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+  function deleteTask(index) {
+    tasks.splice(index,1);
+    saveTasks();
     renderTasks();
   }
 

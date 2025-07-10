@@ -1,92 +1,102 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>Über mich</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    :root {
-      --bg: #121212;
-      --text: #eee;
-      --btn: #4da3ff;
-      --btn-hover: #368de3;
-    }
-    body.light {
-      --bg: #f5f5f5;
-      --text: #111;
-      --btn: #007bff;
-      --btn-hover: #0056b3;
-    }
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      max-width: 800px;
-      margin: auto;
-      text-align: center;
-    }
-    nav a {
-      display: inline-block;
-      margin: 5px;
-      padding: 10px 15px;
-      background-color: var(--btn);
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-    }
-    nav a:hover {
-      background-color: var(--btn-hover);
-    }
-    img {
-      max-width: 100%;
-      margin: 20px 0;
-      border-radius: 8px;
-    }
-    #clock {
-      margin-bottom: 10px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Über mich</title>
+<style>
+  /* Gleicher Stil wie index.html */
+  :root {
+    --bg-dark: #121212;
+    --text-dark: #eee;
+    --btn-dark: #4da3ff;
+    --btn-hover-dark: #368de3;
+    --input-bg-dark: #1e1e2f;
+
+    --bg-light: #f5f5f5;
+    --text-light: #111;
+    --btn-light: #007bff;
+    --btn-hover-light: #0056b3;
+    --input-bg-light: #fff;
+  }
+  body {
+    margin:0; padding:20px; font-family: Arial, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+    transition: background-color 0.3s, color 0.3s;
+  }
+  body.light {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+  }
+  nav {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
+  }
+  nav a {
+    text-decoration: none;
+    background-color: var(--btn-dark);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  body.light nav a {
+    background-color: var(--btn-light);
+  }
+  nav a:hover {
+    background-color: var(--btn-hover-dark);
+  }
+  body.light nav a:hover {
+    background-color: var(--btn-hover-light);
+  }
+  button#themeToggle {
+    cursor: pointer;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--btn-dark);
+    color: white;
+    margin-left: auto;
+    transition: background-color 0.3s;
+  }
+  body.light button#themeToggle {
+    background-color: var(--btn-light);
+  }
+  button#themeToggle:hover {
+    background-color: var(--btn-hover-dark);
+  }
+  body.light button#themeToggle:hover {
+    background-color: var(--btn-hover-light);
+  }
+</style>
 </head>
 <body>
-  <h1>Über mich</h1>
-  <div id="clock"></div>
-  <button onclick="toggleTheme()">🌓 Theme</button>
+<nav>
+  <a href="index.html">Startseite</a>
+  <a href="about.html">Über mich</a>
+  <a href="Mit.html">Mitarbeiter</a>
+  <a href="todo.html">To-Do</a>
+  <a href="notes.html">Notizen</a>
+  <a href="calendar.html">Kalender</a>
+  <a href="tools.html">Tools</a>
+  <a href="feedback.html">Feedback</a>
+  <a href="visitors.html">Besucher</a>
+  <a href="login.html">Login</a>
+  <button id="themeToggle" onclick="toggleTheme()">🌓</button>
+</nav>
 
-  <p>Hallo! Ich heiße Luca und interessiere mich für Webentwicklung. Diese Seite ist mein Lernprojekt.</p>
+<h1>Über mich</h1>
+<p>Hallo, mein Name ist Luca. Hier kannst du mehr über mich erfahren.</p>
+<p>Ich programmiere Webseiten, liebe sauberen Code und strukturiertes Arbeiten.</p>
 
-  <img src="https://via.placeholder.com/600x300" alt="Profilbild" />
-
-  <p id="counter"></p>
-
-  <nav>
-    <a href="index.html">Startseite</a>
-    <a href="Mit.html">Mitarbeiter</a>
-    <a href="todo.html">To-Do</a>
-    <a href="notes.html">Notizen</a>
-    <a href="kalender.html">Kalender</a>
-    <a href="tools.html">Tools</a>
-  </nav>
-
-  <script>
-    function toggleTheme() {
-      document.body.classList.toggle('light');
-      localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
-    }
-    function setClock() {
-      const now = new Date();
-      document.getElementById('clock').textContent = now.toLocaleTimeString();
-    }
-    function updateCounter() {
-      let count = parseInt(localStorage.getItem('besucheAbout') || '0') + 1;
-      localStorage.setItem('besucheAbout', count);
-      document.getElementById('counter').textContent = `Diese Seite wurde ${count}x besucht.`;
-    }
-    if (localStorage.getItem('theme') === 'light') {
-      document.body.classList.add('light');
-    }
-    setInterval(setClock, 1000);
-    updateCounter();
-  </script>
+<script>
+  function toggleTheme() {
+    document.body.classList.toggle('light');
+    localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+  }
+  if(localStorage.getItem('theme') === 'light'){
+    document.body.classList.add('light');
+  }
+</script>
 </body>
 </html>

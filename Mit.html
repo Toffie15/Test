@@ -1,260 +1,142 @@
-<!-- GANZER HTML-CODE -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>Mitarbeiterliste</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    :root {
-      --bg: #121212;
-      --text: #eee;
-      --btn: #4da3ff;
-      --btn-hover: #368de3;
-      --input-bg: #1e1e2f;
-    }
-    body.light {
-      --bg: #f5f5f5;
-      --text: #111;
-      --btn: #007bff;
-      --btn-hover: #0056b3;
-      --input-bg: #fff;
-    }
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    nav a {
-      margin: 5px;
-      padding: 8px 12px;
-      background-color: var(--btn);
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-    }
-    nav a:hover {
-      background-color: var(--btn-hover);
-    }
-    .tools {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-    input, button {
-      padding: 8px;
-      margin: 5px 0;
-      border-radius: 5px;
-      border: none;
-    }
-    input[type="file"] {
-      padding: 0;
-    }
-    input {
-      width: 200px;
-      background-color: var(--input-bg);
-      color: var(--text);
-    }
-    button {
-      background-color: var(--btn);
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: var(--btn-hover);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-    th, td {
-      padding: 10px;
-      border-bottom: 1px solid #444;
-      text-align: left;
-    }
-    tr:hover {
-      background-color: #222;
-    }
-    @media (max-width: 600px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-      td {
-        margin-bottom: 10px;
-      }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mitarbeiter</title>
+<style>
+  :root {
+    --bg-dark: #121212;
+    --text-dark: #eee;
+    --btn-dark: #4da3ff;
+    --btn-hover-dark: #368de3;
+    --input-bg-dark: #1e1e2f;
+
+    --bg-light: #f5f5f5;
+    --text-light: #111;
+    --btn-light: #007bff;
+    --btn-hover-light: #0056b3;
+    --input-bg-light: #fff;
+  }
+  body {
+    margin:0; padding:20px; font-family: Arial, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+    transition: background-color 0.3s, color 0.3s;
+  }
+  body.light {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+  }
+  nav {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
+  }
+  nav a {
+    text-decoration: none;
+    background-color: var(--btn-dark);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  body.light nav a {
+    background-color: var(--btn-light);
+  }
+  nav a:hover {
+    background-color: var(--btn-hover-dark);
+  }
+  body.light nav a:hover {
+    background-color: var(--btn-hover-light);
+  }
+  button#themeToggle {
+    cursor: pointer;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--btn-dark);
+    color: white;
+    margin-left: auto;
+    transition: background-color 0.3s;
+  }
+  body.light button#themeToggle {
+    background-color: var(--btn-light);
+  }
+  button#themeToggle:hover {
+    background-color: var(--btn-hover-dark);
+  }
+  body.light button#themeToggle:hover {
+    background-color: var(--btn-hover-light);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #555;
+  }
+  body.light th, body.light td {
+    border-bottom: 1px solid #ccc;
+  }
+  th {
+    background-color: var(--btn-dark);
+    color: white;
+  }
+  body.light th {
+    background-color: var(--btn-light);
+  }
+</style>
 </head>
 <body>
-  <header>
-    <nav>
-      <a href="index.html">Startseite</a>
-      <a href="about.html">Über mich</a>
-      <a href="Mit.html">Mitarbeiter</a>
-      <a href="todo.html">To-Do</a>
-      <a href="notes.html">Notizen</a>
-      <a href="kalender.html">Kalender</a>
-      <a href="tools.html">Tools</a>
-    </nav>
-    <div class="tools">
-      <span id="clock"></span>
-      <button onclick="toggleTheme()">🌓</button>
-    </div>
-  </header>
+<nav>
+  <a href="index.html">Startseite</a>
+  <a href="about.html">Über mich</a>
+  <a href="Mit.html">Mitarbeiter</a>
+  <a href="todo.html">To-Do</a>
+  <a href="notes.html">Notizen</a>
+  <a href="calendar.html">Kalender</a>
+  <a href="tools.html">Tools</a>
+  <a href="feedback.html">Feedback</a>
+  <a href="visitors.html">Besucher</a>
+  <a href="login.html">Login</a>
+  <button id="themeToggle" onclick="toggleTheme()">🌓</button>
+</nav>
 
-  <h1>Mitarbeiterliste</h1>
+<h1>Mitarbeiter</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Position</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody id="employeeTableBody">
+    <!-- Dynamisch -->
+  </tbody>
+</table>
 
-  <input type="text" id="filter" placeholder="Suchen..." oninput="renderTabelle()" />
-  <br>
-  <input type="text" id="name" placeholder="Name eingeben" />
-  <input type="text" id="rolle" placeholder="Rolle eingeben" />
-  <button onclick="addMitarbeiter()">Hinzufügen</button>
-  <button onclick="exportCSV()">CSV Export</button>
-  <button onclick="exportJSON()">JSON Export</button>
-  <label>
-    <input type="file" accept=".json" onchange="importJSON(event)" style="display: none;" id="jsonInput" />
-    <button onclick="document.getElementById('jsonInput').click()">JSON Import</button>
-  </label>
+<script>
+  function toggleTheme() {
+    document.body.classList.toggle('light');
+    localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+  }
+  if(localStorage.getItem('theme') === 'light'){
+    document.body.classList.add('light');
+  }
 
-  <table id="liste">
-    <thead>
-      <tr>
-        <th onclick="sortTabelle('name')">Name</th>
-        <th onclick="sortTabelle('rolle')">Rolle</th>
-        <th>Aktion</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  const employees = [
+    {name: "Luca", position: "Administrator", email: "luca@example.com"},
+    {name: "Maria", position: "Entwicklerin", email: "maria@example.com"},
+    {name: "Peter", position: "Support", email: "peter@example.com"},
+  ];
 
-  <p id="counter"></p>
-
-  <script>
-    let mitarbeiter = JSON.parse(localStorage.getItem('mitarbeiter')) || [];
-    let sortKey = 'name';
-    let sortDir = 1;
-
-    function renderTabelle() {
-      const filter = document.getElementById('filter').value.toLowerCase();
-      const tbody = document.querySelector('#liste tbody');
-      tbody.innerHTML = '';
-      [...mitarbeiter].filter(e => e.name.toLowerCase().includes(filter) || e.rolle.toLowerCase().includes(filter))
-        .sort((a, b) => a[sortKey].localeCompare(b[sortKey]) * sortDir)
-        .forEach((eintrag, index) => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td><input type="text" value="${eintrag.name}" onchange="edit(${index}, 'name', this.value)" /></td>
-            <td><input type="text" value="${eintrag.rolle}" onchange="edit(${index}, 'rolle', this.value)" /></td>
-            <td><button onclick="loeschen(${index})">Löschen</button></td>
-          `;
-          tbody.appendChild(row);
-        });
-    }
-
-    function addMitarbeiter() {
-      const name = document.getElementById('name').value.trim();
-      const rolle = document.getElementById('rolle').value.trim();
-      if (!name || !rolle) return alert('Name und Rolle eingeben!');
-      mitarbeiter.push({ name, rolle });
-      speichern();
-      document.getElementById('name').value = '';
-      document.getElementById('rolle').value = '';
-      renderTabelle();
-    }
-
-    function edit(index, feld, wert) {
-      mitarbeiter[index][feld] = wert;
-      speichern();
-    }
-
-    function loeschen(index) {
-      mitarbeiter.splice(index, 1);
-      speichern();
-      renderTabelle();
-    }
-
-    function speichern() {
-      localStorage.setItem('mitarbeiter', JSON.stringify(mitarbeiter));
-    }
-
-    function sortTabelle(key) {
-      if (sortKey === key) sortDir *= -1;
-      else { sortKey = key; sortDir = 1; }
-      renderTabelle();
-    }
-
-    function exportCSV() {
-      const header = ['Name', 'Rolle'];
-      const rows = mitarbeiter.map(e => [e.name, e.rolle]);
-      const csv = [header, ...rows].map(e => e.join(',')).join('\n');
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'mitarbeiter.csv';
-      link.click();
-    }
-
-    function exportJSON() {
-      const blob = new Blob([JSON.stringify(mitarbeiter, null, 2)], { type: 'application/json' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'mitarbeiter.json';
-      link.click();
-    }
-
-    function importJSON(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const data = JSON.parse(e.target.result);
-          if (Array.isArray(data) && data.every(e => 'name' in e && 'rolle' in e)) {
-            mitarbeiter = data;
-            speichern();
-            renderTabelle();
-            alert('Import erfolgreich!');
-          } else {
-            alert('Ungültiges Format!');
-          }
-        } catch (err) {
-          alert('Fehler beim Import: ' + err.message);
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    function toggleTheme() {
-      document.body.classList.toggle('light');
-      localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
-    }
-
-    function setClock() {
-      const now = new Date();
-      document.getElementById('clock').textContent = now.toLocaleTimeString();
-    }
-
-    function updateCounter() {
-      let count = parseInt(localStorage.getItem('besucheMit') || '0') + 1;
-      localStorage.setItem('besucheMit', count);
-      document.getElementById('counter').textContent = `Diese Seite wurde ${count}x besucht.`;
-    }
-
-    if (localStorage.getItem('theme') === 'light') {
-      document.body.classList.add('light');
-    }
-
-    setInterval(setClock, 1000);
-    updateCounter();
-    renderTabelle();
-  </script>
+  const tbody = document.getElementById('employeeTableBody');
+  employees.forEach(emp => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${emp.name}</td><td>${emp.position}</td><td>${emp.email}</td>`;
+    tbody.appendChild(tr);
+  });
+</script>
 </body>
 </html>

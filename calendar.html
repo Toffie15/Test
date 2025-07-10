@@ -5,211 +5,186 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kalender</title>
 <style>
+  :root {
+    --bg-dark: #121212;
+    --text-dark: #eee;
+    --btn-dark: #4da3ff;
+    --btn-hover-dark: #368de3;
+    --input-bg-dark: #1e1e2f;
+
+    --bg-light: #f5f5f5;
+    --text-light: #111;
+    --btn-light: #007bff;
+    --btn-hover-light: #0056b3;
+    --input-bg-light: #fff;
+  }
   body {
-    background-color: #121212;
-    color: #eee;
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
+    margin:0; padding:20px; font-family: Arial, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+    transition: background-color 0.3s, color 0.3s;
   }
   body.light {
-    background-color: #f9f9f9;
-    color: #222;
+    background-color: var(--bg-light);
+    color: var(--text-light);
   }
   nav {
-    text-align: center;
-    margin-bottom: 20px;
+    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
   }
   nav a {
-    color: #4da3ff;
     text-decoration: none;
-    margin: 0 10px;
-    font-weight: bold;
+    background-color: var(--btn-dark);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  body.light nav a {
+    background-color: var(--btn-light);
   }
   nav a:hover {
-    text-decoration: underline;
+    background-color: var(--btn-hover-dark);
+  }
+  body.light nav a:hover {
+    background-color: var(--btn-hover-light);
+  }
+  button#themeToggle {
+    cursor: pointer;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--btn-dark);
+    color: white;
+    margin-left: auto;
+    transition: background-color 0.3s;
+  }
+  body.light button#themeToggle {
+    background-color: var(--btn-light);
+  }
+  button#themeToggle:hover {
+    background-color: var(--btn-hover-dark);
+  }
+  body.light button#themeToggle:hover {
+    background-color: var(--btn-hover-light);
+  }
+  #calendar {
+    max-width: 600px;
+    margin: auto;
   }
   table {
     width: 100%;
     border-collapse: collapse;
   }
   th, td {
-    width: 14.28%;
     border: 1px solid #555;
-    padding: 8px;
-    vertical-align: top;
-    height: 100px;
-    cursor: pointer;
-    position: relative;
+    padding: 10px;
+    text-align: center;
   }
-  body.light table th, body.light table td {
-    border-color: #aaa;
+  body.light th, body.light td {
+    border: 1px solid #ccc;
   }
   th {
-    background-color: #4da3ff;
+    background-color: var(--btn-dark);
     color: white;
   }
   body.light th {
-    background-color: #368de3;
+    background-color: var(--btn-light);
   }
-  td:hover {
-    background-color: #2e2e2e;
-  }
-  body.light td:hover {
-    background-color: #ddd;
-  }
-  .date-num {
-    font-weight: bold;
-    position: absolute;
-    top: 4px;
-    right: 6px;
-    font-size: 14px;
-  }
-  .event {
-    margin-top: 20px;
-    font-size: 0.9rem;
-    white-space: pre-line;
-    color: #4da3ff;
-  }
-  #eventInput {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 6px;
-    border-radius: 5px;
-    border: none;
-    margin-top: 10px;
-  }
-  #saveEvent {
-    margin-top: 8px;
-    padding: 6px 12px;
+  td.today {
     background-color: #4da3ff;
     color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
     font-weight: bold;
-  }
-  #saveEvent:hover {
-    background-color: #368de3;
   }
 </style>
 </head>
 <body>
 <nav>
   <a href="index.html">Startseite</a>
+  <a href="about.html">Über mich</a>
+  <a href="Mit.html">Mitarbeiter</a>
+  <a href="todo.html">To-Do</a>
   <a href="notes.html">Notizen</a>
+  <a href="calendar.html">Kalender</a>
+  <a href="tools.html">Tools</a>
+  <a href="feedback.html">Feedback</a>
+  <a href="visitors.html">Besucher</a>
+  <a href="login.html">Login</a>
+  <button id="themeToggle" onclick="toggleTheme()">🌓</button>
 </nav>
 
 <h1>Kalender</h1>
-<div style="text-align:center; margin-bottom: 10px;">
-  <button onclick="changeMonth(-1)">&#8592; Vorheriger Monat</button>
-  <span id="monthYear" style="font-weight:bold; margin: 0 15px;"></span>
-  <button onclick="changeMonth(1)">Nächster Monat &#8594;</button>
-</div>
-<table id="calendar">
-  <thead>
-    <tr>
-      <th>So</th><th>Mo</th><th>Di</th><th>Mi</th><th>Do</th><th>Fr</th><th>Sa</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
-
-<div id="eventEditor" style="display:none; max-width: 400px; margin: 20px auto; border: 1px solid #4da3ff; padding: 15px; border-radius: 8px;">
-  <h3>Termin für <span id="selectedDate"></span></h3>
-  <textarea id="eventInput" rows="4" placeholder="Terminbeschreibung"></textarea><br />
-  <button id="saveEvent">Speichern</button>
-  <button onclick="closeEditor()" style="margin-left: 10px; padding: 6px 12px;">Abbrechen</button>
-</div>
+<div id="calendar"></div>
 
 <script>
-  if(localStorage.getItem('mode') === 'light'){
+  function toggleTheme() {
+    document.body.classList.toggle('light');
+    localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+  }
+  if(localStorage.getItem('theme') === 'light'){
     document.body.classList.add('light');
   }
 
-  const calendarBody = document.querySelector('#calendar tbody');
-  const monthYearEl = document.getElementById('monthYear');
-  const eventEditor = document.getElementById('eventEditor');
-  const eventInput = document.getElementById('eventInput');
-  const selectedDateSpan = document.getElementById('selectedDate');
-  const saveEventBtn = document.getElementById('saveEvent');
+  function buildCalendar(year, month) {
+    const calendarDiv = document.getElementById('calendar');
+    calendarDiv.innerHTML = '';
+    const date = new Date(year, month, 1);
+    const monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni",
+      "Juli", "August", "September", "Oktober", "November", "Dezember"];
+    const days = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
 
-  let current = new Date();
-  let events = JSON.parse(localStorage.getItem('calendarEvents') || '{}');
-  let selectedDate = null;
+    // Header mit Monat und Jahr
+    const header = document.createElement('h2');
+    header.textContent = monthNames[month] + ' ' + year;
+    calendarDiv.appendChild(header);
 
-  function daysInMonth(year, month) {
-    return new Date(year, month + 1, 0).getDate();
-  }
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    const trHead = document.createElement('tr');
+    days.forEach(day => {
+      const th = document.createElement('th');
+      th.textContent = day;
+      trHead.appendChild(th);
+    });
+    thead.appendChild(trHead);
+    table.appendChild(thead);
 
-  function renderCalendar() {
-    calendarBody.innerHTML = '';
-    const year = current.getFullYear();
-    const month = current.getMonth();
-    monthYearEl.textContent = current.toLocaleDateString('de-DE', { year: 'numeric', month: 'long' });
+    const tbody = document.createElement('tbody');
+    let tr = document.createElement('tr');
 
-    const firstDay = new Date(year, month, 1).getDay();
-    const totalDays = daysInMonth(year, month);
-
-    let row = document.createElement('tr');
-    // Leere Tage vor Monatsbeginn
-    for(let i = 0; i < firstDay; i++) {
-      let cell = document.createElement('td');
-      row.appendChild(cell);
+    // Leerzellen für Tage vor dem 1.
+    for(let i = 0; i < date.getDay(); i++){
+      const td = document.createElement('td');
+      tr.appendChild(td);
     }
-    for(let day = 1; day <= totalDays; day++) {
-      if(row.children.length === 7){
-        calendarBody.appendChild(row);
-        row = document.createElement('tr');
+
+    // Tage einfügen
+    while(date.getMonth() === month){
+      const td = document.createElement('td');
+      td.textContent = date.getDate();
+
+      const today = new Date();
+      if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()){
+        td.classList.add('today');
       }
-      let cell = document.createElement('td');
-      cell.innerHTML = `<div class="date-num">${day}</div>`;
-      const dateKey = `${year}-${month+1}-${day}`;
-      if(events[dateKey]) {
-        cell.innerHTML += `<div class="event">${events[dateKey]}</div>`;
+
+      tr.appendChild(td);
+      if(date.getDay() === 6){
+        tbody.appendChild(tr);
+        tr = document.createElement('tr');
       }
-      cell.onclick = () => openEditor(dateKey);
-      row.appendChild(cell);
+      date.setDate(date.getDate() + 1);
     }
-    // Leere Zellen am Ende (falls nötig)
-    while(row.children.length < 7) {
-      row.appendChild(document.createElement('td'));
+    // Letzte Reihe anhängen, wenn nicht schon passiert
+    if(tr.children.length > 0){
+      tbody.appendChild(tr);
     }
-    calendarBody.appendChild(row);
+
+    table.appendChild(tbody);
+    calendarDiv.appendChild(table);
   }
 
-  function changeMonth(dir) {
-    current.setMonth(current.getMonth() + dir);
-    renderCalendar();
-  }
-
-  function openEditor(dateKey) {
-    selectedDate = dateKey;
-    selectedDateSpan.textContent = new Date(dateKey).toLocaleDateString('de-DE', { year:'numeric', month:'long', day:'numeric' });
-    eventInput.value = events[dateKey] || '';
-    eventEditor.style.display = 'block';
-  }
-
-  function closeEditor() {
-    eventEditor.style.display = 'none';
-    selectedDate = null;
-  }
-
-  saveEventBtn.onclick = () => {
-    if(selectedDate === null) return;
-    const val = eventInput.value.trim();
-    if(val) {
-      events[selectedDate] = val;
-    } else {
-      delete events[selectedDate];
-    }
-    localStorage.setItem('calendarEvents', JSON.stringify(events));
-    closeEditor();
-    renderCalendar();
-  }
-
-  renderCalendar();
+  const now = new Date();
+  buildCalendar(now.getFullYear(), now.getMonth());
 </script>
 </body>
 </html>
