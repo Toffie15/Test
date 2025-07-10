@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Mitarbeiterliste</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       background-color: #121212;
@@ -48,20 +49,31 @@
     .nav-buttons button {
       margin-right: 10px;
     }
+    @media (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      td {
+        margin-bottom: 10px;
+      }
+    }
   </style>
 </head>
 <body>
   <h1>Mitarbeiterliste</h1>
 
+  <input type="text" id="filter" placeholder="Suchen..." oninput="renderTabelle()" />
+  <br>
   <input type="text" id="name" placeholder="Name eingeben" />
   <input type="text" id="rolle" placeholder="Rolle eingeben" />
   <button onclick="addMitarbeiter()">Hinzufügen</button>
+  <button onclick="exportCSV()">CSV Export</button>
 
   <table id="liste">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Rolle</th>
+        <th onclick="sortTabelle('name')">Name</th>
+        <th onclick="sortTabelle('rolle')">Rolle</th>
         <th>Aktion</th>
       </tr>
     </thead>
@@ -70,44 +82,72 @@
 
   <div class="nav-buttons">
     <button onclick="window.location.href='index.html'">Zur Startseite</button>
-    <button onclick="window.history.back()">Zurück</button>
+    <button onclick="window.location.href='about.html'">Über mich</button>
   </div>
 
   <script>
     let mitarbeiter = JSON.parse(localStorage.getItem('mitarbeiter')) || [];
+    let sortKey = 'name';
+    let sortDir = 1;
 
     function renderTabelle() {
+      const filter = document.getElementById('filter').value.toLowerCase();
       const tbody = document.querySelector('#liste tbody');
       tbody.innerHTML = '';
-      mitarbeiter.forEach((eintrag, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${eintrag.name}</td>
-          <td>${eintrag.rolle}</td>
-          <td><button onclick="loeschen(${index})">Löschen</button></td>
-        `;
-        tbody.appendChild(row);
-      });
+      [...mitarbeiter].filter(e => e.name.toLowerCase().includes(filter) || e.rolle.toLowerCase().includes(filter))
+        .sort((a, b) => a[sortKey].localeCompare(b[sortKey]) * sortDir)
+        .forEach((eintrag, index) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td><input type="text" value="${eintrag.name}" onchange="edit(${index}, 'name', this.value)" /></td>
+            <td><input type="text" value="${eintrag.rolle}" onchange="edit(${index}, 'rolle', this.value)" /></td>
+            <td><button onclick="loeschen(${index})">Löschen</button></td>
+          `;
+          tbody.appendChild(row);
+        });
     }
 
     function addMitarbeiter() {
       const name = document.getElementById('name').value.trim();
       const rolle = document.getElementById('rolle').value.trim();
-      if (!name || !rolle) {
-        alert('Name und Rolle eingeben!');
-        return;
-      }
+      if (!name || !rolle) return alert('Name und Rolle eingeben!');
       mitarbeiter.push({ name, rolle });
-      localStorage.setItem('mitarbeiter', JSON.stringify(mitarbeiter));
+      speichern();
       document.getElementById('name').value = '';
       document.getElementById('rolle').value = '';
       renderTabelle();
     }
 
+    function edit(index, feld, wert) {
+      mitarbeiter[index][feld] = wert;
+      speichern();
+    }
+
     function loeschen(index) {
       mitarbeiter.splice(index, 1);
-      localStorage.setItem('mitarbeiter', JSON.stringify(mitarbeiter));
+      speichern();
       renderTabelle();
+    }
+
+    function speichern() {
+      localStorage.setItem('mitarbeiter', JSON.stringify(mitarbeiter));
+    }
+
+    function sortTabelle(key) {
+      if (sortKey === key) sortDir *= -1;
+      else { sortKey = key; sortDir = 1; }
+      renderTabelle();
+    }
+
+    function exportCSV() {
+      const header = ['Name', 'Rolle'];
+      const rows = mitarbeiter.map(e => [e.name, e.rolle]);
+      const csv = [header, ...rows].map(e => e.join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'mitarbeiter.csv';
+      link.click();
     }
 
     renderTabelle();
