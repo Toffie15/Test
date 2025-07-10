@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mitarbeiterliste</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #eee;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    input, button {
+      padding: 8px;
+      margin: 5px 0;
+      border-radius: 5px;
+      border: none;
+    }
+    input {
+      width: 200px;
+      background-color: #1e1e2f;
+      color: #eee;
+    }
+    button {
+      background-color: #4da3ff;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #368de3;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #444;
+      text-align: left;
+    }
+    tr:hover {
+      background-color: #222;
+    }
+  </style>
+</head>
+<body>
+  <h1>Mitarbeiterliste</h1>
+
+  <input type="text" id="name" placeholder="Name eingeben" />
+  <input type="text" id="rolle" placeholder="Rolle eingeben" />
+  <button onclick="addMitarbeiter()">Hinzufügen</button>
+
+  <table id="liste">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Rolle</th>
+        <th>Aktion</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    let mitarbeiter = JSON.parse(localStorage.getItem('mitarbeiter')) || [];
+
+    function renderTabelle() {
+      const tbody = document.querySelector('#liste tbody');
+      tbody.innerHTML = '';
+      mitarbeiter.forEach((eintrag, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${eintrag.name}</td>
+          <td>${eintrag.rolle}</td>
+          <td><button onclick="loeschen(${index})">Löschen</button></td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function addMitarbeiter() {
+      const name = document.getElementById('name').value.trim();
+      const rolle = document.getElementById('rolle').value.trim();
+      if (!name || !rolle) {
+        alert('Name und Rolle eingeben!');
+        return;
+      }
+      mitarbeiter.push({ name, rolle });
+      localStorage.setItem('mitarbeiter', JSON.stringify(mitarbeiter));
+      document.getElementById('name').value = '';
+      document.getElementById('rolle').value = '';
+      renderTabelle();
+    }
+
+    function loeschen(index) {
+      mitarbeiter.splice(index, 1);
+      localStorage.setItem('mitarbeiter', JSON.stringify(mitarbeiter));
+      renderTabelle();
+    }
+
+    renderTabelle();
+  </script>
+</body>
+</html>
