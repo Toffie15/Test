@@ -129,3 +129,57 @@ th, td {
 th {
   background-color: #3a3a50;
 }
+
+.todo-section {
+  margin-top: 40px;
+}
+.todo-section h2 {
+  color: #4da3ff;
+  margin-bottom: 10px;
+}
+.todo-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.todo-input input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3a3a50;
+  color: #fff;
+}
+.todo-input button {
+  padding: 10px;
+  background-color: #4da3ff;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+.todo-input button:hover {
+  background-color: #368de3;
+}
+#todoList {
+  list-style: none;
+}
+#todoList li {
+  padding: 10px;
+  background-color: #3a3a50;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#todoList li.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+#todoList button {
+  background: none;
+  border: none;
+  color: #ff4d4d;
+  cursor: pointer;
+}
