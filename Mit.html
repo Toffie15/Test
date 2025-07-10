@@ -3,917 +3,537 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Mitarbeiterverwaltung</title>
+<title>Mitarbeiterliste</title>
 <style>
-  /* Reset & Basis */
   body {
-    font-family: Arial, sans-serif;
-    margin: 0; padding: 0;
     background-color: #121212;
     color: #eee;
-    transition: background-color 0.3s, color 0.3s;
+    font-family: Arial, sans-serif;
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
   }
   body.light {
-    background-color: #f7f7f7;
+    background-color: #f9f9f9;
     color: #222;
   }
-  header {
-    background-color: #1f1f1f;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  nav {
+    text-align: center;
+    margin-bottom: 15px;
   }
-  body.light header {
-    background-color: #ddd;
-  }
-  h1 {
-    margin: 0;
-  }
-  button, select, input[type=text], input[type=email], input[type=file] {
-    font-size: 14px;
-    padding: 5px 10px;
-    margin: 2px;
-  }
-  button {
-    cursor: pointer;
-  }
-  button:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
-  a {
-    color: #4aa3ff;
+  nav a {
+    color: #4da3ff;
     text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
   }
-  a:hover {
+  nav a:hover {
     text-decoration: underline;
   }
-
-  /* Login Bereich */
-  #loginArea {
-    background: #282828;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  button, input, select {
+    padding: 6px 10px;
+    border-radius: 5px;
+    border: none;
+    margin: 5px 5px 10px 0;
+    font-size: 1rem;
   }
-  body.light #loginArea {
-    background: #eee;
+  button {
+    background-color: #4da3ff;
+    color: white;
+    cursor: pointer;
   }
-  #loginArea input {
-    flex-grow: 1;
-    padding: 5px;
-    border-radius: 4px;
-    border: 1px solid #555;
+  button:hover {
+    background-color: #368de3;
   }
-  body.light #loginArea input {
-    border-color: #aaa;
-  }
-
-  /* Controls */
-  #controls {
-    padding: 10px 20px;
-    background-color: #222;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  body.light #controls {
-    background-color: #eee;
-  }
-  #controls > * {
-    flex: 1 1 150px;
-    min-width: 150px;
-  }
-
-  /* Tabelle */
   table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
-  }
-  thead {
-    background-color: #333;
-  }
-  body.light thead {
-    background-color: #ccc;
   }
   th, td {
-    padding: 8px 10px;
-    border: 1px solid #444;
-    vertical-align: middle;
+    border: 1px solid #555;
+    padding: 8px;
     text-align: left;
+    vertical-align: middle;
   }
   body.light th, body.light td {
-    border-color: #bbb;
+    border-color: #aaa;
   }
-  th.sortable {
+  th {
+    background-color: #4da3ff;
+    color: white;
     cursor: pointer;
     user-select: none;
-    position: relative;
   }
-  th.sortable .arrow {
-    position: absolute;
-    right: 8px;
-    font-size: 10px;
+  body.light th {
+    background-color: #368de3;
   }
-  th.sortable.asc .arrow::after {
-    content: '▲';
-  }
-  th.sortable.desc .arrow::after {
-    content: '▼';
-  }
-  td.editable {
-    background-color: #1a1a1a;
-  }
-  body.light td.editable {
-    background-color: #fafafa;
-  }
-  td.editable[contenteditable]:focus {
-    outline: 2px solid #4aa3ff;
+  tr:hover {
     background-color: #333;
   }
-  body.light td.editable[contenteditable]:focus {
-    background-color: #def;
+  body.light tr:hover {
+    background-color: #ddd;
   }
+  .status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: white;
+    text-align: center;
+    width: 80px;
+  }
+  .status.aktiv { background-color: #4caf50; }
+  .status.urlaub { background-color: #ff9800; }
+  .status.krank { background-color: #f44336; }
 
-  /* Profilbild */
   .profile-pic {
     width: 40px;
     height: 40px;
-    object-fit: cover;
     border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  .name-cell {
+    display: flex;
+    align-items: center;
+  }
+  .email-link {
+    color: #4da3ff;
+    text-decoration: none;
+  }
+  .email-link:hover {
+    text-decoration: underline;
   }
 
-  /* Modal */
+  /* Modal Popup */
   #detailModal {
     display: none;
     position: fixed;
-    top:0; left:0; right:0; bottom:0;
-    background-color: rgba(0,0,0,0.7);
+    top: 0; left: 0; right:0; bottom:0;
+    background: rgba(0,0,0,0.8);
     justify-content: center;
     align-items: center;
-    z-index: 100;
+    z-index: 10;
   }
-  #modalContent {
-    background-color: #222;
-    color: #eee;
+  #detailModal .modal-content {
+    background: #222;
     padding: 20px;
-    border-radius: 6px;
-    max-width: 320px;
-    width: 90%;
-    position: relative;
+    border-radius: 8px;
+    max-width: 400px;
+    color: #eee;
   }
-  body.light #modalContent {
-    background-color: #fff;
-    color: #111;
-    box-shadow: 0 0 15px #aaa;
+  #detailModal .modal-content.light {
+    background: #fff;
+    color: #222;
   }
-  #modalContent img {
-    display: block;
-    margin: 10px auto 0;
-    border-radius: 50%;
-    width: 100px;
-  }
-  .close-btn {
-    position: absolute;
-    top: 6px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    font-size: 22px;
-    color: inherit;
+  #detailModal .close-btn {
+    float: right;
     cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
   }
 
   /* Pagination */
   #pagination {
-    margin: 10px 20px;
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    justify-content: center;
+    margin-top: 15px;
+    text-align: center;
   }
   #pagination button {
-    min-width: 30px;
-    border-radius: 4px;
+    margin: 0 3px;
+    padding: 6px 10px;
   }
   #pagination button.active {
-    background-color: #4aa3ff;
-    color: white;
+    background-color: #2171d9;
   }
 
-  /* Bulk Aktionen */
-  #bulkActions {
-    margin: 10px 20px;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+  /* Inline editing */
+  .editable {
+    background-color: #333;
+    padding: 2px 6px;
+    border-radius: 4px;
+    min-width: 50px;
   }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    table, thead, tbody, th, td, tr {
-      display: block;
-    }
-    thead tr {
-      position: absolute;
-      top: -9999px;
-      left: -9999px;
-    }
-    tr {
-      margin-bottom: 10px;
-      border: 1px solid #444;
-      padding: 10px;
-      background-color: #1f1f1f;
-      border-radius: 6px;
-    }
-    body.light tr {
-      background-color: #fafafa;
-      border-color: #ccc;
-    }
-    td {
-      border: none;
-      position: relative;
-      padding-left: 50%;
-      text-align: left;
-    }
-    td::before {
-      position: absolute;
-      left: 10px;
-      top: 8px;
-      width: 45%;
-      white-space: nowrap;
-      font-weight: bold;
-      color: #999;
-      content: attr(data-label);
-    }
-    td.editable[contenteditable]:focus {
-      outline: none;
-      background-color: #444;
-    }
-    body.light td.editable[contenteditable]:focus {
-      background-color: #def;
-    }
-    .profile-pic {
-      margin: 0 auto 10px auto;
-      display: block;
-    }
-    #bulkActions {
-      flex-direction: column;
-    }
+  body.light .editable {
+    background-color: #eee;
+    color: #222;
   }
-
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Mitarbeiterverwaltung</h1>
-  <button id="toggleModeBtn" title="Dark/Light Mode wechseln">🌙</button>
-</header>
+<nav>
+  <a href="index.html">Startseite</a>
+  <a href="about.html">Über mich</a>
+  <button onclick="toggleMode()">
+    Dark/Light Mode
+  </button>
+</nav>
 
-<section id="loginArea">
-  <label for="loginName">Benutzername:</label>
-  <input type="text" id="loginName" placeholder="Name eingeben" />
-  <button id="loginBtn">Anmelden</button>
-  <span id="welcomeMsg" style="margin-left:10px;"></span>
-</section>
+<h1>Mitarbeiterliste</h1>
 
-<section id="controls">
-  <input type="text" id="filterInput" placeholder="Suchen..." title="Nach Name, Funktion, E-Mail filtern" />
-  <select id="deptFilter" title="Nach Abteilung filtern">
-    <option value="">Alle Abteilungen</option>
+<div>
+  <label for="filterInput">Suchen:</label>
+  <input type="text" id="filterInput" placeholder="Name, Funktion, Abteilung..." oninput="applyFilters()" />
+
+  <label for="deptFilter">Abteilung:</label>
+  <select id="deptFilter" onchange="applyFilters()">
+    <option value="">Alle</option>
   </select>
-  <select id="statusFilter" title="Nach Status filtern">
-    <option value="">Alle Status</option>
-    <option value="aktiv">Aktiv</option>
-    <option value="urlaub">Urlaub</option>
-    <option value="krank">Krank</option>
-  </select>
-  <button id="exportCSVBtn" title="Als CSV exportieren">CSV exportieren</button>
-  <input type="file" id="importCSVInput" accept=".csv" title="CSV Datei importieren" />
-</section>
 
-<section id="bulkActions" style="display:none;">
-  <label><input type="checkbox" id="selectAll"/> Alle auswählen</label>
-  <select id="bulkStatus" title="Status für ausgewählte ändern">
-    <option value="">Status ändern</option>
-    <option value="aktiv">Aktiv</option>
-    <option value="urlaub">Urlaub</option>
-    <option value="krank">Krank</option>
-  </select>
-  <button id="bulkDeleteBtn" title="Ausgewählte löschen" style="background:#f44336; color:#fff;">Löschen</button>
-</section>
+  <button onclick="exportCSV()">CSV Export</button>
+</div>
 
-<table id="employeeTable" aria-label="Mitarbeiterliste">
+<table id="employeeTable">
   <thead>
     <tr>
-      <th><input type="checkbox" id="headerCheckbox" title="Alle auswählen"/></th>
-      <th class="sortable" data-key="name">Name <span class="arrow"></span></th>
-      <th class="sortable" data-key="funktion">Funktion <span class="arrow"></span></th>
-      <th class="sortable" data-key="abteilung">Abteilung <span class="arrow"></span></th>
-      <th class="sortable" data-key="email">E-Mail <span class="arrow"></span></th>
-      <th class="sortable" data-key="status">Status <span class="arrow"></span></th>
-      <th class="sortable" data-key="eintritt">Eintritt <span class="arrow"></span></th>
-      <th>Telefon</th>
-      <th>Profilbild</th>
-      <th>Notizen</th>
+      <th data-key="profile">Bild</th>
+      <th data-key="name">Name &#x25B2;&#x25BC;</th>
+      <th data-key="funktion">Funktion &#x25B2;&#x25BC;</th>
+      <th data-key="abteilung">Abteilung &#x25B2;&#x25BC;</th>
+      <th data-key="email">E-Mail &#x25B2;&#x25BC;</th>
+      <th data-key="status">Status &#x25B2;&#x25BC;</th>
       <th>Aktionen</th>
     </tr>
   </thead>
   <tbody>
-    <!-- Dynamisch -->
   </tbody>
 </table>
 
-<div id="pagination" aria-label="Seitennavigation">
-  <!-- Buttons dynamisch -->
-</div>
+<div id="pagination"></div>
 
-<section style="padding:20px;">
-  <h2>Neuen Mitarbeiter hinzufügen</h2>
-  <form id="addForm">
-    <input type="text" id="newName" placeholder="Name" required />
-    <input type="text" id="newFunktion" placeholder="Funktion" required />
-    <input type="text" id="newAbteilung" placeholder="Abteilung" required />
-    <input type="email" id="newEmail" placeholder="E-Mail" required />
-    <select id="newStatus" required>
-      <option value="">Status wählen</option>
-      <option value="aktiv">Aktiv</option>
-      <option value="urlaub">Urlaub</option>
-      <option value="krank">Krank</option>
-    </select>
-    <input type="date" id="newEintritt" placeholder="Eintrittsdatum" required />
-    <input type="text" id="newTelefon" placeholder="Telefon" />
-    <input type="url" id="newProfile" placeholder="Profilbild URL (optional)" />
-    <textarea id="newNotizen" placeholder="Notizen"></textarea><br/>
-    <button type="submit">Hinzufügen</button>
-  </form>
-</section>
+<h2>Neuen Mitarbeiter hinzufügen</h2>
+<form id="addForm" onsubmit="addEmployee(event)">
+  <input type="text" id="newName" placeholder="Name" required />
+  <input type="text" id="newFunktion" placeholder="Funktion" required />
+  <input type="text" id="newAbteilung" placeholder="Abteilung" required />
+  <input type="email" id="newEmail" placeholder="E-Mail" required />
+  <select id="newStatus" required>
+    <option value="aktiv">Aktiv</option>
+    <option value="urlaub">Urlaub</option>
+    <option value="krank">Krank</option>
+  </select>
+  <input type="url" id="newProfile" placeholder="Profilbild URL (optional)" />
+  <button type="submit">Hinzufügen</button>
+</form>
 
-<!-- Modal Details -->
-<div id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div id="modalContent">
-    <button class="close-btn" aria-label="Schließen">&times;</button>
-    <h3 id="modalTitle">Mitarbeiter Details</h3>
+<!-- Modal für Details -->
+<div id="detailModal" onclick="closeModal(event)">
+  <div class="modal-content" id="modalContent">
+    <span class="close-btn" onclick="closeModal()">×</span>
+    <h2>Mitarbeiter Details</h2>
     <div id="detailBody"></div>
   </div>
 </div>
 
 <script>
-  'use strict';
-
-  // Daten
-  let employees = [
+  const employees = [
     {
-      name: "Max Mustermann",
-      funktion: "Entwickler",
-      abteilung: "IT",
-      email: "max@firma.de",
+      name: "Anna Müller",
+      funktion: "Projektleiterin",
+      abteilung: "Marketing",
+      email: "anna.mueller@example.com",
       status: "aktiv",
-      eintritt: "2020-01-15",
-      telefon: "0123 456789",
-      profile: "",
-      notizen: "Sehr engagiert",
-      selected: false
+      profile: "https://i.pravatar.cc/40?img=1"
     },
     {
-      name: "Anna Beispiel",
-      funktion: "Marketing",
-      abteilung: "Marketing",
-      email: "anna@firma.de",
+      name: "Max Mustermann",
+      funktion: "Softwareentwickler",
+      abteilung: "IT",
+      email: "max.mustermann@example.com",
       status: "urlaub",
-      eintritt: "2018-05-23",
-      telefon: "0987 654321",
-      profile: "",
-      notizen: "",
-      selected: false
+      profile: "https://i.pravatar.cc/40?img=2"
     },
     {
       name: "Lisa Schmidt",
+      funktion: "Designer",
+      abteilung: "Marketing",
+      email: "lisa.schmidt@example.com",
+      status: "krank",
+      profile: "https://i.pravatar.cc/40?img=3"
+    },
+    {
+      name: "Jonas Weber",
+      funktion: "Systemadministrator",
+      abteilung: "IT",
+      email: "jonas.weber@example.com",
+      status: "aktiv",
+      profile: "https://i.pravatar.cc/40?img=4"
+    },
+    {
+      name: "Sophie Becker",
       funktion: "Support",
       abteilung: "Kundendienst",
-      email: "lisa@firma.de",
-      status: "krank",
-      eintritt: "2019-09-30",
-      telefon: "0177 123456",
-      profile: "",
-      notizen: "",
-      selected: false
+      email: "sophie.becker@example.com",
+      status: "aktiv",
+      profile: ""
     }
   ];
 
-  // Pagination Variablen
   let currentPage = 1;
   const rowsPerPage = 5;
+  let currentSort = {key: null, asc: true};
 
-  // Sortierung
-  let sortKey = null;
-  let sortDir = 'asc';
-
-  // DOM-Elemente
-  const tableBody = document.querySelector("#employeeTable tbody");
-  const filterInput = document.getElementById("filterInput");
-  const deptFilter = document.getElementById("deptFilter");
-  const statusFilter = document.getElementById("statusFilter");
-  const paginationDiv = document.getElementById("pagination");
-  const exportBtn = document.getElementById("exportCSVBtn");
-  const importInput = document.getElementById("importCSVInput");
-  const addForm = document.getElementById("addForm");
-  const bulkActions = document.getElementById("bulkActions");
-  const selectAllCheckbox = document.getElementById("selectAll");
-  const bulkStatusSelect = document.getElementById("bulkStatus");
-  const bulkDeleteBtn = document.getElementById("bulkDeleteBtn");
-  const headerCheckbox = document.getElementById("headerCheckbox");
-  const toggleModeBtn = document.getElementById("toggleModeBtn");
-  const loginNameInput = document.getElementById("loginName");
-  const loginBtn = document.getElementById("loginBtn");
-  const welcomeMsg = document.getElementById("welcomeMsg");
-
-  // Modal
-  const detailModal = document.getElementById("detailModal");
-  const modalContent = document.getElementById("modalContent");
-  const modalBody = document.getElementById("detailBody");
-  const modalCloseBtn = detailModal.querySelector(".close-btn");
-
-  // Dark/Light Mode laden
+  // Load saved mode
   if(localStorage.getItem('mode') === 'light'){
     document.body.classList.add('light');
-    toggleModeBtn.textContent = '🌞';
   }
 
-  toggleModeBtn.addEventListener('click', () => {
-    document.body.classList.toggle('light');
-    if(document.body.classList.contains('light')){
-      toggleModeBtn.textContent = '🌞';
-      localStorage.setItem('mode', 'light');
-    } else {
-      toggleModeBtn.textContent = '🌙';
-      localStorage.setItem('mode', 'dark');
-    }
-  });
-
-  // Login Bereich
-  loginBtn.addEventListener('click', () => {
-    const name = loginNameInput.value.trim();
-    if(name){
-      welcomeMsg.textContent = `Willkommen, ${name}!`;
-      loginNameInput.value = '';
-      loginNameInput.disabled = true;
-      loginBtn.disabled = true;
-    }
-  });
-
-  // Spalten für Abteilungsfilter sammeln
-  function refreshDeptFilter(){
-    const abteilungen = Array.from(new Set(employees.map(e=>e.abteilung))).sort();
-    deptFilter.innerHTML = '<option value="">Alle Abteilungen</option>';
-    abteilungen.forEach(dep=>{
+  // Dropdown mit Abteilungen füllen
+  function fillDeptFilter() {
+    const depts = [...new Set(employees.map(e => e.abteilung))];
+    const select = document.getElementById('deptFilter');
+    depts.forEach(d => {
       const opt = document.createElement('option');
-      opt.value = dep;
-      opt.textContent = dep;
-      deptFilter.appendChild(opt);
+      opt.value = d;
+      opt.textContent = d;
+      select.appendChild(opt);
     });
   }
 
-  // Filter und Sortieren und Paginate
-  function filterSortPaginate(){
-    let filtered = employees.filter(emp => {
-      const fText = filterInput.value.toLowerCase();
-      if(fText){
-        if(!(emp.name.toLowerCase().includes(fText) ||
-             emp.funktion.toLowerCase().includes(fText) ||
-             emp.email.toLowerCase().includes(fText))){
-          return false;
-        }
+  // Tabelle rendern
+  function renderTable() {
+    const tbody = document.querySelector('#employeeTable tbody');
+    tbody.innerHTML = '';
+
+    let filtered = employees.filter(e => {
+      const filterText = document.getElementById('filterInput').value.toLowerCase();
+      const deptFilter = document.getElementById('deptFilter').value;
+
+      if(deptFilter && e.abteilung !== deptFilter) return false;
+      if(filterText){
+        return e.name.toLowerCase().includes(filterText) ||
+               e.funktion.toLowerCase().includes(filterText) ||
+               e.abteilung.toLowerCase().includes(filterText) ||
+               e.email.toLowerCase().includes(filterText);
       }
-      if(deptFilter.value && emp.abteilung !== deptFilter.value) return false;
-      if(statusFilter.value && emp.status !== statusFilter.value) return false;
       return true;
     });
 
     // Sortieren
-    if(sortKey){
-      filtered.sort((a,b)=>{
-        let vA = a[sortKey] || '';
-        let vB = b[sortKey] || '';
-        if(sortKey === 'eintritt'){
-          vA = new Date(vA);
-          vB = new Date(vB);
-        } else {
-          vA = vA.toString().toLowerCase();
-          vB = vB.toString().toLowerCase();
-        }
-        if(vA < vB) return sortDir === 'asc' ? -1 : 1;
-        if(vA > vB) return sortDir === 'asc' ? 1 : -1;
+    if(currentSort.key) {
+      filtered.sort((a,b) => {
+        let v1 = a[currentSort.key] || '';
+        let v2 = b[currentSort.key] || '';
+        v1 = v1.toString().toLowerCase();
+        v2 = v2.toString().toLowerCase();
+        if(v1 < v2) return currentSort.asc ? -1 : 1;
+        if(v1 > v2) return currentSort.asc ? 1 : -1;
         return 0;
       });
     }
 
+    // Pagination
     const totalPages = Math.ceil(filtered.length / rowsPerPage);
     if(currentPage > totalPages) currentPage = totalPages || 1;
-
-    const start = (currentPage -1)*rowsPerPage;
+    const start = (currentPage -1) * rowsPerPage;
     const pageItems = filtered.slice(start, start + rowsPerPage);
 
-    renderTable(pageItems);
-    renderPagination(totalPages);
-    toggleBulkActions();
-  }
-
-  // Tabelle rendern
-  function renderTable(data){
-    tableBody.innerHTML = '';
-    data.forEach((emp, i) => {
+    pageItems.forEach((e,i) => {
       const tr = document.createElement('tr');
 
-      // Checkbox
-      const tdSelect = document.createElement('td');
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.checked = emp.selected || false;
-      checkbox.addEventListener('change', () => {
-        emp.selected = checkbox.checked;
-        toggleBulkActions();
-        updateHeaderCheckbox();
-      });
-      tdSelect.appendChild(checkbox);
-      tdSelect.setAttribute('data-label', 'Auswählen');
-      tr.appendChild(tdSelect);
+      // Profilbild
+      const tdPic = document.createElement('td');
+      const img = document.createElement('img');
+      img.className = 'profile-pic';
+      img.src = e.profile || 'https://via.placeholder.com/40?text=?';
+      img.alt = 'Profilbild';
+      tdPic.appendChild(img);
+      tr.appendChild(tdPic);
 
-      // Name (editable)
+      // Name (editierbar)
       const tdName = document.createElement('td');
-      tdName.classList.add('editable');
-      tdName.contentEditable = true;
-      tdName.spellcheck = false;
-      tdName.textContent = emp.name;
-      tdName.setAttribute('data-label', 'Name');
-      tdName.addEventListener('blur', () => {
-        if(tdName.textContent.trim()){
-          emp.name = tdName.textContent.trim();
-          refreshDeptFilter();
-          filterSortPaginate();
-        } else {
-          tdName.textContent = emp.name; // Rücksetzen
-        }
-      });
+      tdName.className = 'name-cell';
+      const spanName = document.createElement('span');
+      spanName.textContent = e.name;
+      spanName.contentEditable = true;
+      spanName.className = 'editable';
+      spanName.onblur = () => { e.name = spanName.textContent.trim(); };
+      tdName.appendChild(spanName);
       tr.appendChild(tdName);
 
-      // Funktion (editable)
-      const tdFunktion = document.createElement('td');
-      tdFunktion.classList.add('editable');
-      tdFunktion.contentEditable = true;
-      tdFunktion.spellcheck = false;
-      tdFunktion.textContent = emp.funktion;
-      tdFunktion.setAttribute('data-label', 'Funktion');
-      tdFunktion.addEventListener('blur', () => {
-        if(tdFunktion.textContent.trim()){
-          emp.funktion = tdFunktion.textContent.trim();
-          filterSortPaginate();
-        } else {
-          tdFunktion.textContent = emp.funktion;
-        }
-      });
-      tr.appendChild(tdFunktion);
+      // Funktion (editierbar)
+      const tdFunc = document.createElement('td');
+      const spanFunc = document.createElement('span');
+      spanFunc.textContent = e.funktion;
+      spanFunc.contentEditable = true;
+      spanFunc.className = 'editable';
+      spanFunc.onblur = () => { e.funktion = spanFunc.textContent.trim(); };
+      tdFunc.appendChild(spanFunc);
+      tr.appendChild(tdFunc);
 
-      // Abteilung (editable)
-      const tdAbteilung = document.createElement('td');
-      tdAbteilung.classList.add('editable');
-      tdAbteilung.contentEditable = true;
-      tdAbteilung.spellcheck = false;
-      tdAbteilung.textContent = emp.abteilung;
-      tdAbteilung.setAttribute('data-label', 'Abteilung');
-      tdAbteilung.addEventListener('blur', () => {
-        if(tdAbteilung.textContent.trim()){
-          emp.abteilung = tdAbteilung.textContent.trim();
-          refreshDeptFilter();
-          filterSortPaginate();
-        } else {
-          tdAbteilung.textContent = emp.abteilung;
-        }
-      });
-      tr.appendChild(tdAbteilung);
+      // Abteilung (editierbar)
+      const tdDept = document.createElement('td');
+      const spanDept = document.createElement('span');
+      spanDept.textContent = e.abteilung;
+      spanDept.contentEditable = true;
+      spanDept.className = 'editable';
+      spanDept.onblur = () => { e.abteilung = spanDept.textContent.trim(); fillDeptFilter(); applyFilters(); };
+      tdDept.appendChild(spanDept);
+      tr.appendChild(tdDept);
 
-      // Email (editable, validieren)
+      // Email (editierbar)
       const tdEmail = document.createElement('td');
-      tdEmail.classList.add('editable');
-      tdEmail.contentEditable = true;
-      tdEmail.spellcheck = false;
-      tdEmail.textContent = emp.email;
-      tdEmail.setAttribute('data-label', 'E-Mail');
-      tdEmail.addEventListener('blur', () => {
-        const val = tdEmail.textContent.trim();
-        if(validateEmail(val)){
-          emp.email = val;
-          filterSortPaginate();
-          tdEmail.style.backgroundColor = '';
-        } else {
-          tdEmail.style.backgroundColor = '#f44336a1';
-        }
-      });
+      const spanEmail = document.createElement('span');
+      spanEmail.textContent = e.email;
+      spanEmail.contentEditable = true;
+      spanEmail.className = 'editable';
+      spanEmail.onblur = () => { e.email = spanEmail.textContent.trim(); };
+      tdEmail.appendChild(spanEmail);
       tr.appendChild(tdEmail);
 
-      // Status (editable via select)
+      // Status (editierbar via dropdown)
       const tdStatus = document.createElement('td');
-      tdStatus.setAttribute('data-label', 'Status');
       const selectStatus = document.createElement('select');
-      ['aktiv','urlaub','krank'].forEach(s=>{
+      ['aktiv', 'urlaub', 'krank'].forEach(s => {
         const opt = document.createElement('option');
         opt.value = s;
         opt.textContent = s.charAt(0).toUpperCase() + s.slice(1);
-        if(emp.status === s) opt.selected = true;
+        if(e.status === s) opt.selected = true;
         selectStatus.appendChild(opt);
       });
-      selectStatus.addEventListener('change', () => {
-        emp.status = selectStatus.value;
-        filterSortPaginate();
-      });
+      selectStatus.onchange = () => { e.status = selectStatus.value; renderTable(); };
       tdStatus.appendChild(selectStatus);
       tr.appendChild(tdStatus);
 
-      // Eintritt (editable)
-      const tdEintritt = document.createElement('td');
-      tdEintritt.classList.add('editable');
-      tdEintritt.contentEditable = true;
-      tdEintritt.spellcheck = false;
-      tdEintritt.textContent = emp.eintritt;
-      tdEintritt.setAttribute('data-label', 'Eintritt');
-      tdEintritt.addEventListener('blur', () => {
-        if(validateDate(tdEintritt.textContent.trim())){
-          emp.eintritt = tdEintritt.textContent.trim();
-          filterSortPaginate();
-          tdEintritt.style.backgroundColor = '';
-        } else {
-          tdEintritt.style.backgroundColor = '#f44336a1';
+      // Aktionen: Details + Löschen
+      const tdActions = document.createElement('td');
+      const btnDetails = document.createElement('button');
+      btnDetails.textContent = 'Details';
+      btnDetails.onclick = () => showDetails(e);
+      tdActions.appendChild(btnDetails);
+
+      const btnDelete = document.createElement('button');
+      btnDelete.textContent = 'Löschen';
+      btnDelete.style.backgroundColor = '#f44336';
+      btnDelete.onclick = () => {
+        if(confirm(`Mitarbeiter ${e.name} wirklich löschen?`)) {
+          const idx = employees.indexOf(e);
+          if(idx > -1) {
+            employees.splice(idx,1);
+            fillDeptFilter();
+            applyFilters();
+          }
         }
-      });
-      tr.appendChild(tdEintritt);
+      };
+      tdActions.appendChild(btnDelete);
 
-      // Telefon (editable)
-      const tdTelefon = document.createElement('td');
-      tdTelefon.classList.add('editable');
-      tdTelefon.contentEditable = true;
-      tdTelefon.spellcheck = false;
-      tdTelefon.textContent = emp.telefon;
-      tdTelefon.setAttribute('data-label', 'Telefon');
-      tdTelefon.addEventListener('blur', () => {
-        emp.telefon = tdTelefon.textContent.trim();
-      });
-      tr.appendChild(tdTelefon);
+      tr.appendChild(tdActions);
 
-      // Notizen (editable)
-      const tdNotizen = document.createElement('td');
-      tdNotizen.classList.add('editable');
-      tdNotizen.contentEditable = true;
-      tdNotizen.spellcheck = false;
-      tdNotizen.textContent = emp.notizen;
-      tdNotizen.setAttribute('data-label', 'Notizen');
-      tdNotizen.addEventListener('blur', () => {
-        emp.notizen = tdNotizen.textContent.trim();
-      });
-      tr.appendChild(tdNotizen);
-
-      // Aktionen (Details anzeigen)
-      const tdAktionen = document.createElement('td');
-      const detailBtn = document.createElement('button');
-      detailBtn.textContent = "Details";
-      detailBtn.addEventListener('click', () => {
-        showDetailModal(emp);
-      });
-      tdAktionen.appendChild(detailBtn);
-      tr.appendChild(tdAktionen);
-
-      tableBody.appendChild(tr);
+      tbody.appendChild(tr);
     });
+
+    renderPagination(totalPages);
   }
 
-  // Validierung E-Mail
-  function validateEmail(email){
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
+  // Modal öffnen
+  function showDetails(e){
+    const modal = document.getElementById('detailModal');
+    const body = document.getElementById('detailBody');
+    body.innerHTML = `
+      <p><strong>Name:</strong> ${e.name}</p>
+      <p><strong>Funktion:</strong> ${e.funktion}</p>
+      <p><strong>Abteilung:</strong> ${e.abteilung}</p>
+      <p><strong>E-Mail:</strong> <a href="mailto:${e.email}">${e.email}</a></p>
+      <p><strong>Status:</strong> ${e.status.charAt(0).toUpperCase() + e.status.slice(1)}</p>
+      <img src="${e.profile || 'https://via.placeholder.com/100?text=?'}" alt="Profilbild" style="width:100px; border-radius: 50%; margin-top: 10px;">
+    `;
+    modal.style.display = 'flex';
+    if(document.body.classList.contains('light')) {
+      document.querySelector('#modalContent').classList.add('light');
+    } else {
+      document.querySelector('#modalContent').classList.remove('light');
+    }
   }
 
-  // Validierung Datum (YYYY-MM-DD)
-  function validateDate(date){
-    const re = /^\d{4}-\d{2}-\d{2}$/;
-    if(!re.test(date)) return false;
-    const d = new Date(date);
-    return !isNaN(d.getTime());
+  function closeModal(e){
+    if(e.target.id === 'detailModal' || e.target.classList.contains('close-btn')){
+      document.getElementById('detailModal').style.display = 'none';
+    }
+  }
+
+  // Filter anwenden
+  function applyFilters(){
+    currentPage = 1;
+    renderTable();
+  }
+
+  // Sortierung
+  document.querySelectorAll('th[data-key]').forEach(th => {
+    th.onclick = () => {
+      const key = th.getAttribute('data-key');
+      if(currentSort.key === key){
+        currentSort.asc = !currentSort.asc;
+      } else {
+        currentSort.key = key;
+        currentSort.asc = true;
+      }
+      renderTable();
+    };
+  });
+
+  // Neuen Mitarbeiter hinzufügen
+  function addEmployee(e){
+    e.preventDefault();
+    const name = document.getElementById('newName').value.trim();
+    const funktion = document.getElementById('newFunktion').value.trim();
+    const abteilung = document.getElementById('newAbteilung').value.trim();
+    const email = document.getElementById('newEmail').value.trim();
+    const status = document.getElementById('newStatus').value;
+    const profile = document.getElementById('newProfile').value.trim();
+
+    employees.push({name, funktion, abteilung, email, status, profile});
+    document.getElementById('addForm').reset();
+    fillDeptFilter();
+    applyFilters();
+  }
+
+  // CSV Export
+  function exportCSV(){
+    let csv = 'Name,Funktion,Abteilung,E-Mail,Status,Profilbild\n';
+    employees.forEach(e => {
+      csv += `"${e.name}","${e.funktion}","${e.abteilung}","${e.email}","${e.status}","${e.profile || ''}"\n`;
+    });
+    const blob = new Blob([csv], {type: 'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'mitarbeiter.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // Dark/Light Mode Umschalter
+  function toggleMode(){
+    document.body.classList.toggle('light');
+    if(document.body.classList.contains('light')){
+      localStorage.setItem('mode', 'light');
+    } else {
+      localStorage.removeItem('mode');
+    }
+    renderTable();
   }
 
   // Pagination rendern
   function renderPagination(totalPages){
-    paginationDiv.innerHTML = '';
+    const container = document.getElementById('pagination');
+    container.innerHTML = '';
     if(totalPages <= 1) return;
 
-    const prevBtn = document.createElement('button');
-    prevBtn.textContent = "«";
-    prevBtn.disabled = currentPage === 1;
-    prevBtn.addEventListener('click', () => {
-      if(currentPage > 1){
-        currentPage--;
-        filterSortPaginate();
-      }
-    });
-    paginationDiv.appendChild(prevBtn);
-
     for(let i=1; i<=totalPages; i++){
-      const pageBtn = document.createElement('button');
-      pageBtn.textContent = i;
-      if(i === currentPage) pageBtn.classList.add('active');
-      pageBtn.addEventListener('click', () => {
+      const btn = document.createElement('button');
+      btn.textContent = i;
+      if(i === currentPage) btn.classList.add('active');
+      btn.onclick = () => {
         currentPage = i;
-        filterSortPaginate();
-      });
-      paginationDiv.appendChild(pageBtn);
+        renderTable();
+      };
+      container.appendChild(btn);
     }
-
-    const nextBtn = document.createElement('button');
-    nextBtn.textContent = "»";
-    nextBtn.disabled = currentPage === totalPages;
-    nextBtn.addEventListener('click', () => {
-      if(currentPage < totalPages){
-        currentPage++;
-        filterSortPaginate();
-      }
-    });
-    paginationDiv.appendChild(nextBtn);
   }
 
-  // Bulk Actions anzeigen/verstecken
-  function toggleBulkActions(){
-    const anySelected = employees.some(e => e.selected);
-    bulkActions.style.display = anySelected ? 'block' : 'none';
-  }
-
-  // Alle Checkboxen auswählen/deselektieren
-  selectAllCheckbox.addEventListener('change', () => {
-    const checked = selectAllCheckbox.checked;
-    employees.forEach(e => e.selected = checked);
-    filterSortPaginate();
-  });
-
-  // Header Checkbox (für alle in der aktuellen Seite)
-  function updateHeaderCheckbox(){
-    const filtered = employees.filter(emp => {
-      if(filterInput.value){
-        if(!(emp.name.toLowerCase().includes(filterInput.value.toLowerCase()) ||
-             emp.funktion.toLowerCase().includes(filterInput.value.toLowerCase()) ||
-             emp.email.toLowerCase().includes(filterInput.value.toLowerCase()))){
-          return false;
-        }
-      }
-      if(deptFilter.value && emp.abteilung !== deptFilter.value) return false;
-      if(statusFilter.value && emp.status !== statusFilter.value) return false;
-      return true;
-    });
-
-    const start = (currentPage -1)*rowsPerPage;
-    const pageItems = filtered.slice(start, start + rowsPerPage);
-
-    const allChecked = pageItems.every(e => e.selected);
-    headerCheckbox.checked = allChecked;
-  }
-
-  // Bulk Status ändern
-  bulkStatusSelect.addEventListener('change', () => {
-    const status = bulkStatusSelect.value;
-    if(status){
-      employees.forEach(e => {
-        if(e.selected){
-          e.status = status;
-          e.selected = false;
-        }
-      });
-      bulkStatusSelect.value = '';
-      filterSortPaginate();
-    }
-  });
-
-  // Bulk löschen
-  bulkDeleteBtn.addEventListener('click', () => {
-    for(let i = employees.length -1; i>=0; i--){
-      if(employees[i].selected){
-        employees.splice(i,1);
-      }
-    }
-    filterSortPaginate();
-  });
-
-  // CSV Export
-  exportBtn.addEventListener('click', () => {
-    let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Name,Funktion,Abteilung,E-Mail,Status,Eintritt,Telefon,Notizen\n";
-    employees.forEach(emp => {
-      const row = [
-        `"${emp.name.replace(/"/g, '""')}"`,
-        `"${emp.funktion.replace(/"/g, '""')}"`,
-        `"${emp.abteilung.replace(/"/g, '""')}"`,
-        `"${emp.email.replace(/"/g, '""')}"`,
-        `"${emp.status}"`,
-        `"${emp.eintritt}"`,
-        `"${emp.telefon.replace(/"/g, '""')}"`,
-        `"${emp.notizen.replace(/"/g, '""')}"`
-      ].join(',');
-      csvContent += row + "\n";
-    });
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "mitarbeiter.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  });
-
-  // CSV Import
-  importInput.addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const text = e.target.result;
-      const lines = text.split(/\r?\n/);
-      if(lines.length < 2) return;
-      const headers = lines[0].split(',');
-      for(let i=1; i<lines.length; i++){
-        if(!lines[i].trim()) continue;
-        const values = parseCSVLine(lines[i]);
-        if(values.length !== headers.length) continue;
-        const emp = {
-          name: values[0].replace(/(^"|"$)/g, ''),
-          funktion: values[1].replace(/(^"|"$)/g, ''),
-          abteilung: values[2].replace(/(^"|"$)/g, ''),
-          email: values[3].replace(/(^"|"$)/g, ''),
-          status: values[4].replace(/(^"|"$)/g, ''),
-          eintritt: values[5].replace(/(^"|"$)/g, ''),
-          telefon: values[6].replace(/(^"|"$)/g, ''),
-          notizen: values[7].replace(/(^"|"$)/g, ''),
-          selected: false
-        };
-        employees.push(emp);
-      }
-      refreshDeptFilter();
-      filterSortPaginate();
-      importInput.value = '';
-    };
-    reader.readAsText(file);
-  });
-
-  // CSV Zeile parsen (Berücksichtigt ""-Einschlüsse)
-  function parseCSVLine(line){
-    const result = [];
-    let current = '';
-    let inQuotes = false;
-    for(let i=0; i<line.length; i++){
-      const char = line[i];
-      if(char === '"' && (i === 0 || line[i-1] !== '\\')){
-        inQuotes = !inQuotes;
-      } else if(char === ',' && !inQuotes){
-        result.push(current);
-        current = '';
-      } else {
-        current += char;
-      }
-    }
-    result.push(current);
-    return result;
-  }
-
-  // Details Modal anzeigen
-  function showDetailModal(emp){
-    modalBody.innerHTML = `
-      <p><strong>Name:</strong> ${emp.name}</p>
-      <p><strong>Funktion:</strong> ${emp.funktion}</p>
-      <p><strong>Abteilung:</strong> ${emp.abteilung}</p>
-      <p><strong>E-Mail:</strong> ${emp.email}</p>
-      <p><strong>Status:</strong> ${emp.status}</p>
-      <p><strong>Eintritt:</strong> ${emp.eintritt}</p>
-      <p><strong>Telefon:</strong> ${emp.telefon}</p>
-      <p><strong>Notizen:</strong> ${emp.notizen}</p>
-    `;
-    detailModal.style.display = 'block';
-  }
-
-  // Modal schließen
-  modalCloseBtn.addEventListener('click', () => {
-    detailModal.style.display = 'none';
-  });
-
-  // Klick außerhalb Modal schließt es
-  window.addEventListener('click', (e) => {
-    if(e.target === detailModal){
-      detailModal.style.display = 'none';
-    }
-  });
-
-  // Initial setup
-  refreshDeptFilter();
-  filterSortPaginate();
-
-})();
+  fillDeptFilter();
+  renderTable();
 </script>
 
 </body>
