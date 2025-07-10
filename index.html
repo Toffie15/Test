@@ -1,255 +1,323 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mitarbeiterliste – Dark Mode</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-
-    :root {
-      --bg: #121212;
-      --card-bg: #1e1e1e;
-      --text: #e0e0e0;
-      --text-muted: #aaaaaa;
-      --primary: #4f8ef7;
-      --primary-light: #729dfc;
-      --border: #2c2c2c;
-      --hover: #333333;
-      --shadow: rgba(0,0,0,0.7);
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mitarbeiterliste mit Editieren & Hinzufügen</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+  :root {
+    --bg: #121212;
+    --card-bg: #1e1e1e;
+    --text: #e0e0e0;
+    --text-muted: #aaaaaa;
+    --primary: #4f8ef7;
+    --primary-light: #729dfc;
+    --border: #2c2c2c;
+    --hover: #333333;
+    --shadow: rgba(0,0,0,0.7);
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 {
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    letter-spacing: 0.03em;
+  }
+  #search {
+    width: 100%;
+    max-width: 480px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background-color: var(--card-bg);
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    transition: border-color 0.3s ease;
+  }
+  #search::placeholder { color: var(--text-muted); }
+  #search:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 8px var(--primary-light);
+    background-color: var(--bg);
+  }
+  table {
+    width: 100%;
+    max-width: 960px;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px var(--shadow);
+    user-select: none;
+  }
+  thead tr {
+    background-color: #2a2a2a;
+  }
+  th, td {
+    padding: 1rem 1.5rem;
+    color: var(--text);
+    text-align: left;
+    white-space: nowrap;
+    font-weight: 400;
+  }
+  th {
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s ease;
+    user-select: none;
+  }
+  th:hover { color: var(--primary); }
+  th.sort-asc::after,
+  th.sort-desc::after {
+    content: "";
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    transform: translateY(-50%);
+  }
+  th.sort-asc::after {
+    border-width: 6px 5px 0 5px;
+    border-color: var(--primary) transparent transparent transparent;
+  }
+  th.sort-desc::after {
+    border-width: 0 5px 6px 5px;
+    border-color: transparent transparent var(--primary) transparent;
+  }
+  tbody tr {
+    border-top: 1px solid var(--border);
+    transition: background-color 0.3s ease;
+    user-select: text;
+  }
+  tbody tr:hover {
+    background-color: var(--hover);
+  }
+  td[contenteditable="true"] {
+    background-color: #2a2a50;
+    border-radius: 4px;
+    cursor: text;
+  }
+  form#addForm {
+    width: 100%;
+    max-width: 960px;
+    background: var(--card-bg);
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow);
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  form#addForm input {
+    flex: 1 1 150px;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background-color: var(--bg);
+    color: var(--text);
+    transition: border-color 0.3s ease;
+  }
+  form#addForm input::placeholder {
+    color: var(--text-muted);
+  }
+  form#addForm input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 8px var(--primary-light);
+    background-color: var(--card-bg);
+  }
+  form#addForm button {
+    background-color: var(--primary);
+    border: none;
+    padding: 0 1.5rem;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex: 0 0 auto;
+  }
+  form#addForm button:hover {
+    background-color: var(--primary-light);
+  }
+  @media (max-width: 720px) {
+    table, thead, tbody, th, td, tr {
+      display: block;
     }
-
-    * {
-      box-sizing: border-box;
+    thead tr {
+      display: none;
     }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 2rem;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    h1 {
-      font-weight: 600;
+    tbody tr {
       margin-bottom: 1.5rem;
-      font-size: 2rem;
-      letter-spacing: 0.03em;
-    }
-
-    #search {
-      width: 100%;
-      max-width: 480px;
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background-color: var(--card-bg);
-      color: var(--text);
-      margin-bottom: 1.5rem;
-      transition: border-color 0.3s ease;
-    }
-    #search::placeholder {
-      color: var(--text-muted);
-    }
-    #search:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 8px var(--primary-light);
-      background-color: var(--bg);
-    }
-
-    table {
-      width: 100%;
-      max-width: 960px;
-      border-collapse: separate;
-      border-spacing: 0;
       background-color: var(--card-bg);
       border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px var(--shadow);
-      user-select: none;
+      padding: 1rem;
     }
-
-    thead tr {
-      background-color: #2a2a2a;
-    }
-
-    th, td {
-      padding: 1rem 1.5rem;
-      color: var(--text);
-      text-align: left;
-      white-space: nowrap;
-      cursor: default;
-      font-weight: 400;
-    }
-
-    th {
-      font-weight: 600;
-      cursor: pointer;
+    tbody td {
+      padding: 0.5rem 1rem 0.5rem 45%;
       position: relative;
-      transition: color 0.3s ease;
-      user-select: none;
+      white-space: normal;
+      border: none;
+      user-select: text;
     }
-    th:hover {
-      color: var(--primary);
-    }
-
-    th.sort-asc::after,
-    th.sort-desc::after {
-      content: "";
+    tbody td::before {
+      content: attr(data-label);
       position: absolute;
-      right: 1rem;
+      left: 1rem;
       top: 50%;
-      width: 0;
-      height: 0;
-      border-style: solid;
       transform: translateY(-50%);
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
     }
-    th.sort-asc::after {
-      border-width: 6px 5px 0 5px;
-      border-color: var(--primary) transparent transparent transparent;
+    form#addForm {
+      flex-direction: column;
     }
-    th.sort-desc::after {
-      border-width: 0 5px 6px 5px;
-      border-color: transparent transparent var(--primary) transparent;
+    form#addForm input, form#addForm button {
+      flex: none;
+      width: 100%;
     }
-
-    tbody tr {
-      border-top: 1px solid var(--border);
-      transition: background-color 0.3s ease;
-    }
-    tbody tr:hover {
-      background-color: var(--hover);
-    }
-
-    @media (max-width: 720px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-      thead tr {
-        display: none;
-      }
-      tbody tr {
-        margin-bottom: 1.5rem;
-        background-color: var(--card-bg);
-        border-radius: 12px;
-        padding: 1rem;
-      }
-      tbody td {
-        padding: 0.5rem 1rem 0.5rem 45%;
-        position: relative;
-        white-space: normal;
-        border: none;
-      }
-      tbody td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        font-weight: 600;
-        color: var(--text-muted);
-        white-space: nowrap;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
 
-  <h1>Mitarbeiterliste</h1>
-  <input type="text" id="search" placeholder="Suchen..." autocomplete="off" />
+<h1>Mitarbeiterliste</h1>
 
-  <table id="mitarbeiterTable" role="grid" aria-label="Mitarbeiterliste">
-    <thead>
-      <tr>
-        <th data-key="name" scope="col" tabindex="0">Name</th>
-        <th data-key="abteilung" scope="col" tabindex="0">Abteilung</th>
-        <th data-key="position" scope="col" tabindex="0">Position</th>
-        <th data-key="email" scope="col" tabindex="0">Email</th>
-        <th data-key="telefon" scope="col" tabindex="0">Telefon</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td data-label="Name">Max Mustermann</td>
-        <td data-label="Abteilung">Vertrieb</td>
-        <td data-label="Position">Manager</td>
-        <td data-label="Email">max.mustermann@example.com</td>
-        <td data-label="Telefon">01234 56789</td>
-      </tr>
-      <tr>
-        <td data-label="Name">Anna Müller</td>
-        <td data-label="Abteilung">Marketing</td>
-        <td data-label="Position">Teamleiterin</td>
-        <td data-label="Email">anna.mueller@example.com</td>
-        <td data-label="Telefon">09876 54321</td>
-      </tr>
-      <tr>
-        <td data-label="Name">Peter Schmidt</td>
-        <td data-label="Abteilung">Entwicklung</td>
-        <td data-label="Position">Softwareentwickler</td>
-        <td data-label="Email">peter.schmidt@example.com</td>
-        <td data-label="Telefon">01555 123456</td>
-      </tr>
-    </tbody>
-  </table>
+<input type="text" id="search" placeholder="Suchen..." autocomplete="off" />
 
-  <script>
-    const table = document.getElementById('mitarbeiterTable');
-    const searchInput = document.getElementById('search');
+<form id="addForm" aria-label="Neuen Mitarbeiter hinzufügen">
+  <input type="text" id="inputName" placeholder="Name" required />
+  <input type="text" id="inputAbteilung" placeholder="Abteilung" required />
+  <input type="text" id="inputPosition" placeholder="Position" required />
+  <input type="email" id="inputEmail" placeholder="Email" required />
+  <input type="tel" id="inputTelefon" placeholder="Telefon" required />
+  <button type="submit">Hinzufügen</button>
+</form>
+
+<table id="mitarbeiterTable" role="grid" aria-label="Mitarbeiterliste">
+  <thead>
+    <tr>
+      <th data-key="name" scope="col" tabindex="0">Name</th>
+      <th data-key="abteilung" scope="col" tabindex="0">Abteilung</th>
+      <th data-key="position" scope="col" tabindex="0">Position</th>
+      <th data-key="email" scope="col" tabindex="0">Email</th>
+      <th data-key="telefon" scope="col" tabindex="0">Telefon</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td data-label="Name" contenteditable="true">Max Mustermann</td>
+      <td data-label="Abteilung" contenteditable="true">Vertrieb</td>
+      <td data-label="Position" contenteditable="true">Manager</td>
+      <td data-label="Email" contenteditable="true">max.mustermann@example.com</td>
+      <td data-label="Telefon" contenteditable="true">01234 56789</td>
+    </tr>
+    <tr>
+      <td data-label="Name" contenteditable="true">Anna Müller</td>
+      <td data-label="Abteilung" contenteditable="true">Marketing</td>
+      <td data-label="Position" contenteditable="true">Teamleiterin</td>
+      <td data-label="Email" contenteditable="true">anna.mueller@example.com</td>
+      <td data-label="Telefon" contenteditable="true">09876 54321</td>
+    </tr>
+    <tr>
+      <td data-label="Name" contenteditable="true">Peter Schmidt</td>
+      <td data-label="Abteilung" contenteditable="true">Entwicklung</td>
+      <td data-label="Position" contenteditable="true">Softwareentwickler</td>
+      <td data-label="Email" contenteditable="true">peter.schmidt@example.com</td>
+      <td data-label="Telefon" contenteditable="true">01512 345678</td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+  // Sortieren
+  const table = document.getElementById('mitarbeiterTable');
+  const headers = table.querySelectorAll('th');
+  let sortDirection = {};
+  headers.forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.dataset.key;
+      const tbody = table.tBodies[0];
+      const rows = Array.from(tbody.rows);
+      const currentDir = sortDirection[key] === 'asc' ? 'desc' : 'asc';
+      sortDirection = {}; // nur eine Spalte sortiert
+      sortDirection[key] = currentDir;
+
+      rows.sort((a, b) => {
+        const aText = a.querySelector(`td[data-label="${th.textContent.trim()}"]`).textContent.trim().toLowerCase();
+        const bText = b.querySelector(`td[data-label="${th.textContent.trim()}"]`).textContent.trim().toLowerCase();
+        if (aText < bText) return currentDir === 'asc' ? -1 : 1;
+        if (aText > bText) return currentDir === 'asc' ? 1 : -1;
+        return 0;
+      });
+      // sort-classes setzen
+      headers.forEach(h => h.classList.remove('sort-asc', 'sort-desc'));
+      th.classList.add(currentDir === 'asc' ? 'sort-asc' : 'sort-desc');
+
+      // sortierte Reihen ins tbody
+      rows.forEach(row => tbody.appendChild(row));
+    });
+  });
+
+  // Suche
+  const searchInput = document.getElementById('search');
+  searchInput.addEventListener('input', () => {
+    const val = searchInput.value.toLowerCase();
     const tbody = table.tBodies[0];
-    const headers = table.tHead.rows[0].cells;
+    Array.from(tbody.rows).forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(val) ? '' : 'none';
+    });
+  });
 
-    // Suchfunktion
-    searchInput.addEventListener('input', () => {
-      const filter = searchInput.value.toLowerCase();
-      Array.from(tbody.rows).forEach(row => {
-        const text = row.textContent.toLowerCase();
-        row.style.display = text.includes(filter) ? '' : 'none';
-      });
+  // Hinzufügen
+  const addForm = document.getElementById('addForm');
+  addForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('inputName').value.trim();
+    const abteilung = document.getElementById('inputAbteilung').value.trim();
+    const position = document.getElementById('inputPosition').value.trim();
+    const email = document.getElementById('inputEmail').value.trim();
+    const telefon = document.getElementById('inputTelefon').value.trim();
+    if (!name || !abteilung || !position || !email || !telefon) return;
+
+    const tbody = table.tBodies[0];
+    const newRow = document.createElement('tr');
+
+    [name, abteilung, position, email, telefon].forEach((text, i) => {
+      const td = document.createElement('td');
+      td.textContent = text;
+      td.setAttribute('data-label', headers[i].textContent.trim());
+      td.contentEditable = 'true';
+      newRow.appendChild(td);
     });
 
-    // Sortierung
-    let sortDirection = {};
-    Array.from(headers).forEach(header => {
-      header.addEventListener('click', () => {
-        const key = header.getAttribute('data-key');
-        const rows = Array.from(tbody.rows);
-        const currentDirection = sortDirection[key] === 'asc' ? 'desc' : 'asc';
+    tbody.appendChild(newRow);
 
-        rows.sort((a, b) => {
-          const aText = a.querySelector(`td[data-label="${header.textContent}"]`).textContent.trim().toLowerCase();
-          const bText = b.querySelector(`td[data-label="${header.textContent}"]`).textContent.trim().toLowerCase();
-
-          if (aText < bText) return currentDirection === 'asc' ? -1 : 1;
-          if (aText > bText) return currentDirection === 'asc' ? 1 : -1;
-          return 0;
-        });
-
-        rows.forEach(row => tbody.appendChild(row));
-
-        Array.from(headers).forEach(h => h.classList.remove('sort-asc', 'sort-desc'));
-        header.classList.add(currentDirection === 'asc' ? 'sort-asc' : 'sort-desc');
-
-        sortDirection = {};
-        sortDirection[key] = currentDirection;
-      });
-
-      // Keyboard support for sorting with Enter or Space
-      header.addEventListener('keydown', (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          header.click();
-        }
-      });
-    });
-  </script>
+    addForm.reset();
+  });
+</script>
 
 </body>
 </html>
