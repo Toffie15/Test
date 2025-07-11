@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mitarbeiterliste</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+  th { cursor: pointer; background: #eee; }
+  input[type="text"] { margin-bottom: 10px; padding: 5px; width: 100%; max-width: 300px; }
+  button { padding: 5px 10px; margin: 5px; }
+  @media (max-width: 600px) {
+    table, thead, tbody, th, td, tr { display: block; }
+    tr { margin-bottom: 15px; }
+    th, td { border: none; padding: 5px; }
+    th { background: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Mitarbeiterliste</h1>
+
+<input type="text" id="search" placeholder="Suche Mitarbeiter..." />
+
+<table id="employeeTable">
+  <thead>
+    <tr>
+      <th data-key="name">Name</th>
+      <th data-key="position">Position</th>
+      <th data-key="department">Abteilung</th>
+      <th data-key="email">E-Mail</th>
+      <th data-key="phone">Telefon</th>
+      <th>Aktion</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<button onclick="exportCSV()">CSV Export</button>
+<button onclick="showAddForm()">Neuen Mitarbeiter hinzufügen</button>
+
+<div id="addForm" style="display:none; margin-top:20px;">
+  <h2>Neuen Mitarbeiter hinzufügen</h2>
+  <input id="newName" placeholder="Name" /><br />
+  <input id="newPosition" placeholder="Position" /><br />
+  <input id="newDepartment" placeholder="Abteilung" /><br />
+  <input id="newEmail" placeholder="E-Mail" /><br />
+  <input id="newPhone" placeholder="Telefon" /><br />
+  <button onclick="addEmployee()">Hinzufügen</button>
+  <button onclick="hideAddForm()">Abbrechen</button>
+</div>
+
+<script>
+  let employees = [
+    {name: "Max Mustermann", position: "Manager", department: "Vertrieb", email: "max@firma.de", phone: "0123456789"},
+    {name: "Anna Müller", position: "Entwicklerin", department: "IT", email: "anna@firma.de", phone: "0987654321"},
+  ];
+
+  const tbody = document.querySelector("#employeeTable tbody");
+  const searchInput = document.getElementById("search");
+  let sortKey = null;
+  let sortAsc = true;
+
+  function renderTable() {
+    let filtered = employees.filter(e => 
+      Object.values(e).some(val => val.toLowerCase().includes(searchInput.value.toLowerCase()))
+    );
+    if (sortKey) {
+      filtered.sort((a,b) => {
+        if (a[sortKey] < b[sortKey]) return sortAsc ? -1 : 1;
+        if (a[sortKey] > b[sortKey]) return sortAsc ? 1 : -1;
+        return 0;
+      });
+    }
+    tbody.innerHTML = "";
+    filtered.forEach((e,i) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${e.name}</td>
+        <td>${e.position}</td>
+        <td>${e.department}</td>
+        <td>${e.email}</td>
+        <td>${e.phone}</td>
+        <td><button onclick="editEmployee(${i})">Bearbeiten</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  searchInput.addEventListener("input", renderTable);
+
+  document.querySelectorAll("#employeeTable th[data-key]").forEach(th => {
+    th.addEventListener("click", () => {
+      const key = th.dataset.key;
+      if (sortKey === key) sortAsc = !sortAsc;
+      else { sortKey = key; sortAsc = true; }
+      renderTable();
+    });
+  });
+
+  function showAddForm() {
+    document.getElementById("addForm").style.display = "block";
+  }
+  function hideAddForm() {
+    document.getElementById("addForm").style.display = "none";
+  }
+
+  function addEmployee() {
+    const name = document.getElementById("newName").value.trim();
+    const position = document.getElementById("newPosition").value.trim();
+    const department = document.getElementById("newDepartment").value.trim();
+    const email = document.getElementById("newEmail").value.trim();
+    const phone = document.getElementById("newPhone").value.trim();
+    if(!name) return alert("Name ist Pflicht.");
+    employees.push({name, position, department, email, phone});
+    hideAddForm();
+    clearAddForm();
+    renderTable();
+  }
+
+  function clearAddForm() {
+    document.getElementById("newName").value = "";
+    document.getElementById("newPosition").value = "";
+    document.getElementById("newDepartment").value = "";
+    document.getElementById("newEmail").value = "";
+    document.getElementById("newPhone").value = "";
+  }
+
+  function editEmployee(index) {
+    const e = employees[index];
+    const newName = prompt("Name:", e.name);
+    if (newName === null) return;
+    const newPosition = prompt("Position:", e.position);
+    if (newPosition === null) return;
+    const newDepartment = prompt("Abteilung:", e.department);
+    if (newDepartment === null) return;
+    const newEmail = prompt("E-Mail:", e.email);
+    if (newEmail === null) return;
+    const newPhone = prompt("Telefon:", e.phone);
+    if (newPhone === null) return;
+
+    employees[index] = {
+      name: newName.trim(),
+      position: newPosition.trim(),
+      department: newDepartment.trim(),
+      email: newEmail.trim(),
+      phone: newPhone.trim()
+    };
+    renderTable();
+  }
+
+  function exportCSV() {
+    let csv = "Name,Position,Abteilung,E-Mail,Telefon\n";
+    employees.forEach(e => {
+      csv += `"${e.name}","${e.position}","${e.department}","${e.email}","${e.phone}"\n`;
+    });
+    const blob = new Blob([csv], {type: "text/csv"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "mitarbeiterliste.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  renderTable();
+</script>
+
+</body>
+</html>
