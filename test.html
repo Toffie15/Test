@@ -6,21 +6,17 @@
   <title>Link-Karten Übersicht</title>
   <style>
     :root {
-      --bg-light: #f4f4f4;
       --bg-dark: #121212;
-      --text-light: #222;
       --text-dark: #eee;
-      --card-light: #ffffff;
       --card-dark: #1f1f1f;
-      --accent: #007bff;
+      --accent: #66b0ff;
     }
 
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: var(--bg-light);
-      color: var(--text-light);
-      transition: background-color 0.3s, color 0.3s;
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
     }
 
     .container {
@@ -33,18 +29,18 @@
     }
 
     .card {
-      background-color: var(--card-light);
+      background-color: var(--card-dark);
       border-radius: 10px;
       padding: 1.5rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s, background-color 0.3s;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s;
       text-decoration: none;
       color: inherit;
     }
 
     .card:hover {
       transform: scale(1.03);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
     }
 
     .card-title {
@@ -56,29 +52,6 @@
     .card-desc {
       font-size: 0.95rem;
       color: inherit;
-    }
-
-    .toggle-mode {
-      display: block;
-      margin: 2rem auto;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      border: 2px solid currentColor;
-      border-radius: 5px;
-      background: none;
-    }
-
-    body.dark {
-      background-color: var(--bg-dark);
-      color: var(--text-dark);
-    }
-
-    body.dark .card {
-      background-color: var(--card-dark);
-    }
-
-    body.dark .card-title {
-      color: #66b0ff;
     }
   </style>
 </head>
@@ -104,14 +77,6 @@
 
     <!-- Weitere Karten hier -->
   </div>
-
-  <button class="toggle-mode" onclick="toggleMode()">Dark/Light Mode</button>
-
-  <script>
-    function toggleMode() {
-      document.body.classList.toggle('dark');
-    }
-  </script>
 
 </body>
 </html>
