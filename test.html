@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Link-Karten Übersicht</title>
+  <title>Link-Datenbank</title>
   <style>
     :root {
       --bg-dark: #121212;
-      --text-dark: #eee;
-      --card-dark: #1f1f1f;
-      --accent: #66b0ff;
+      --text-dark: #00ffdd;
+      --card-dark: #252525;
+      --accent: #8c00ff;
     }
 
     body {
@@ -19,13 +19,30 @@
       color: var(--text-dark);
     }
 
-    .container {
-      max-width: 900px;
+    h1, h2 {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .category {
       margin: 2rem auto;
-      padding: 1rem;
+      max-width: 1000px;
+    }
+
+    .category-title {
+      font-size: 1.5rem;
+      margin: 1rem 0;
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 0.5rem;
+      text-align: left;
+    }
+
+    .container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1.5rem;
+      padding: 0 1rem;
     }
 
     .card {
@@ -57,25 +74,66 @@
 </head>
 <body>
 
-  <h1 style="text-align: center; margin-top: 1rem;">Meine Link-Karten</h1>
+  <h1>📁 Meine Link-Datenbank</h1>
 
-  <div class="container">
-    <a class="card" href="https://example.com" target="_blank">
-      <div class="card-title">Beispiel-Link</div>
-      <div class="card-desc">Das ist ein beschreibender Text zum Beispiel-Link.</div>
-    </a>
+  <!-- Kategorie 1 -->
+  <div class="category">
+    <div class="category-title">🔍 Allgemeines</div>
+    <div class="container">
+      <a class="card" href="https://google.com" target="_blank">
+        <div class="card-title">Google</div>
+        <div class="card-desc">Suchmaschine für alles Mögliche.</div>
+      </a>
+    </div>
+  </div>
 
-    <a class="card" href="https://google.com" target="_blank">
-      <div class="card-title">Google</div>
-      <div class="card-desc">Suchmaschine für alles Mögliche.</div>
-    </a>
+  <!-- Kategorie 2 -->
+  <div class="category">
+    <div class="category-title">🚑 EMS / Leitstelle</div>
+    <div class="container">
+      <a class="card" href="https://docs.google.com/spreadsheets/d/1CGa3hQv9bsCVftstXfredxA58slV9uikAu4cKUWtZGc/edit?gid=838951845#gid=838951845" target="_blank">
+        <div class="card-title">EMS-Leitstelle</div>
+        <div class="card-desc">Die Leitstelle vom EMS zum Eintragen</div>
+      </a>
+    </div>
+  </div>
 
-    <a class="card" href="https://github.com" target="_blank">
-      <div class="card-title">GitHub</div>
-      <div class="card-desc">Plattform für Code und Zusammenarbeit.</div>
-    </a>
+  <!-- Kategorie 3 -->
+  <div class="category">
+    <div class="category-title">🏃‍♂️ RP / Intern</div>
+    <div class="container">
+      <a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank">
+        <div class="card-title">Flucht</div>
+        <div class="card-desc">Der Fluchtplan von Luca Valentine (Geheim)</div>
+      </a>
+    </div>
+  </div>
 
-    <!-- Weitere Karten hier -->
+  <!-- Kategorie 4 -->
+  <div class="category">
+    <div class="category-title">🧠 Therapie</div>
+    <div class="container">
+      <a class="card" href="https://onedrive.live.com/personal/00ad9689b232ac5c/_layouts/15/Doc.aspx?sourcedoc=%7B09b2eca6-4630-46ce-9637-2b3453026bc5%7D&action=default" target="_blank">
+        <div class="card-title">Einweisung</div>
+        <div class="card-desc">Therapie-Einweisungsmappe PowerPoint</div>
+      </a>
+
+      <a class="card" href="https://docs.google.com/document/d/1qKr_nhKol9tfZngEDpFomKfwq-HWv3ow7yAAk2Q4hqc/edit?tab=t.0" target="_blank">
+        <div class="card-title">Infoblatt</div>
+        <div class="card-desc">Therapie-Infoblatt für Medikamente etc</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Kategorie 5 -->
+  <div class="category">
+    <div class="category-title">📄 Vorlagen / Sonstiges</div>
+    <div class="container">
+      <a class="card" href="https://example.com" target="_blank">
+        <div class="card-title">Vorlage Titel</div>
+        <div class="card-desc">Vorlage Beispiel</div>
+      </a>
+    </div>
   </div>
 
 </body>
