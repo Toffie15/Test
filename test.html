@@ -19,30 +19,33 @@
       color: var(--text-dark);
     }
 
-    h1, h2 {
+    h1 {
       text-align: center;
       margin-top: 1rem;
-    }
-
-    .category {
-      margin: 2rem auto;
-      max-width: 1000px;
-    }
-
-    .category-title {
-      font-size: 1.5rem;
-      margin: 1rem 0;
+      font-size: 2rem;
       color: var(--accent);
-      border-bottom: 2px solid var(--accent);
-      padding-bottom: 0.5rem;
-      text-align: left;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin: 2rem 0 1rem 1rem;
     }
 
     .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    .category {
+      margin-bottom: 2rem;
+    }
+
+    .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1.5rem;
-      padding: 0 1rem;
     }
 
     .card {
@@ -68,7 +71,6 @@
 
     .card-desc {
       font-size: 0.95rem;
-      color: inherit;
     }
   </style>
 </head>
@@ -76,58 +78,62 @@
 
   <h1>📁 Meine Link-Datenbank</h1>
 
-  <!-- Kategorie 1 -->
-  <div class="category">
-    <div class="category-title">🔍 Allgemeines</div>
-    <div class="container">
-      <a class="card" href="https://google.com" target="_blank">
-        <div class="card-title">Google</div>
-        <div class="card-desc">Suchmaschine für alles Mögliche.</div>
-      </a>
+  <div class="container">
+
+    <!-- Kategorie: Allgemein -->
+    <div class="category">
+      <h2>🌐 Allgemein</h2>
+      <div class="grid">
+        <a class="card" href="https://google.com" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">🔍 Google</div>
+          <div class="card-desc">Suchmaschine für alles Mögliche.</div>
+        </a>
+      </div>
     </div>
-  </div>
 
-  <!-- Kategorie 2 -->
-  <div class="category">
-    <div class="category-title">🚑 EMS</div>
-    <div class="container">
-      <a class="card" href="https://docs.google.com/spreadsheets/d/1CGa3hQv9bsCVftstXfredxA58slV9uikAu4cKUWtZGc/edit?gid=838951845#gid=838951845" target="_blank">
-        <div class="card-title">EMS-Leitstelle</div>
-        <div class="card-desc">Die Leitstelle vom EMS zum Eintragen</div>
-      </a>
+    <!-- Kategorie: EMS / Therapie -->
+    <div class="category">
+      <h2>🏥 EMS / Therapie</h2>
+      <div class="grid">
+        <a class="card" href="https://docs.google.com/spreadsheets/d/1CGa3hQv9bsCVftstXfredxA58slV9uikAu4cKUWtZGc/edit?gid=838951845#gid=838951845" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">📋 EMS-Leitstelle</div>
+          <div class="card-desc">Die Leitstelle vom EMS zum Eintragen.</div>
+        </a>
 
-      <a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank">
-        <div class="card-title">Flucht</div>
-        <div class="card-desc">Der Fluchtplan von Luca Valentine (Geheim)</div>
-      </a>
+        <a class="card" href="https://onedrive.live.com/personal/00ad9689b232ac5c/_layouts/15/Doc.aspx?sourcedoc=%7B09b2eca6-4630-46ce-9637-2b3453026bc5%7D&action=default" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">📎 Einweisung</div>
+          <div class="card-desc">Therapie-Einweisungsmappe PowerPoint.</div>
+        </a>
+
+        <a class="card" href="https://docs.google.com/document/d/1qKr_nhKol9tfZngEDpFomKfwq-HWv3ow7yAAk2Q4hqc/edit?tab=t.0" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">💊 Infoblatt</div>
+          <div class="card-desc">Therapie-Infoblatt für Medikamente etc.</div>
+        </a>
+      </div>
     </div>
-  </div>
 
-  <!-- Kategorie 4 -->
-  <div class="category">
-    <div class="category-title">🧠 Therapie</div>
-    <div class="container">
-      <a class="card" href="https://onedrive.live.com/personal/00ad9689b232ac5c/_layouts/15/Doc.aspx?sourcedoc=%7B09b2eca6-4630-46ce-9637-2b3453026bc5%7D&action=default" target="_blank">
-        <div class="card-title">Einweisung</div>
-        <div class="card-desc">Therapie-Einweisungsmappe PowerPoint</div>
-      </a>
-
-      <a class="card" href="https://docs.google.com/document/d/1qKr_nhKol9tfZngEDpFomKfwq-HWv3ow7yAAk2Q4hqc/edit?tab=t.0" target="_blank">
-        <div class="card-title">Infoblatt</div>
-        <div class="card-desc">Therapie-Infoblatt für Medikamente etc</div>
-      </a>
+    <!-- Kategorie: Intern -->
+    <div class="category">
+      <h2>🔐 Intern</h2>
+      <div class="grid">
+        <a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">🏃‍♂️ Flucht</div>
+          <div class="card-desc">Der Fluchtplan von Luca Valentine (Geheim).</div>
+        </a>
+      </div>
     </div>
-  </div>
 
-  <!-- Kategorie 5 -->
-  <div class="category">
-    <div class="category-title">📄 Vorlagen / Sonstiges</div>
-    <div class="container">
-      <a class="card" href="https://example.com" target="_blank">
-        <div class="card-title">Vorlage Titel</div>
-        <div class="card-desc">Vorlage Beispiel</div>
-      </a>
+    <!-- Kategorie: Sonstiges -->
+    <div class="category">
+      <h2>📦 Sonstiges</h2>
+      <div class="grid">
+        <a class="card" href="https://example.com" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">📝 Vorlage Titel</div>
+          <div class="card-desc">Vorlage Beispiel.</div>
+        </a>
+      </div>
     </div>
+
   </div>
 
 </body>
