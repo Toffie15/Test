@@ -1,35 +1,16 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meine Linksammlung</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meine Linkliste</title>
   <style>
-    :root {
-      --bg-light: #f9f9f9;
-      --bg-dark: #1e1e1e;
-      --text-light: #111;
-      --text-dark: #f9f9f9;
-      --btn-bg: #007bff;
-      --btn-color: white;
-    }
-
     body {
+      background-color: #121212;
+      color: #f0f0f0;
+      font-family: Arial, sans-serif;
       margin: 0;
-      font-family: sans-serif;
-      background-color: var(--bg-light);
-      color: var(--text-light);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    .container {
       padding: 2rem;
-      max-width: 500px;
-      width: 100%;
     }
 
     h1 {
@@ -37,64 +18,47 @@
       margin-bottom: 2rem;
     }
 
-    .link-button {
-      display: block;
-      width: 100%;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      background-color: var(--btn-bg);
-      color: var(--btn-color);
+    .link-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .link-card {
+      background-color: #1e1e1e;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
       text-align: center;
+      transition: background-color 0.2s ease;
+    }
+
+    .link-card:hover {
+      background-color: #2c2c2c;
+    }
+
+    .link-card a {
+      color: #00bcd4;
       text-decoration: none;
-      border-radius: 8px;
       font-size: 1.1rem;
-      transition: background-color 0.2s;
-    }
-
-    .link-button:hover {
-      background-color: #0056b3;
-    }
-
-    .toggle-mode {
-      margin-top: 2rem;
-      cursor: pointer;
-      background: none;
-      border: 2px solid currentColor;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-    }
-
-    body.dark {
-      background-color: var(--bg-dark);
-      color: var(--text-dark);
-    }
-
-    body.dark .link-button {
-      background-color: #444;
-      color: white;
-    }
-
-    body.dark .link-button:hover {
-      background-color: #666;
+      display: block;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Meine Links</h1>
+  <h1>Meine Links</h1>
 
-    <a class="link-button" href="https://example.com" target="_blank">Beispiel-Link 1</a>
-    <a class="link-button" href="https://google.com" target="_blank">Google</a>
-    <a class="link-button" href="https://github.com" target="_blank">GitHub</a>
-    <!-- Hier weitere Links einfügen -->
-
-    <button class="toggle-mode" onclick="toggleMode()">Dark/Light Mode</button>
+  <div class="link-list">
+    <div class="link-card">
+      <a href="https://example.com" target="_blank">Beispiel-Link 1</a>
+    </div>
+    <div class="link-card">
+      <a href="https://google.com" target="_blank">Google</a>
+    </div>
+    <div class="link-card">
+      <a href="https://github.com" target="_blank">GitHub</a>
+    </div>
   </div>
-
-  <script>
-    function toggleMode() {
-      document.body.classList.toggle('dark');
-    }
-  </script>
 </body>
 </html>
