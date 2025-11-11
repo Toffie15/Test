@@ -1,1 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/159/159604.png" />
+  <title>Link-Datenbank</title>
+  <style>
+    :root {
+      --bg-dark: #121212;
+      --text-dark: #00ffdd;
+      --card-dark: #252525;
+      --accent: #8c00ff;
+    }
 
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 2rem;
+      color: var(--accent);
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin: 2rem 0 1rem 1rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    .category {
+      margin-bottom: 2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background-color: var(--card-dark);
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 4px 12px rgb(255, 0, 242);
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+    }
+
+    .card:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.6rem;
+      }
+      h2 {
+        margin-left: 0.5rem;
+      }
+      .container {
+        padding: 0.5rem;
+      }
+      .card {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📁 Meine Link-Datenbank</h1>
+
+  <div class="container">
+
+    <div class="category">
+      <h2>🌐 Allgemein</h2>
+      <div class="grid">
+        <a class="card" href="https://google.com" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">🔍 Google</div>
+          <div class="card-desc">Suchmaschine für alles Mögliche.</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="category">
+      <h2>🏥 EMS</h2>
+      <div class="grid">
+        <a class="card" href="https://docs.google.com/spreadsheets/d/1CGa3hQv9bsCVftstXfredxA58slV9uikAu4cKUWtZGc/edit?gid=838951845#gid=838951845" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">📋 EMS-Leitstelle</div>
+          <div class="card-desc">Die Leitstelle vom EMS zum Eintragen.</div>
+        </a>
+        <a class="card" href="https://onedrive.live.com/personal/00ad9689b232ac5c/_layouts/15/Doc.aspx?sourcedoc=%7B09b2eca6-4630-46ce-9637-2b3453026bc5%7D&action=default" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">📎 Einweisung</div>
+          <div class="card-desc">PowerPoint zur Therapieeinweisung.</div>
+        </a>
+        <a class="card" href="https://docs.google.com/document/d/1qKr_nhKol9tfZngEDpFomKfwq-HWv3ow7yAAk2Q4hqc/edit?tab=t.0" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">💊 Infoblatt</div>
+          <div class="card-desc">Infos zu Medikamenten & Ablauf.</div>
+        </a>
+        <a class="card" href="https://docs.google.com/document/d/1fwv8v4Td2au-lm4cIRq1AM14elyVEPQmLPxWZZgCvxQ/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">📄 SGH Dokument</div>
+          <div class="card-desc">Alle SGH-relevanten Infos kompakt.</div>
+        </a>
+        <a class="card" href="https://docs.google.com/spreadsheets/d/1XXkNaqvvLSdPQ_hNIfnbW0GAf3Gz-6RdR1UWj6o20i8/edit?gid=1054791886#gid=1054791886" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">🗂️ SGH Akten Eintragung</div>
+          <div class="card-desc">Untersuchungen dokumentieren.</div>
+        </a>
+        <a class="card" href="https://docs.google.com/spreadsheets/d/15-xqBhRE0_-RDRj91LKV9Z-TiykqjvtcmtYmsYEsH-o/edit?gid=763969845#gid=763969845" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">🧑‍⚕️ SGH Mitarbeiter</div>
+          <div class="card-desc">Liste aller SGH-Mitglieder.</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="category">
+      <h2>🔐 Intern</h2>
+      <div class="grid">
+        <a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">🏃‍♂️ Flucht</div>
+          <div class="card-desc">Der Fluchtplan von Luca Valentine (ENDE).</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="category">
+      <h2>📦 Sonstiges</h2>
+      <div class="grid">
+        <a class="card" href="https://wzhub.gg/de/bo6-loadouts" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">♾️ COD-WZHUB ♾️</div>
+          <div class="card-desc">COD Meta Waffen</div>
+        </a>
+        <a class="card" href="https://sites.google.com/view/lspd-bewerbung-lara-bosa/startseite" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">📝 Bewerbung 1.</div>
+          <div class="card-desc">LSPD Leader BW von Lara</div>
+        </a>
+        <a class="card" href="https://sites.google.com/view/lspd-berwerbung-angus-newton/startseite" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">📝 Bewerbung 2.</div>
+          <div class="card-desc">LSPD Leader BW von Angus</div>
+        </a>
+        <a class="card" href="https://toffie15.github.io/Test/test.html" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">📝 Vorlage Titel</div>
+          <div class="card-desc">Vorlage Beispiel.</div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
