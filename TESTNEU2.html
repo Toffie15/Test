@@ -27,70 +27,93 @@
       color: var(--accent);
     }
 
-    h2 {
-      font-size: 1.5rem;
-      color: var(--accent);
-      margin: 2rem 0 1rem 1rem;
-    }
-
     .container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 1rem;
     }
 
+    /* Suchleiste */
+    #search {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 1.5rem;
+      background: #1a1a1a;
+      color: var(--text-dark);
+      font-size: 1rem;
+    }
+
     .category {
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
+      background: #181818;
+      border-radius: 10px;
+      padding: 0.5rem 0;
+    }
+
+    /* Kategorie-Titel einklappbar */
+    .cat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .cat-header span {
+      font-size: 1.2rem;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .cat-header .arrow {
+      transition: transform 0.3s;
+    }
+
+    .category.collapsed .arrow {
+      transform: rotate(-90deg);
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 0 1rem 1rem 1rem;
+      display: none;
+    }
+
+    .category.open .grid {
+      display: grid;
     }
 
     .card {
       background-color: var(--card-dark);
       border-radius: 10px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-      transition: transform 0.2s;
+      padding: 1rem;
       text-decoration: none;
       color: inherit;
-    }
-
-    .card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 4px 12px rgb(255, 0, 242);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
     }
 
     .card-title {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 0.3rem;
       color: var(--accent);
     }
 
     .card-desc {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
+      opacity: 0.9;
     }
 
-    .card:focus {
-      outline: 2px solid var(--accent);
-      outline-offset: 4px;
-    }
-
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 1.6rem;
-      }
-      h2 {
-        margin-left: 0.5rem;
-      }
-      .container {
-        padding: 0.5rem;
-      }
-      .card {
-        padding: 1rem;
+    /* Hover entfernen für Handy */
+    @media (hover: hover) {
+      .card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 4px 12px rgb(255, 0, 242);
       }
     }
   </style>
@@ -101,8 +124,10 @@
 
   <div class="container">
 
-    <div class="category">
-      <h2>🌐 Allgemein</h2>
+    <input type="text" id="search" placeholder="Suchen..." />
+
+    <div class="category open">
+      <div class="cat-header"><span>🌐 Allgemein</span><div class="arrow">▶</div></div>
       <div class="grid">
         <a class="card" href="https://google.com" target="_blank" rel="noopener noreferrer">
           <div class="card-title">🔍 Google</div>
@@ -111,8 +136,8 @@
       </div>
     </div>
 
-    <div class="category">
-      <h2>🏥 EMS</h2>
+    <div class="category open">
+      <div class="cat-header"><span>🏥 EMS</span><div class="arrow">▶</div></div>
       <div class="grid">
         <a class="card" href="https://docs.google.com/spreadsheets/d/1CGa3hQv9bsCVftstXfredxA58slV9uikAu4cKUWtZGc/edit?gid=838951845#gid=838951845" target="_blank" rel="noopener noreferrer">
           <div class="card-title">📋 EMS-Leitstelle</div>
@@ -141,8 +166,8 @@
       </div>
     </div>
 
-    <div class="category">
-      <h2>🔐 Intern</h2>
+    <div class="category open">
+      <div class="cat-header"><span>🔐 Intern</span><div class="arrow">▶</div></div>
       <div class="grid">
         <a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank" rel="noopener noreferrer">
           <div class="card-title">🏃‍♂️ Flucht</div>
@@ -151,8 +176,8 @@
       </div>
     </div>
 
-    <div class="category">
-      <h2>📦 Sonstiges</h2>
+    <div class="category open">
+      <div class="cat-header"><span>📦 Sonstiges</span><div class="arrow">▶</div></div>
       <div class="grid">
         <a class="card" href="https://wzhub.gg/de/bo6-loadouts" target="_blank" rel="noopener noreferrer">
           <div class="card-title">♾️ COD-WZHUB ♾️</div>
@@ -174,6 +199,24 @@
     </div>
 
   </div>
+
+  <script>
+    // Suchfunktion
+    document.getElementById('search').addEventListener('input', function() {
+      const term = this.value.toLowerCase();
+      document.querySelectorAll('.card').forEach(card => {
+        card.style.display = card.textContent.toLowerCase().includes(term) ? 'block' : 'none';
+      });
+    });
+
+    // Einklappbare Kategorien
+    document.querySelectorAll('.cat-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const category = header.parentElement;
+        category.classList.toggle('open');
+      });
+    });
+  </script>
 
 </body>
 </html>
