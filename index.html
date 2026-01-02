@@ -25,17 +25,11 @@ body{
     var(--bg-color);
   background-size:cover;
   background-attachment:fixed;
-  transition:background .3s;
 }
 
-body.no-bg{
-  background:var(--bg-color);
-}
+body.no-bg{background:var(--bg-color);}
 
-h1{
-  text-align:center;
-  color:var(--accent);
-}
+h1{text-align:center;color:var(--accent);}
 
 h2{
   color:var(--accent);
@@ -43,11 +37,7 @@ h2{
   user-select:none;
 }
 
-.container{
-  max-width:1200px;
-  margin:auto;
-  padding:1rem;
-}
+.container{max-width:1200px;margin:auto;padding:1rem;}
 
 .topbar{
   position:sticky;
@@ -68,8 +58,6 @@ h2{
   background:rgba(0,0,0,.4);
   color:var(--text);
 }
-
-.search::placeholder{color:#aaa;}
 
 .bg-toggle{
   padding:.7rem 1rem;
@@ -118,7 +106,7 @@ h2{
 
 <div class="container">
 
-<h2 onclick="toggle(this)">🌐 Allgemein</h2>
+<h2 onclick="toggle(this)">🌐 Allgemein (<span class="count"></span>)</h2>
 <div class="grid">
 <a class="card" data-id="google" href="https://google.com" target="_blank">
 <div class="card-title">🔍 Google</div>
@@ -127,7 +115,7 @@ h2{
 </a>
 </div>
 
-<h2 onclick="toggle(this)">🚔 SAHP</h2>
+<h2 onclick="toggle(this)">🚔 SAHP (<span class="count"></span>)</h2>
 <div class="grid">
 <a class="card" data-id="leitstelle" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit?gid=1847778166#gid=1847778166" target="_blank">
 <div class="card-title">📡 SAHP-Leitstelle</div><div class="card-desc">Leitstelle</div><div class="last-used"></div></a>
@@ -145,7 +133,7 @@ h2{
 <div class="card-title">⚖️ Bußgeldrechner</div><div class="card-desc">Rechner</div><div class="last-used"></div></a>
 </div>
 
-<h2 onclick="toggle(this)">🔐 Intern</h2>
+<h2 onclick="toggle(this)">🔐 Intern (<span class="count"></span>)</h2>
 <div class="grid">
 <a class="card" data-id="flucht" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank">
 <div class="card-title">🏃‍♂️ Flucht</div><div class="card-desc">Fluchtplan</div><div class="last-used"></div></a>
@@ -154,7 +142,7 @@ h2{
 <div class="card-title">📊 Diagram Sheets</div><div class="card-desc">Vorlage</div><div class="last-used"></div></a>
 </div>
 
-<h2 onclick="toggle(this)">📦 Sonstiges</h2>
+<h2 onclick="toggle(this)">📦 Sonstiges (<span class="count"></span>)</h2>
 <div class="grid">
 <a class="card" data-id="cod" href="https://wzhub.gg/de/bo6-loadouts" target="_blank">
 <div class="card-title">♾️ COD-WZHUB ♾️</div><div class="card-desc">COD Meta</div><div class="last-used"></div></a>
@@ -169,9 +157,23 @@ h2{
 </div>
 
 <script>
+/*
+  Hinweis:
+  Clientseitiger Code ist IMMER einsehbar.
+  F12-Blocker bringen nichts außer falsche Sicherheit.
+  Echte Absicherung geht nur serverseitig.
+*/
+
 function toggle(h){
   const g=h.nextElementSibling;
   g.style.display=g.style.display==="grid"?"none":"grid";
+}
+
+function updateCounts(){
+  document.querySelectorAll(".grid").forEach(grid=>{
+    const visible=[...grid.children].filter(c=>c.style.display!=="none").length;
+    grid.previousElementSibling.querySelector(".count").textContent=visible;
+  });
 }
 
 document.querySelector(".search").addEventListener("input",e=>{
@@ -179,6 +181,7 @@ document.querySelector(".search").addEventListener("input",e=>{
   document.querySelectorAll(".card").forEach(c=>{
     c.style.display=c.innerText.toLowerCase().includes(v)?"block":"none";
   });
+  updateCounts();
 });
 
 document.querySelectorAll(".card").forEach(c=>{
@@ -195,6 +198,8 @@ btn.onclick=()=>{
   document.body.classList.toggle("no-bg");
   localStorage.setItem("bg",document.body.classList.contains("no-bg")?"off":"on");
 };
+
+updateCounts();
 </script>
 
 </body>
