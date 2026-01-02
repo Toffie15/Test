@@ -16,7 +16,7 @@
 
 body{
   margin:0;
-  font-family:Arial, sans-serif;
+  font-family:Arial,sans-serif;
   background:var(--bg);
   color:var(--text);
 }
@@ -39,7 +39,7 @@ h2{
 
 .search{
   width:100%;
-  padding:0.7rem;
+  padding:.7rem;
   border-radius:6px;
   border:none;
   margin-bottom:2rem;
@@ -66,7 +66,7 @@ h2{
   padding:1.5rem;
   text-decoration:none;
   color:inherit;
-  transition:0.2s;
+  transition:.2s;
 }
 
 .card:hover{
@@ -75,17 +75,8 @@ h2{
 }
 
 .card-title{
-  display:flex;
-  align-items:center;
-  gap:.5rem;
   color:var(--accent);
   font-size:1.1rem;
-}
-
-svg{
-  width:20px;
-  height:20px;
-  fill:var(--accent);
 }
 
 .card-desc{
@@ -100,38 +91,82 @@ svg{
 
 <body>
 
-<h1>Meine Link-Datenbank</h1>
+<h1>📁 Meine Link-Datenbank</h1>
 
 <div class="container">
 
 <input class="search" type="text" placeholder="Links filtern…" aria-label="Links suchen">
 
-<h2>Allgemein</h2>
+<h2>🌐 Allgemein</h2>
 <div class="grid">
-<a class="card" href="https://google.com" target="_blank" rel="noopener noreferrer" aria-label="Google">
-<div class="card-title">
-<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.5" y2="16.5" stroke="currentColor"/></svg>
-Google
-</div>
-<div class="card-desc">Suchmaschine</div>
+<a class="card" href="https://google.com" target="_blank" rel="noopener noreferrer">
+<div class="card-title">🔍 Google</div>
+<div class="card-desc">Suchmaschine für alles Mögliche.</div>
 </a>
 </div>
 
-<h2>SAHP</h2>
+<h2>🚔 SAHP</h2>
 <div class="grid">
-<a class="card" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank" rel="noopener noreferrer" aria-label="Bußgeldrechner">
-<div class="card-title">
-<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16"/></svg>
-Bußgeldrechner
+<a class="card" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit?gid=1847778166#gid=1847778166" target="_blank" rel="noopener noreferrer">
+<div class="card-title">📡 SAHP-Leitstelle</div>
+<div class="card-desc">Die Leitstelle vom SAHP.</div>
+</a>
+
+<a class="card" href="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit?gid=1898147490#gid=1898147490" target="_blank" rel="noopener noreferrer">
+<div class="card-title">⚖️ Straf- & Bußgeldkatalog</div>
+<div class="card-desc">Straf- & Bußgeldkatalog.</div>
+</a>
+
+<a class="card" href="https://docs.google.com/spreadsheets/d/1YayZveRHmKJa5gGuR-y3TRr6pP_tRv64_7JmkKNXb_I/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
+<div class="card-title">📋 SP Mitarbeiterblatt</div>
+<div class="card-desc">Alle SP-Mitarbeiter.</div>
+</a>
+
+<a class="card" href="https://docs.google.com/spreadsheets/d/1AcTE7eIOGifiYTfeHFgHueQjJarqf2ZeoOzAURe67DU/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
+<div class="card-title">📑 PA Leitstelle</div>
+<div class="card-desc">PA-Kontakte & Aufgaben.</div>
+</a>
+
+<a class="card" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank" rel="noopener noreferrer">
+<div class="card-title">⚖️ Bußgeldrechner</div>
+<div class="card-desc">Online Bußgeldrechner.</div>
+</a>
 </div>
-<div class="card-desc">Strafen berechnen</div>
+
+<h2>🔐 Intern</h2>
+<div class="grid">
+<a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank" rel="noopener noreferrer">
+<div class="card-title">🏃‍♂️ Flucht</div>
+<div class="card-desc">Fluchtplan (ENDE).</div>
+</a>
+
+<a class="card" href="https://docs.google.com/spreadsheets/d/1n6AB0hBrln9wCuMvyyNcfDlnF_uDG6OL1WUagg59Pvs/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
+<div class="card-title">📊 Diagram Sheets</div>
+<div class="card-desc">Diagramm-Vorlage.</div>
+</a>
+</div>
+
+<h2>📦 Sonstiges</h2>
+<div class="grid">
+<a class="card" href="https://wzhub.gg/de/bo6-loadouts" target="_blank" rel="noopener noreferrer">
+<div class="card-title">♾️ COD-WZHUB ♾️</div>
+<div class="card-desc">COD Meta Waffen.</div>
+</a>
+
+<a class="card" href="https://github.com/Toffie15/Test/tree/main" target="_blank" rel="noopener noreferrer">
+<div class="card-title">📝 Github</div>
+<div class="card-desc">Webcode Repository.</div>
+</a>
+
+<a class="card" href="https://toffie15.github.io/Test/test.html" target="_blank" rel="noopener noreferrer">
+<div class="card-title">📝 Vorlage Titel</div>
+<div class="card-desc">HTML Vorlage.</div>
 </a>
 </div>
 
 </div>
 
 <script>
-/* DevTools blockieren */
 document.addEventListener("keydown",e=>{
   if(
     e.key==="F12"||
@@ -140,14 +175,10 @@ document.addEventListener("keydown",e=>{
     e.preventDefault();
   }
 });
-
-/* Rechtsklick */
 document.addEventListener("contextmenu",e=>e.preventDefault());
 
-/* Filter */
-const search=document.querySelector(".search");
-search.addEventListener("input",()=>{
-  const v=search.value.toLowerCase();
+document.querySelector(".search").addEventListener("input",e=>{
+  const v=e.target.value.toLowerCase();
   document.querySelectorAll(".card").forEach(c=>{
     c.style.display=c.innerText.toLowerCase().includes(v)?"block":"none";
   });
