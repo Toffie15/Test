@@ -8,7 +8,8 @@
 
 <style>
 :root{
-  --bg:#121212;
+  --bg-color:#121212;
+  --bg-image:none; /* z.B.: url("bg.jpg") */
   --text:#00ffdd;
   --card:#252525;
   --accent:#8c00ff;
@@ -17,13 +18,24 @@
 body{
   margin:0;
   font-family:Arial,sans-serif;
-  background:var(--bg);
   color:var(--text);
+  background:
+    linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+    var(--bg-image),
+    var(--bg-color);
+  background-size:cover;
+  background-attachment:fixed;
 }
 
 h1{
   text-align:center;
   color:var(--accent);
+}
+
+h2{
+  color:var(--accent);
+  cursor:pointer;
+  user-select:none;
 }
 
 .container{
@@ -32,24 +44,19 @@ h1{
   padding:1rem;
 }
 
-/* Sticky Suche */
-.search{
+.search-wrapper{
   position:sticky;
   top:0;
+  background:rgba(0,0,0,.8);
+  padding:1rem;
   z-index:10;
-  width:100%;
-  padding:.7rem;
-  border:none;
-  border-radius:6px;
-  margin-bottom:1.5rem;
 }
 
-/* Kategorie */
-.category-header{
-  cursor:pointer;
-  user-select:none;
-  color:var(--accent);
-  margin:2rem 0 1rem;
+.search{
+  width:100%;
+  padding:.7rem;
+  border-radius:6px;
+  border:none;
 }
 
 .grid{
@@ -64,13 +71,12 @@ h1{
 
 @media(max-width:600px){
   .grid{grid-template-columns:1fr;}
-  .card:hover{transform:none;box-shadow:none;}
 }
 
 .card{
   background:var(--card);
   border-radius:10px;
-  padding:1.5rem;
+  padding:1.2rem;
   text-decoration:none;
   color:inherit;
   transition:.2s;
@@ -78,7 +84,6 @@ h1{
 
 .card:hover{
   transform:scale(1.03);
-  box-shadow:0 4px 12px rgba(140,0,255,.6);
 }
 
 .card-title{
@@ -87,17 +92,13 @@ h1{
 }
 
 .card-desc{
-  font-size:.95rem;
+  font-size:.9rem;
 }
 
-.card-time{
+.last-used{
   font-size:.75rem;
   opacity:.7;
-  margin-top:.5rem;
-}
-
-.hidden{
-  display:none;
+  margin-top:.4rem;
 }
 </style>
 </head>
@@ -106,61 +107,44 @@ h1{
 
 <h1>📁 Meine Link-Datenbank</h1>
 
+<div class="search-wrapper">
+  <input class="search" type="text" placeholder="Links filtern…">
+</div>
+
 <div class="container">
 
-<input class="search" type="text" placeholder="Links filtern…">
-
-<!-- Allgemein -->
-<h2 class="category-header">🌐 Allgemein (klick)</h2>
-<div class="grid category">
-<a class="card" href="https://google.com" target="_blank">
-<div class="card-title">🔍 Google</div>
+<h2 onclick="toggle(this)">🌐 Allgemein</h2>
+<div class="grid">
+<a class="card" data-id="google" href="https://google.com" target="_blank">
+<div class="card-title">Google</div>
 <div class="card-desc">Suchmaschine</div>
-<div class="card-time"></div>
+<div class="last-used"></div>
 </a>
 </div>
 
-<!-- SAHP -->
-<h2 class="category-header">🚔 SAHP (klick)</h2>
-<div class="grid category">
-<a class="card" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit" target="_blank">
-<div class="card-title">📡 SAHP-Leitstelle</div>
+<h2 onclick="toggle(this)">🚔 SAHP</h2>
+<div class="grid">
+<a class="card" data-id="leitstelle" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ" target="_blank">
+<div class="card-title">SAHP-Leitstelle</div>
 <div class="card-desc">Leitstelle</div>
-<div class="card-time"></div>
+<div class="last-used"></div>
 </a>
 
-<a class="card" href="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit" target="_blank">
-<div class="card-title">⚖️ Strafkatalog</div>
-<div class="card-desc">Strafen & Bußgelder</div>
-<div class="card-time"></div>
-</a>
-
-<a class="card" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank">
-<div class="card-title">⚖️ Bußgeldrechner</div>
-<div class="card-desc">Online Rechner</div>
-<div class="card-time"></div>
-</a>
-</div>
-
-<!-- Intern -->
-<h2 class="category-header">🔐 Intern (klick)</h2>
-<div class="grid category">
-<a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit" target="_blank">
-<div class="card-title">🏃‍♂️ Flucht</div>
-<div class="card-desc">Fluchtplan</div>
-<div class="card-time"></div>
+<a class="card" data-id="bussgeld" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank">
+<div class="card-title">Bußgeldrechner</div>
+<div class="card-desc">Strafen berechnen</div>
+<div class="last-used"></div>
 </a>
 </div>
 
 </div>
 
 <script>
-/* Kategorien einklappen */
-document.querySelectorAll(".category-header").forEach((h,i)=>{
-  h.addEventListener("click",()=>{
-    document.querySelectorAll(".category")[i].classList.toggle("hidden");
-  });
-});
+/* Einklappen */
+function toggle(h){
+  const g=h.nextElementSibling;
+  g.style.display=g.style.display==="none"?"grid":"none";
+}
 
 /* Suche */
 document.querySelector(".search").addEventListener("input",e=>{
@@ -170,15 +154,15 @@ document.querySelector(".search").addEventListener("input",e=>{
   });
 });
 
-/* Letzter Klick */
-document.querySelectorAll(".card").forEach(card=>{
-  const key=card.href;
-  const time=localStorage.getItem(key);
-  if(time) card.querySelector(".card-time").textContent="Zuletzt geöffnet: "+time;
+/* Klick-Zeit speichern */
+document.querySelectorAll(".card").forEach(c=>{
+  const id=c.dataset.id;
+  const t=localStorage.getItem("last_"+id);
+  if(t)c.querySelector(".last-used").textContent="Zuletzt: "+t;
 
-  card.addEventListener("click",()=>{
-    const t=new Date().toLocaleString();
-    localStorage.setItem(key,t);
+  c.addEventListener("click",()=>{
+    const now=new Date().toLocaleString();
+    localStorage.setItem("last_"+id,now);
   });
 });
 </script>
