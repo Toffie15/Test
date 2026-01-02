@@ -8,8 +8,8 @@
 
 <style>
 :root{
-  --bg1:url("https://images.unsplash.com/photo-1519681393784-d120267933ba");
-  --bg2:url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee");
+  --bg-image:url("https://images.unsplash.com/photo-1519681393784-d120267933ba");
+  --bg-color:#121212;
   --text:#00ffdd;
   --card:#252525;
   --accent:#8c00ff;
@@ -21,15 +21,33 @@ body{
   color:var(--text);
   background:
     linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.75)),
-    var(--bg1);
+    var(--bg-image),
+    var(--bg-color);
   background-size:cover;
   background-attachment:fixed;
+  transition:background .3s;
 }
 
-h1{text-align:center;color:var(--accent);}
-h2{color:var(--accent);cursor:pointer;user-select:none;}
+body.no-bg{
+  background:var(--bg-color);
+}
 
-.container{max-width:1200px;margin:auto;padding:1rem;}
+h1{
+  text-align:center;
+  color:var(--accent);
+}
+
+h2{
+  color:var(--accent);
+  cursor:pointer;
+  user-select:none;
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:1rem;
+}
 
 .topbar{
   position:sticky;
@@ -37,7 +55,7 @@ h2{color:var(--accent);cursor:pointer;user-select:none;}
   display:flex;
   gap:1rem;
   padding:1rem;
-  background:rgba(0,0,0,.6);
+  background:rgba(0,0,0,.85);
   backdrop-filter:blur(6px);
   z-index:10;
 }
@@ -47,18 +65,18 @@ h2{color:var(--accent);cursor:pointer;user-select:none;}
   padding:.7rem;
   border-radius:6px;
   border:1px solid rgba(255,255,255,.15);
-  background:rgba(0,0,0,.35);
+  background:rgba(0,0,0,.4);
   color:var(--text);
 }
 
 .search::placeholder{color:#aaa;}
 
-.bg-btn{
-  padding:.6rem .9rem;
-  border:none;
+.bg-toggle{
+  padding:.7rem 1rem;
+  background:rgba(0,0,0,.4);
+  border:1px solid rgba(255,255,255,.2);
+  color:var(--text);
   border-radius:6px;
-  background:rgba(140,0,255,.4);
-  color:white;
   cursor:pointer;
 }
 
@@ -78,11 +96,14 @@ h2{color:var(--accent);cursor:pointer;user-select:none;}
   padding:1.2rem;
   text-decoration:none;
   color:inherit;
+  transition:.2s;
 }
 
-.card-title{color:var(--accent);}
+.card:hover{transform:scale(1.03);}
+
+.card-title{color:var(--accent);font-size:1.1rem;}
 .card-desc{font-size:.9rem;}
-.last-used{font-size:.75rem;opacity:.7;}
+.last-used{font-size:.75rem;opacity:.7;margin-top:.4rem;}
 </style>
 </head>
 
@@ -92,7 +113,7 @@ h2{color:var(--accent);cursor:pointer;user-select:none;}
 
 <div class="topbar">
   <input class="search" type="text" placeholder="Links filtern…">
-  <button class="bg-btn" onclick="toggleBg()">Hintergrund</button>
+  <button class="bg-toggle">Hintergrund</button>
 </div>
 
 <div class="container">
@@ -109,70 +130,40 @@ h2{color:var(--accent);cursor:pointer;user-select:none;}
 <h2 onclick="toggle(this)">🚔 SAHP</h2>
 <div class="grid">
 <a class="card" data-id="leitstelle" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit?gid=1847778166#gid=1847778166" target="_blank">
-<div class="card-title">📡 SAHP-Leitstelle</div>
-<div class="card-desc">Eintragen & Verwaltung</div>
-<div class="last-used"></div>
-</a>
+<div class="card-title">📡 SAHP-Leitstelle</div><div class="card-desc">Leitstelle</div><div class="last-used"></div></a>
 
 <a class="card" data-id="strafen" href="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit?gid=1898147490#gid=1898147490" target="_blank">
-<div class="card-title">⚖️ Straf- & Bußgeldkatalog</div>
-<div class="card-desc">Strafenübersicht</div>
-<div class="last-used"></div>
-</a>
+<div class="card-title">⚖️ Straf- & Bußgeldkatalog</div><div class="card-desc">Strafkatalog</div><div class="last-used"></div></a>
 
 <a class="card" data-id="sp" href="https://docs.google.com/spreadsheets/d/1YayZveRHmKJa5gGuR-y3TRr6pP_tRv64_7JmkKNXb_I/edit?gid=0#gid=0" target="_blank">
-<div class="card-title">📋 SP Mitarbeiterblatt</div>
-<div class="card-desc">Mitarbeiter & Zuständigkeiten</div>
-<div class="last-used"></div>
-</a>
+<div class="card-title">📋 SP Mitarbeiterblatt</div><div class="card-desc">Mitarbeiter</div><div class="last-used"></div></a>
 
 <a class="card" data-id="pa" href="https://docs.google.com/spreadsheets/d/1AcTE7eIOGifiYTfeHFgHueQjJarqf2ZeoOzAURe67DU/edit?gid=0#gid=0" target="_blank">
-<div class="card-title">📑 PA Leitstelle</div>
-<div class="card-desc">Kontakte & Aufgaben</div>
-<div class="last-used"></div>
-</a>
+<div class="card-title">📑 PA Leitstelle</div><div class="card-desc">PA Daten</div><div class="last-used"></div></a>
 
-<a class="card" data-id="rechner" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank">
-<div class="card-title">⚖️ Bußgeldrechner</div>
-<div class="card-desc">Berechnung</div>
-<div class="last-used"></div>
-</a>
+<a class="card" data-id="bussgeld" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank">
+<div class="card-title">⚖️ Bußgeldrechner</div><div class="card-desc">Rechner</div><div class="last-used"></div></a>
 </div>
 
 <h2 onclick="toggle(this)">🔐 Intern</h2>
 <div class="grid">
 <a class="card" data-id="flucht" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank">
-<div class="card-title">🏃‍♂️ Flucht</div>
-<div class="card-desc">Fluchtplan</div>
-<div class="last-used"></div>
-</a>
+<div class="card-title">🏃‍♂️ Flucht</div><div class="card-desc">Fluchtplan</div><div class="last-used"></div></a>
 
 <a class="card" data-id="diagram" href="https://docs.google.com/spreadsheets/d/1n6AB0hBrln9wCuMvyyNcfDlnF_uDG6OL1WUagg59Pvs/edit?gid=0#gid=0" target="_blank">
-<div class="card-title">📊 Diagram Sheets</div>
-<div class="card-desc">Diagramm-Vorlage</div>
-<div class="last-used"></div>
-</a>
+<div class="card-title">📊 Diagram Sheets</div><div class="card-desc">Vorlage</div><div class="last-used"></div></a>
 </div>
 
 <h2 onclick="toggle(this)">📦 Sonstiges</h2>
 <div class="grid">
 <a class="card" data-id="cod" href="https://wzhub.gg/de/bo6-loadouts" target="_blank">
-<div class="card-title">♾️ COD-WZHUB</div>
-<div class="card-desc">Meta Waffen</div>
-<div class="last-used"></div>
-</a>
+<div class="card-title">♾️ COD-WZHUB ♾️</div><div class="card-desc">COD Meta</div><div class="last-used"></div></a>
 
 <a class="card" data-id="github" href="https://github.com/Toffie15/Test/tree/main" target="_blank">
-<div class="card-title">📝 Github</div>
-<div class="card-desc">Webcode</div>
-<div class="last-used"></div>
-</a>
+<div class="card-title">📝 Github</div><div class="card-desc">Webcode</div><div class="last-used"></div></a>
 
 <a class="card" data-id="vorlage" href="https://toffie15.github.io/Test/test.html" target="_blank">
-<div class="card-title">📝 Vorlage</div>
-<div class="card-desc">Beispiel</div>
-<div class="last-used"></div>
-</a>
+<div class="card-title">📝 Vorlage Titel</div><div class="card-desc">HTML Vorlage</div><div class="last-used"></div></a>
 </div>
 
 </div>
@@ -194,24 +185,16 @@ document.querySelectorAll(".card").forEach(c=>{
   const id=c.dataset.id;
   const t=localStorage.getItem("last_"+id);
   if(t)c.querySelector(".last-used").textContent="Zuletzt: "+t;
-  c.addEventListener("click",()=>{
-    localStorage.setItem("last_"+id,new Date().toLocaleString());
-  });
+  c.addEventListener("click",()=>localStorage.setItem("last_"+id,new Date().toLocaleString()));
 });
 
-let bg=localStorage.getItem("bg")||"1";
-applyBg();
-
-function toggleBg(){
-  bg=bg==="1"?"2":"1";
-  localStorage.setItem("bg",bg);
-  applyBg();
-}
-
-function applyBg(){
-  document.body.style.background=
-    `linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.75)), var(--bg${bg})`;
-}
+/* Hintergrund Toggle */
+const btn=document.querySelector(".bg-toggle");
+if(localStorage.getItem("bg")==="off")document.body.classList.add("no-bg");
+btn.onclick=()=>{
+  document.body.classList.toggle("no-bg");
+  localStorage.setItem("bg",document.body.classList.contains("no-bg")?"off":"on");
+};
 </script>
 
 </body>
