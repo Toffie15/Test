@@ -26,23 +26,30 @@ h1{
   color:var(--accent);
 }
 
-h2{
-  color:var(--accent);
-  margin:2rem 0 1rem;
-}
-
 .container{
   max-width:1200px;
   margin:auto;
   padding:1rem;
 }
 
+/* Sticky Suche */
 .search{
+  position:sticky;
+  top:0;
+  z-index:10;
   width:100%;
   padding:.7rem;
-  border-radius:6px;
   border:none;
-  margin-bottom:2rem;
+  border-radius:6px;
+  margin-bottom:1.5rem;
+}
+
+/* Kategorie */
+.category-header{
+  cursor:pointer;
+  user-select:none;
+  color:var(--accent);
+  margin:2rem 0 1rem;
 }
 
 .grid{
@@ -83,8 +90,14 @@ h2{
   font-size:.95rem;
 }
 
-.card:focus{
-  outline:2px solid var(--accent);
+.card-time{
+  font-size:.75rem;
+  opacity:.7;
+  margin-top:.5rem;
+}
+
+.hidden{
+  display:none;
 }
 </style>
 </head>
@@ -95,92 +108,77 @@ h2{
 
 <div class="container">
 
-<input class="search" type="text" placeholder="Links filtern…" aria-label="Links suchen">
+<input class="search" type="text" placeholder="Links filtern…">
 
-<h2>🌐 Allgemein</h2>
-<div class="grid">
-<a class="card" href="https://google.com" target="_blank" rel="noopener noreferrer">
+<!-- Allgemein -->
+<h2 class="category-header">🌐 Allgemein (klick)</h2>
+<div class="grid category">
+<a class="card" href="https://google.com" target="_blank">
 <div class="card-title">🔍 Google</div>
-<div class="card-desc">Suchmaschine für alles Mögliche.</div>
+<div class="card-desc">Suchmaschine</div>
+<div class="card-time"></div>
 </a>
 </div>
 
-<h2>🚔 SAHP</h2>
-<div class="grid">
-<a class="card" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit?gid=1847778166#gid=1847778166" target="_blank" rel="noopener noreferrer">
+<!-- SAHP -->
+<h2 class="category-header">🚔 SAHP (klick)</h2>
+<div class="grid category">
+<a class="card" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit" target="_blank">
 <div class="card-title">📡 SAHP-Leitstelle</div>
-<div class="card-desc">Die Leitstelle vom SAHP.</div>
+<div class="card-desc">Leitstelle</div>
+<div class="card-time"></div>
 </a>
 
-<a class="card" href="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit?gid=1898147490#gid=1898147490" target="_blank" rel="noopener noreferrer">
-<div class="card-title">⚖️ Straf- & Bußgeldkatalog</div>
-<div class="card-desc">Straf- & Bußgeldkatalog.</div>
+<a class="card" href="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit" target="_blank">
+<div class="card-title">⚖️ Strafkatalog</div>
+<div class="card-desc">Strafen & Bußgelder</div>
+<div class="card-time"></div>
 </a>
 
-<a class="card" href="https://docs.google.com/spreadsheets/d/1YayZveRHmKJa5gGuR-y3TRr6pP_tRv64_7JmkKNXb_I/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
-<div class="card-title">📋 SP Mitarbeiterblatt</div>
-<div class="card-desc">Alle SP-Mitarbeiter.</div>
-</a>
-
-<a class="card" href="https://docs.google.com/spreadsheets/d/1AcTE7eIOGifiYTfeHFgHueQjJarqf2ZeoOzAURe67DU/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
-<div class="card-title">📑 PA Leitstelle</div>
-<div class="card-desc">PA-Kontakte & Aufgaben.</div>
-</a>
-
-<a class="card" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank" rel="noopener noreferrer">
+<a class="card" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank">
 <div class="card-title">⚖️ Bußgeldrechner</div>
-<div class="card-desc">Online Bußgeldrechner.</div>
+<div class="card-desc">Online Rechner</div>
+<div class="card-time"></div>
 </a>
 </div>
 
-<h2>🔐 Intern</h2>
-<div class="grid">
-<a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank" rel="noopener noreferrer">
+<!-- Intern -->
+<h2 class="category-header">🔐 Intern (klick)</h2>
+<div class="grid category">
+<a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit" target="_blank">
 <div class="card-title">🏃‍♂️ Flucht</div>
-<div class="card-desc">Fluchtplan (ENDE).</div>
-</a>
-
-<a class="card" href="https://docs.google.com/spreadsheets/d/1n6AB0hBrln9wCuMvyyNcfDlnF_uDG6OL1WUagg59Pvs/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
-<div class="card-title">📊 Diagram Sheets</div>
-<div class="card-desc">Diagramm-Vorlage.</div>
-</a>
-</div>
-
-<h2>📦 Sonstiges</h2>
-<div class="grid">
-<a class="card" href="https://wzhub.gg/de/bo6-loadouts" target="_blank" rel="noopener noreferrer">
-<div class="card-title">♾️ COD-WZHUB ♾️</div>
-<div class="card-desc">COD Meta Waffen.</div>
-</a>
-
-<a class="card" href="https://github.com/Toffie15/Test/tree/main" target="_blank" rel="noopener noreferrer">
-<div class="card-title">📝 Github</div>
-<div class="card-desc">Webcode Repository.</div>
-</a>
-
-<a class="card" href="https://toffie15.github.io/Test/test.html" target="_blank" rel="noopener noreferrer">
-<div class="card-title">📝 Vorlage Titel</div>
-<div class="card-desc">HTML Vorlage.</div>
+<div class="card-desc">Fluchtplan</div>
+<div class="card-time"></div>
 </a>
 </div>
 
 </div>
 
 <script>
-document.addEventListener("keydown",e=>{
-  if(
-    e.key==="F12"||
-    (e.ctrlKey&&e.shiftKey&&["i","j","c"].includes(e.key.toLowerCase()))
-  ){
-    e.preventDefault();
-  }
+/* Kategorien einklappen */
+document.querySelectorAll(".category-header").forEach((h,i)=>{
+  h.addEventListener("click",()=>{
+    document.querySelectorAll(".category")[i].classList.toggle("hidden");
+  });
 });
-document.addEventListener("contextmenu",e=>e.preventDefault());
 
+/* Suche */
 document.querySelector(".search").addEventListener("input",e=>{
   const v=e.target.value.toLowerCase();
   document.querySelectorAll(".card").forEach(c=>{
     c.style.display=c.innerText.toLowerCase().includes(v)?"block":"none";
+  });
+});
+
+/* Letzter Klick */
+document.querySelectorAll(".card").forEach(card=>{
+  const key=card.href;
+  const time=localStorage.getItem(key);
+  if(time) card.querySelector(".card-time").textContent="Zuletzt geöffnet: "+time;
+
+  card.addEventListener("click",()=>{
+    const t=new Date().toLocaleString();
+    localStorage.setItem(key,t);
   });
 });
 </script>
