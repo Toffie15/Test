@@ -1,181 +1,171 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/159/159604.png" />
-<title>Link-Datenbank</title>
-<style>
-:root {
-  --bg-dark: #121212;
-  --text-dark: #00ffdd;
-  --card-dark: #1f1f1f;
-  --accent: #8c00ff;
-  --desc-color: #cccccc;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/159/159604.png" />
+  <title>Link-Datenbank</title>
+  <style>
+    :root {
+      --bg-dark: #121212;
+      --text-dark: #00ffdd;
+      --card-dark: #252525;
+      --accent: #8c00ff;
+    }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: var(--bg-dark);
-  color: var(--text-dark);
-}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
 
-h1 {
-  text-align: center;
-  margin-top: 1rem;
-  font-size: 2rem;
-  color: var(--accent);
-}
+    h1 {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 2rem;
+      color: var(--accent);
+    }
 
-h2 {
-  font-size: 1.5rem;
-  color: var(--accent);
-  margin: 2rem 0 1rem 0;
-}
+    h2 {
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin: 2rem 0 1rem 1rem;
+    }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
-}
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
+    .category {
+      margin-bottom: 2rem;
+    }
 
-.card {
-  background-color: var(--card-dark);
-  border-radius: 10px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 150px; /* alle Cards mindestens gleich hoch */
-  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
-}
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
 
-.card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 4px 12px rgb(255, 0, 242);
-  background-color: #2a2a2a;
-}
+    .card {
+      background-color: var(--card-dark);
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
 
-.card-title {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-  color: var(--accent);
-}
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 4px 12px rgb(255, 0, 242);
+    }
 
-.card-desc {
-  font-size: 0.95rem;
-  color: var(--desc-color);
-  margin-top: auto; /* sorgt dafür, dass Beschreibung unten bleibt */
-}
+    .card-title {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
 
-.card:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
-}
+    .card-desc {
+      font-size: 0.95rem;
+    }
 
-@media(max-width: 600px) {
-  h1 { font-size: 1.8rem; }
-  .card-title { font-size: 1rem; }
-  .card-desc { font-size: 0.9rem; }
-}
-</style>
+    .card:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
+  </style>
 </head>
 <body>
 
-<h1>📁 Meine Link-Datenbank</h1>
+  <h1>📁 Meine Link-Datenbank</h1>
 
-<div class="container">
+  <div class="container">
 
-  <!-- Kategorie: Allgemein -->
-  <div class="category">
-    <h2>🌐 Allgemein</h2>
-    <div class="grid">
-      <a class="card" href="https://google.com" target="_blank" rel="noopener noreferrer">
-        <div class="card-title">🔍 Google</div>
-        <div class="card-desc">Suchmaschine für alles Mögliche.</div>
-      </a>
+    <!-- Kategorie: Allgemein -->
+    <div class="category">
+      <h2>🌐 Allgemein</h2>
+      <div class="grid">
+        <a class="card" href="https://google.com" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">🔍 Google</div>
+          <div class="card-desc">Suchmaschine für alles Mögliche.</div>
+        </a>
+      </div>
     </div>
-  </div>
 
-  <!-- Kategorie: SAHP -->
-  <div class="category">
-    <h2>🚔 SAHP</h2>
-    <div class="grid">
-      <a class="card" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit?gid=1847778166" target="_blank" rel="noopener noreferrer">
-        <div class="card-title">📡 SAHP-Leitstelle</div>
-        <div class="card-desc">Die Leitstelle vom SAHP zum Eintragen.</div>
-      </a>
+    <!-- Kategorie: SAHP -->
+    <div class="category">
+      <h2>🚔 SAHP</h2>
+      <div class="grid">
+        <a class="card" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit?gid=1847778166#gid=1847778166" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">📡 SAHP-Leitstelle</div>
+          <div class="card-desc">Die Leitstelle vom SAHP zum Eintragen.</div>
+        </a>
 
-      <a class="card" href="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit?gid=1898147490" target="_blank" rel="noopener noreferrer">
-        <div class="card-title">⚖️ Straf- & Bußgeldkatalog</div>
-        <div class="card-desc">Straf- & Bußgeldkatalog.</div>
-      </a>
+        <a class="card" href="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit?gid=1898147490#gid=1898147490" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">⚖️ Straf- & Bußgeldkatalog</div>
+          <div class="card-desc">Straf- & Bußgeldkatalog.</div>
+        </a>
 
-      <a class="card" href="https://docs.google.com/spreadsheets/d/1YayZveRHmKJa5gGuR-y3TRr6pP_tRv64_7JmkKNXb_I/edit?gid=0" target="_blank" rel="noopener noreferrer">
-        <div class="card-title">📋 SP Mitarbeiterblatt</div>
-        <div class="card-desc">Liste aller SP-Mitarbeiter und Zuständigkeiten.</div>
-      </a>
+        <a class="card" href="https://docs.google.com/spreadsheets/d/1YayZveRHmKJa5gGuR-y3TRr6pP_tRv64_7JmkKNXb_I/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">📋 SP Mitarbeiterblatt</div>
+          <div class="card-desc">Liste aller SP-Mitarbeiter und Zuständigkeiten.</div>
+        </a>
 
-      <a class="card" href="https://docs.google.com/spreadsheets/d/1AcTE7eIOGifiYTfeHFgHueQjJarqf2ZeoOzAURe67DU/edit?gid=0" target="_blank" rel="noopener noreferrer">
-        <div class="card-title">📑 PA Leitstelle</div>
-        <div class="card-desc">Kontaktdaten und Aufgaben der PA-Leitstelle.</div>
-      </a>
+        <a class="card" href="https://docs.google.com/spreadsheets/d/1AcTE7eIOGifiYTfeHFgHueQjJarqf2ZeoOzAURe67DU/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">📑 PA Leitstelle</div>
+          <div class="card-desc">Kontaktdaten und Aufgaben der PA-Leitstelle.</div>
+        </a>
 
-      <a class="card" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank" rel="noopener noreferrer">
-        <div class="card-title">⚖️ Bußgeldrechner</div>
-        <div class="card-desc">Straf- & Bußgeldkatalog.</div>
-      </a>
+        <a class="card" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">⚖️ Bußgeldrechner</div>
+          <div class="card-desc">Straf- & Bußgeldkatalog.</div>
+        </a>
+      </div>
     </div>
-  </div>
 
-  <!-- Kategorie: Intern -->
-  <div class="category">
-    <h2>🔐 Intern</h2>
-    <div class="grid">
-      <a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank" rel="noopener noreferrer">
-        <div class="card-title">🏃‍♂️ Flucht</div>
-        <div class="card-desc">Der Fluchtplan von Luca Valentine (ENDE).</div>
-      </a>
+    <!-- Kategorie: Intern -->
+    <div class="category">
+      <h2>🔐 Intern</h2>
+      <div class="grid">
+        <a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">🏃‍♂️ Flucht</div>
+          <div class="card-desc">Der Fluchtplan von Luca Valentine (ENDE).</div>
+        </a>
 
-      <a class="card" href="https://docs.google.com/spreadsheets/d/1n6AB0hBrln9wCuMvyyNcfDlnF_uDG6OL1WUagg59Pvs/edit?gid=0" target="_blank" rel="noopener noreferrer">
-        <div class="card-title">📊 Diagram Sheets</div>
-        <div class="card-desc">Vorlage für Diagramme in Sheets.</div>
-      </a>
+        <a class="card" href="https://docs.google.com/spreadsheets/d/1n6AB0hBrln9wCuMvyyNcfDlnF_uDG6OL1WUagg59Pvs/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">📊 Diagram Sheets</div>
+          <div class="card-desc">Volage für Diagram in sheets</div>
+        </a>
+      </div>
     </div>
-  </div>
 
-  <!-- Kategorie: Sonstiges -->
-  <div class="category">
-    <h2>📦 Sonstiges</h2>
-    <div class="grid">
-      <a class="card" href="https://wzhub.gg/de/bo6-loadouts" target="_blank" rel="noopener noreferrer">
-        <div class="card-title">♾️ COD-WZHUB ♾️</div>
-        <div class="card-desc">COD Meta Waffen</div>
-      </a>
+    <!-- Kategorie: Sonstiges -->
+    <div class="category">
+      <h2>📦 Sonstiges</h2>
+      <div class="grid">
+        <a class="card" href="https://wzhub.gg/de/bo6-loadouts" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">♾️ COD-WZHUB ♾️</div>
+          <div class="card-desc">COD Meta Waffen</div>
+        </a>
 
-      <a class="card" href="https://github.com/Toffie15/Test/tree/main" target="_blank" rel="noopener noreferrer">
-        <div class="card-title">📝 Github</div>
-        <div class="card-desc">Webcode</div>
-      </a>
+        <a class="card" href="https://github.com/Toffie15/Test/tree/main" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">📝 Github</div>
+          <div class="card-desc">Webcode</div>
+        </a>
 
-      <a class="card" href="https://toffie15.github.io/Test/test.html" target="_blank" rel="noopener noreferrer">
-        <div class="card-title">📝 Vorlage Titel</div>
-        <div class="card-desc">Vorlage Beispiel.</div>
-      </a>
+        <a class="card" href="https://toffie15.github.io/Test/test.html" target="_blank" rel="noopener noreferrer">
+          <div class="card-title">📝 Vorlage Titel</div>
+          <div class="card-desc">Vorlage Beispiel.</div>
+        </a>
+      </div>
     </div>
-  </div>
 
-</div>
+  </div>
 
 </body>
 </html>
