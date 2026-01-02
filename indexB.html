@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bewerbungsauswertung</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #121212; color: #e0e0e0; }
+    form, .container { margin-bottom: 20px; }
+    input, select { margin: 5px; padding: 4px; background: #1e1e1e; color: #e0e0e0; border: 1px solid #333; font-size: 0.8em; }
+    table { border-collapse: collapse; width: 100%; background: #1e1e1e; margin-bottom: 15px; font-size: 0.8em; }
+    th, td { border: 1px solid #333; padding: 3px; text-align: left; }
+    th { background: #2a2a2a; }
+    button { cursor: pointer; font-size: 0.8em; padding: 3px 6px; }
+    .stats { display: flex; gap: 10px; margin-bottom: 15px; font-size: 0.8em; }
+    .stat-box { background: #1e1e1e; padding: 5px; border: 1px solid #333; flex: 1; text-align: center; }
+    .stat-box h3 { margin: 0; font-size: 0.9em; }
+    .stat-box p { margin: 3px 0 0; font-size: 1em; font-weight: bold; }
+    #downloadCsv { margin-left: 5px; font-size: 0.8em; }
+    canvas { background: #1e1e1e; margin-top: 10px; max-width: 300px; max-height: 300px; }
+    .chart-table-wrapper { display: flex; gap: 20px; align-items: flex-start; }
+    .chart-wrapper, .table-wrapper { flex: 1; }
+    .chart-wrapper { max-width: 350px; }
+    .table-wrapper { max-width: 650px; overflow-x: auto; }
+    .test-list { background: #1e1e1e; border: 1px solid #333; padding: 5px; margin-top: 10px; font-size: 0.8em; max-height: 150px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+
+<h2>Bewerbung eintragen</h2>
+<form id="bewerbungForm">
+  <input type="text" id="bewerberId" placeholder="Bewerber-ID" required />
+  <input type="text" id="bewerberName" placeholder="Name Bewerber" required />
+  <select id="hr1" required>
+    <option value="">HR Mitglied 1</option>
+    <option>Anna</option>
+    <option>Markus</option>
+    <option>Sophie</option>
+  </select>
+  <select id="hr2">
+    <option value="">HR Mitglied 2</option>
+    <option>Anna</option>
+    <option>Markus</option>
+    <option>Sophie</option>
+  </select>
+  <select id="hr3">
+    <option value="">HR Mitglied 3</option>
+    <option>Anna</option>
+    <option>Markus</option>
+    <option>Sophie</option>
+  </select>
+  <input type="text" id="testErgebnis" placeholder="Testergebnis" required />
+  <select id="eingestellt" required>
+    <option value="Ja">Eingestellt</option>
+    <option value="Nein">Nicht eingestellt</option>
+  </select>
+  <button type="submit">Hinzufügen</button>
+</form>
+
+<h2>Filter</h2>
+<label>HR:</label>
+<select id="filterHR">
+  <option value="">Alle</option>
+  <option>Anna</option>
+  <option>Markus</option>
+  <option>Sophie</option>
+</select>
+<label>Eingestellt:</label>
+<select id="filterEingestellt">
+  <option value="">Alle</option>
+  <option value="Ja">Ja</option>
+  <option value="Nein">Nein</option>
+</select>
+<button id="applyFilter">Filter anwenden</button>
+<button id="downloadCsv">CSV herunterladen</button>
+
+<div class="stats">
+  <div class="stat-box"><h3>Gesamtbewerber</h3><p id="statTotal">0</p></div>
+  <div class="stat-box"><h3>Eingestellt</h3><p id="statJa">0</p></div>
+  <div class="stat-box"><h3>Nicht eingestellt</h3><p id="statNein">0</p></div>
+  <div class="stat-box"><h3>Durchschnitt Testergebnis</h3><p id="statAverage">0</p></div>
+</div>
+
+<div class="chart-table-wrapper">
+  <div class="chart-wrapper">
+    <h2>HR Kreisdiagramm</h2>
+    <canvas id="hrChart"></canvas>
+  </div>
+  <div class="table-wrapper">
+    <h2>Bewerbungstabelle</h2>
+    <table id="bewerbungTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>HR 1</th>
+          <th>HR 2</th>
+          <th>HR 3</th>
+          <th>Testergebnis</th>
+          <th>Eingestellt</th>
+          <th>Aktion</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<h2>Test Liste</h2>
+<div class="test-list" id="testList">
+  <p>Keine Einträge</p>
+</div>
+
+<script>
+const form=document.getElementById('bewerbungForm');
+const tableBody=document.querySelector('#bewerbungTable tbody');
+const filterHR=document.getElementById('filterHR');
+const filterEingestellt=document.getElementById('filterEingestellt');
+const applyFilterBtn=document.getElementById('applyFilter');
+const downloadCsvBtn=document.getElementById('downloadCsv');
+const statTotal=document.getElementById('statTotal');
+const statJa=document.getElementById('statJa');
+const statNein=document.getElementById('statNein');
+const statAverage=document.getElementById('statAverage');
+const testList=document.getElementById('testList');
+const ctx=document.getElementById('hrChart').getContext('2d');
+
+let bewerbungen=[];
+const hrCount={};
+
+const hrChart=new Chart(ctx,{type:'pie',data:{labels:[],datasets:[{data:[],backgroundColor:['#4e79a7','#f28e2b','#e15759','#76b7b2','#59a14f','#edc949']}]},options:{plugins:{legend:{labels:{color:'#e0e0e0'}}},responsive:true,maintainAspectRatio:false}});
+
+function addHrCount(name){if(!name)return;hrCount[name]=(hrCount[name]||0)+1;}
+
+function renderTable(data){
+  tableBody.innerHTML='';
+  data.forEach((b,index)=>{
+    const row=document.createElement('tr');
+    row.innerHTML=`<td>${b.id}</td><td>${b.name}</td><td>${b.hr1}</td><td>${b.hr2}</td><td>${b.hr3}</td><td>${b.test}</td><td>${b.eingestellt}</td><td><button onclick="editBewerbung(${index})">Bearbeiten</button> <button onclick="deleteBewerbung(${index})">Löschen</button></td>`;
+    tableBody.appendChild(row);
+  });
+  updateTestList();
+  updateChart();
+  updateStats();
+}
+
+function updateChart(){
+  hrChart.data.labels=Object.keys(hrCount);
+  hrChart.data.datasets[0].data=Object.values(hrCount);
+  hrChart.update();
+}
+
+function updateTestList(){
+  if(!bewerbungen.length){ testList.innerHTML='<p>Keine Einträge</p>'; return; }
+  testList.innerHTML='';
+  bewerbungen.forEach(b=>{ const p=document.createElement('p'); p.textContent=`${b.name}: ${b.test}`; testList.appendChild(p); });
+}
+
+function updateStats(){
+  const jaCount=bewerbungen.filter(b=>b.eingestellt==='Ja').length;
+  const neinCount=bewerbungen.filter(b=>b.eingestellt==='Nein').length;
+  const average=bewerbungen.length?Math.round(bewerbungen.reduce((sum,b)=>sum+Number(b.test||0),0)/bewerbungen.length):0;
+  statTotal.textContent=bewerbungen.length;
+  statJa.textContent=jaCount;
+  statNein.textContent=neinCount;
+  statAverage.textContent=average;
+}
+
+function applyFilter(){
+  const filtered=bewerbungen.filter(b=>(!filterHR.value||[b.hr1,b.hr2,b.hr3].includes(filterHR.value))&&(!filterEingestellt.value||b.eingestellt===filterEingestellt.value));
+  renderTable(filtered);
+}
+
+function deleteBewerbung(index){
+  const removed=bewerbungen.splice(index,1)[0];
+  [removed.hr1,removed.hr2,removed.hr3].forEach(h=>{if(h&&hrCount[h])hrCount[h]--;});
+  renderTable(bewerbungen);
+}
+
+function editBewerbung(index){
+  const b=bewerbungen[index];
+  bewerberId.value=b.id; bewerberName.value=b.name; hr1.value=b.hr1; hr2.value=b.hr2; hr3.value=b.hr3; testErgebnis.value=b.test; eingestellt.value=b.eingestellt;
+  deleteBewerbung(index);
+}
+
+form.addEventListener('submit',function(e){
+  e.preventDefault();
+  const b={id:bewerberId.value,name:bewerberName.value,hr1:hr1.value,hr2:hr2.value,hr3:hr3.value,test:testErgebnis.value,eingestellt:eingestellt.value};
+  bewerbungen.push(b); [b.hr1,b.hr2,b.hr3].forEach(addHrCount); renderTable(bewerbungen); form.reset();
+});
+applyFilterBtn.addEventListener('click',applyFilter);
+
+downloadCsvBtn.addEventListener('click',function(){
+  if(!bewerbungen.length)return;
+  const header=['ID','Name','HR1','HR2','HR3','Testergebnis','Eingestellt'];
+  const rows=bewerbungen.map(b=>[b.id,b.name,b.hr1,b.hr2,b.hr3,b.test,b.eingestellt]);
+  const csvContent=[header.join(','),...rows.map(r=>r.join(','))].join('\n');
+  const blob=new Blob([csvContent],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='bewerbungen.csv'; a.click(); URL.revokeObjectURL(url);
+});
+</script>
+
+</body>
+</html>
