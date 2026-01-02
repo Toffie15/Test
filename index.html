@@ -1,247 +1,234 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/159/159604.png" />
-  <title>Link-Datenbank</title>
-  <style>
-    :root {
-      --bg-dark: #121212;
-      --text-dark: #00ffdd;
-      --card-dark: #1f1f1f;
-      --accent: #8c00ff;
-      --desc-color: #cccccc;
-      --color-allgemein: #ff7f50;
-      --color-sahp: #00bfff;
-      --color-intern: #7fff00;
-      --color-sonstiges: #ff69b4;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/159/159604.png">
+<title>Link-Datenbank</title>
+<style>
+  :root {
+    --bg-dark: #121212;
+    --text-dark: #00ffdd;
+    --card-dark: #1f1f1f;
+    --accent: #8c00ff;
+    --desc-color: #cccccc;
+    --color-allgemein: #ff7f50;
+    --color-sahp: #00bfff;
+    --color-intern: #7fff00;
+    --color-sonstiges: #ff69b4;
+  }
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: var(--bg-dark);
-      color: var(--text-dark);
-    }
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+  }
 
-    h1 {
-      text-align: center;
-      margin-top: 0;
-      font-size: 2.2rem;
-      color: var(--accent);
-      position: sticky;
-      top: 0;
-      background-color: var(--bg-dark);
-      padding: 1rem 0;
-      z-index: 10;
-      border-bottom: 2px solid #333;
-    }
+  h1 {
+    text-align: center;
+    margin: 0;
+    font-size: 2.2rem;
+    color: var(--accent);
+    position: sticky;
+    top: 0;
+    background-color: var(--bg-dark);
+    padding: 1rem 0;
+    z-index: 10;
+    border-bottom: 2px solid #333;
+  }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 1rem;
-    }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
 
-    #search {
-      width: 100%;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      border: none;
-      margin-bottom: 1rem;
-      font-size: 1rem;
-    }
+  input, select {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
 
-    #sort {
-      width: 100%;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      border: none;
-      margin-bottom: 1.5rem;
-      font-size: 1rem;
-    }
+  h2 {
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem 0;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.3rem;
+  }
 
-    h2 {
-      font-size: 1.5rem;
-      margin: 2rem 0 1rem 0;
-      border-bottom: 1px solid #333;
-      padding-bottom: 0.3rem;
-    }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-    }
+  .card {
+    background-color: var(--card-dark);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+  }
 
-    .card {
-      background-color: var(--card-dark);
-      border-radius: 10px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-      transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
-      text-decoration: none;
-      color: inherit;
-      position: relative;
-    }
+  .card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 15px rgba(140,0,255,0.7);
+    background-color: #2a2a2a;
+  }
 
-    .card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 6px 15px rgba(140,0,255,0.7);
-      background-color: #2a2a2a;
-    }
+  .card[data-category="Allgemein"] { border-left: 5px solid var(--color-allgemein); }
+  .card[data-category="SAHP"] { border-left: 5px solid var(--color-sahp); }
+  .card[data-category="Intern"] { border-left: 5px solid var(--color-intern); }
+  .card[data-category="Sonstiges"] { border-left: 5px solid var(--color-sonstiges); }
 
-    .card[data-category="Allgemein"] { border-left: 5px solid var(--color-allgemein); }
-    .card[data-category="SAHP"] { border-left: 5px solid var(--color-sahp); }
-    .card[data-category="Intern"] { border-left: 5px solid var(--color-intern); }
-    .card[data-category="Sonstiges"] { border-left: 5px solid var(--color-sonstiges); }
+  .card-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-    .card-title {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+  .card-title span:first-child { margin-right: 0.5rem; }
+  .card-desc { font-size: 1rem; color: var(--desc-color); }
 
-    .card-title span {
-      margin-right: 0.5rem;
-    }
+  .favorite {
+    cursor: pointer;
+    color: #ccc;
+    font-size: 1.2rem;
+  }
+  .favorite.active { color: gold; }
 
-    .card-desc {
-      font-size: 1rem;
-      color: var(--desc-color);
-    }
-
-    .favorite {
-      cursor: pointer;
-      color: #ccc;
-      font-size: 1.2rem;
-    }
-    .favorite.active { color: gold; }
-
-    .card:focus { outline: 2px solid var(--accent); outline-offset: 4px; }
-  </style>
+  .card:focus { outline: 2px solid var(--accent); outline-offset: 4px; }
+</style>
 </head>
 <body>
 
-  <h1>📁 Meine Link-Datenbank</h1>
+<h1>📁 Meine Link-Datenbank</h1>
 
-  <div class="container">
-    <input type="text" id="search" placeholder="Suche..." onkeyup="filterCards()">
-    <select id="sort" onchange="sortCards()">
-      <option value="category">Sortiere nach Kategorie</option>
-      <option value="name">Sortiere nach Name</option>
-    </select>
+<div class="container">
+  <input type="text" id="search" placeholder="Suche..." onkeyup="filterCards()">
+  <select id="sort" onchange="sortCards()">
+    <option value="category">Sortiere nach Kategorie</option>
+    <option value="name">Sortiere nach Name</option>
+  </select>
+  <label><input type="checkbox" id="favFilter" onchange="filterFavorites()"> Nur Favoriten anzeigen</label>
 
-    <!-- Kategorie: Allgemein -->
-    <div class="category" data-category="Allgemein">
-      <h2>🌐 Allgemein</h2>
-      <div class="grid">
-        <a class="card" href="https://google.com" target="_blank" rel="noopener noreferrer" data-category="Allgemein" title="https://google.com">
-          <div class="card-title"><span>🔍</span>Google <span class="favorite" onclick="toggleFav(event)">★</span></div>
-          <div class="card-desc">Suchmaschine für alles Mögliche.</div>
-        </a>
-      </div>
+  <!-- Kategorien -->
+  <div class="category" data-category="Allgemein">
+    <h2>🌐 Allgemein</h2>
+    <div class="grid">
+      <a class="card" href="https://google.com" target="_blank" data-category="Allgemein" title="https://google.com">
+        <div class="card-title"><span>🔍</span>Google <span class="favorite" onclick="toggleFav(event)">★</span></div>
+        <div class="card-desc">Suchmaschine für alles Mögliche.</div>
+      </a>
     </div>
-
-    <!-- Kategorie: SAHP -->
-    <div class="category" data-category="SAHP">
-      <h2>🚔 SAHP</h2>
-      <div class="grid">
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit?gid=1847778166#gid=1847778166" target="_blank" rel="noopener noreferrer" data-category="SAHP" title="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit">
-          <div class="card-title"><span>📡</span>SAHP-Leitstelle <span class="favorite" onclick="toggleFav(event)">★</span></div>
-          <div class="card-desc">Die Leitstelle vom SAHP zum Eintragen.</div>
-        </a>
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit?gid=1898147490#gid=1898147490" target="_blank" rel="noopener noreferrer" data-category="SAHP" title="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit">
-          <div class="card-title"><span>⚖️</span>Straf- & Bußgeldkatalog <span class="favorite" onclick="toggleFav(event)">★</span></div>
-          <div class="card-desc">Straf- & Bußgeldkatalog.</div>
-        </a>
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1YayZveRHmKJa5gGuR-y3TRr6pP_tRv64_7JmkKNXb_I/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" data-category="SAHP" title="https://docs.google.com/spreadsheets/d/1YayZveRHmKJa5gGuR-y3TRr6pP_tRv64_7JmkKNXb_I/edit">
-          <div class="card-title"><span>📋</span>SP Mitarbeiterblatt <span class="favorite" onclick="toggleFav(event)">★</span></div>
-          <div class="card-desc">Liste aller SP-Mitarbeiter und Zuständigkeiten.</div>
-        </a>
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1AcTE7eIOGifiYTfeHFgHueQjJarqf2ZeoOzAURe67DU/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" data-category="SAHP" title="https://docs.google.com/spreadsheets/d/1AcTE7eIOGifiYTfeHFgHueQjJarqf2ZeoOzAURe67DU/edit">
-          <div class="card-title"><span>📑</span>PA Leitstelle <span class="favorite" onclick="toggleFav(event)">★</span></div>
-          <div class="card-desc">Kontaktdaten und Aufgaben der PA-Leitstelle.</div>
-        </a>
-        <a class="card" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank" rel="noopener noreferrer" data-category="SAHP" title="https://grand-bussgeldkatalog.netlify.app/">
-          <div class="card-title"><span>⚖️</span>Bußgeldrechner <span class="favorite" onclick="toggleFav(event)">★</span></div>
-          <div class="card-desc">Straf- & Bußgeldkatalog.</div>
-        </a>
-      </div>
-    </div>
-
-    <!-- Kategorie: Intern -->
-    <div class="category" data-category="Intern">
-      <h2>🔐 Intern</h2>
-      <div class="grid">
-        <a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank" rel="noopener noreferrer" data-category="Intern" title="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit">
-          <div class="card-title"><span>🏃‍♂️</span>Flucht <span class="favorite" onclick="toggleFav(event)">★</span></div>
-          <div class="card-desc">Der Fluchtplan von Luca Valentine (ENDE).</div>
-        </a>
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1n6AB0hBrln9wCuMvyyNcfDlnF_uDG6OL1WUagg59Pvs/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" data-category="Intern" title="https://docs.google.com/spreadsheets/d/1n6AB0hBrln9wCuMvyyNcfDlnF_uDG6OL1WUagg59Pvs/edit">
-          <div class="card-title"><span>📊</span>Diagram Sheets <span class="favorite" onclick="toggleFav(event)">★</span></div>
-          <div class="card-desc">Vorlage für Diagramme in Sheets.</div>
-        </a>
-      </div>
-    </div>
-
-    <!-- Kategorie: Sonstiges -->
-    <div class="category" data-category="Sonstiges">
-      <h2>📦 Sonstiges</h2>
-      <div class="grid">
-        <a class="card" href="https://wzhub.gg/de/bo6-loadouts" target="_blank" rel="noopener noreferrer" data-category="Sonstiges" title="https://wzhub.gg/de/bo6-loadouts">
-          <div class="card-title"><span>♾️</span>COD-WZHUB <span class="favorite" onclick="toggleFav(event)">★</span></div>
-          <div class="card-desc">COD Meta Waffen.</div>
-        </a>
-        <a class="card" href="https://github.com/Toffie15/Test/tree/main" target="_blank" rel="noopener noreferrer" data-category="Sonstiges" title="https://github.com/Toffie15/Test/tree/main">
-          <div class="card-title"><span>📝</span>Github <span class="favorite" onclick="toggleFav(event)">★</span></div>
-          <div class="card-desc">Webcode.</div>
-        </a>
-        <a class="card" href="https://toffie15.github.io/Test/test.html" target="_blank" rel="noopener noreferrer" data-category="Sonstiges" title="https://toffie15.github.io/Test/test.html">
-          <div class="card-title"><span>📝</span>Vorlage Titel <span class="favorite" onclick="toggleFav(event)">★</span></div>
-          <div class="card-desc">Vorlage Beispiel.</div>
-        </a>
-      </div>
-    </div>
-
   </div>
 
-  <script>
-    function filterCards() {
-      const input = document.getElementById('search').value.toLowerCase();
-      const cards = document.querySelectorAll('.card');
-      cards.forEach(card => {
-        const title = card.querySelector('.card-title').textContent.toLowerCase();
-        const desc = card.querySelector('.card-desc').textContent.toLowerCase();
-        card.style.display = (title.includes(input) || desc.includes(input)) ? '' : 'none';
-      });
-    }
+  <div class="category" data-category="SAHP">
+    <h2>🚔 SAHP</h2>
+    <div class="grid">
+      <a class="card" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit?gid=1847778166" target="_blank" data-category="SAHP" title="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit">
+        <div class="card-title"><span>📡</span>SAHP-Leitstelle <span class="favorite" onclick="toggleFav(event)">★</span></div>
+        <div class="card-desc">Die Leitstelle vom SAHP zum Eintragen.</div>
+      </a>
+      <a class="card" href="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit?gid=1898147490" target="_blank" data-category="SAHP" title="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit">
+        <div class="card-title"><span>⚖️</span>Straf- & Bußgeldkatalog <span class="favorite" onclick="toggleFav(event)">★</span></div>
+        <div class="card-desc">Straf- & Bußgeldkatalog.</div>
+      </a>
+      <a class="card" href="https://docs.google.com/spreadsheets/d/1YayZveRHmKJa5gGuR-y3TRr6pP_tRv64_7JmkKNXb_I/edit?gid=0" target="_blank" data-category="SAHP" title="https://docs.google.com/spreadsheets/d/1YayZveRHmKJa5gGuR-y3TRr6pP_tRv64_7JmkKNXb_I/edit">
+        <div class="card-title"><span>📋</span>SP Mitarbeiterblatt <span class="favorite" onclick="toggleFav(event)">★</span></div>
+        <div class="card-desc">Liste aller SP-Mitarbeiter und Zuständigkeiten.</div>
+      </a>
+      <a class="card" href="https://docs.google.com/spreadsheets/d/1AcTE7eIOGifiYTfeHFgHueQjJarqf2ZeoOzAURe67DU/edit?gid=0" target="_blank" data-category="SAHP" title="https://docs.google.com/spreadsheets/d/1AcTE7eIOGifiYTfeHFgHueQjJarqf2ZeoOzAURe67DU/edit">
+        <div class="card-title"><span>📑</span>PA Leitstelle <span class="favorite" onclick="toggleFav(event)">★</span></div>
+        <div class="card-desc">Kontaktdaten und Aufgaben der PA-Leitstelle.</div>
+      </a>
+      <a class="card" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank" data-category="SAHP" title="https://grand-bussgeldkatalog.netlify.app/">
+        <div class="card-title"><span>⚖️</span>Bußgeldrechner <span class="favorite" onclick="toggleFav(event)">★</span></div>
+        <div class="card-desc">Straf- & Bußgeldkatalog.</div>
+      </a>
+    </div>
+  </div>
 
-    function toggleFav(event) {
-      event.stopPropagation();
-      event.preventDefault();
-      event.target.classList.toggle('active');
-    }
+  <div class="category" data-category="Intern">
+    <h2>🔐 Intern</h2>
+    <div class="grid">
+      <a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank" data-category="Intern" title="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit">
+        <div class="card-title"><span>🏃‍♂️</span>Flucht <span class="favorite" onclick="toggleFav(event)">★</span></div>
+        <div class="card-desc">Der Fluchtplan von Luca Valentine (ENDE).</div>
+      </a>
+      <a class="card" href="https://docs.google.com/spreadsheets/d/1n6AB0hBrln9wCuMvyyNcfDlnF_uDG6OL1WUagg59Pvs/edit?gid=0" target="_blank" data-category="Intern" title="https://docs.google.com/spreadsheets/d/1n6AB0hBrln9wCuMvyyNcfDlnF_uDG6OL1WUagg59Pvs/edit">
+        <div class="card-title"><span>📊</span>Diagram Sheets <span class="favorite" onclick="toggleFav(event)">★</span></div>
+        <div class="card-desc">Vorlage für Diagramme in Sheets.</div>
+      </a>
+    </div>
+  </div>
 
-    function sortCards() {
-      const sortType = document.getElementById('sort').value;
-      const categories = document.querySelectorAll('.category');
-      categories.forEach(cat => {
-        const grid = cat.querySelector('.grid');
-        const cards = Array.from(grid.children);
-        if (sortType === 'name') {
-          cards.sort((a,b) => a.querySelector('.card-title').textContent.localeCompare(b.querySelector('.card-title').textContent));
-        } else {
-          cards.sort((a,b) => a.dataset.category.localeCompare(b.dataset.category));
-        }
-        cards.forEach(card => grid.appendChild(card));
-      });
+  <div class="category" data-category="Sonstiges">
+    <h2>📦 Sonstiges</h2>
+    <div class="grid">
+      <a class="card" href="https://wzhub.gg/de/bo6-loadouts" target="_blank" data-category="Sonstiges" title="https://wzhub.gg/de/bo6-loadouts">
+        <div class="card-title"><span>♾️</span>COD-WZHUB <span class="favorite" onclick="toggleFav(event)">★</span></div>
+        <div class="card-desc">COD Meta Waffen.</div>
+      </a>
+      <a class="card" href="https://github.com/Toffie15/Test/tree/main" target="_blank" data-category="Sonstiges" title="https://github.com/Toffie15/Test/tree/main">
+        <div class="card-title"><span>📝</span>Github <span class="favorite" onclick="toggleFav(event)">★</span></div>
+        <div class="card-desc">Webcode.</div>
+      </a>
+      <a class="card" href="https://toffie15.github.io/Test/test.html" target="_blank" data-category="Sonstiges" title="https://toffie15.github.io/Test/test.html">
+        <div class="card-title"><span>📝</span>Vorlage Titel <span class="favorite" onclick="toggleFav(event)">★</span></div>
+        <div class="card-desc">Vorlage Beispiel.</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function filterCards() {
+  const input = document.getElementById('search').value.toLowerCase();
+  const favFilter = document.getElementById('favFilter').checked;
+  document.querySelectorAll('.card').forEach(card => {
+    const title = card.querySelector('.card-title').textContent.toLowerCase();
+    const desc = card.querySelector('.card-desc').textContent.toLowerCase();
+    const isFav = card.querySelector('.favorite').classList.contains('active');
+    const show = (title.includes(input) || desc.includes(input)) && (!favFilter || isFav);
+    card.style.display = show ? '' : 'none';
+  });
+}
+
+function toggleFav(event) {
+  event.stopPropagation();
+  event.preventDefault();
+  event.target.classList.toggle('active');
+  filterCards();
+}
+
+function filterFavorites() { filterCards(); }
+
+function sortCards() {
+  const sortType = document.getElementById('sort').value;
+  document.querySelectorAll('.category').forEach(cat => {
+    const grid = cat.querySelector('.grid');
+    const cards = Array.from(grid.children);
+    if(sortType === 'name') {
+      cards.sort((a,b) => a.querySelector('.card-title').textContent.localeCompare(b.querySelector('.card-title').textContent));
+    } else {
+      cards.sort((a,b) => a.dataset.category.localeCompare(b.dataset.category));
     }
-  </script>
+    cards.forEach(card => grid.appendChild(card));
+  });
+}
+</script>
 
 </body>
 </html>
