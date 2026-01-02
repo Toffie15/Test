@@ -12,6 +12,11 @@
       --card-dark: #1f1f1f;
       --accent: #8c00ff;
       --desc-color: #cccccc;
+      --allgemein: #00bfff;
+      --sahp: #ff8c00;
+      --intern: #ff1493;
+      --sonstiges: #32cd32;
+      --fav-color: gold;
     }
 
     body {
@@ -23,9 +28,15 @@
 
     h1 {
       text-align: center;
-      margin-top: 1rem;
+      margin: 0;
       font-size: 2.2rem;
       color: var(--accent);
+      position: sticky;
+      top: 0;
+      background-color: var(--bg-dark);
+      padding: 1rem 0;
+      z-index: 10;
+      border-bottom: 1px solid #333;
     }
 
     h2 {
@@ -42,13 +53,12 @@
       padding: 1rem;
     }
 
-    /* Suchleiste */
-    #search {
+    #search, #sort {
       width: 100%;
       padding: 0.5rem 1rem;
       border-radius: 5px;
       border: none;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       font-size: 1rem;
     }
 
@@ -66,6 +76,7 @@
       transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
       text-decoration: none;
       color: inherit;
+      position: relative;
     }
 
     .card:hover {
@@ -91,6 +102,23 @@
       color: var(--desc-color);
     }
 
+    /* Kategorienfarbiger Rand */
+    .allgemein { border-left: 5px solid var(--allgemein); }
+    .sahp { border-left: 5px solid var(--sahp); }
+    .intern { border-left: 5px solid var(--intern); }
+    .sonstiges { border-left: 5px solid var(--sonstiges); }
+
+    /* Favoriten-Stern */
+    .fav {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: #555;
+    }
+    .fav.active { color: var(--fav-color); }
+
     .card:focus {
       outline: 2px solid var(--accent);
       outline-offset: 4px;
@@ -108,14 +136,20 @@
 
   <div class="container">
     <input type="text" id="search" placeholder="Suche..." onkeyup="filterCards()">
+    <select id="sort" onchange="sortCards()">
+      <option value="default">Sortieren nach...</option>
+      <option value="alphabet">Alphabetisch</option>
+      <option value="category">Kategorie</option>
+    </select>
 
     <!-- Kategorie: Allgemein -->
     <div class="category">
       <h2>🌐 Allgemein</h2>
-      <div class="grid">
-        <a class="card" href="https://google.com" target="_blank" rel="noopener noreferrer">
+      <div class="grid" data-category="allgemein">
+        <a class="card allgemein" href="https://google.com" target="_blank" rel="noopener noreferrer" title="https://google.com">
           <div class="card-title"><span>🔍</span>Google</div>
           <div class="card-desc">Suchmaschine für alles Mögliche.</div>
+          <div class="fav" onclick="toggleFav(event)">★</div>
         </a>
       </div>
     </div>
@@ -123,41 +157,24 @@
     <!-- Kategorie: SAHP -->
     <div class="category">
       <h2>🚔 SAHP</h2>
-      <div class="grid">
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit?gid=1847778166#gid=1847778166" target="_blank" rel="noopener noreferrer">
+      <div class="grid" data-category="sahp">
+        <a class="card sahp" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit?gid=1847778166#gid=1847778166" target="_blank" rel="noopener noreferrer" title="https://docs.google.com/...">
           <div class="card-title"><span>📡</span>SAHP-Leitstelle</div>
           <div class="card-desc">Die Leitstelle vom SAHP zum Eintragen.</div>
+          <div class="fav" onclick="toggleFav(event)">★</div>
         </a>
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit?gid=1898147490#gid=1898147490" target="_blank" rel="noopener noreferrer">
-          <div class="card-title"><span>⚖️</span>Straf- & Bußgeldkatalog</div>
-          <div class="card-desc">Straf- & Bußgeldkatalog.</div>
-        </a>
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1YayZveRHmKJa5gGuR-y3TRr6pP_tRv64_7JmkKNXb_I/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
-          <div class="card-title"><span>📋</span>SP Mitarbeiterblatt</div>
-          <div class="card-desc">Liste aller SP-Mitarbeiter und Zuständigkeiten.</div>
-        </a>
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1AcTE7eIOGifiYTfeHFgHueQjJarqf2ZeoOzAURe67DU/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
-          <div class="card-title"><span>📑</span>PA Leitstelle</div>
-          <div class="card-desc">Kontaktdaten und Aufgaben der PA-Leitstelle.</div>
-        </a>
-        <a class="card" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank" rel="noopener noreferrer">
-          <div class="card-title"><span>⚖️</span>Bußgeldrechner</div>
-          <div class="card-desc">Straf- & Bußgeldkatalog.</div>
-        </a>
+        <!-- Weitere Karten hier, jeweils class="sahp" -->
       </div>
     </div>
 
     <!-- Kategorie: Intern -->
     <div class="category">
       <h2>🔐 Intern</h2>
-      <div class="grid">
-        <a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank" rel="noopener noreferrer">
+      <div class="grid" data-category="intern">
+        <a class="card intern" href="#" title="#">
           <div class="card-title"><span>🏃‍♂️</span>Flucht</div>
           <div class="card-desc">Der Fluchtplan von Luca Valentine (ENDE).</div>
-        </a>
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1n6AB0hBrln9wCuMvyyNcfDlnF_uDG6OL1WUagg59Pvs/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
-          <div class="card-title"><span>📊</span>Diagram Sheets</div>
-          <div class="card-desc">Vorlage für Diagramme in Sheets.</div>
+          <div class="fav" onclick="toggleFav(event)">★</div>
         </a>
       </div>
     </div>
@@ -165,18 +182,11 @@
     <!-- Kategorie: Sonstiges -->
     <div class="category">
       <h2>📦 Sonstiges</h2>
-      <div class="grid">
-        <a class="card" href="https://wzhub.gg/de/bo6-loadouts" target="_blank" rel="noopener noreferrer">
+      <div class="grid" data-category="sonstiges">
+        <a class="card sonstiges" href="#" title="#">
           <div class="card-title"><span>♾️</span>COD-WZHUB</div>
           <div class="card-desc">COD Meta Waffen.</div>
-        </a>
-        <a class="card" href="https://github.com/Toffie15/Test/tree/main" target="_blank" rel="noopener noreferrer">
-          <div class="card-title"><span>📝</span>Github</div>
-          <div class="card-desc">Webcode.</div>
-        </a>
-        <a class="card" href="https://toffie15.github.io/Test/test.html" target="_blank" rel="noopener noreferrer">
-          <div class="card-title"><span>📝</span>Vorlage Titel</div>
-          <div class="card-desc">Vorlage Beispiel.</div>
+          <div class="fav" onclick="toggleFav(event)">★</div>
         </a>
       </div>
     </div>
@@ -190,12 +200,28 @@
       cards.forEach(card => {
         const title = card.querySelector('.card-title').textContent.toLowerCase();
         const desc = card.querySelector('.card-desc').textContent.toLowerCase();
-        if (title.includes(input) || desc.includes(input)) {
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
+        card.style.display = (title.includes(input) || desc.includes(input)) ? '' : 'none';
       });
+    }
+
+    function sortCards() {
+      const method = document.getElementById('sort').value;
+      const grids = document.querySelectorAll('.grid');
+      grids.forEach(grid => {
+        const cards = Array.from(grid.children);
+        if(method === 'alphabet') {
+          cards.sort((a,b) => a.querySelector('.card-title').textContent.localeCompare(b.querySelector('.card-title').textContent));
+        } else if(method === 'category') {
+          cards.sort((a,b) => a.className.localeCompare(b.className));
+        }
+        cards.forEach(card => grid.appendChild(card));
+      });
+    }
+
+    function toggleFav(event) {
+      event.stopPropagation();
+      const star = event.target;
+      star.classList.toggle('active');
     }
   </script>
 
