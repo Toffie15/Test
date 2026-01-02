@@ -11,6 +11,7 @@
       --text-dark: #00ffdd;
       --card-dark: #252525;
       --accent: #8c00ff;
+      --hover-shadow: rgba(140, 0, 255, 0.7);
     }
 
     body {
@@ -49,19 +50,31 @@
       gap: 1.5rem;
     }
 
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .card {
       background-color: var(--card-dark);
       border-radius: 10px;
       padding: 1.5rem;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-      transition: transform 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s;
       text-decoration: none;
       color: inherit;
     }
 
     .card:hover {
       transform: scale(1.03);
-      box-shadow: 0 4px 12px rgb(255, 0, 242);
+      box-shadow: 0 4px 12px var(--hover-shadow);
     }
 
     .card-title {
@@ -72,6 +85,7 @@
 
     .card-desc {
       font-size: 0.95rem;
+      line-height: 1.4;
     }
 
     .card:focus {
@@ -90,9 +104,9 @@
     <div class="category">
       <h2>🌐 Allgemein</h2>
       <div class="grid">
-        <a class="card" href="https://google.com" target="_blank" rel="noopener noreferrer">
+        <a class="card" href="https://google.com" target="_blank" rel="noopener noreferrer" aria-label="Google Suchmaschine">
           <div class="card-title">🔍 Google</div>
-          <div class="card-desc">Suchmaschine für alles Mögliche.</div>
+          <div class="card-desc">Leistungsstarke Suchmaschine für Informationen aller Art.</div>
         </a>
       </div>
     </div>
@@ -101,29 +115,29 @@
     <div class="category">
       <h2>🚔 SAHP</h2>
       <div class="grid">
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit?gid=1847778166#gid=1847778166" target="_blank" rel="noopener noreferrer">
+        <a class="card" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit?gid=1847778166#gid=1847778166" target="_blank" rel="noopener noreferrer" aria-label="SAHP Leitstelle">
           <div class="card-title">📡 SAHP-Leitstelle</div>
-          <div class="card-desc">Die Leitstelle vom SAHP zum Eintragen.</div>
+          <div class="card-desc">Eintragen und einsehen von SAHP-Leitstelleninformationen.</div>
         </a>
 
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit?gid=1898147490#gid=1898147490" target="_blank" rel="noopener noreferrer">
+        <a class="card" href="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit?gid=1898147490#gid=1898147490" target="_blank" rel="noopener noreferrer" aria-label="Straf- & Bußgeldkatalog">
           <div class="card-title">⚖️ Straf- & Bußgeldkatalog</div>
-          <div class="card-desc">Straf- & Bußgeldkatalog.</div>
+          <div class="card-desc">Kompletter Überblick über Strafen und Bußgelder im SAHP.</div>
         </a>
 
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1YayZveRHmKJa5gGuR-y3TRr6pP_tRv64_7JmkKNXb_I/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
+        <a class="card" href="https://docs.google.com/spreadsheets/d/1YayZveRHmKJa5gGuR-y3TRr6pP_tRv64_7JmkKNXb_I/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" aria-label="SP Mitarbeiterblatt">
           <div class="card-title">📋 SP Mitarbeiterblatt</div>
-          <div class="card-desc">Liste aller SP-Mitarbeiter und Zuständigkeiten.</div>
+          <div class="card-desc">Liste aller SP-Mitarbeiter und ihre Zuständigkeiten.</div>
         </a>
 
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1AcTE7eIOGifiYTfeHFgHueQjJarqf2ZeoOzAURe67DU/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
+        <a class="card" href="https://docs.google.com/spreadsheets/d/1AcTE7eIOGifiYTfeHFgHueQjJarqf2ZeoOzAURe67DU/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" aria-label="PA Leitstelle">
           <div class="card-title">📑 PA Leitstelle</div>
           <div class="card-desc">Kontaktdaten und Aufgaben der PA-Leitstelle.</div>
         </a>
 
-        <a class="card" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank" rel="noopener noreferrer">
+        <a class="card" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank" rel="noopener noreferrer" aria-label="Bußgeldrechner">
           <div class="card-title">⚖️ Bußgeldrechner</div>
-          <div class="card-desc">Straf- & Bußgeldkatalog.</div>
+          <div class="card-desc">Online-Tool zur Berechnung von Bußgeldern und Strafen.</div>
         </a>
       </div>
     </div>
@@ -132,14 +146,14 @@
     <div class="category">
       <h2>🔐 Intern</h2>
       <div class="grid">
-        <a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank" rel="noopener noreferrer">
+        <a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank" rel="noopener noreferrer" aria-label="Fluchtplan">
           <div class="card-title">🏃‍♂️ Flucht</div>
-          <div class="card-desc">Der Fluchtplan von Luca Valentine (ENDE).</div>
+          <div class="card-desc">Fluchtplan von Luca Valentine (ENDE).</div>
         </a>
 
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1n6AB0hBrln9wCuMvyyNcfDlnF_uDG6OL1WUagg59Pvs/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
+        <a class="card" href="https://docs.google.com/spreadsheets/d/1n6AB0hBrln9wCuMvyyNcfDlnF_uDG6OL1WUagg59Pvs/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" aria-label="Diagram Sheets">
           <div class="card-title">📊 Diagram Sheets</div>
-          <div class="card-desc">Volage für Diagram in sheets</div>
+          <div class="card-desc">Vorlage für Diagramme in Google Sheets.</div>
         </a>
       </div>
     </div>
@@ -148,19 +162,19 @@
     <div class="category">
       <h2>📦 Sonstiges</h2>
       <div class="grid">
-        <a class="card" href="https://wzhub.gg/de/bo6-loadouts" target="_blank" rel="noopener noreferrer">
+        <a class="card" href="https://wzhub.gg/de/bo6-loadouts" target="_blank" rel="noopener noreferrer" aria-label="COD WZHUB">
           <div class="card-title">♾️ COD-WZHUB ♾️</div>
-          <div class="card-desc">COD Meta Waffen</div>
+          <div class="card-desc">Aktuelle Meta-Waffen für Call of Duty.</div>
         </a>
 
-        <a class="card" href="https://github.com/Toffie15/Test/tree/main" target="_blank" rel="noopener noreferrer">
+        <a class="card" href="https://github.com/Toffie15/Test/tree/main" target="_blank" rel="noopener noreferrer" aria-label="Github Repository">
           <div class="card-title">📝 Github</div>
-          <div class="card-desc">Webcode</div>
+          <div class="card-desc">Repository mit Test- und Beispielcodes.</div>
         </a>
 
-        <a class="card" href="https://toffie15.github.io/Test/test.html" target="_blank" rel="noopener noreferrer">
+        <a class="card" href="https://toffie15.github.io/Test/test.html" target="_blank" rel="noopener noreferrer" aria-label="Vorlage Beispiel">
           <div class="card-title">📝 Vorlage Titel</div>
-          <div class="card-desc">Vorlage Beispiel.</div>
+          <div class="card-desc">Beispielvorlage für HTML-Seiten.</div>
         </a>
       </div>
     </div>
