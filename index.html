@@ -42,10 +42,12 @@ h2{
   padding:1rem;
 }
 
+/* Sticky Suche */
 .search-wrapper{
   position:sticky;
   top:0;
-  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(6px);
+  background:rgba(0,0,0,.55);
   padding:1rem;
   z-index:10;
 }
@@ -54,13 +56,20 @@ h2{
   width:100%;
   padding:.7rem;
   border-radius:6px;
-  border:none;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(0,0,0,.4);
+  color:var(--text);
+}
+
+.search::placeholder{
+  color:#aaa;
 }
 
 .grid{
-  display:grid;
+  display:none; /* STANDARD EINGEKLAPPT */
   grid-template-columns:repeat(3,1fr);
   gap:1.5rem;
+  margin-bottom:2rem;
 }
 
 @media(max-width:900px){
@@ -194,9 +203,10 @@ h2{
 <script>
 function toggle(h){
   const g=h.nextElementSibling;
-  g.style.display=g.style.display==="none"?"grid":"none";
+  g.style.display=g.style.display==="grid"?"none":"grid";
 }
 
+/* Suche */
 document.querySelector(".search").addEventListener("input",e=>{
   const v=e.target.value.toLowerCase();
   document.querySelectorAll(".card").forEach(c=>{
@@ -204,6 +214,7 @@ document.querySelector(".search").addEventListener("input",e=>{
   });
 });
 
+/* Letzter Klick */
 document.querySelectorAll(".card").forEach(c=>{
   const id=c.dataset.id;
   const t=localStorage.getItem("last_"+id);
