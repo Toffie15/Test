@@ -181,5 +181,27 @@
 
   </div>
 
+  <!-- Script zum Blockieren von F12, Ctrl+Shift+I und Rechtsklick -->
+  <script>
+    document.addEventListener("keydown", function(e) {
+      // F12
+      if (e.key === "F12") {
+        e.preventDefault();
+        alert("Entwicklertools sind deaktiviert.");
+      }
+      // Ctrl+Shift+I (DevTools Shortcut)
+      if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") {
+        e.preventDefault();
+        alert("Entwicklertools sind deaktiviert.");
+      }
+    });
+
+    // Rechtsklick blockieren
+    document.addEventListener("contextmenu", function(e) {
+      e.preventDefault();
+      alert("Rechtsklick ist deaktiviert.");
+    });
+  </script>
+
 </body>
 </html>
