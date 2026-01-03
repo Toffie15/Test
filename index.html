@@ -59,6 +59,8 @@ h2{
   color:var(--text);
 }
 
+.search::placeholder{color:#aaa;}
+
 .bg-toggle{
   padding:.7rem 1rem;
   background:rgba(0,0,0,.4);
@@ -152,6 +154,21 @@ h2{
 
 <a class="card" data-id="vorlage" href="https://toffie15.github.io/Test/test.html" target="_blank">
 <div class="card-title">📝 Vorlage Titel</div><div class="card-desc">HTML Vorlage</div><div class="last-used"></div></a>
+</div>
+
+<h2 onclick="toggle(this)">📦 Bestellen/Wunsch (<span class="count"></span>)</h2>
+<div class="grid">
+<a class="card" data-id="amazon" href="https://www.amazon.de" target="_blank">
+<div class="card-title">🛒 Amazon</div>
+<div class="card-desc">Zum Shoppen und Wunschlisten</div>
+<div class="last-used"></div>
+</a>
+
+<a class="card" data-id="wunschliste" href="https://www.amazon.de/hz/wishlist/ls/" target="_blank">
+<div class="card-title">🎁 Wunschliste</div>
+<div class="card-desc">Eigene Wunschlisten</div>
+<div class="last-used"></div>
+</a>
 </div>
 
 </div>
