@@ -4,77 +4,50 @@
 <meta charset="UTF-8">
 <title>GTA RP Bewerbung</title>
 <style>
-  body { font-family: Arial; max-width: 600px; margin: 50px auto; }
-  label { display: block; margin-top: 10px; }
-  input, textarea { width: 100%; padding: 8px; margin-top: 5px; }
-  button { margin-top: 15px; padding: 10px 20px; }
-  #status { margin-top: 15px; font-weight: bold; }
+  body { font-family: Arial, sans-serif; background: #121212; color: #fff; display:flex; justify-content:center; align-items:center; height:100vh; }
+  form { background:#1e1e1e; padding:20px; border-radius:10px; width:300px; }
+  input, textarea, button { width:100%; margin:5px 0; padding:10px; border-radius:5px; border:none; }
+  button { background:#4CAF50; color:#fff; cursor:pointer; }
 </style>
 </head>
 <body>
-
-<h2>GTA RP Bewerbung</h2>
-
-<form id="bewerbungForm">
-  <label>Name:</label>
-  <input type="text" name="name" required>
-
-  <label>Alter:</label>
-  <input type="number" name="alter" required>
-
-  <label>Discord (nur "1"):</label>
-  <input type="text" name="discord" required pattern="1" title="Du musst eine 1 eingeben.">
-
-  <label>Warum willst du bei uns spielen?</label>
-  <textarea name="bewerbung" rows="5" required></textarea>
-
+<form id="applicationForm">
+  <h2>Bewerbung GTA RP</h2>
+  <input type="text" id="name" placeholder="Name" required>
+  <input type="number" id="age" placeholder="Alter" required>
+  <input type="text" id="discord" placeholder="Discord" required>
+  <textarea id="text" placeholder="Bewerbungstext" required></textarea>
   <button type="submit">Absenden</button>
+  <p id="status"></p>
 </form>
 
-<p id="status"></p>
-
 <script>
-const form = document.getElementById("bewerbungForm");
-const status = document.getElementById("status");
+const scriptURL = 'https://script.google.com/macros/s/AKfycbxytRncMwq-jSXx7nIc7Zw3pvofqwwGTM6ucQH3H0lTyOgvA0GG7CTBaH4Mi_FBeCDeAQ/exec'; // URL aus Google Apps Script
 
-// Hier deine Web-App URL einfügen
-const scriptURL = "https://script.google.com/macros/s/AKfycbz7x_QY5ugN-ikTfoCU_TWxpvYG2ZCuICr6jcWq0RY6QV3fq__blmryH6inadIp2b2PAA/exec";
-
-form.addEventListener("submit", e => {
+document.getElementById('applicationForm').addEventListener('submit', e => {
   e.preventDefault();
-
-  const discordValue = form.discord.value.trim();
-  if(discordValue !== "1"){
-    status.textContent = 'Discord muss eine "1" sein!';
-    return;
-  }
-
-  const formData = {
-    name: form.name.value,
-    alter: form.alter.value,
-    discord: discordValue,
-    bewerbung: form.bewerbung.value
-  };
   
+  const data = {
+    name: document.getElementById('name').value,
+    age: document.getElementById('age').value,
+    discord: document.getElementById('discord').value,
+    text: document.getElementById('text').value
+  };
+
   fetch(scriptURL, {
-    method: "POST",
-    body: JSON.stringify(formData)
+    method: 'POST',
+    body: JSON.stringify(data)
   })
   .then(response => response.json())
-  .then(data => {
-    if(data.status === "success"){
-      status.textContent = "Bewerbung erfolgreich abgeschickt!";
-      form.reset();
-    } else {
-      status.textContent = "Fehler beim Absenden: " + (data.message || "");
-    }
+  .then(response => {
+    document.getElementById('status').innerText = 'Bewerbung erfolgreich gesendet!';
+    document.getElementById('applicationForm').reset();
   })
-  .catch(err => {
-    status.textContent = "Fehler beim Absenden!";
-    console.error(err);
+  .catch(error => {
+    document.getElementById('status').innerText = 'Fehler beim Senden!';
+    console.error(error);
   });
 });
 </script>
-
 </body>
 </html>
