@@ -30,7 +30,12 @@ body{
 body.no-bg{background:var(--bg-color);}
 
 h1{text-align:center;color:var(--accent);}
-h2{color:var(--accent);cursor:pointer;user-select:none;}
+
+h2{
+  color:var(--accent);
+  cursor:pointer;
+  user-select:none;
+}
 
 .container{max-width:1200px;margin:auto;padding:1rem;}
 
@@ -50,7 +55,7 @@ h2{color:var(--accent);cursor:pointer;user-select:none;}
   padding:.7rem;
   border-radius:6px;
   border:1px solid rgba(255,255,255,.15);
-  background:rgba(0,0,0,.4);
+  background:rgba(0,0,0,.35);
   color:var(--text);
 }
 
@@ -58,7 +63,7 @@ h2{color:var(--accent);cursor:pointer;user-select:none;}
 
 .bg-toggle{
   padding:.7rem 1rem;
-  background:rgba(0,0,0,.4);
+  background:rgba(0,0,0,.35);
   border:1px solid rgba(255,255,255,.2);
   color:var(--text);
   border-radius:6px;
@@ -112,50 +117,69 @@ h2{color:var(--accent);cursor:pointer;user-select:none;}
 </a>
 </div>
 
-<h2 onclick="toggle(this)">🚓 Grand RP (<span class="count"></span>)</h2>
+<h2 onclick="toggle(this)">🚔 SAHP (<span class="count"></span>)</h2>
 <div class="grid">
+<a class="card" data-id="leitstelle" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit?gid=1847778166#gid=1847778166" target="_blank">
+<div class="card-title">📡 SAHP-Leitstelle</div><div class="card-desc">Leitstelle</div><div class="last-used"></div></a>
 
-<a class="card" data-id="leitstelle" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit" target="_blank"><div class="card-title">📡 Leitstelle</div><div class="card-desc">Übersicht</div><div class="last-used"></div></a>
+<a class="card" data-id="strafen" href="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit?gid=1898147490#gid=1898147490" target="_blank">
+<div class="card-title">⚖️ Straf- & Bußgeldkatalog</div><div class="card-desc">Strafkatalog</div><div class="last-used"></div></a>
 
-<a class="card" data-id="strafen" href="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit" target="_blank"><div class="card-title">⚖️ Strafkatalog</div><div class="card-desc">Bußgelder</div><div class="last-used"></div></a>
+<a class="card" data-id="sp" href="https://docs.google.com/spreadsheets/d/1YayZveRHmKJa5gGuR-y3TRr6pP_tRv64_7JmkKNXb_I/edit?gid=0#gid=0" target="_blank">
+<div class="card-title">📋 SP Mitarbeiterblatt</div><div class="card-desc">Mitarbeiter</div><div class="last-used"></div></a>
 
-<a class="card" data-id="fahrzeuge" href="https://discord.com/channels/888542957328805948/1227544622360956939/1454928990551674994" target="_blank"><div class="card-title">🚗 Fahrzeug-Lackierung</div><div class="card-desc">Wie lackieren?</div><div class="last-used"></div></a>
+<a class="card" data-id="pa" href="https://docs.google.com/spreadsheets/d/1AcTE7eIOGifiYTfeHFgHueQjJarqf2ZeoOzAURe67DU/edit?gid=0#gid=0" target="_blank">
+<div class="card-title">📑 PA Leitstelle</div><div class="card-desc">PA Daten</div><div class="last-used"></div></a>
 
-<a class="card" data-id="gesetzbuch" href="https://docs.google.com/document/d/1N6BPhsYC12G86xT3Lixpyyl8yvy6fecNk4BO36mGuGg/edit" target="_blank"><div class="card-title">📘 Öffentliches Gesetzbuch</div><div class="card-desc">Recht</div><div class="last-used"></div></a>
+<a class="card" data-id="bussgeld" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank">
+<div class="card-title">⚖️ Bußgeldrechner</div><div class="card-desc">Rechner</div><div class="last-used"></div></a>
+</div>
 
-<a class="card" data-id="bdg" href="https://docs.google.com/document/d/1VCnokyqBWW1Vf4aCNkK34uLW7kA6JIJUu3LUlbOA19A/edit" target="_blank"><div class="card-title">📕 BDG</div><div class="card-desc">Beamtenrecht</div><div class="last-used"></div></a>
+<h2 onclick="toggle(this)">🔐 Intern (<span class="count"></span>)</h2>
+<div class="grid">
+<a class="card" data-id="flucht" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit" target="_blank">
+<div class="card-title">🏃‍♂️ Flucht</div><div class="card-desc">Fluchtplan</div><div class="last-used"></div></a>
 
-<a class="card" data-id="gvg" href="https://docs.google.com/document/d/12N4-InKZ0uQFQvX3uuBWrNK9_MZFyr1fR6dtv_6xfYo/edit" target="_blank"><div class="card-title">⚖️ GVG / StPO</div><div class="card-desc">Gerichtsordnung</div><div class="last-used"></div></a>
+<a class="card" data-id="diagram" href="https://docs.google.com/spreadsheets/d/1n6AB0hBrln9wCuMvyyNcfDlnF_uDG6OL1WUagg59Pvs/edit" target="_blank">
+<div class="card-title">📊 Diagram Sheets</div><div class="card-desc">Vorlage</div><div class="last-used"></div></a>
+</div>
 
-<a class="card" data-id="jbeitr" href="https://docs.google.com/document/d/1cuTrfciC5WNQEW0JJruniLSZqg8pXnormDT8wZW-sHw/edit" target="_blank"><div class="card-title">💰 JBeitrG</div><div class="card-desc">Beitreibung</div><div class="last-used"></div></a>
+<h2 onclick="toggle(this)">📦 Sonstiges (<span class="count"></span>)</h2>
+<div class="grid">
+<a class="card" data-id="cod" href="https://wzhub.gg/de/bo6-loadouts" target="_blank">
+<div class="card-title">♾️ COD-WZHUB</div><div class="card-desc">COD Meta</div><div class="last-used"></div></a>
 
-<a class="card" data-id="ctf" href="https://docs.google.com/spreadsheets/d/1FnOJq0fHTG8B4E7GwuhqvlKbl4g4R3y1p3O4ICQwIKE/edit" target="_blank"><div class="card-title">📊 C.T.F Leitstelle</div><div class="card-desc">CTF</div><div class="last-used"></div></a>
+<a class="card" data-id="github" href="https://github.com/Toffie15/Test/tree/main" target="_blank">
+<div class="card-title">📝 Github</div><div class="card-desc">Webcode</div><div class="last-used"></div></a>
 
-<a class="card" data-id="sgregeln" href="https://docs.google.com/document/d/1wCXxJnUt4ZKvDwx6HKORe9ryXgJhkARRT4HkLDb6frI/edit" target="_blank"><div class="card-title">📑 SG Regeln</div><div class="card-desc">Infos</div><div class="last-used"></div></a>
-
-<a class="card" data-id="sganfrage" href="https://forms.gle/dnktrTUxqHuHPozB8" target="_blank"><div class="card-title">📝 SG Leitstelle</div><div class="card-desc">Anfrage</div><div class="last-used"></div></a>
-
-<a class="card" data-id="rankup" href="https://docs.google.com/forms/d/e/1FAIpQLSeK8X3SVpLjq_x55Yv1fHimkdaXw69z7wLP_X7_N4PT3FulBA/viewform" target="_blank"><div class="card-title">⬆️ SG Rank-Up</div><div class="card-desc">Antrag</div><div class="last-used"></div></a>
-
-<a class="card" data-id="emsinfo" href="https://docs.google.com/document/d/1jyZJzeDlL0HdNO_s97M-KhkPThxwfqdJdmyd-2Yj1e4/edit" target="_blank"><div class="card-title">🚑 EMS Rundgang</div><div class="card-desc">Infos</div><div class="last-used"></div></a>
-
-<a class="card" data-id="emsbericht" href="https://forms.gle/AFuEuamQsn8hv83C9" target="_blank"><div class="card-title">📝 EMS Bericht</div><div class="card-desc">Formular</div><div class="last-used"></div></a>
-
-<a class="card" data-id="ausbilder" href="https://forms.gle/nuFZmsQ5J64eF7QP6" target="_blank"><div class="card-title">🎓 SG Ausbilder</div><div class="card-desc">Anfrage</div><div class="last-used"></div></a>
-
-<a class="card" data-id="hr" href="https://docs.google.com/forms/d/e/1FAIpQLScUissoDPUamQEnP7TbgaeuZ88eNUUXM35IP1VIAtjM7lVqbg/viewform" target="_blank"><div class="card-title">👥 SG HR</div><div class="card-desc">Anfrage</div><div class="last-used"></div></a>
-
+<a class="card" data-id="vorlage" href="https://toffie15.github.io/Test/test.html" target="_blank">
+<div class="card-title">📝 HTML Vorlage</div><div class="card-desc">Template</div><div class="last-used"></div></a>
 </div>
 
 <h2 onclick="toggle(this)">📦 Bestellen / Wunsch (<span class="count"></span>)</h2>
 <div class="grid">
-<a class="card" data-id="amazon" href="https://www.amazon.de" target="_blank"><div class="card-title">🛒 Amazon</div><div class="card-desc">Shop</div><div class="last-used"></div></a>
-<a class="card" data-id="wishlist" href="https://www.amazon.de/hz/wishlist/ls/" target="_blank"><div class="card-title">🎁 Wunschliste</div><div class="card-desc">Listen</div><div class="last-used"></div></a>
+<a class="card" data-id="amazon" href="https://www.amazon.de" target="_blank">
+<div class="card-title">🛒 Amazon</div>
+<div class="card-desc">Shop & Wunschlisten</div>
+<div class="last-used"></div>
+</a>
+
+<a class="card" data-id="wunschliste" href="https://www.amazon.de/hz/wishlist/ls/" target="_blank">
+<div class="card-title">🎁 Wunschliste</div>
+<div class="card-desc">Eigene Listen</div>
+<div class="last-used"></div>
+</a>
 </div>
 
 </div>
 
 <script>
+/*
+  Hinweis:
+  Clientseitiger Code ist immer einsehbar.
+  F12-Blocker bringen keine echte Sicherheit.
+*/
+
 function toggle(h){
   const g=h.nextElementSibling;
   g.style.display=g.style.display==="grid"?"none":"grid";
@@ -163,8 +187,8 @@ function toggle(h){
 
 function updateCounts(){
   document.querySelectorAll(".grid").forEach(grid=>{
-    const v=[...grid.children].filter(c=>c.style.display!=="none").length;
-    grid.previousElementSibling.querySelector(".count").textContent=v;
+    const visible=[...grid.children].filter(c=>c.style.display!=="none").length;
+    grid.previousElementSibling.querySelector(".count").textContent=visible;
   });
 }
 
@@ -180,7 +204,7 @@ document.querySelectorAll(".card").forEach(c=>{
   const id=c.dataset.id;
   const t=localStorage.getItem("last_"+id);
   if(t)c.querySelector(".last-used").textContent="Zuletzt: "+t;
-  c.onclick=()=>localStorage.setItem("last_"+id,new Date().toLocaleString());
+  c.addEventListener("click",()=>localStorage.setItem("last_"+id,new Date().toLocaleString()));
 });
 
 const btn=document.querySelector(".bg-toggle");
