@@ -30,12 +30,7 @@ body{
 body.no-bg{background:var(--bg-color);}
 
 h1{text-align:center;color:var(--accent);}
-
-h2{
-  color:var(--accent);
-  cursor:pointer;
-  user-select:none;
-}
+h2{color:var(--accent);cursor:pointer;user-select:none;}
 
 .container{max-width:1200px;margin:auto;padding:1rem;}
 
@@ -58,8 +53,6 @@ h2{
   background:rgba(0,0,0,.4);
   color:var(--text);
 }
-
-.search::placeholder{color:#aaa;}
 
 .bg-toggle{
   padding:.7rem 1rem;
@@ -90,8 +83,7 @@ h2{
 }
 
 .card:hover{transform:scale(1.03);}
-
-.card-title{color:var(--accent);font-size:1.1rem;}
+.card-title{color:var(--accent);font-size:1.05rem;}
 .card-desc{font-size:.9rem;}
 .last-used{font-size:.75rem;opacity:.7;margin-top:.4rem;}
 </style>
@@ -108,88 +100,88 @@ h2{
 
 <div class="container">
 
-<h2 onclick="toggle(this)">🌐 Allgemein (<span class="count"></span>)</h2>
+<h2 onclick="toggle(this)">🚔 Grand RP (<span class="count"></span>)</h2>
 <div class="grid">
-<a class="card" data-id="google" href="https://google.com" target="_blank">
-<div class="card-title">🔍 Google</div>
-<div class="card-desc">Suchmaschine</div>
-<div class="last-used"></div>
-</a>
-</div>
 
-<h2 onclick="toggle(this)">🚔 SAHP (<span class="count"></span>)</h2>
-<div class="grid">
-<a class="card" data-id="leitstelle" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit?gid=1847778166#gid=1847778166" target="_blank">
-<div class="card-title">📡 SAHP-Leitstelle</div><div class="card-desc">Leitstelle</div><div class="last-used"></div></a>
+<a class="card" data-id="lackierung" href="https://discord.com/channels/888542957328805948/1227544622360956939/1454928990551674994" target="_blank">
+<div class="card-title">🎨 Fahrzeug-Lackierung</div>
+<div class="card-desc">Wie dürfen Fahrzeuge lackiert werden</div>
+<div class="last-used"></div></a>
 
-<a class="card" data-id="strafen" href="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit?gid=1898147490#gid=1898147490" target="_blank">
-<div class="card-title">⚖️ Straf- & Bußgeldkatalog</div><div class="card-desc">Strafkatalog</div><div class="last-used"></div></a>
+<a class="card" data-id="gesetzbuch" href="https://docs.google.com/document/d/1N6BPhsYC12G86xT3Lixpyyl8yvy6fecNk4BO36mGuGg/edit" target="_blank">
+<div class="card-title">📘 Öffentliches Gesetzbuch</div>
+<div class="card-desc">Allgemeines Gesetzbuch</div>
+<div class="last-used"></div></a>
 
-<a class="card" data-id="sp" href="https://docs.google.com/spreadsheets/d/1YayZveRHmKJa5gGuR-y3TRr6pP_tRv64_7JmkKNXb_I/edit?gid=0#gid=0" target="_blank">
-<div class="card-title">📋 SP Mitarbeiterblatt</div><div class="card-desc">Mitarbeiter</div><div class="last-used"></div></a>
+<a class="card" data-id="bdg" href="https://docs.google.com/document/d/1VCnokyqBWW1Vf4aCNkK34uLW7kA6JIJUu3LUlbOA19A/edit" target="_blank">
+<div class="card-title">⚖️ BDG</div>
+<div class="card-desc">Beamten Dienst Gesetzbuch</div>
+<div class="last-used"></div></a>
 
-<a class="card" data-id="pa" href="https://docs.google.com/spreadsheets/d/1AcTE7eIOGifiYTfeHFgHueQjJarqf2ZeoOzAURe67DU/edit?gid=0#gid=0" target="_blank">
-<div class="card-title">📑 PA Leitstelle</div><div class="card-desc">PA Daten</div><div class="last-used"></div></a>
+<a class="card" data-id="gvg" href="https://docs.google.com/document/d/12N4-InKZ0uQFQvX3uuBWrNK9_MZFyr1fR6dtv_6xfYo/edit" target="_blank">
+<div class="card-title">🏛️ GVG / StPO</div>
+<div class="card-desc">Gerichts- & Strafprozessordnung</div>
+<div class="last-used"></div></a>
 
-<a class="card" data-id="bussgeld" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank">
-<div class="card-title">⚖️ Bußgeldrechner</div><div class="card-desc">Rechner</div><div class="last-used"></div></a>
-</div>
+<a class="card" data-id="jbeitrg" href="https://docs.google.com/document/d/1cuTrfciC5WNQEW0JJruniLSZqg8pXnormDT8wZW-sHw/edit" target="_blank">
+<div class="card-title">💰 JBeitrG</div>
+<div class="card-desc">Justizbeitreibungsgesetz</div>
+<div class="last-used"></div></a>
 
-<h2 onclick="toggle(this)">🔐 Intern (<span class="count"></span>)</h2>
-<div class="grid">
-<a class="card" data-id="flucht" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank">
-<div class="card-title">🏃‍♂️ Flucht</div><div class="card-desc">Fluchtplan</div><div class="last-used"></div></a>
+<a class="card" data-id="ctf" href="https://docs.google.com/spreadsheets/d/1FnOJq0fHTG8B4E7GwuhqvlKbl4g4R3y1p3O4ICQwIKE/edit" target="_blank">
+<div class="card-title">📡 C.T.F. Leitstelle</div>
+<div class="card-desc">CTF Leitstelle</div>
+<div class="last-used"></div></a>
 
-<a class="card" data-id="diagram" href="https://docs.google.com/spreadsheets/d/1n6AB0hBrln9wCuMvyyNcfDlnF_uDG6OL1WUagg59Pvs/edit?gid=0#gid=0" target="_blank">
-<div class="card-title">📊 Diagram Sheets</div><div class="card-desc">Vorlage</div><div class="last-used"></div></a>
-</div>
+<a class="card" data-id="sginfo" href="https://docs.google.com/document/d/1wCXxJnUt4ZKvDwx6HKORe9ryXgJhkARRT4HkLDb6frI/edit" target="_blank">
+<div class="card-title">📄 SG Regeln & Infos</div>
+<div class="card-desc">SG Regelwerk</div>
+<div class="last-used"></div></a>
 
-<h2 onclick="toggle(this)">📦 Sonstiges (<span class="count"></span>)</h2>
-<div class="grid">
-<a class="card" data-id="cod" href="https://wzhub.gg/de/bo6-loadouts" target="_blank">
-<div class="card-title">♾️ COD-WZHUB ♾️</div><div class="card-desc">COD Meta</div><div class="last-used"></div></a>
+<a class="card" data-id="sgleit" href="https://forms.gle/dnktrTUxqHuHPozB8" target="_blank">
+<div class="card-title">📝 SG Leitstellen-Anfrage</div>
+<div class="card-desc">Formular</div>
+<div class="last-used"></div></a>
 
-<a class="card" data-id="github" href="https://github.com/Toffie15/Test/tree/main" target="_blank">
-<div class="card-title">📝 Github</div><div class="card-desc">Webcode</div><div class="last-used"></div></a>
+<a class="card" data-id="sgrank" href="https://docs.google.com/forms/d/e/1FAIpQLSeK8X3SVpLjq_x55Yv1fHimkdaXw69z7wLP_X7_N4PT3FulBA/viewform" target="_blank">
+<div class="card-title">⬆️ SG Rank-Up</div>
+<div class="card-desc">Beförderungsantrag</div>
+<div class="last-used"></div></a>
 
-<a class="card" data-id="vorlage" href="https://toffie15.github.io/Test/test.html" target="_blank">
-<div class="card-title">📝 Vorlage Titel</div><div class="card-desc">HTML Vorlage</div><div class="last-used"></div></a>
-</div>
+<a class="card" data-id="emsinfo" href="https://docs.google.com/document/d/1jyZJzeDlL0HdNO_s97M-KhkPThxwfqdJdmyd-2Yj1e4/edit" target="_blank">
+<div class="card-title">🚑 EMS Rundgang Infos</div>
+<div class="card-desc">Informationen</div>
+<div class="last-used"></div></a>
 
-<h2 onclick="toggle(this)">📦 Bestellen/Wunsch (<span class="count"></span>)</h2>
-<div class="grid">
-<a class="card" data-id="amazon" href="https://www.amazon.de/gp/product/B07KFN5LL4/ref=ox_sc_act_title_1?smid=A36JSC3A7QC12M&th=1" target="_blank">
-<div class="card-title">🎧 Studiokopfhörer </div>
-<div class="card-desc">beyerdynamic DT 990 PRO</div>
-<div class="last-used"></div>
-</a>
+<a class="card" data-id="emsbericht" href="https://forms.gle/AFuEuamQsn8hv83C9" target="_blank">
+<div class="card-title">🧾 EMS Rundgang Bericht</div>
+<div class="card-desc">Formular</div>
+<div class="last-used"></div></a>
 
-<a class="card" data-id="wunschliste" href="https://www.amazon.de/Revolution%C3%A4re-Online-Broadcaster-Plattform-4-Kanal-Mischpult-motorisierten-Vocal-Effekten/dp/B07JKNG4NV/ref=sr_1_4?crid=2AHNI87V69FEF&dib=eyJ2IjoiMSJ9.n4zDDYEva_Si1vyz04zW4nX3jhIt4SrPjPJcL8UvL4DeTgFRXUWbBYbQMLczAVBlK6qkNnLVKRKkVCIfMJL3aO1eDqz-WhkCldxgrNhWsijyj7RMAyFQPqehaxjiQO5EsbimO9li4Kh5qGZkTZ5Bn6n_bbxoF0WobJ3U4JXxJPmkNXGTPW3_Si-RQcLNvz2w31GaKJEGmMLFgul2RwUJ1rt4W_GIhqMdrAhTbDcwLDFL3yIWCrjOZIy90ugFSmaaDt2nw9MfZJuBZO48Gw51_-dRSHKU3F3Dx8-nCK65fBw.vTuEvWpzZNGOfJCbLyQGCL3WHTON8cHaiL-YaP6KiUg&dib_tag=se&keywords=goxlr&qid=1767402623&s=musical-instruments&sprefix=go%2Cmi%2C72&sr=1-4" target="_blank">
-<div class="card-title">GoXLR</div>
-<div class="card-desc">Mischpult</div>
-<div class="last-used"></div>
-</a>
+<a class="card" data-id="sgausbilder" href="https://forms.gle/nuFZmsQ5J64eF7QP6" target="_blank">
+<div class="card-title">🎓 SG Ausbilder Antrag</div>
+<div class="card-desc">Bewerbung</div>
+<div class="last-used"></div></a>
+
+<a class="card" data-id="sghr" href="https://docs.google.com/forms/d/e/1FAIpQLScUissoDPUamQEnP7TbgaeuZ88eNUUXM35IP1VIAtjM7lVqbg/viewform" target="_blank">
+<div class="card-title">👥 SG HR Antrag</div>
+<div class="card-desc">HR Formular</div>
+<div class="last-used"></div></a>
+
 </div>
 
 </div>
 
 <script>
-/*
-  Hinweis:
-  Clientseitiger Code ist IMMER einsehbar.
-  F12-Blocker bringen nichts außer falsche Sicherheit.
-  Echte Absicherung geht nur serverseitig.
-*/
-
 function toggle(h){
   const g=h.nextElementSibling;
   g.style.display=g.style.display==="grid"?"none":"grid";
 }
 
 function updateCounts(){
-  document.querySelectorAll(".grid").forEach(grid=>{
-    const visible=[...grid.children].filter(c=>c.style.display!=="none").length;
-    grid.previousElementSibling.querySelector(".count").textContent=visible;
+  document.querySelectorAll(".grid").forEach(g=>{
+    const v=[...g.children].filter(c=>c.style.display!=="none").length;
+    g.previousElementSibling.querySelector(".count").textContent=v;
   });
 }
 
@@ -208,7 +200,6 @@ document.querySelectorAll(".card").forEach(c=>{
   c.addEventListener("click",()=>localStorage.setItem("last_"+id,new Date().toLocaleString()));
 });
 
-/* Hintergrund Toggle */
 const btn=document.querySelector(".bg-toggle");
 if(localStorage.getItem("bg")==="off")document.body.classList.add("no-bg");
 btn.onclick=()=>{
@@ -221,4 +212,3 @@ updateCounts();
 
 </body>
 </html>
-
