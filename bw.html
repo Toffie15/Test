@@ -22,8 +22,8 @@
   <label>Alter:</label>
   <input type="number" name="alter" required>
 
-  <label>Discord:</label>
-  <input type="text" name="discord" required>
+  <label>Discord (nur "1"):</label>
+  <input type="text" name="discord" required pattern="1" title="Du musst eine 1 eingeben.">
 
   <label>Warum willst du bei uns spielen?</label>
   <textarea name="bewerbung" rows="5" required></textarea>
@@ -42,11 +42,17 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbzkQ_6caNQOrCCoGsHrV9
 
 form.addEventListener("submit", e => {
   e.preventDefault();
-  
+
+  const discordValue = form.discord.value.trim();
+  if(discordValue !== "1"){
+    status.textContent = 'Discord muss eine "1" sein!';
+    return;
+  }
+
   const formData = {
     name: form.name.value,
     alter: form.alter.value,
-    discord: form.discord.value,
+    discord: discordValue,
     bewerbung: form.bewerbung.value
   };
   
