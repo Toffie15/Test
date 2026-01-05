@@ -1,29 +1,28 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bewerbungssystem</title>
-  <style>
-    body { font-family: Arial, sans-serif; background:#f4f4f4; padding:30px; }
-    .container { max-width:700px; background:#fff; padding:25px; margin:auto; border-radius:6px; box-shadow:0 0 10px rgba(0,0,0,0.1); }
-    label { display:block; margin-top:15px; font-weight:bold; }
-    input, textarea, select { width:100%; padding:10px; margin-top:5px; }
-    button { margin-top:20px; padding:12px; width:100%; background:#007bff; color:#fff; border:none; cursor:pointer; }
-    button:hover { background:#0056b3; }
-    .hidden { display:none; }
-    .card { border:1px solid #ccc; padding:10px; margin-top:10px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bewerbungssystem</title>
+<style>
+body { font-family: Arial; background:#f4f4f4; padding:30px; }
+.container { max-width:700px; background:#fff; padding:25px; margin:auto; border-radius:6px; box-shadow:0 0 10px rgba(0,0,0,0.1); }
+label { display:block; margin-top:15px; font-weight:bold; }
+input, textarea, select { width:100%; padding:10px; margin-top:5px; }
+button { margin-top:20px; padding:12px; width:100%; background:#007bff; color:#fff; border:none; cursor:pointer; }
+button:hover { background:#0056b3; }
+.hidden { display:none; }
+.card { border:1px solid #ccc; padding:10px; margin-top:10px; }
+</style>
 </head>
 <body>
 
-<!-- BEWERBERSEITE -->
+<!-- BEWERBER -->
 <div class="container" id="applicantPage">
   <h1>Bewerbung</h1>
   <form id="applicationForm">
     <label>Name</label>
     <input type="text" id="name" required />
-
     <label>Stelle</label>
     <select id="position" required>
       <option value="">Bitte auswählen</option>
@@ -32,10 +31,8 @@
       <option>Vollzeit</option>
       <option>Teilzeit</option>
     </select>
-
     <label>Anschreiben</label>
     <textarea id="message" rows="6" required></textarea>
-
     <button type="submit">Absenden</button>
   </form>
   <p id="result"></p>
@@ -48,102 +45,71 @@
   <button onclick="login()">Login</button>
 </div>
 
-<!-- ADMIN SEITE -->
+<!-- ADMIN -->
 <div class="container hidden" id="adminPage">
   <h1>Admin – Bewerbungen</h1>
   <button onclick="logout()">Logout</button>
-  <button onclick="exportJSON()">Export JSON</button>
-  <button onclick="exportCSV()">Export CSV</button>
   <div id="adminList"></div>
 </div>
 
 <script>
-  const ADMIN_PASSWORD = 'admin123'; // ändern!
+const ADMIN_PASSWORD = 'admin123'; // Passwort ändern!
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzD1kAv2TqPWr6WZQGX_uTMP9DZPD28hrw7_imF0lsVXVY5s5BxIyuRcqQO_RobpzbUxQ/exec';
 
-  const form = document.getElementById('applicationForm');
+const form = document.getElementById('applicationForm');
 
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+  const data = {
+    name: name.value,
+    position: position.value,
+    message: message.value,
+    date: new Date().toISOString()
+  };
 
-    const data = {
-      name: name.value,
-      position: position.value,
-      message: message.value,
-      date: new Date().toISOString()
-    };
+  // An Google Sheets senden
+  fetch(GOOGLE_SHEET_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(res=>res.json())
+  .then(res=> console.log(res))
+  .catch(err=> console.error(err));
 
-    let apps = JSON.parse(localStorage.getItem('applications')) || [];
-    apps.push(data);
-    localStorage.setItem('applications', JSON.stringify(apps));
+  result.innerText = 'Bewerbung abgeschickt!';
+  form.reset();
+});
 
-    // GOOGLE SHEETS SENDEN
-    fetch('https://script.google.com/macros/s/AKfycbzD1kAv2TqPWr6WZQGX_uTMP9DZPD28hrw7_imF0lsVXVY5s5BxIyuRcqQO_RobpzbUxQ/exec', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
+// Admin-Funktionen
+function show(page){
+  applicantPage.classList.add('hidden');
+  loginPage.classList.add('hidden');
+  adminPage.classList.add('hidden');
+  page.classList.remove('hidden');
+}
 
-    result.innerText = 'Bewerbung gespeichert.';
-    form.reset();
-  });
-
-  function show(page) {
-    applicantPage.classList.add('hidden');
-    loginPage.classList.add('hidden');
-    adminPage.classList.add('hidden');
-    page.classList.remove('hidden');
-  }
-
-  function login() {
-    if (adminPassword.value === ADMIN_PASSWORD) {
-      sessionStorage.setItem('admin', '1');
-      show(adminPage);
-      renderAdmin();
-    } else {
-      alert('Falsches Passwort');
-    }
-  }
-
-  function logout() {
-    sessionStorage.removeItem('admin');
-    show(loginPage);
-  }
-
-  function renderAdmin() {
-    const list = document.getElementById('adminList');
-    const apps = JSON.parse(localStorage.getItem('applications')) || [];
-    list.innerHTML = '';
-
-    apps.forEach((a, i) => {
-      const div = document.createElement('div');
-      div.className = 'card';
-      div.innerHTML = `<strong>${a.name}</strong><br>${a.position}<br>${a.date}<pre>${a.message}</pre><button onclick="del(${i})">Löschen</button>`;
-      list.appendChild(div);
-    });
-  }
-
-  function del(i) {
-    let apps = JSON.parse(localStorage.getItem('applications')) || [];
-    apps.splice(i,1);
-    localStorage.setItem('applications', JSON.stringify(apps));
+function login(){
+  if(adminPassword.value === ADMIN_PASSWORD){
+    sessionStorage.setItem('admin','1');
+    show(adminPage);
     renderAdmin();
-  }
+  } else { alert('Falsches Passwort'); }
+}
 
-  function exportJSON() {
-    download(localStorage.getItem('applications')||'[]','bewerbungen.json','application/json');
-  }
+function logout(){
+  sessionStorage.removeItem('admin');
+  show(loginPage);
+}
 
-  function exportCSV() {
-    const apps = JSON.parse(localStorage.getItem('applications'))||[];
-    let csv = 'Name,Stelle,Datum,Text\n';
-    apps.forEach(a=>csv+=`"${a.name}","${a.position}","${a.date}","${a.message}"\n`);
-    download(csv,'bewerbungen.csv','text/csv');
-  }
+function renderAdmin(){
+  const list = document.getElementById('adminList');
+  list.innerHTML = 'Google Sheet enthält alle Bewerbungen.';
+}
 
-  function download(c,f,t){const b=new Blob([c],{type:t});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=f;a.click();}
-
-  // START
-  if (sessionStorage.getItem('admin')) show(adminPage); else show(applicantPage);
+// Start
+if(sessionStorage.getItem('admin')) show(adminPage);
+else show(applicantPage);
 </script>
 </body>
 </html>
