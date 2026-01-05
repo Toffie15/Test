@@ -22,30 +22,35 @@
 
   <script>
     const form = document.getElementById('bewerbungForm');
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+
       const data = {
         name: document.getElementById('name').value,
         alter: document.getElementById('alter').value,
         erfahrung: document.getElementById('erfahrung').value
       };
 
-      // URL vom Google Apps Script einfügen
-      const url = "https://script.google.com/macros/s/AKfycbzD1kAv2TqPWr6WZQGX_uTMP9DZPD28hrw7_imF0lsVXVY5s5BxIyuRcqQO_RobpzbUxQ/exec";
+      const url = "HIER_DEINE_GOOGLE_SCRIPT_URL"; // von Schritt 1
 
-      const response = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json'
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        const result = await response.json();
+
+        if (result.status === "success") {
+          alert("Bewerbung erfolgreich abgeschickt!");
+          form.reset();
+        } else {
+          alert("Fehler: " + result.message);
         }
-      });
-
-      if(response.ok){
-        alert("Bewerbung erfolgreich abgeschickt!");
-        form.reset();
-      } else {
-        alert("Fehler beim Absenden.");
+      } catch (err) {
+        alert("Fehler beim Absenden: " + err);
       }
     });
   </script>
