@@ -1,58 +1,73 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GTA RP Bewerbung</title>
+<meta charset="UTF-8">
+<title>GTA RP Bewerbung</title>
+<style>
+  body { font-family: Arial; max-width: 600px; margin: 50px auto; }
+  label { display: block; margin-top: 10px; }
+  input, textarea { width: 100%; padding: 8px; margin-top: 5px; }
+  button { margin-top: 15px; padding: 10px 20px; }
+</style>
 </head>
 <body>
-  <h1>GTA RP Bewerbung</h1>
-  <form id="bewerbungForm">
-    <label for="name">Name:</label><br>
-    <input type="text" id="name" name="name" required><br><br>
 
-    <label for="alter">Alter:</label><br>
-    <input type="number" id="alter" name="alter" required><br><br>
+<h2>GTA RP Bewerbung</h2>
 
-    <label for="erfahrung">RP Erfahrung:</label><br>
-    <textarea id="erfahrung" name="erfahrung" required></textarea><br><br>
+<form id="bewerbungForm">
+  <label>Name:</label>
+  <input type="text" name="name" required>
 
-    <button type="submit">Absenden</button>
-  </form>
+  <label>Alter:</label>
+  <input type="number" name="alter" required>
 
-  <script>
-    const form = document.getElementById('bewerbungForm');
+  <label>Discord:</label>
+  <input type="text" name="discord" required>
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+  <label>Warum willst du bei uns spielen?</label>
+  <textarea name="bewerbung" rows="5" required></textarea>
 
-      const data = {
-        name: document.getElementById('name').value,
-        alter: document.getElementById('alter').value,
-        erfahrung: document.getElementById('erfahrung').value
-      };
+  <button type="submit">Absenden</button>
+</form>
 
-      const url = "HIER_DEINE_GOOGLE_SCRIPT_URL"; // von Schritt 1
+<p id="status"></p>
 
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: { 'Content-Type': 'application/json' }
-        });
+<script>
+const form = document.getElementById("bewerbungForm");
+const status = document.getElementById("status");
 
-        const result = await response.json();
+// Hier die Web-App-URL einfügen
+const scriptURL = "https://script.google.com/macros/s/AKfycbzkQ_6caNQOrCCoGsHrV9lymLPn1hQ3hytLbRcTG3v8iai5AplnLodO9WI1Mbagbf9iWg/exec";
 
-        if (result.status === "success") {
-          alert("Bewerbung erfolgreich abgeschickt!");
-          form.reset();
-        } else {
-          alert("Fehler: " + result.message);
-        }
-      } catch (err) {
-        alert("Fehler beim Absenden: " + err);
-      }
-    });
-  </script>
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  
+  const formData = {
+    name: form.name.value,
+    alter: form.alter.value,
+    discord: form.discord.value,
+    bewerbung: form.bewerbung.value
+  };
+  
+  fetch(scriptURL, {
+    method: "POST",
+    body: JSON.stringify(formData)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if(data.status === "success"){
+      status.textContent = "Bewerbung erfolgreich abgeschickt!";
+      form.reset();
+    } else {
+      status.textContent = "Fehler beim Absenden!";
+    }
+  })
+  .catch(err => {
+    status.textContent = "Fehler beim Absenden!";
+    console.error(err);
+  });
+});
+</script>
+
 </body>
 </html>
