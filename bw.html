@@ -8,6 +8,7 @@
   label { display: block; margin-top: 10px; }
   input, textarea { width: 100%; padding: 8px; margin-top: 5px; }
   button { margin-top: 15px; padding: 10px 20px; }
+  #status { margin-top: 15px; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -36,7 +37,7 @@
 const form = document.getElementById("bewerbungForm");
 const status = document.getElementById("status");
 
-// Hier die Web-App-URL einfügen
+// Hier deine Web-App URL einfügen
 const scriptURL = "https://script.google.com/macros/s/AKfycbzkQ_6caNQOrCCoGsHrV9lymLPn1hQ3hytLbRcTG3v8iai5AplnLodO9WI1Mbagbf9iWg/exec";
 
 form.addEventListener("submit", e => {
@@ -59,7 +60,7 @@ form.addEventListener("submit", e => {
       status.textContent = "Bewerbung erfolgreich abgeschickt!";
       form.reset();
     } else {
-      status.textContent = "Fehler beim Absenden!";
+      status.textContent = "Fehler beim Absenden: " + (data.message || "");
     }
   })
   .catch(err => {
