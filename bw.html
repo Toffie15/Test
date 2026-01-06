@@ -8,11 +8,12 @@
   form { background:#1e1e1e; padding:20px; border-radius:10px; width:300px; }
   input, button { width:100%; margin:5px 0; padding:10px; border-radius:5px; border:none; }
   button { background:#4CAF50; color:#fff; cursor:pointer; }
+  p { font-size:0.9em; }
 </style>
 </head>
 <body>
 <form id="applicationForm">
-  <h2>Bewerbung GTA RP</h2>
+  <h2>GTA RP Bewerbung</h2>
   <input type="text" id="name" placeholder="Name" required>
   <input type="text" id="id" placeholder="ID" required>
   <input type="text" id="telefon" placeholder="Telefon" required>
@@ -22,11 +23,11 @@
 </form>
 
 <script>
-const scriptURL = 'https://script.google.com/macros/s/AKfycbxytRncMwq-jSXx7nIc7Zw3pvofqwwGTM6ucQH3H0lTyOgvA0GG7CTBaH4Mi_FBeCDeAQ/exec'; // URL aus Google Apps Script
+const scriptURL = 'DEINE_WEB_APP_URL_HIER';
 
 document.getElementById('applicationForm').addEventListener('submit', e => {
   e.preventDefault();
-  
+
   const data = {
     name: document.getElementById('name').value,
     id: document.getElementById('id').value,
