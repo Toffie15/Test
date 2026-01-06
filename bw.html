@@ -6,7 +6,7 @@
 <style>
   body { font-family: Arial, sans-serif; background: #121212; color: #fff; display:flex; justify-content:center; align-items:center; height:100vh; }
   form { background:#1e1e1e; padding:20px; border-radius:10px; width:300px; }
-  input, textarea, button { width:100%; margin:5px 0; padding:10px; border-radius:5px; border:none; }
+  input, button { width:100%; margin:5px 0; padding:10px; border-radius:5px; border:none; }
   button { background:#4CAF50; color:#fff; cursor:pointer; }
 </style>
 </head>
@@ -14,9 +14,9 @@
 <form id="applicationForm">
   <h2>Bewerbung GTA RP</h2>
   <input type="text" id="name" placeholder="Name" required>
-  <input type="number" id="age" placeholder="Alter" required>
-  <input type="text" id="discord" placeholder="Discord" required>
-  <textarea id="text" placeholder="Bewerbungstext" required></textarea>
+  <input type="text" id="id" placeholder="ID" required>
+  <input type="text" id="telefon" placeholder="Telefon" required>
+  <input type="text" id="link" placeholder="Bewerbungs Link" required>
   <button type="submit">Absenden</button>
   <p id="status"></p>
 </form>
@@ -29,9 +29,9 @@ document.getElementById('applicationForm').addEventListener('submit', e => {
   
   const data = {
     name: document.getElementById('name').value,
-    age: document.getElementById('age').value,
-    discord: document.getElementById('discord').value,
-    text: document.getElementById('text').value
+    id: document.getElementById('id').value,
+    telefon: document.getElementById('telefon').value,
+    link: document.getElementById('link').value
   };
 
   fetch(scriptURL, {
