@@ -4,13 +4,53 @@
 <meta charset="UTF-8">
 <title>GTA RP Bewerbung</title>
 <style>
-  body { font-family: Arial, sans-serif; background: #121212; color: #fff; display:flex; justify-content:center; align-items:center; height:100vh; }
-  form { background:#1e1e1e; padding:20px; border-radius:10px; width:320px; }
-  input, textarea, button { width:100%; margin:5px 0; padding:10px; border-radius:5px; border:none; }
-  button { background:#4CAF50; color:#fff; cursor:pointer; }
+  body {
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  form {
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    width: 320px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  }
+  h2 {
+    text-align: center;
+  }
+  input, textarea, button {
+    width: 100%;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+  }
+  textarea {
+    resize: vertical;
+  }
+  button {
+    background: #4CAF50;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  button:hover {
+    background: #45a049;
+  }
+  #status {
+    text-align: center;
+    margin-top: 10px;
+  }
 </style>
 </head>
 <body>
+
 <form id="applicationForm">
   <h2>GTA RP Bewerbung</h2>
   <input type="text" id="name" placeholder="Name" required>
@@ -23,7 +63,7 @@
 </form>
 
 <script>
-const scriptURL = 'https://script.google.com/macros/s/AKfycbxytRncMwq-jSXx7nIc7Zw3pvofqwwGTM6ucQH3H0lTyOgvA0GG7CTBaH4Mi_FBeCDeAQ/exec'; // URL aus Google Apps Script
+const scriptURL = 'https://script.google.com/macros/s/AKfycbxytRncMwq-jSXx7nIc7Zw3pvofqwwGTM6ucQH3H0lTyOgvA0GG7CTBaH4Mi_FBeCDeAQ/exec'; // Hier die Web-App URL einsetzen
 
 document.getElementById('applicationForm').addEventListener('submit', e => {
   e.preventDefault();
@@ -38,6 +78,7 @@ document.getElementById('applicationForm').addEventListener('submit', e => {
 
   fetch(scriptURL, {
     method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
   })
   .then(response => response.json())
@@ -51,5 +92,6 @@ document.getElementById('applicationForm').addEventListener('submit', e => {
   });
 });
 </script>
+
 </body>
 </html>
