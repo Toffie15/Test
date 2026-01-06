@@ -5,10 +5,9 @@
 <title>GTA RP Bewerbung</title>
 <style>
   body { font-family: Arial, sans-serif; background: #121212; color: #fff; display:flex; justify-content:center; align-items:center; height:100vh; }
-  form { background:#1e1e1e; padding:20px; border-radius:10px; width:300px; }
-  input, button { width:100%; margin:5px 0; padding:10px; border-radius:5px; border:none; }
+  form { background:#1e1e1e; padding:20px; border-radius:10px; width:320px; }
+  input, textarea, button { width:100%; margin:5px 0; padding:10px; border-radius:5px; border:none; }
   button { background:#4CAF50; color:#fff; cursor:pointer; }
-  p { font-size:0.9em; }
 </style>
 </head>
 <body>
@@ -17,21 +16,23 @@
   <input type="text" id="name" placeholder="Name" required>
   <input type="text" id="id" placeholder="ID" required>
   <input type="text" id="telefon" placeholder="Telefon" required>
+  <input type="text" id="rang" placeholder="Rang" required>
   <input type="text" id="link" placeholder="Bewerbungs Link" required>
   <button type="submit">Absenden</button>
   <p id="status"></p>
 </form>
 
 <script>
-const scriptURL = 'https://script.google.com/macros/s/AKfycbxytRncMwq-jSXx7nIc7Zw3pvofqwwGTM6ucQH3H0lTyOgvA0GG7CTBaH4Mi_FBeCDeAQ/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbxytRncMwq-jSXx7nIc7Zw3pvofqwwGTM6ucQH3H0lTyOgvA0GG7CTBaH4Mi_FBeCDeAQ/exec'; // URL aus Google Apps Script
 
 document.getElementById('applicationForm').addEventListener('submit', e => {
   e.preventDefault();
-
+  
   const data = {
     name: document.getElementById('name').value,
     id: document.getElementById('id').value,
     telefon: document.getElementById('telefon').value,
+    rang: document.getElementById('rang').value,
     link: document.getElementById('link').value
   };
 
