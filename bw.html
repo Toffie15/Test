@@ -4,52 +4,62 @@
 <meta charset="UTF-8">
 <title>GTA RP Bewerbung</title>
 <style>
-  body { font-family: Arial, sans-serif; background: #121212; color: #fff; display:flex; justify-content:center; align-items:center; height:100vh; }
-  form { background:#1e1e1e; padding:20px; border-radius:10px; width:300px; }
-  input, textarea, button { width:100%; margin:5px 0; padding:10px; border-radius:5px; border:none; }
+  body { font-family: Arial; background:#121212; color:#fff; display:flex; justify-content:center; align-items:center; height:100vh; }
+  form { background:#1e1e1e; padding:20px; border-radius:10px; width:320px; }
+  input, select, button { width:100%; margin:6px 0; padding:10px; border-radius:5px; border:none; }
+  select { background:#fff; color:#000; }
   button { background:#4CAF50; color:#fff; cursor:pointer; }
 </style>
 </head>
 <body>
+
 <form id="applicationForm">
   <h2>Bewerbung GTA RP</h2>
+
   <input type="text" id="name" placeholder="Name" required>
   <input type="text" id="id" placeholder="ID" required>
   <input type="text" id="telefon" placeholder="Telefon" required>
-  <input type="text" id="rang" placeholder="Rang" required>
+
+  <select id="rang" required>
+    <option value="">Rang auswählen</option>
+    <option value="Anwärter">Anwärter</option>
+    <option value="Mitglied">Mitglied</option>
+    <option value="Stellvertreter">Stellvertreter</option>
+    <option value="Leitung">Leitung</option>
+  </select>
+
   <input type="text" id="link" placeholder="Bewerbungs-Link" required>
+
   <button type="submit">Absenden</button>
   <p id="status"></p>
 </form>
 
 <script>
-const scriptURL = 'https://script.google.com/macros/s/AKfycbxB38_dO1Fg-AuTbE1OAMKBycV68Bfv3qpQtQaWTmQS7BzdbnaEHVypNU-iFrln2RNBGg/exec'; // URL aus Google Apps Script
+const scriptURL = 'https://script.google.com/macros/s/AKfycbxB38_dO1Fg-AuTbE1OAMKBycV68Bfv3qpQtQaWTmQS7BzdbnaEHVypNU-iFrln2RNBGg/exec';
 
 document.getElementById('applicationForm').addEventListener('submit', e => {
   e.preventDefault();
-  
+
   const data = {
-    name: document.getElementById('name').value,
-    id: document.getElementById('id').value,
-    telefon: document.getElementById('telefon').value,
-    rang: document.getElementById('rang').value,
-    link: document.getElementById('link').value
+    name: name.value,
+    id: id.value,
+    telefon: telefon.value,
+    rang: rang.value,
+    link: link.value
   };
 
   fetch(scriptURL, {
     method: 'POST',
     body: JSON.stringify(data)
   })
-  .then(response => response.json())
-  .then(response => {
-    document.getElementById('status').innerText = 'Bewerbung erfolgreich gesendet!';
-    document.getElementById('applicationForm').reset();
+  .then(r => r.json())
+  .then(() => {
+    status.innerText = 'Erfolgreich gesendet';
+    applicationForm.reset();
   })
-  .catch(error => {
-    document.getElementById('status').innerText = 'Fehler beim Senden!';
-    console.error(error);
-  });
+  .catch(() => status.innerText = 'Fehler');
 });
 </script>
+
 </body>
 </html>
