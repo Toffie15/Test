@@ -87,14 +87,14 @@ document.getElementById('applicationForm').addEventListener('submit', function(e
   })
   .then(response => response.json())
   .then(() => {
-    document.getElementById('status').innerText = 'Erfolgreich gesendet';
-    document.getElementById('applicationForm').reset();
+    window.location.href = "success.html";
   })
   .catch(() => {
     document.getElementById('status').innerText = 'Fehler beim Senden';
   });
 });
 </script>
+
 
 </body>
 </html>
