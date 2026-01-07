@@ -4,11 +4,37 @@
 <meta charset="UTF-8">
 <title>GTA RP Bewerbung</title>
 <style>
-  body { font-family: Arial; background:#121212; color:#fff; display:flex; justify-content:center; align-items:center; height:100vh; }
-  form { background:#1e1e1e; padding:20px; border-radius:10px; width:320px; }
-  input, select, button { width:100%; margin:6px 0; padding:10px; border-radius:5px; border:none; }
-  select { background:#fff; color:#000; }
-  button { background:#4CAF50; color:#fff; cursor:pointer; }
+  body {
+    font-family: Arial;
+    background:#121212;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+  }
+  form {
+    background:#1e1e1e;
+    padding:20px;
+    border-radius:10px;
+    width:320px;
+  }
+  input, select, button {
+    width:100%;
+    margin:6px 0;
+    padding:10px;
+    border-radius:5px;
+    border:none;
+  }
+  select {
+    background:#fff;
+    color:#000;
+  }
+  button {
+    background:#4CAF50;
+    color:#fff;
+    cursor:pointer;
+  }
 </style>
 </head>
 <body>
@@ -17,24 +43,23 @@
   <h2>Bewerbung GTA RP</h2>
 
   <input type="text" id="name" placeholder="Name" required>
-  <input type="text" id="id" placeholder="ID" required>
+  <input type="text" id="playerid" placeholder="ID" required>
   <input type="text" id="telefon" placeholder="Telefon" required>
 
   <select id="rang" required>
-  <option value="">Rang auswählen</option>
-  <option value="22 - Captain">22 - Captain</option>
-  <option value="21 - Personal Manager">21 - Personal Manager</option>
-  <option value="20 - State Prison Lieutenant">20 - State Prison Lieutenant</option>
-  <option value="19 - Lieutenant">19 - Lieutenant</option>
-  <option value="18 - Junior Lieutenant">18 - Junior Lieutenant</option>
-  <option value="17 - Specialist">17 - Specialist</option>
-  <option value="16 - Senior Sergeant">16 - Senior Sergeant</option>
-  <option value="15 - Sergeant">15 - Sergeant</option>
-  <option value="14 - State Prison Sergeant">14 - State Prison Sergeant</option>
-  <option value="13 - TOW Sergeant">13 - TOW Sergeant</option>
-  <option value="12 - Junior Sergeant">12 - Junior Sergeant</option>
-</select>
-
+    <option value="">Rang auswählen</option>
+    <option value="22 - Captain">22 - Captain</option>
+    <option value="21 - Personal Manager">21 - Personal Manager</option>
+    <option value="20 - State Prison Lieutenant">20 - State Prison Lieutenant</option>
+    <option value="19 - Lieutenant">19 - Lieutenant</option>
+    <option value="18 - Junior Lieutenant">18 - Junior Lieutenant</option>
+    <option value="17 - Specialist">17 - Specialist</option>
+    <option value="16 - Senior Sergeant">16 - Senior Sergeant</option>
+    <option value="15 - Sergeant">15 - Sergeant</option>
+    <option value="14 - State Prison Sergeant">14 - State Prison Sergeant</option>
+    <option value="13 - TOW Sergeant">13 - TOW Sergeant</option>
+    <option value="12 - Junior Sergeant">12 - Junior Sergeant</option>
+  </select>
 
   <input type="text" id="link" placeholder="Bewerbungs-Link" required>
 
@@ -45,27 +70,29 @@
 <script>
 const scriptURL = 'https://script.google.com/macros/s/AKfycbxB38_dO1Fg-AuTbE1OAMKBycV68Bfv3qpQtQaWTmQS7BzdbnaEHVypNU-iFrln2RNBGg/exec';
 
-document.getElementById('applicationForm').addEventListener('submit', e => {
+document.getElementById('applicationForm').addEventListener('submit', function(e) {
   e.preventDefault();
 
   const data = {
-    name: name.value,
-    id: id.value,
-    telefon: telefon.value,
-    rang: rang.value,
-    link: link.value
+    name: document.getElementById('name').value,
+    id: document.getElementById('playerid').value,
+    telefon: document.getElementById('telefon').value,
+    rang: document.getElementById('rang').value,
+    link: document.getElementById('link').value
   };
 
   fetch(scriptURL, {
     method: 'POST',
     body: JSON.stringify(data)
   })
-  .then(r => r.json())
+  .then(response => response.json())
   .then(() => {
-    status.innerText = 'Erfolgreich gesendet';
-    applicationForm.reset();
+    document.getElementById('status').innerText = 'Erfolgreich gesendet';
+    document.getElementById('applicationForm').reset();
   })
-  .catch(() => status.innerText = 'Fehler');
+  .catch(() => {
+    document.getElementById('status').innerText = 'Fehler beim Senden';
+  });
 });
 </script>
 
