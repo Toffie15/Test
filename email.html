@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Email Formular GTA RP</title>
+<title>Email Formular State Prison</title>
 
 <style>
   body {
@@ -32,12 +32,16 @@
     color:#fff;
     cursor:pointer;
   }
+  #status {
+    margin-top: 8px;
+    font-weight: bold;
+  }
 </style>
 </head>
 <body>
 
 <form id="emailForm">
-  <h2>GTA RP Kontaktformular</h2>
+  <h2>State Prison Email Formular</h2>
 
   <input type="text" id="name" placeholder="Name" required>
   <input type="text" id="playerid" placeholder="ID" required>
@@ -49,11 +53,14 @@
 </form>
 
 <script>
-// URL zu deinem Google Apps Script (erst erstellen, siehe unten)
 const scriptURL = 'https://script.google.com/macros/s/AKfycbxYIPxuvYNZ3ARljHLlRuojpZF08Bf7muzmEO6ipoRXWYKXh5K2L4sVLQyr6oZoUtXndw/exec';
 
 document.getElementById('emailForm').addEventListener('submit', function(e) {
   e.preventDefault();
+
+  const statusEl = document.getElementById('status');
+  statusEl.style.color = "white";
+  statusEl.innerText = "Sende...";
 
   const data = {
     name: document.getElementById('name').value,
@@ -68,10 +75,13 @@ document.getElementById('emailForm').addEventListener('submit', function(e) {
   })
   .then(r => r.json())
   .then(() => {
-    document.getElementById('status').innerText = "Erfolgreich gesendet!";
+    statusEl.style.color = "green";
+    statusEl.innerText = "Erfolgreich gesendet!";
+    document.getElementById('emailForm').reset(); // Formular leeren
   })
   .catch(() => {
-    document.getElementById('status').innerText = "Fehler beim Senden";
+    statusEl.style.color = "red";
+    statusEl.innerText = "Fehler beim Senden";
   });
 });
 </script>
