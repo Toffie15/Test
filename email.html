@@ -2,42 +2,42 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>E-Mail Formular</title>
+<title>Email Formular GTA RP</title>
 
 <style>
   body {
-    font-family: Arial, sans-serif;
-    background: #121212;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    font-family: Arial;
+    background:#121212;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
   }
   form {
-    background: #1e1e1e;
-    padding: 20px;
-    border-radius: 10px;
-    width: 320px;
+    background:#1e1e1e;
+    padding:20px;
+    border-radius:10px;
+    width:320px;
   }
   input, button {
-    width: 100%;
-    margin: 6px 0;
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
+    width:100%;
+    margin:6px 0;
+    padding:10px;
+    border-radius:5px;
+    border:none;
   }
   button {
-    background: #4CAF50;
-    color: #fff;
-    cursor: pointer;
+    background:#4CAF50;
+    color:#fff;
+    cursor:pointer;
   }
 </style>
 </head>
 <body>
 
 <form id="emailForm">
-  <h2>Formular</h2>
+  <h2>GTA RP Kontaktformular</h2>
 
   <input type="text" id="name" placeholder="Name" required>
   <input type="text" id="playerid" placeholder="ID" required>
@@ -49,6 +49,7 @@
 </form>
 
 <script>
+// URL zu deinem Google Apps Script (erst erstellen, siehe unten)
 const scriptURL = 'https://script.google.com/macros/s/AKfycbxYIPxuvYNZ3ARljHLlRuojpZF08Bf7muzmEO6ipoRXWYKXh5K2L4sVLQyr6oZoUtXndw/exec';
 
 document.getElementById('emailForm').addEventListener('submit', function(e) {
@@ -63,16 +64,14 @@ document.getElementById('emailForm').addEventListener('submit', function(e) {
 
   fetch(scriptURL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
   })
-  .then(res => res.json())
+  .then(r => r.json())
   .then(() => {
-    document.getElementById('status').innerText = 'Erfolgreich gesendet';
-    document.getElementById('emailForm').reset();
+    document.getElementById('status').innerText = "Erfolgreich gesendet!";
   })
   .catch(() => {
-    document.getElementById('status').innerText = 'Fehler beim Senden';
+    document.getElementById('status').innerText = "Fehler beim Senden";
   });
 });
 </script>
