@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>E-Mail Formular</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  form {
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    width: 320px;
+  }
+  input, button {
+    width: 100%;
+    margin: 6px 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+  }
+  button {
+    background: #4CAF50;
+    color: #fff;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<form id="emailForm">
+  <h2>Bewerbung</h2>
+
+  <input type="text" id="name" placeholder="Name" required>
+  <input type="text" id="playerid" placeholder="ID" required>
+  <input type="text" id="telefon" placeholder="Telefon" required>
+  <input type="email" id="email" placeholder="E-Mail" required>
+
+  <button type="submit">Absenden</button>
+  <p id="status"></p>
+</form>
+
+<script>
+const scriptURL = 'DEINE_GOOGLE_SCRIPT_URL_HIER';
+
+document.getElementById('emailForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const data = {
+    name: document.getElementById('name').value,
+    id: document.getElementById('playerid').value,
+    telefon: document.getElementById('telefon').value,
+    email: document.getElementById('email').value
+  };
+
+  fetch(scriptURL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(() => {
+    document.getElementById('status').innerText = 'Erfolgreich gesendet';
+    document.getElementById('emailForm').reset();
+  })
+  .catch(() => {
+    document.getElementById('status').innerText = 'Fehler beim Senden';
+  });
+});
+</script>
+
+</body>
+</html>
