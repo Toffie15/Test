@@ -75,9 +75,8 @@ document.getElementById('emailForm').addEventListener('submit', function(e) {
   })
   .then(r => r.json())
   .then(() => {
-    statusEl.style.color = "green";
-    statusEl.innerText = "Erfolgreich gesendet!";
-    document.getElementById('emailForm').reset(); // Formular leeren
+    // Weiterleitung auf success.html
+    window.location.href = "success.html";
   })
   .catch(() => {
     statusEl.style.color = "red";
