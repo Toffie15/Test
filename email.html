@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <title>Email Formular State Prison</title>
 
+<!-- Meta-Information für Urheber -->
+<meta name="author" content="Luca Valentine">
+<meta name="copyright" content="© 2026 Luca Valentine. Alle Rechte vorbehalten.">
+
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -53,6 +57,13 @@
     font-weight: bold;
     text-align: center;
   }
+
+  footer {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 11px;
+    color: #777;
+  }
 </style>
 </head>
 <body>
@@ -72,7 +83,14 @@
   <p id="status"></p>
 </form>
 
+<!-- Footer Copyright -->
+<footer>
+  © 2026 Luca Valentine. Alle Rechte vorbehalten.
+</footer>
+
 <script>
+console.log("© 2026 Luca Valentine. Alle Rechte vorbehalten.");
+
 const scriptURL = 'https://script.google.com/macros/s/AKfycbxL8xxQdavzgcFdqOFPiSO0S1tPCQJxIW8QakaxwWhoCdbvqUgKUeNCLuMsErAvJWDcUg/exec';
 
 const form = document.getElementById('emailForm');
