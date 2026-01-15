@@ -6,7 +6,7 @@
 
 <style>
   body {
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     background: #121212;
     color: #fff;
     display: flex;
@@ -15,31 +15,57 @@
     height: 100vh;
     flex-direction: column;
     text-align: center;
+    margin: 0;
   }
+
   .container {
     background: #1e1e1e;
-    padding: 30px 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    padding: 40px 50px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    animation: fadeIn 0.5s ease-in-out;
+    max-width: 400px;
+    width: 90%;
   }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   h1 {
     color: #4CAF50;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    font-size: 28px;
   }
+
   p {
-    margin-bottom: 30px;
+    margin-bottom: 25px;
+    font-size: 16px;
+    color: #ccc;
   }
+
   button {
     background: #4CAF50;
     color: #fff;
     border: none;
-    padding: 12px 25px;
-    border-radius: 5px;
+    padding: 14px 30px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
+    transition: all 0.2s ease;
   }
+
   button:hover {
     background: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+
+  .copyright {
+    margin-top: 20px;
+    font-size: 11px;
+    color: #777;
   }
 </style>
 </head>
@@ -49,6 +75,7 @@
   <h1>Erfolgreich Gesendet!</h1>
   <p>Deine Daten wurden erfolgreich übermittelt.</p>
   <button onclick="window.location.href='email.html'">Zurück zum Formular</button>
+  <p class="copyright">© 2026 Luca Valentine. Alle Rechte vorbehalten.</p>
 </div>
 
 </body>
