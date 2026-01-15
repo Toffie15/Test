@@ -6,39 +6,52 @@
 
 <style>
   body {
-    font-family: Arial;
-    background:#121212;
-    color:#fff;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
   }
+
   form {
-    background:#1e1e1e;
-    padding:20px;
-    border-radius:10px;
-    width:320px;
+    background: #1e1e1e;
+    padding: 22px;
+    border-radius: 10px;
+    width: 320px;
   }
-  input, select, button {
-    width:100%;
-    margin:6px 0;
-    padding:10px;
-    border-radius:5px;
-    border:none;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 12px;
   }
-  select {
-    background:#fff;
-    color:#000;
+
+  input, button {
+    width: 100%;
+    margin: 6px 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 14px;
   }
+
   button {
-    background:#4CAF50;
-    color:#fff;
-    cursor:pointer;
+    background: #4CAF50;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
   }
+
+  button:disabled {
+    background: #777;
+    cursor: not-allowed;
+  }
+
   #status {
-    margin-top:8px;
-    font-weight:bold;
+    margin-top: 8px;
+    font-weight: bold;
+    text-align: center;
   }
 </style>
 </head>
@@ -52,46 +65,47 @@
   <input type="text" id="telefon" placeholder="Telefon" required>
   <input type="email" id="email" placeholder="E-Mail" required>
 
-  <input type="text" id="mailname" placeholder="Name der E-Mail (z.B. Luca Valentine)" required>
+  <input type="text" id="mailname"
+         placeholder="Name der E-Mail (z.B. Luca Valentine)" required>
 
-  <select id="statusSelect" required>
-    <option value="Neu">Neu</option>
-  </select>
-
-  <button type="submit">Absenden</button>
+  <button type="submit" id="submitBtn">Absenden</button>
   <p id="status"></p>
 </form>
 
 <script>
 const scriptURL = 'https://script.google.com/macros/s/AKfycbxYIPxuvYNZ3ARljHLlRuojpZF08Bf7muzmEO6ipoRXWYKXh5K2L4sVLQyr6oZoUtXndw/exec';
 
-document.getElementById('emailForm').addEventListener('submit', function(e) {
+const form = document.getElementById('emailForm');
+const statusEl = document.getElementById('status');
+const submitBtn = document.getElementById('submitBtn');
+
+form.addEventListener('submit', function(e) {
   e.preventDefault();
 
-  const statusEl = document.getElementById('status');
-  statusEl.innerText = "Sende...";
+  submitBtn.disabled = true;
   statusEl.style.color = "white";
+  statusEl.innerText = "Sende...";
 
   const data = {
     name: document.getElementById('name').value,
     id: document.getElementById('playerid').value,
     telefon: document.getElementById('telefon').value,
     email: document.getElementById('email').value,
-    mailname: document.getElementById('mailname').value,
-    status: document.getElementById('statusSelect').value
+    mailname: document.getElementById('mailname').value
   };
 
   fetch(scriptURL, {
     method: 'POST',
     body: JSON.stringify(data)
   })
-  .then(r => r.json())
+  .then(res => res.json())
   .then(() => {
     window.location.href = "success.html";
   })
   .catch(() => {
-    statusEl.innerText = "Fehler beim Senden";
+    submitBtn.disabled = false;
     statusEl.style.color = "red";
+    statusEl.innerText = "Fehler beim Senden";
   });
 });
 </script>
