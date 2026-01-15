@@ -30,23 +30,40 @@
 
   h2 {
     text-align: center;
-    margin-bottom: 12px;
+    margin-bottom: 16px; /* Abstand leicht vergrößert */
   }
 
-  input, button {
+  input {
     width: 100%;
-    margin: 6px 0;
+    margin: 10px 0; /* Abstand zwischen Feldern vergrößert */
     padding: 10px;
     border-radius: 5px;
     border: none;
     font-size: 14px;
+    background: #2a2a2a;
+    color: #fff;
+  }
+
+  input:focus {
+    outline: 2px solid #4CAF50;
   }
 
   button {
+    width: 100%;
+    margin: 12px 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
     background: #4CAF50;
     color: #fff;
     cursor: pointer;
-    font-weight: bold;
+    position: relative;
+    overflow: hidden;
+  }
+
+  button:hover {
+    background: #45a049; /* Hover-Farbe */
   }
 
   button:disabled {
@@ -66,6 +83,23 @@
     color: #777;
     text-align: center;
   }
+
+  /* Ladebalken beim Senden */
+  .loader {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    background: #fff;
+    width: 0%;
+    animation: loading 2s linear infinite;
+  }
+
+  @keyframes loading {
+    0% { width: 0%; }
+    50% { width: 100%; }
+    100% { width: 0%; }
+  }
 </style>
 </head>
 <body>
@@ -77,17 +111,15 @@
   <input type="text" id="playerid" placeholder="ID" required>
   <input type="text" id="telefon" placeholder="Telefon" required>
   <input type="email" id="email" placeholder="E-Mail" required>
+  <input type="text" id="mailname" placeholder="Name der E-Mail (z.B. Luca Valentine)" required>
 
-  <input type="text" id="mailname"
-         placeholder="Name der E-Mail (z.B. Luca Valentine)" required>
+  <button type="submit" id="submitBtn">
+    Absenden
+    <div class="loader" id="loader" style="display:none;"></div>
+  </button>
 
-  <button type="submit" id="submitBtn">Absenden</button>
   <p id="status"></p>
-
-  <!-- Copyright direkt unter dem Formular -->
-  <p class="copyright">
-    © 2026 Luca Valentine. Alle Rechte vorbehalten.
-  </p>
+  <p class="copyright">© 2026 Luca Valentine. Alle Rechte vorbehalten.</p>
 </form>
 
 <script>
@@ -98,20 +130,22 @@ const scriptURL = 'https://script.google.com/macros/s/AKfycbxL8xxQdavzgcFdqOFPiS
 const form = document.getElementById('emailForm');
 const statusEl = document.getElementById('status');
 const submitBtn = document.getElementById('submitBtn');
+const loader = document.getElementById('loader');
 
 form.addEventListener('submit', function(e) {
   e.preventDefault();
 
   submitBtn.disabled = true;
+  loader.style.display = "block";
   statusEl.style.color = "white";
   statusEl.innerText = "Sende...";
 
   const data = {
-    name: document.getElementById('name').value,
-    id: document.getElementById('playerid').value,
-    telefon: document.getElementById('telefon').value,
-    email: document.getElementById('email').value,
-    mailname: document.getElementById('mailname').value
+    name: document.getElementById('name').value.trim(),
+    id: document.getElementById('playerid').value.trim(),
+    telefon: document.getElementById('telefon').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    mailname: document.getElementById('mailname').value.trim()
   };
 
   fetch(scriptURL, {
@@ -124,6 +158,7 @@ form.addEventListener('submit', function(e) {
   })
   .catch(() => {
     submitBtn.disabled = false;
+    loader.style.display = "none";
     statusEl.style.color = "red";
     statusEl.innerText = "Fehler beim Senden";
   });
