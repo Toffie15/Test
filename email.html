@@ -20,12 +20,16 @@
     border-radius:10px;
     width:320px;
   }
-  input, button {
+  input, select, button {
     width:100%;
     margin:6px 0;
     padding:10px;
     border-radius:5px;
     border:none;
+  }
+  select {
+    background:#fff;
+    color:#000;
   }
   button {
     background:#4CAF50;
@@ -33,8 +37,8 @@
     cursor:pointer;
   }
   #status {
-    margin-top: 8px;
-    font-weight: bold;
+    margin-top:8px;
+    font-weight:bold;
   }
 </style>
 </head>
@@ -48,6 +52,12 @@
   <input type="text" id="telefon" placeholder="Telefon" required>
   <input type="email" id="email" placeholder="E-Mail" required>
 
+  <input type="text" id="mailname" placeholder="Name der E-Mail (z.B. Luca Valentine)" required>
+
+  <select id="statusSelect" required>
+    <option value="Neu">Neu</option>
+  </select>
+
   <button type="submit">Absenden</button>
   <p id="status"></p>
 </form>
@@ -59,14 +69,16 @@ document.getElementById('emailForm').addEventListener('submit', function(e) {
   e.preventDefault();
 
   const statusEl = document.getElementById('status');
-  statusEl.style.color = "white";
   statusEl.innerText = "Sende...";
+  statusEl.style.color = "white";
 
   const data = {
     name: document.getElementById('name').value,
     id: document.getElementById('playerid').value,
     telefon: document.getElementById('telefon').value,
-    email: document.getElementById('email').value
+    email: document.getElementById('email').value,
+    mailname: document.getElementById('mailname').value,
+    status: document.getElementById('statusSelect').value
   };
 
   fetch(scriptURL, {
@@ -75,12 +87,11 @@ document.getElementById('emailForm').addEventListener('submit', function(e) {
   })
   .then(r => r.json())
   .then(() => {
-    // Weiterleitung auf success.html
     window.location.href = "success.html";
   })
   .catch(() => {
-    statusEl.style.color = "red";
     statusEl.innerText = "Fehler beim Senden";
+    statusEl.style.color = "red";
   });
 });
 </script>
