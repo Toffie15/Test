@@ -30,12 +30,12 @@
 
   h2 {
     text-align: center;
-    margin-bottom: 16px; /* Abstand leicht vergrößert */
+    margin-bottom: 16px;
   }
 
   input {
     width: 100%;
-    margin: 10px 0; /* Abstand zwischen Feldern vergrößert */
+    margin: 10px 0; /* Abstand zwischen Feldern */
     padding: 10px;
     border-radius: 5px;
     border: none;
@@ -63,7 +63,7 @@
   }
 
   button:hover {
-    background: #45a049; /* Hover-Farbe */
+    background: #45a049;
   }
 
   button:disabled {
@@ -84,21 +84,15 @@
     text-align: center;
   }
 
-  /* Ladebalken beim Senden */
-  .loader {
+  /* Fortschrittsbalken */
+  .progress-bar {
     position: absolute;
     left: 0;
     bottom: 0;
-    height: 3px;
+    height: 4px;
     background: #fff;
     width: 0%;
-    animation: loading 2s linear infinite;
-  }
-
-  @keyframes loading {
-    0% { width: 0%; }
-    50% { width: 100%; }
-    100% { width: 0%; }
+    transition: width 0.2s ease;
   }
 </style>
 </head>
@@ -115,7 +109,7 @@
 
   <button type="submit" id="submitBtn">
     Absenden
-    <div class="loader" id="loader" style="display:none;"></div>
+    <div class="progress-bar" id="progressBar"></div>
   </button>
 
   <p id="status"></p>
@@ -130,15 +124,26 @@ const scriptURL = 'https://script.google.com/macros/s/AKfycbxL8xxQdavzgcFdqOFPiS
 const form = document.getElementById('emailForm');
 const statusEl = document.getElementById('status');
 const submitBtn = document.getElementById('submitBtn');
-const loader = document.getElementById('loader');
+const progressBar = document.getElementById('progressBar');
 
 form.addEventListener('submit', function(e) {
   e.preventDefault();
 
   submitBtn.disabled = true;
-  loader.style.display = "block";
   statusEl.style.color = "white";
   statusEl.innerText = "Sende...";
+
+  // Fortschrittsbalken starten
+  let width = 0;
+  progressBar.style.width = "0%";
+  progressBar.style.display = "block";
+  const interval = setInterval(() => {
+    if (width < 90) { // Bis 90% simulieren, echte Fertigstellung dann mit Server
+      width += Math.random() * 5; // Zufälliger Schritt für realistisches Laden
+      if (width > 90) width = 90;
+      progressBar.style.width = width + "%";
+    }
+  }, 200);
 
   const data = {
     name: document.getElementById('name').value.trim(),
@@ -154,11 +159,16 @@ form.addEventListener('submit', function(e) {
   })
   .then(res => res.json())
   .then(() => {
-    window.location.href = "success.html";
+    clearInterval(interval);
+    progressBar.style.width = "100%"; // Vollständig anzeigen
+    setTimeout(() => {
+      window.location.href = "success.html"; // Weiterleitung nach kurzer Verzögerung
+    }, 300);
   })
   .catch(() => {
+    clearInterval(interval);
+    progressBar.style.display = "none";
     submitBtn.disabled = false;
-    loader.style.display = "none";
     statusEl.style.color = "red";
     statusEl.innerText = "Fehler beim Senden";
   });
