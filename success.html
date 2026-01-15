@@ -20,17 +20,33 @@
 
   .container {
     background: #1e1e1e;
-    padding: 40px 50px;
+    padding: 40px 40px;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.7);
     animation: fadeIn 0.5s ease-in-out;
-    max-width: 400px;
+    max-width: 420px;
     width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
+  }
+
+  .checkmark {
+    font-size: 60px;
+    color: #4CAF50;
+    margin-bottom: 20px;
+    text-shadow: 0 0 15px #4CAF50;
+    animation: pop 0.4s ease forwards;
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
   }
 
   h1 {
@@ -40,16 +56,17 @@
   }
 
   p {
-    margin-bottom: 25px;
-    font-size: 16px;
+    margin-bottom: 30px;
+    font-size: 15px;
     color: #ccc;
+    line-height: 1.5;
   }
 
   button {
     background: #4CAF50;
     color: #fff;
     border: none;
-    padding: 14px 30px;
+    padding: 14px 32px;
     border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
@@ -66,14 +83,16 @@
     margin-top: 20px;
     font-size: 11px;
     color: #777;
+    text-align: center;
   }
 </style>
 </head>
 <body>
 
 <div class="container">
+  <div class="checkmark">✔️</div>
   <h1>Erfolgreich Gesendet!</h1>
-  <p>Deine Daten wurden erfolgreich übermittelt.</p>
+  <p>Deine Daten wurden erfolgreich an die State Prison Human Resource übermittelt und werden voraussichtlich spätestens ab 19 Uhr bearbeitet.</p>
   <button onclick="window.location.href='email.html'">Zurück zum Formular</button>
   <p class="copyright">© 2026 Luca Valentine. Alle Rechte vorbehalten.</p>
 </div>
