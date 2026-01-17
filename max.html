@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/159/159604.png">
+<title>Link-Datenbank</title>
+
+<style>
+:root{
+  --bg-color:#121212;
+  --text:#00ffdd;
+  --card:#252525;
+  --accent:#8c00ff;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  color:var(--text);
+  background:
+    linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.75)),
+    url("https://images.unsplash.com/photo-1519681393784-d120267933ba");
+  background-size:cover;
+  background-attachment:fixed;
+  transition: background 0.3s;
+}
+
+body.no-bg{
+  background:var(--bg-color);
+}
+
+h1{text-align:center;color:var(--accent);}
+
+h2{
+  color:var(--accent);
+  cursor:pointer;
+  user-select:none;
+}
+
+.container{max-width:1200px;margin:auto;padding:1rem;}
+
+.topbar{
+  position:sticky;
+  top:0;
+  display:flex;
+  gap:1rem;
+  padding:1rem;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(6px);
+  z-index:10;
+}
+
+.search{
+  flex:1;
+  padding:.7rem;
+  border-radius:6px;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(0,0,0,.35);
+  color:var(--text);
+}
+
+.search::placeholder{color:#aaa;}
+
+.bg-toggle{
+  padding:.7rem 1rem;
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.2);
+  color:var(--text);
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.grid{
+  display:none;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
+  margin-bottom:2rem;
+}
+
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.grid{grid-template-columns:1fr;}}
+
+.card{
+  background:var(--card);
+  border-radius:10px;
+  padding:1.2rem;
+  text-decoration:none;
+  color:inherit;
+  transition:.2s;
+}
+
+.card:hover{transform:scale(1.03);}
+
+.card-title{color:var(--accent);font-size:1.1rem;}
+.card-desc{font-size:.9rem;}
+.last-used{font-size:.75rem;opacity:.7;margin-top:.4rem;}
+</style>
+</head>
+
+<body>
+
+<h1>📁 Meine Link-Datenbank</h1>
+
+<div class="topbar">
+  <input class="search" type="text" placeholder="Links filtern…">
+  <button class="bg-toggle">Hintergrund</button>
+</div>
+
+<div class="container">
+
+<h2 onclick="toggle(this)">📦 Bestellen / Wunsch (<span class="count"></span>)</h2>
+<div class="grid">
+<a class="card" data-id="amazon" href="https://www.amazon.de" target="_blank">
+<div class="card-title">🛒 Amazon</div>
+<div class="card-desc">Shop & Wunschlisten</div><div class="last-used"></div></a>
+
+<a class="card" data-id="wunschliste" href="https://www.amazon.de/hz/wishlist/ls/" target="_blank">
+<div class="card-title">🎁 Wunschliste</div>
+<div class="card-desc">Eigene Listen</div><div class="last-used"></div></a>
+</div>
+
+</div>
+
+<script>
+const backgrounds=[
+  "https://images.unsplash.com/photo-1519681393784-d120267933ba",
+  "https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1950&q=80",
+  "https://images.unsplash.com/photo-1520962911976-3f4f2f2d2f09?auto=format&fit=crop&w=1950&q=80",
+  "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1950&q=80",
+  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1950&q=80"
+];
+let bgIndex=0;
+
+const btn=document.querySelector(".bg-toggle");
+if(localStorage.getItem("bg")==="off") document.body.classList.add("no-bg");
+
+btn.onclick=()=>{
+  if(document.body.classList.contains("no-bg")){
+    document.body.classList.remove("no-bg");
+    localStorage.setItem("bg","on");
+  } else {
+    bgIndex=(bgIndex+1)%backgrounds.length;
+    document.body.style.backgroundImage=`linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.75)), url("${backgrounds[bgIndex]}")`;
+    localStorage.setItem("bg","on");
+  }
+};
+
+function toggle(h){
+  const g=h.nextElementSibling;
+  g.style.display=g.style.display==="grid"?"none":"grid";
+}
+
+function updateCounts(){
+  document.querySelectorAll(".grid").forEach(grid=>{
+    const visible=[...grid.children].filter(c=>c.style.display!=="none").length;
+    grid.previousElementSibling.querySelector(".count").textContent=visible;
+  });
+}
+
+document.querySelector(".search").addEventListener("input",e=>{
+  const v=e.target.value.toLowerCase();
+  document.querySelectorAll(".card").forEach(c=>{
+    c.style.display=c.innerText.toLowerCase().includes(v)?"block":"none";
+  });
+  updateCounts();
+});
+
+document.querySelectorAll(".card").forEach(c=>{
+  const id=c.dataset.id;
+  const t=localStorage.getItem("last_"+id);
+  if(t)c.querySelector(".last-used").textContent="Zuletzt: "+t;
+  c.addEventListener("click",()=>localStorage.setItem("last_"+id,new Date().toLocaleString()));
+});
+
+updateCounts();
+</script>
+
+</body>
+</html>
+
