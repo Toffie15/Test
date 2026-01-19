@@ -28,7 +28,7 @@ section{margin-bottom:2.5rem;}
 .card{background:var(--card);border-radius:14px;padding:1rem;position:relative;}
 .card-title{font-weight:600;color:var(--accent);} .card-desc{font-size:.9rem;color:var(--muted);} .last-used{font-size:.75rem;color:var(--muted);}
 .card-menu{position:absolute;top:.6rem;right:.6rem;cursor:pointer;opacity:.7;}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:999;}
 .modal-box{background:var(--card);width:100%;max-width:420px;padding:1.5rem;border-radius:16px;}
 .modal-box h3{margin-top:0;}
 .row{margin-bottom:.8rem;}
@@ -65,7 +65,22 @@ section{margin-bottom:2.5rem;}
 </div>
 
 <script>
-let data=JSON.parse(localStorage.getItem('links')||'{}');
+let data={};
+
+// Lade Daten: zuerst links.json (Readonly-Quelle), fallback localStorage
+fetch('links.json')
+  .then(r=>r.ok?r.json():null)
+  .then(j=>{
+    if(j){ data=j;  }
+    else{
+      data=JSON.parse(localStorage.getItem('links')||'{}');
+      render();
+    }
+  })
+  .catch(()=>{
+    data=JSON.parse(localStorage.getItem('links')||'{}');
+    render();
+  });
 let editRef=null;
 
 function persist(){localStorage.setItem('links',JSON.stringify(data));render();}
