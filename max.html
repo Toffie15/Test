@@ -76,7 +76,8 @@ section{margin-bottom:2.5rem}
   background:var(--panel);
   backdrop-filter:blur(18px) saturate(180%);
   border:1px solid rgba(255,255,255,.18);
-  transition:transform .25s, box-shadow .25s, background .25s
+  transition:transform .25s, box-shadow .25s, background .25s;
+  cursor:pointer;
 }
 .card:hover{
   transform:translateY(-6px) scale(1.01);
@@ -123,11 +124,13 @@ section{margin-bottom:2.5rem}
 <!-- LINK MODAL -->
 <div class="modal" id="modalLink">
   <div class="modal-box">
-    <h3>Link hinzufügen</h3>
+    <h3>Link hinzufügen/bearbeiten</h3>
     <div class="row"><input id="lTitle" placeholder="Titel"></div>
     <div class="row"><input id="lDesc" placeholder="Beschreibung"></div>
     <div class="row"><input id="lUrl" placeholder="https://"></div>
-    <div class="row"><input id="lCat" placeholder="Kategorie"></div>
+    <div class="row">
+      <select id="lCat"></select>
+    </div>
     <div class="modal-actions">
       <button onclick="modalLink.style.display='none'">Abbrechen</button>
       <button class="primary" id="saveLinkBtn">Speichern</button>
@@ -151,12 +154,19 @@ section{margin-bottom:2.5rem}
 const app = document.getElementById('app');
 const modalLink = document.getElementById('modalLink');
 const modalCat = document.getElementById('modalCat');
+const lCatSelect = document.getElementById('lCat');
 let data = JSON.parse(localStorage.getItem('links') || '{}');
 let editCat = null;
+let editLink = null;
 
 function render(){
   app.innerHTML='';
+  lCatSelect.innerHTML='';
   Object.keys(data).sort().forEach(cat=>{
+    const option = document.createElement('option');
+    option.value = cat; option.textContent = cat;
+    lCatSelect.appendChild(option);
+
     const sec=document.createElement('section');
     sec.innerHTML=`
       <div class="section-head">
@@ -170,11 +180,11 @@ function render(){
     const grid=document.createElement('div');
     grid.className='grid';
 
-    data[cat].forEach(l=>{
+    data[cat].forEach((l,i)=>{
       const c=document.createElement('div');
       c.className='card';
       c.innerHTML=`
-        <div class="card-menu">⋮</div>
+        <div class="card-menu" onclick="event.stopPropagation();editLink('${cat}',${i})">✏️</div>
         <div class="card-title">${l.title}</div>
         <div class="card-desc">${l.desc}</div>`;
       c.onclick=()=>window.open(l.url,'_blank');
@@ -196,20 +206,33 @@ function saveCategory(){
   if(editCat){
     if(name!==editCat){ data[name]=data[editCat]; delete data[editCat]; }
     editCat=null;
-  } else {
-    if(!data[name]) data[name]=[];
-  }
+  } else if(!data[name]) data[name]=[];
   modalCat.style.display='none'; save();
 }
 
+function editLink(cat,i){
+  editLink={cat,i};
+  const l=data[cat][i];
+  lTitle.value=l.title; lDesc.value=l.desc; lUrl.value=l.url;
+  lCatSelect.value = cat;
+  modalLink.style.display='flex';
+}
+
 function saveLink(){
-  const cat=lCat.value.trim()||'Allgemein';
+  const cat=lCatSelect.value;
+  if(!cat) return;
+  if(editLink){
+    const {cat:oldCat,i} = editLink;
+    data[oldCat].splice(i,1);
+    if(data[oldCat].length===0) delete data[oldCat];
+    editLink=null;
+  }
   data[cat]=data[cat]||[];
   data[cat].push({title:lTitle.value||'Ohne Titel',desc:lDesc.value||'',url:lUrl.value});
   modalLink.style.display='none'; save();
 }
 
-addLink.onclick=()=>modalLink.style.display='flex';
+addLink.onclick=()=>{ editLink=null; modalLink.style.display='flex'; lTitle.value=''; lDesc.value=''; lUrl.value=''; lCatSelect.value = Object.keys(data)[0]||''; };
 addCat.onclick=()=>{ editCat=null; cName.value=''; modalCat.style.display='flex'; };
 saveLinkBtn.onclick=saveLink;
 saveCatBtn.onclick=saveCategory;
