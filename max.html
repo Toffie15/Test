@@ -8,7 +8,6 @@
 :root{
   --bg:#0b0d12;
   --panel:#141824;
-  --card:#1b2033;
   --text:#e8e9ee;
   --muted:#9aa0b3;
   --accent:#7c6cff;
@@ -16,205 +15,119 @@
   --radius:14px;
 }
 *{box-sizing:border-box}
-html,body{margin:0;height:100%}
-body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(1200px 600px at 10% -10%,#1a1f35 0%,transparent 40%),var(--bg);color:var(--text);}
-header{position:sticky;top:0;z-index:10;backdrop-filter:blur(14px);background:rgba(11,13,18,.75);border-bottom:1px solid rgba(255,255,255,.06);}
-.header-inner{max-width:1280px;margin:auto;padding:1rem;display:grid;grid-template-columns:1fr auto auto auto auto;gap:.75rem;}
-input,button{background:var(--panel);border:1px solid rgba(255,255,255,.08);color:var(--text);padding:.6rem .8rem;border-radius:10px;}
-input::placeholder{color:var(--muted)}
-button{cursor:pointer}
+body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text)}
+header{position:sticky;top:0;background:rgba(11,13,18,.85);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08)}
+.header-inner{max-width:1200px;margin:auto;padding:1rem;display:flex;gap:.75rem}
+button,input{background:var(--panel);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:.6rem .8rem;border-radius:10px}
 button.primary{background:linear-gradient(135deg,#8b7bff,#6a5cff);border:none}
 button.ghost{background:transparent}
-button.danger{background:var(--danger);border:none}
-main{max-width:1280px;margin:auto;padding:1.5rem 1rem 3rem;}
-section{margin-bottom:2rem;}
-.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;cursor:pointer;}
-.section-head h2{margin:0;font-size:1.1rem}
-.section-head span{color:var(--muted);font-size:.85rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;transition:max-height 0.25s ease;overflow:hidden;}
-.grid.collapsed{max-height:0;}
-.card{background: rgba(255,255,255,0.08);border-radius:var(--radius);padding:1rem;position:relative;transition:transform .25s ease, box-shadow .25s ease, backdrop-filter .25s ease;border:1px solid rgba(255,255,255,0.15);backdrop-filter: blur(12px) saturate(180%) brightness(1.1);}
-.card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 16px 32px rgba(0,0,0,0.4);backdrop-filter: blur(18px) saturate(200%) brightness(1.15);}
+main{max-width:1200px;margin:auto;padding:1.5rem}
+section{margin-bottom:2rem}
+.section-head{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.section-left{display:flex;align-items:center;gap:.5rem}
+.section-left h2{margin:0;font-size:1.1rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-top:1rem}
+.card{position:relative;background:rgba(255,255,255,.08);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.18);border-radius:var(--radius);padding:1rem;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-6px);box-shadow:0 14px 32px rgba(0,0,0,.45)}
 .card-title{font-weight:600;color:var(--accent)}
 .card-desc{font-size:.9rem;color:var(--muted)}
-.card-last{font-size:.75rem;color:var(--muted);margin-top:.4rem}
-.card-menu{position:absolute;top:.3rem;right:.3rem;font-size:1.3rem;opacity:.8;cursor:pointer}
+.card-menu{position:absolute;top:.6rem;right:.6rem;font-size:1.4rem;opacity:.85}
 .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.65);z-index:50}
-.modal-box{width:100%;max-width:440px;background:var(--panel);padding:1.5rem;border-radius:20px}
-.modal-box h3{margin-top:0}
-.row{margin-bottom:.9rem}
-.footer-actions{display:flex;justify-content:space-between;gap:.5rem}
+.modal-box{background:var(--panel);padding:1.5rem;border-radius:18px;width:100%;max-width:420px}
+.row{margin-bottom:.8rem}
 </style>
 </head>
 <body>
 <header>
   <div class="header-inner">
-    <input id="search" placeholder="Suchen…" />
-    <button class="ghost" id="exportBtn">Export</button>
-    <button class="ghost" id="importBtn">Import</button>
-    <button class="primary" id="addLinkBtn">+ Link</button>
-    <button class="primary" id="addCatBtn">+ Kategorie</button>
-    <input type="file" id="importFile" hidden />
+    <button class="primary" id="addLink">+ Link</button>
+    <button id="addCat">+ Kategorie</button>
   </div>
 </header>
 <main id="app"></main>
 
-<div class="modal" id="modal">
+<div class="modal" id="modalLink">
   <div class="modal-box">
-    <h3 id="modalTitle">Link</h3>
-    <div class="row"><input id="fTitle" placeholder="Titel" /></div>
-    <div class="row"><input id="fDesc" placeholder="Beschreibung" /></div>
-    <div class="row"><input id="fUrl" placeholder="https://" /></div>
-    <div class="row">
-      <select id="fCatSelect"></select>
-      <input id="fIcon" placeholder="Emoji/ Icon (optional)" style="width:60px;margin-left:.5rem" />
-    </div>
-    <div class="footer-actions">
-      <button class="danger" id="deleteBtn">Löschen</button>
-      <div style="display:flex;gap:.5rem">
-        <button id="cancelBtn">Abbrechen</button>
-        <button class="primary" id="saveBtn">Speichern</button>
-      </div>
-    </div>
+    <h3>Link hinzufügen</h3>
+    <div class="row"><input id="lTitle" placeholder="Titel"></div>
+    <div class="row"><input id="lDesc" placeholder="Beschreibung"></div>
+    <div class="row"><input id="lUrl" placeholder="https://"></div>
+    <div class="row"><input id="lCat" placeholder="Kategorie"></div>
+    <button class="primary" id="saveLinkBtn">Speichern</button>
   </div>
 </div>
 
-<div class="modal" id="catModal">
+<div class="modal" id="modalCat">
   <div class="modal-box">
     <h3>Kategorie</h3>
-    <div class="row"><input id="catName" placeholder="Name der Kategorie" /></div>
-    <div class="footer-actions">
-      <button class="danger" id="deleteCatBtn">Löschen</button>
-      <div style="display:flex;gap:.5rem">
-        <button id="cancelCatBtn">Abbrechen</button>
-        <button class="primary" id="saveCatBtn">Speichern</button>
-      </div>
-    </div>
+    <div class="row"><input id="cName" placeholder="Name"></div>
+    <button class="primary" id="saveCatBtn">Speichern</button>
   </div>
 </div>
 
-<script type="module">
-const $ = s => document.querySelector(s);
-const app = $('#app');
-let state = JSON.parse(localStorage.getItem('links') || '{}');
-let editing = null;
-let editingCat = null;
+<script>
+const app = document.getElementById('app');
+const modalLink = document.getElementById('modalLink');
+const modalCat = document.getElementById('modalCat');
+let data = JSON.parse(localStorage.getItem('links') || '{}');
+let editCat = null;
 
 function render(){
-  app.innerHTML = '';
-  Object.keys(state).sort().forEach(cat => {
-    const sec = document.createElement('section');
-    sec.innerHTML = `<div class='section-head'><div style="display:flex;align-items:center;gap:.5rem"><h2>${cat}</h2><button class="ghost" onclick="event.stopPropagation();editCategory('${cat}')">✏️</button><button class="ghost" onclick="event.stopPropagation();deleteCategory('${cat}')">🗑️</button></div><span>${state[cat].length}</span></div>`;
-    const grid = document.createElement('div');
-    grid.className = 'grid collapsed';
+  app.innerHTML='';
+  Object.keys(data).sort().forEach(cat=>{
+    const sec=document.createElement('section');
+    sec.innerHTML=`<div class="section-head">
+      <div class="section-left">
+        <h2>${cat}</h2>
+        <button class="ghost" onclick="event.stopPropagation();editCategory('${cat}')">✏️</button>
+        <button class="ghost" onclick="event.stopPropagation();deleteCategory('${cat}')">🗑️</button>
+      </div>
+      <span>${data[cat].length}</span>
+    </div>`;
 
-    state[cat].forEach((l,i) => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.draggable = true;
-      card.innerHTML = `<div class='card-menu'>⋮</div><div class='card-title'>${l.icon||''} ${l.title}</div><div class='card-desc'>${l.desc}</div><div class='card-last'>${l.last||''}</div>`;
+    const grid=document.createElement('div');
+    grid.className='grid';
 
-      card.onclick = () => { l.last=new Date().toLocaleString(); save(); window.open(l.url,'_blank'); };
-      card.querySelector('.card-menu').onclick = e=>{ e.stopPropagation(); openEdit(cat,i); };
-      card.ondragstart = e => { e.dataTransfer.setData('text/plain', JSON.stringify({cat,index:i})); };
-      grid.appendChild(card);
+    data[cat].forEach(l=>{
+      const c=document.createElement('div');
+      c.className='card';
+      c.innerHTML=`<div class="card-menu">⋮</div><div class="card-title">${l.title}</div><div class="card-desc">${l.desc}</div>`;
+      c.onclick=()=>window.open(l.url,'_blank');
+      grid.appendChild(c);
     });
-
-    grid.ondragover = e => e.preventDefault();
-    grid.ondrop = e => {
-      e.preventDefault();
-      const dataDrop = JSON.parse(e.dataTransfer.getData('text/plain'));
-      const movedLink = state[dataDrop.cat].splice(dataDrop.index, 1)[0];
-      if(!state[cat]) state[cat] = [];
-      state[cat].push(movedLink);
-      save();
-    };
 
     sec.appendChild(grid);
     app.appendChild(sec);
-    sec.querySelector('.section-head').onclick=()=>grid.classList.toggle('collapsed');
-  });
-  populateCategorySelect();
-}
-
-function populateCategorySelect(){
-  const select = $('#fCatSelect');
-  select.innerHTML = '';
-  Object.keys(state).sort().forEach(cat=>{
-    const opt = document.createElement('option'); opt.value=cat; opt.textContent=cat; select.appendChild(opt);
   });
 }
 
-function save(){ localStorage.setItem('links', JSON.stringify(state)); render(); }
+function save(){ localStorage.setItem('links',JSON.stringify(data)); render(); }
 
-function openNew(){
-  editing=null; 
-  $('#modalTitle').textContent='Neuer Link'; 
-  $('#deleteBtn').style.display='none';
-  $('#fIcon').value='';
-  clearForm(); 
-  $('#modal').style.display='flex';
-}
-
-function openEdit(cat,i){
-  editing={cat,i}; 
-  const l=state[cat][i];
-  fTitle.value=l.title; fDesc.value=l.desc; fUrl.value=l.url; fCatSelect.value=cat; fIcon.value=l.icon||'';
-  $('#deleteBtn').style.display='inline-block';
-  $('#modal').style.display='flex';
-}
-
-function closeModal(){ $('#modal').style.display='none'; }
-function clearForm(){ fTitle.value=fDesc.value=fUrl.value=''; fCatSelect.value='Allgemein'; fIcon.value=''; }
-function saveLink(){
-  if(!fUrl.value) return;
-  if(editing){
-    const {cat,i}=editing; state[cat].splice(i,1); if(state[cat].length===0) delete state[cat];
-  }
-  const cat=fCatSelect.value||'Allgemein';
-  state[cat]=state[cat]||[];
-  state[cat].push({title:fTitle.value||'Ohne Titel',desc:fDesc.value||'',url:fUrl.value,last:'',icon:fIcon.value||''});
-  save(); closeModal();
-}
-function deleteLink(){
-  if(!editing) return;
-  const {cat,i}=editing; state[cat].splice(i,1); if(state[cat].length===0) delete state[cat]; save(); closeModal();
-}
-
-function openNewCategory(){
-  editingCat=null; $('#catName').value=''; $('#deleteCatBtn').style.display='none'; $('#catModal').style.display='flex';
-}
-function editCategory(name){
-  editingCat=name; $('#catName').value=name; $('#deleteCatBtn').style.display='inline-block'; $('#catModal').style.display='flex';
-}
+function editCategory(cat){ editCat=cat; cName.value=cat; modalCat.style.display='flex'; }
+function deleteCategory(cat){ if(confirm(`Kategorie "${cat}" wirklich löschen?`)){ delete data[cat]; save(); } }
 function saveCategory(){
-  const name = $('#catName').value.trim(); if(!name) return;
-  if(editingCat && editingCat!==name){
-    state[name] = state[editingCat] || [];
-    delete state[editingCat];
-  } else if(!editingCat){
-    state[name] = state[name] || [];
+  const name=cName.value.trim();
+  if(!name) return;
+  if(editCat){
+    if(name!==editCat){ data[name]=data[editCat]; delete data[editCat]; }
+    editCat=null;
+  } else {
+    if(!data[name]) data[name]=[];
   }
-  save(); closeCatModal();
+  modalCat.style.display='none'; save();
 }
-function deleteCategory(){
-  if(!editingCat) return;
-  delete state[editingCat]; save(); closeCatModal();
-}
-function closeCatModal(){ $('#catModal').style.display='none'; }
 
-$('#exportBtn').onclick=()=>{ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'})); a.download='links.json'; a.click(); }
-$('#importBtn').onclick=()=>$('#importFile').click();
-$('#importFile').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ state=JSON.parse(r.result); save(); }; r.readAsText(f); }
-$('#search').oninput=e=>{ const v=e.target.value.toLowerCase(); document.querySelectorAll('.card').forEach(c=>c.style.display=c.innerText.toLowerCase().includes(v)?'block':'none'); }
-$('#addLinkBtn').onclick=openNew;
-$('#addCatBtn').onclick=openNewCategory;
-$('#cancelBtn').onclick=closeModal;
-$('#saveBtn').onclick=saveLink;
-$('#deleteBtn').onclick=deleteLink;
-$('#cancelCatBtn').onclick=closeCatModal;
-$('#saveCatBtn').onclick=saveCategory;
-$('#deleteCatBtn').onclick=deleteCategory;
+function saveLink(){
+  const cat=lCat.value.trim()||'Allgemein';
+  data[cat]=data[cat]||[];
+  data[cat].push({title:lTitle.value||'Ohne Titel',desc:lDesc.value||'',url:lUrl.value});
+  modalLink.style.display='none'; save();
+}
+
+addLink.onclick=()=>{ modalLink.style.display='flex'; };
+addCat.onclick=()=>{ editCat=null; cName.value=''; modalCat.style.display='flex'; };
+saveLinkBtn.onclick=saveLink;
+saveCatBtn.onclick=saveCategory;
 
 render();
 </script>
