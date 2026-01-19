@@ -31,6 +31,7 @@ section{margin-bottom:2rem;}
 .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;cursor:pointer;}
 .section-head h2{margin:0;font-size:1.1rem}
 .section-head span{color:var(--muted);font-size:.85rem}
+.section-head .del-cat{margin-left:.5rem;cursor:pointer;opacity:.7;font-size:1rem;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;transition:max-height 0.25s ease;overflow:hidden;}
 .grid.collapsed{max-height:0;}
 .card{background: rgba(255,255,255,0.08);border-radius:var(--radius);padding:1rem;position:relative;transition:transform .25s ease, box-shadow .25s ease, backdrop-filter .25s ease;border:1px solid rgba(255,255,255,0.15);backdrop-filter: blur(12px) saturate(180%) brightness(1.1);}
@@ -38,14 +39,12 @@ section{margin-bottom:2rem;}
 .card-title{font-weight:600;color:var(--accent)}
 .card-desc{font-size:.9rem;color:var(--muted)}
 .card-last{font-size:.75rem;color:var(--muted);margin-top:.4rem}
-.card-menu{position:absolute;top:.6rem;right:.6rem;opacity:.7;cursor:pointer}
+.card-menu{position:absolute;top:.4rem;right:.4rem;opacity:.9;cursor:pointer;font-size:1.6rem;padding:.2rem}
 .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.65);z-index:50}
 .modal-box{width:100%;max-width:440px;background:var(--panel);padding:1.5rem;border-radius:20px}
 .modal-box h3{margin-top:0}
 .row{margin-bottom:.9rem}
 .footer-actions{display:flex;justify-content:space-between;gap:.5rem}
-.add-menu{position:absolute;top:100%;right:0;background:var(--panel);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.5rem;display:none;flex-direction:column;gap:.25rem;backdrop-filter: blur(12px) saturate(180%) brightness(1.1);z-index:100;}
-.add-menu button{width:100%;text-align:left;}
 </style>
 </head>
 <body>
@@ -54,13 +53,7 @@ section{margin-bottom:2rem;}
     <input id="search" placeholder="Suchen…" />
     <button class="ghost" id="exportBtn">Export</button>
     <button class="ghost" id="importBtn">Import</button>
-    <div style="position:relative;">
-      <button class="primary" id="addBtn">+ Link</button>
-      <div class="add-menu" id="addMenu">
-        <button id="addLinkBtn">Neuer Link</button>
-        <button id="addCategoryBtn">Neue Kategorie</button>
-      </div>
-    </div>
+    <button class="primary" id="addBtn">+ Link</button>
     <input type="file" id="importFile" hidden />
   </div>
 </header>
@@ -87,44 +80,25 @@ const app = $('#app');
 let state = JSON.parse(localStorage.getItem('links') || '{}');
 let editing = null;
 
-// Add Menu Handling
-const addBtn = $('#addBtn');
-const addMenu = $('#addMenu');
-const addLinkBtn = $('#addLinkBtn');
-const addCategoryBtn = $('#addCategoryBtn');
-addBtn.onclick = e => { addMenu.style.display = addMenu.style.display==='flex'?'none':'flex'; addMenu.style.flexDirection='column'; };
-document.addEventListener('click', e=>{ if(!addBtn.contains(e.target) && !addMenu.contains(e.target)) addMenu.style.display='none'; });
-addLinkBtn.onclick = ()=>{ openNew(); addMenu.style.display='none'; };
-addCategoryBtn.onclick = ()=>{ const cat = prompt('Name der neuen Kategorie'); if(cat){ state[cat]=state[cat]||[]; save(); } addMenu.style.display='none'; };
-
 function render(){
   app.innerHTML = '';
   Object.keys(state).sort().forEach(cat => {
     const sec = document.createElement('section');
-    sec.innerHTML = `<div class='section-head'><h2>${cat}</h2><span>${state[cat].length}</span></div>`;
+    sec.innerHTML = `<div class='section-head'><h2>${cat}</h2><span>${state[cat].length}</span><span class='del-cat' title='Kategorie löschen'>🗑️</span></div>`;
     const grid = document.createElement('div');
     grid.className = 'grid collapsed';
 
-    // Sort links alphabetisch
-    state[cat].sort((a,b)=>a.title.localeCompare(b.title));
-
-    state[cat].forEach((l,i) => {
+    state[cat].sort((a,b)=>a.title.localeCompare(b.title)).forEach((l,i) => {
       const card = document.createElement('div');
       card.className = 'card';
       card.draggable = true;
-      card.innerHTML = `<div class='card-menu'>⋮</div><div class='card-title'>${l.title}</div><div class='card-desc'>${l.desc}</div><div class='card-last'>${l.last||''}</div>`;
+      card.innerHTML = `<div class='card-menu' title='Bearbeiten'>⋮</div><div class='card-title'>${l.title}</div><div class='card-desc'>${l.desc}</div><div class='card-last'>${l.last||''}</div>`;
 
       card.onclick = () => { l.last=new Date().toLocaleString(); save(); window.open(l.url,'_blank'); };
       card.querySelector('.card-menu').onclick = e=>{ e.stopPropagation(); openEdit(cat,i); };
 
       // Drag & Drop
       card.ondragstart = e => { e.dataTransfer.setData('text/plain', JSON.stringify({cat,index:i})); };
-      card.oncontextmenu = e=>{
-        e.preventDefault();
-        const newCat = prompt('Verschieben in Kategorie:', cat);
-        if(newCat){ state[cat].splice(i,1); if(!state[newCat]) state[newCat]=[]; state[newCat].push(l); if(state[cat].length===0) delete state[cat]; save(); }
-      };
-
       grid.appendChild(card);
     });
 
@@ -136,7 +110,6 @@ function render(){
       const movedLink = state[dataDrop.cat].splice(dataDrop.index, 1)[0];
       if(!state[cat]) state[cat] = [];
       state[cat].push(movedLink);
-      if(state[dataDrop.cat].length===0) delete state[dataDrop.cat];
       save();
     };
 
@@ -144,6 +117,13 @@ function render(){
     app.appendChild(sec);
 
     sec.querySelector('.section-head').onclick=()=>grid.classList.toggle('collapsed');
+    sec.querySelector('.del-cat').onclick=e=>{
+      e.stopPropagation();
+      if(confirm(`Kategorie '${cat}' wirklich löschen? Alle Links darin gehen verloren.`)){
+        delete state[cat];
+        save();
+      }
+    };
   });
 }
 
@@ -159,7 +139,7 @@ $('#exportBtn').onclick=()=>{ const a=document.createElement('a'); a.href=URL.cr
 $('#importBtn').onclick=()=>$('#importFile').click();
 $('#importFile').onchange=e=>{ const f=e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=()=>{ state=JSON.parse(r.result); save(); }; r.readAsText(f); }
 $('#search').oninput=e=>{ const v=e.target.value.toLowerCase(); document.querySelectorAll('.card').forEach(c=>c.style.display=c.innerText.toLowerCase().includes(v)?'block':'none'); }
-$('#cancelBtn').onclick=closeModal; $('#saveBtn').onclick=saveLink; $('#deleteBtn').onclick=deleteLink;
+$('#addBtn').onclick=openNew; $('#cancelBtn').onclick=closeModal; $('#saveBtn').onclick=saveLink; $('#deleteBtn').onclick=deleteLink;
 render();
 </script>
 </body>
