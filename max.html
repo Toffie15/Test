@@ -6,50 +6,50 @@
 <title>Link-Datenbank Modern</title>
 <style>
 :root {
-  --bg: #0c0e14;
+  --bg: #0a0c14;
   --panel: rgba(20,24,36,0.85);
-  --card: rgba(28,32,50,0.25);
+  --card: rgba(28,32,50,0.3);
   --text: #e8e9ee;
   --muted: #9aa0b3;
   --accent: #7c6cff;
   --danger: #ff5c5c;
-  --radius: 16px;
+  --radius: 18px;
+  --gap: 1rem;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: Inter, system-ui, sans-serif; background: var(--bg); color: var(--text); }
-header { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(14px); background: var(--panel); border-bottom: 1px solid rgba(255,255,255,0.08); }
-.header-inner { max-width: 1280px; margin: auto; padding: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap; position: relative; }
-input, button { border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); padding: 0.6rem 0.8rem; background: var(--panel); color: var(--text); }
+header { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(16px); background: var(--panel); border-bottom: 1px solid rgba(255,255,255,0.08); }
+.header-inner { max-width: 1280px; margin: auto; padding: 1rem; display: flex; flex-wrap: wrap; gap: var(--gap); align-items: center; position: relative; }
+input { flex: 1; min-width: 180px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); padding: 0.6rem 1rem; background: var(--panel); color: var(--text); }
 input::placeholder { color: var(--muted); }
-button { cursor: pointer; }
-button.primary { background: linear-gradient(135deg,#8b7bff,#6a5cff); border: none; color: #fff; position: relative; }
-button.danger { background: var(--danger); border: none; color: #fff; }
-button.ghost { background: transparent; border: 1px solid rgba(255,255,255,0.2); }
-main { max-width: 1280px; margin: auto; padding: 2rem 1rem 4rem; }
-section { margin-bottom: 2.5rem; }
-.section-head { display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin-bottom: 1rem; }
+button { border-radius: 14px; border: none; padding: 0.6rem 1rem; cursor: pointer; font-weight: 500; }
+button.primary { background: linear-gradient(135deg,#8b7bff,#6a5cff); color: #fff; }
+button.ghost { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text); }
+button.danger { background: var(--danger); color: #fff; }
+main { max-width: 1280px; margin: auto; padding: 2rem 1rem 4rem; display: flex; flex-direction: column; gap: 2rem; }
+section { display: flex; flex-direction: column; gap: 0.8rem; }
+.section-head { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 0.5rem 1rem; border-radius: 16px; background: rgba(255,255,255,0.05); }
 .section-head h2 { font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
 .section-head span { font-size: 0.85rem; color: var(--muted); }
 .section-head .arrow { transition: transform 0.25s ease; display: inline-block; }
 .section-head.collapsed .arrow { transform: rotate(-90deg); }
-.grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: 1rem; transition: max-height 0.3s ease; overflow: hidden; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: var(--gap); transition: max-height 0.3s ease; overflow: hidden; }
 .grid.collapsed { max-height: 0; }
-.card { background: var(--card); border-radius: var(--radius); padding: 1rem; position: relative; transition: transform 0.25s ease, box-shadow 0.25s ease, backdrop-filter 0.25s ease; backdrop-filter: blur(12px) saturate(180%) brightness(1.1); border: 1px solid rgba(255,255,255,0.15); cursor: grab; }
+.card { background: var(--card); border-radius: var(--radius); padding: 1rem; position: relative; transition: transform 0.25s ease, box-shadow 0.25s ease, backdrop-filter 0.25s ease; backdrop-filter: blur(14px) saturate(180%) brightness(1.1); border: 1px solid rgba(255,255,255,0.15); cursor: grab; display: flex; flex-direction: column; justify-content: space-between; min-height: 120px; }
 .card:active { cursor: grabbing; }
-.card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 16px 32px rgba(0,0,0,0.35); backdrop-filter: blur(18px) saturate(200%) brightness(1.15); }
-.card-title { font-weight: 600; color: var(--accent); display: flex; align-items: center; gap: 0.5rem; }
-.card-desc { font-size: 0.9rem; color: var(--muted); margin-top: 0.25rem; }
-.card-last { font-size: 0.75rem; color: var(--muted); margin-top: 0.4rem; }
+.card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 16px 32px rgba(0,0,0,0.35); backdrop-filter: blur(18px) saturate(200%) brightness(1.15); }
+.card-title { font-weight: 600; color: var(--accent); display: flex; align-items: center; gap: 0.5rem; font-size: 1.05rem; }
+.card-desc { font-size: 0.9rem; color: var(--muted); margin-top: 0.25rem; flex-grow: 1; }
+.card-last { font-size: 0.75rem; color: var(--muted); margin-top: 0.4rem; text-align: right; }
 .card-menu { position: absolute; top: 0.6rem; right: 0.6rem; opacity: 0.7; cursor: pointer; }
 .modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.65); z-index: 200; }
-.modal-box { width: 100%; max-width: 480px; background: var(--panel); padding: 1.5rem; border-radius: 20px; }
-.modal-box h3 { margin-top: 0; margin-bottom: 1rem; }
-.row { margin-bottom: 1rem; }
+.modal-box { width: 100%; max-width: 500px; background: var(--panel); padding: 2rem; border-radius: 24px; display: flex; flex-direction: column; gap: 1rem; }
+.modal-box h3 { margin-top: 0; margin-bottom: 1rem; font-size: 1.4rem; }
+.row { display: flex; flex-direction: column; gap: 0.4rem; }
 .footer-actions { display: flex; justify-content: space-between; gap: 0.5rem; }
-.add-menu { position: absolute; top: 3.8rem; right: 0; background: var(--panel); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 0.5rem; display: none; flex-direction: column; gap: 0.5rem; backdrop-filter: blur(14px) saturate(180%); z-index: 150; }
-.add-menu button { width: 100%; text-align: left; }
+.add-menu { position: absolute; top: 3.8rem; right: 0; background: var(--panel); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 0.5rem; display: none; flex-direction: column; gap: 0.5rem; backdrop-filter: blur(14px) saturate(180%); z-index: 150; }
+.add-menu button { width: 100%; text-align: left; padding: 0.6rem 1rem; border-radius: 12px; }
 .add-menu button:hover { background: rgba(255,255,255,0.08); }
-.color-picker { width: 24px; height: 24px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; }
 </style>
 </head>
 <body>
@@ -58,7 +58,7 @@ section { margin-bottom: 2.5rem; }
     <input id="search" placeholder="Suchen…">
     <button class="ghost" id="exportBtn">Export</button>
     <button class="ghost" id="importBtn">Import</button>
-    <button class="primary" id="addBtn">+ Link</button>
+    <button class="primary" id="addBtn">+ Hinzufügen</button>
     <div class="add-menu" id="addMenu">
       <button id="addLinkBtn">Neuer Link</button>
       <button id="addCategoryBtn">Neue Kategorie</button>
@@ -92,28 +92,22 @@ let editing = null;
 
 function render(){
   app.innerHTML = '';
-  Object.keys(state).sort().forEach(cat => {
+  Object.keys(state).sort().forEach(cat=>{
     const sec = document.createElement('section');
     sec.innerHTML = `<div class='section-head'><h2>${cat}<span class='arrow'>▶</span></h2><span>${state[cat].length}</span></div>`;
     const grid = document.createElement('div');
     grid.className='grid collapsed';
 
     state[cat].sort((a,b)=>a.title.localeCompare(b.title)).forEach((l,i)=>{
-      const card=document.createElement('div');
+      const card = document.createElement('div');
       card.className='card';
       card.innerHTML=`<div class='card-menu'>⋮</div><div class='card-title'>${l.title}</div><div class='card-desc'>${l.desc}</div><div class='card-last'>${l.last||''}</div>`;
-      card.onclick=()=>{l.last=new Date().toLocaleString(); save(); window.open(l.url,'_blank');};
-      card.querySelector('.card-menu').onclick=e=>{e.stopPropagation(); openEdit(cat,i);};
+      card.onclick=()=>{ l.last=new Date().toLocaleString(); save(); window.open(l.url,'_blank'); };
+      card.querySelector('.card-menu').onclick=e=>{ e.stopPropagation(); openEdit(cat,i); };
       card.draggable=true;
-      card.ondragstart=e=>{ e.dataTransfer.setData('text/plain', JSON.stringify({cat, index:i})); };
+      card.ondragstart=e=>{ e.dataTransfer.setData('text/plain', JSON.stringify({cat,index:i})); };
       card.ondragover=e=>e.preventDefault();
-      card.ondrop=e=>{
-        e.preventDefault();
-        const dataDrop = JSON.parse(e.dataTransfer.getData('text/plain'));
-        const movedLink = state[dataDrop.cat].splice(dataDrop.index,1)[0];
-        state[cat].splice(i,0,movedLink);
-        save();
-      };
+      card.ondrop=e=>{ e.preventDefault(); const dataDrop=JSON.parse(e.dataTransfer.getData('text/plain')); const movedLink=state[dataDrop.cat].splice(dataDrop.index,1)[0]; state[cat].splice(i,0,movedLink); save(); };
       grid.appendChild(card);
     });
 
@@ -141,9 +135,7 @@ $('#addBtn').onclick=e=>{ addMenu.style.display=addMenu.style.display==='flex'?'
 $('#addLinkBtn').onclick=()=>{ openNew(); addMenu.style.display='none'; };
 $('#addCategoryBtn').onclick=()=>{ const catName=prompt('Neue Kategorie Name'); if(catName){ state[catName]=state[catName]||[]; save(); } addMenu.style.display='none'; };
 $('#cancelBtn').onclick=closeModal; $('#saveBtn').onclick=saveLink; $('#deleteBtn').onclick=deleteLink;
-
 window.onclick=e=>{ if(!e.target.closest('#addBtn') && !e.target.closest('#addMenu')) addMenu.style.display='none'; }
-
 render();
 </script>
 </body>
