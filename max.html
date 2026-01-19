@@ -44,6 +44,8 @@ section{margin-bottom:2rem;}
 .modal-box h3{margin-top:0}
 .row{margin-bottom:.9rem}
 .footer-actions{display:flex;justify-content:space-between;gap:.5rem}
+.add-menu{position:absolute;top:100%;right:0;background:var(--panel);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.5rem;display:none;flex-direction:column;gap:.25rem;backdrop-filter: blur(12px) saturate(180%) brightness(1.1);z-index:100;}
+.add-menu button{width:100%;text-align:left;}
 </style>
 </head>
 <body>
@@ -52,7 +54,13 @@ section{margin-bottom:2rem;}
     <input id="search" placeholder="Suchen…" />
     <button class="ghost" id="exportBtn">Export</button>
     <button class="ghost" id="importBtn">Import</button>
-    <button class="primary" id="addBtn">+ Link</button>
+    <div style="position:relative;">
+      <button class="primary" id="addBtn">+ Link</button>
+      <div class="add-menu" id="addMenu">
+        <button id="addLinkBtn">Neuer Link</button>
+        <button id="addCategoryBtn">Neue Kategorie</button>
+      </div>
+    </div>
     <input type="file" id="importFile" hidden />
   </div>
 </header>
@@ -79,6 +87,16 @@ const app = $('#app');
 let state = JSON.parse(localStorage.getItem('links') || '{}');
 let editing = null;
 
+// Add Menu Handling
+const addBtn = $('#addBtn');
+const addMenu = $('#addMenu');
+const addLinkBtn = $('#addLinkBtn');
+const addCategoryBtn = $('#addCategoryBtn');
+addBtn.onclick = e => { addMenu.style.display = addMenu.style.display==='flex'?'none':'flex'; addMenu.style.flexDirection='column'; };
+document.addEventListener('click', e=>{ if(!addBtn.contains(e.target) && !addMenu.contains(e.target)) addMenu.style.display='none'; });
+addLinkBtn.onclick = ()=>{ openNew(); addMenu.style.display='none'; };
+addCategoryBtn.onclick = ()=>{ const cat = prompt('Name der neuen Kategorie'); if(cat){ state[cat]=state[cat]||[]; save(); } addMenu.style.display='none'; };
+
 function render(){
   app.innerHTML = '';
   Object.keys(state).sort().forEach(cat => {
@@ -86,6 +104,9 @@ function render(){
     sec.innerHTML = `<div class='section-head'><h2>${cat}</h2><span>${state[cat].length}</span></div>`;
     const grid = document.createElement('div');
     grid.className = 'grid collapsed';
+
+    // Sort links alphabetisch
+    state[cat].sort((a,b)=>a.title.localeCompare(b.title));
 
     state[cat].forEach((l,i) => {
       const card = document.createElement('div');
@@ -98,6 +119,12 @@ function render(){
 
       // Drag & Drop
       card.ondragstart = e => { e.dataTransfer.setData('text/plain', JSON.stringify({cat,index:i})); };
+      card.oncontextmenu = e=>{
+        e.preventDefault();
+        const newCat = prompt('Verschieben in Kategorie:', cat);
+        if(newCat){ state[cat].splice(i,1); if(!state[newCat]) state[newCat]=[]; state[newCat].push(l); if(state[cat].length===0) delete state[cat]; save(); }
+      };
+
       grid.appendChild(card);
     });
 
@@ -109,6 +136,7 @@ function render(){
       const movedLink = state[dataDrop.cat].splice(dataDrop.index, 1)[0];
       if(!state[cat]) state[cat] = [];
       state[cat].push(movedLink);
+      if(state[dataDrop.cat].length===0) delete state[dataDrop.cat];
       save();
     };
 
@@ -131,7 +159,7 @@ $('#exportBtn').onclick=()=>{ const a=document.createElement('a'); a.href=URL.cr
 $('#importBtn').onclick=()=>$('#importFile').click();
 $('#importFile').onchange=e=>{ const f=e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=()=>{ state=JSON.parse(r.result); save(); }; r.readAsText(f); }
 $('#search').oninput=e=>{ const v=e.target.value.toLowerCase(); document.querySelectorAll('.card').forEach(c=>c.style.display=c.innerText.toLowerCase().includes(v)?'block':'none'); }
-$('#addBtn').onclick=openNew; $('#cancelBtn').onclick=closeModal; $('#saveBtn').onclick=saveLink; $('#deleteBtn').onclick=deleteLink;
+$('#cancelBtn').onclick=closeModal; $('#saveBtn').onclick=saveLink; $('#deleteBtn').onclick=deleteLink;
 render();
 </script>
 </body>
