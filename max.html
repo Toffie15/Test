@@ -66,77 +66,116 @@ section{margin-bottom:2.5rem;}
 
 <script>
 let data={};
+let editRef=null;
 
-// Lade Daten: zuerst links.json (Readonly-Quelle), fallback localStorage
+// Elemente
+const modal=document.getElementById('modal');
+const mTitle=document.getElementById('m-title');
+const mDesc=document.getElementById('m-desc');
+const mUrl=document.getElementById('m-url');
+const mCat=document.getElementById('m-cat');
+const deleteBtn=document.getElementById('deleteBtn');
+const search=document.getElementById('search');
+const importInput=document.getElementById('import');
+
+// Laden: erst links.json versuchen, sonst localStorage
 fetch('links.json')
-  .then(r=>r.ok?r.json():null)
+  .then(r=>r.ok ? r.json() : null)
   .then(j=>{
-    if(j){ data=j;  }
-    else{
-      data=JSON.parse(localStorage.getItem('links')||'{}');
-      render();
-    }
+    if(j) data=j;
+    else data=JSON.parse(localStorage.getItem('links')||'{}');
+    render();
   })
   .catch(()=>{
     data=JSON.parse(localStorage.getItem('links')||'{}');
     render();
   });
-let editRef=null;
 
-function persist(){localStorage.setItem('links',JSON.stringify(data));render();}
+function persist(){
+  localStorage.setItem('links',JSON.stringify(data));
+  render();
+}
 
 function render(){
-  const wrap=document.getElementById('content');wrap.innerHTML='';
+  const wrap=document.getElementById('content');
+  wrap.innerHTML='';
   Object.keys(data).sort().forEach(cat=>{
     const sec=document.createElement('section');
     sec.innerHTML=`<div class='section-head'><h2>${cat}</h2><span>${data[cat].length}</span></div>`;
-    const g=document.createElement('div');g.className='grid';
+    const g=document.createElement('div');
+    g.className='grid';
     data[cat].forEach((l,i)=>{
-      const c=document.createElement('div');c.className='card';
-      c.innerHTML=`<div class='card-menu' onclick='openEdit("${cat}",${i})'>⋮</div><div class='card-title'>${l.title}</div><div class='card-desc'>${l.desc}</div><div class='last-used'>${l.last||''}</div>`;
+      const c=document.createElement('div');
+      c.className='card';
+      c.innerHTML=`<div class='card-menu'>⋮</div><div class='card-title'>${l.title}</div><div class='card-desc'>${l.desc}</div><div class='last-used'>${l.last||''}</div>`;
+      c.querySelector('.card-menu').onclick=(e)=>{e.stopPropagation();openEdit(cat,i);};
       c.onclick=()=>{l.last=new Date().toLocaleString();persist();window.open(l.url,'_blank');};
       g.appendChild(c);
-    });sec.appendChild(g);wrap.appendChild(sec);
+    });
+    sec.appendChild(g);
+    wrap.appendChild(sec);
   });
 }
 
-function openModal(){editRef=null;document.getElementById('modal-title').textContent='Neuer Link';deleteBtn.style.display='none';modal.style.display='flex';clearModal();}
-function openEdit(cat,i){editRef={cat,i};const l=data[cat][i];mTitle.value=l.title;mDesc.value=l.desc;mUrl.value=l.url;mCat.value=cat;deleteBtn.style.display='inline-block';modal.style.display='flex';}
+function openModal(){
+  editRef=null;
+  document.getElementById('modal-title').textContent='Neuer Link';
+  deleteBtn.style.display='none';
+  clearModal();
+  modal.style.display='flex';
+}
+
+function openEdit(cat,i){
+  editRef={cat,i};
+  const l=data[cat][i];
+  mTitle.value=l.title;
+  mDesc.value=l.desc;
+  mUrl.value=l.url;
+  mCat.value=cat;
+  deleteBtn.style.display='inline-block';
+  modal.style.display='flex';
+}
+
 function closeModal(){modal.style.display='none';}
 function clearModal(){mTitle.value=mDesc.value=mUrl.value=mCat.value='';}
 
 function saveLink(){
-  if(!mUrl.value)return;
+  if(!mUrl.value) return;
   if(editRef){
     const {cat,i}=editRef;
     data[cat].splice(i,1);
+    if(data[cat].length===0) delete data[cat];
   }
   const cat=mCat.value||'Allgemein';
   data[cat]=data[cat]||[];
   data[cat].push({title:mTitle.value||'Ohne Titel',desc:mDesc.value||'',url:mUrl.value,last:''});
-  persist();closeModal();
+  persist();
+  closeModal();
 }
 
 function removeLink(){
-  if(!editRef)return;
+  if(!editRef) return;
   const {cat,i}=editRef;
   data[cat].splice(i,1);
-  if(data[cat].length===0)delete data[cat];
-  persist();closeModal();
+  if(data[cat].length===0) delete data[cat];
+  persist();
+  closeModal();
 }
 
 function exportJSON(){
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
-  a.download='links.json';a.click();
+  a.download='links.json';
+  a.click();
 }
 
-import.onchange=e=>{
-  const f=e.target.files[0];if(!f)return;
+importInput.onchange=e=>{
+  const f=e.target.files[0];
+  if(!f) return;
   const r=new FileReader();
   r.onload=()=>{data=JSON.parse(r.result);persist();};
   r.readAsText(f);
-}
+};
 
 search.oninput=e=>{
   const v=e.target.value.toLowerCase();
@@ -144,15 +183,6 @@ search.oninput=e=>{
     c.style.display=c.innerText.toLowerCase().includes(v)?'block':'none';
   });
 };
-
-const modal=document.getElementById('modal');
-const mTitle=document.getElementById('m-title');
-const mDesc=document.getElementById('m-desc');
-const mUrl=document.getElementById('m-url');
-const mCat=document.getElementById('m-cat');
-const deleteBtn=document.getElementById('deleteBtn');
-
-render();
 </script>
 </body>
 </html>
