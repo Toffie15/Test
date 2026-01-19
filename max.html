@@ -6,46 +6,121 @@
 <title>Link-Datenbank</title>
 <style>
 :root{
-  --bg:#0b0d12;
-  --panel:#141824;
-  --text:#e8e9ee;
+  --bg:#0a0c12;
+  --panel:rgba(255,255,255,0.08);
+  --panel-strong:rgba(255,255,255,0.14);
+  --text:#f1f2f6;
   --muted:#9aa0b3;
   --accent:#7c6cff;
   --danger:#ff5c5c;
-  --radius:14px;
+  --radius:18px;
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text)}
-header{position:sticky;top:0;background:rgba(11,13,18,.85);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08)}
-.header-inner{max-width:1200px;margin:auto;padding:1rem;display:flex;gap:.75rem}
-button,input{background:var(--panel);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:.6rem .8rem;border-radius:10px}
+html,body{margin:0}
+body{
+  font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 10% -10%,#1b2040 0%,transparent 45%),
+    radial-gradient(900px 500px at 90% 10%,#241a3d 0%,transparent 40%),
+    #0a0c12;
+  color:var(--text);
+}
+
+header{
+  position:sticky;top:0;z-index:10;
+  backdrop-filter:blur(18px);
+  background:rgba(10,12,18,.75);
+  border-bottom:1px solid rgba(255,255,255,.08)
+}
+.header-inner{
+  max-width:1280px;margin:auto;padding:1rem 1.25rem;
+  display:flex;align-items:center;gap:.75rem
+}
+.header-title{font-weight:700;letter-spacing:.4px}
+.header-spacer{flex:1}
+
+button,input,select{
+  background:var(--panel);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.18);
+  color:var(--text);
+  padding:.6rem .9rem;
+  border-radius:12px;
+}
+button{cursor:pointer}
 button.primary{background:linear-gradient(135deg,#8b7bff,#6a5cff);border:none}
-button.ghost{background:transparent}
-main{max-width:1200px;margin:auto;padding:1.5rem}
-section{margin-bottom:2rem}
-.section-head{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+button.ghost{background:transparent;border:none}
+
+main{max-width:1280px;margin:auto;padding:2rem 1.25rem 4rem}
+
+section{margin-bottom:2.5rem}
+.section-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:1.2rem
+}
 .section-left{display:flex;align-items:center;gap:.5rem}
-.section-left h2{margin:0;font-size:1.1rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-top:1rem}
-.card{position:relative;background:rgba(255,255,255,.08);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.18);border-radius:var(--radius);padding:1rem;cursor:pointer;transition:transform .25s,box-shadow .25s}
-.card:hover{transform:translateY(-6px);box-shadow:0 14px 32px rgba(0,0,0,.45)}
+.section-left h2{margin:0;font-size:1.15rem}
+.section-actions button{opacity:.7}
+.section-actions button:hover{opacity:1}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:1.25rem
+}
+
+.card{
+  position:relative;
+  padding:1.2rem 1.2rem 1.1rem;
+  border-radius:var(--radius);
+  background:var(--panel);
+  backdrop-filter:blur(18px) saturate(180%);
+  border:1px solid rgba(255,255,255,.18);
+  transition:transform .25s, box-shadow .25s, background .25s
+}
+.card:hover{
+  transform:translateY(-6px) scale(1.01);
+  background:var(--panel-strong);
+  box-shadow:0 18px 40px rgba(0,0,0,.45)
+}
 .card-title{font-weight:600;color:var(--accent)}
-.card-desc{font-size:.9rem;color:var(--muted)}
-.card-menu{position:absolute;top:.6rem;right:.6rem;font-size:1.4rem;opacity:.85}
-.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.65);z-index:50}
-.modal-box{background:var(--panel);padding:1.5rem;border-radius:18px;width:100%;max-width:420px}
-.row{margin-bottom:.8rem}
+.card-desc{font-size:.9rem;color:var(--muted);margin-top:.15rem}
+.card-menu{
+  position:absolute;top:.7rem;right:.7rem;
+  font-size:1.4rem;opacity:.65
+}
+.card-menu:hover{opacity:1}
+
+.modal{
+  position:fixed;inset:0;display:none;
+  align-items:center;justify-content:center;
+  background:rgba(0,0,0,.65);z-index:50
+}
+.modal-box{
+  width:100%;max-width:440px;
+  background:rgba(20,24,45,.9);
+  backdrop-filter:blur(18px);
+  padding:1.6rem;border-radius:22px;
+  border:1px solid rgba(255,255,255,.18)
+}
+.modal-box h3{margin-top:0}
+.row{margin-bottom:.9rem}
+.modal-actions{display:flex;justify-content:space-between;gap:.5rem}
 </style>
 </head>
 <body>
 <header>
   <div class="header-inner">
-    <button class="primary" id="addLink">+ Link</button>
+    <div class="header-title">📁 Link-Datenbank</div>
+    <div class="header-spacer"></div>
     <button id="addCat">+ Kategorie</button>
+    <button class="primary" id="addLink">+ Link</button>
   </div>
 </header>
+
 <main id="app"></main>
 
+<!-- LINK MODAL -->
 <div class="modal" id="modalLink">
   <div class="modal-box">
     <h3>Link hinzufügen</h3>
@@ -53,15 +128,22 @@ section{margin-bottom:2rem}
     <div class="row"><input id="lDesc" placeholder="Beschreibung"></div>
     <div class="row"><input id="lUrl" placeholder="https://"></div>
     <div class="row"><input id="lCat" placeholder="Kategorie"></div>
-    <button class="primary" id="saveLinkBtn">Speichern</button>
+    <div class="modal-actions">
+      <button onclick="modalLink.style.display='none'">Abbrechen</button>
+      <button class="primary" id="saveLinkBtn">Speichern</button>
+    </div>
   </div>
 </div>
 
+<!-- CATEGORY MODAL -->
 <div class="modal" id="modalCat">
   <div class="modal-box">
     <h3>Kategorie</h3>
     <div class="row"><input id="cName" placeholder="Name"></div>
-    <button class="primary" id="saveCatBtn">Speichern</button>
+    <div class="modal-actions">
+      <button onclick="modalCat.style.display='none'">Abbrechen</button>
+      <button class="primary" id="saveCatBtn">Speichern</button>
+    </div>
   </div>
 </div>
 
@@ -76,14 +158,14 @@ function render(){
   app.innerHTML='';
   Object.keys(data).sort().forEach(cat=>{
     const sec=document.createElement('section');
-    sec.innerHTML=`<div class="section-head">
-      <div class="section-left">
-        <h2>${cat}</h2>
-        <button class="ghost" onclick="event.stopPropagation();editCategory('${cat}')">✏️</button>
-        <button class="ghost" onclick="event.stopPropagation();deleteCategory('${cat}')">🗑️</button>
-      </div>
-      <span>${data[cat].length}</span>
-    </div>`;
+    sec.innerHTML=`
+      <div class="section-head">
+        <div class="section-left"><h2>${cat}</h2></div>
+        <div class="section-actions">
+          <button class="ghost" onclick="editCategory('${cat}')">✏️</button>
+          <button class="ghost" onclick="deleteCategory('${cat}')">🗑️</button>
+        </div>
+      </div>`;
 
     const grid=document.createElement('div');
     grid.className='grid';
@@ -91,7 +173,10 @@ function render(){
     data[cat].forEach(l=>{
       const c=document.createElement('div');
       c.className='card';
-      c.innerHTML=`<div class="card-menu">⋮</div><div class="card-title">${l.title}</div><div class="card-desc">${l.desc}</div>`;
+      c.innerHTML=`
+        <div class="card-menu">⋮</div>
+        <div class="card-title">${l.title}</div>
+        <div class="card-desc">${l.desc}</div>`;
       c.onclick=()=>window.open(l.url,'_blank');
       grid.appendChild(c);
     });
@@ -104,7 +189,7 @@ function render(){
 function save(){ localStorage.setItem('links',JSON.stringify(data)); render(); }
 
 function editCategory(cat){ editCat=cat; cName.value=cat; modalCat.style.display='flex'; }
-function deleteCategory(cat){ if(confirm(`Kategorie "${cat}" wirklich löschen?`)){ delete data[cat]; save(); } }
+function deleteCategory(cat){ if(confirm(`Kategorie "${cat}" löschen?`)){ delete data[cat]; save(); } }
 function saveCategory(){
   const name=cName.value.trim();
   if(!name) return;
@@ -124,7 +209,7 @@ function saveLink(){
   modalLink.style.display='none'; save();
 }
 
-addLink.onclick=()=>{ modalLink.style.display='flex'; };
+addLink.onclick=()=>modalLink.style.display='flex';
 addCat.onclick=()=>{ editCat=null; cName.value=''; modalCat.style.display='flex'; };
 saveLinkBtn.onclick=saveLink;
 saveCatBtn.onclick=saveCategory;
