@@ -3,14 +3,16 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Link-Datenbank</title>
+<title>Link‑Dashboard</title>
+<link href="https://unpkg.com/lucide@latest/dist/umd/lucide.js" rel="preload" as="script">
 <style>
 :root{
-  --bg:#0a0c12;
-  --glass:rgba(255,255,255,0.08);
-  --glass-strong:rgba(255,255,255,0.14);
-  --text:#f2f3f7;
-  --muted:#9aa0b3;
+  --bg:#0b0e16;
+  --glass:rgba(255,255,255,.08);
+  --glass-strong:rgba(255,255,255,.16);
+  --border:rgba(255,255,255,.18);
+  --text:#f3f4f8;
+  --muted:#a0a6bf;
   --accent:#7c6cff;
   --danger:#ff5c5c;
   --radius:22px;
@@ -20,84 +22,143 @@ html,body{margin:0}
 body{
   font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
   background:
-    radial-gradient(1200px 600px at 10% -10%,#1b2040 0%,transparent 45%),
-    radial-gradient(900px 500px at 90% 10%,#241a3d 0%,transparent 40%),
-    #0a0c12;
+    radial-gradient(900px 500px at 15% -10%,#1f2550 0%,transparent 45%),
+    radial-gradient(900px 500px at 85% 10%,#2b1f45 0%,transparent 40%),
+    var(--bg);
   color:var(--text);
 }
+
+/* HEADER */
 header{
-  position:sticky;top:0;z-index:10;
-  backdrop-filter:blur(20px);
-  background:rgba(10,12,18,.7);
-  border-bottom:1px solid rgba(255,255,255,.08)
+  position:sticky;top:0;z-index:20;
+  backdrop-filter:blur(18px);
+  background:rgba(10,12,20,.7);
+  border-bottom:1px solid var(--border);
 }
 .header-inner{
-  max-width:1280px;margin:auto;padding:1rem 1.5rem;
+  max-width:1320px;margin:auto;
+  padding:1rem 1.25rem;
   display:flex;align-items:center;gap:.75rem
 }
-.header-title{font-size:1.3rem;font-weight:700;letter-spacing:.4px}
+.header-title{font-weight:700;font-size:1.25rem;letter-spacing:.3px}
 .header-spacer{flex:1}
+
+/* CONTROLS */
 button,input,select{
   background:var(--glass);
   backdrop-filter:blur(14px);
-  border:1px solid rgba(255,255,255,.18);
+  border:1px solid var(--border);
   color:var(--text);
-  padding:.65rem .95rem;
-  border-radius:14px;
+  padding:.65rem 1rem;
+  border-radius:16px;
 }
-button{cursor:pointer;transition:.2s}
+button{
+  cursor:pointer;
+  transition:transform .2s ease,background .2s ease,opacity .2s ease
+}
 button:hover{transform:translateY(-1px)}
-button.primary{background:linear-gradient(135deg,#8b7bff,#6a5cff);border:none}
-button.ghost{background:transparent;border:none}
-main{max-width:1280px;margin:auto;padding:2.2rem 1.5rem 4rem}
-section{margin-bottom:2.8rem}
-.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem}
+button.primary{
+  background:linear-gradient(135deg,#8f83ff,#6a5cff);
+  border:none
+}
+button.ghost{background:transparent;border:none;opacity:.7}
+button.ghost:hover{opacity:1}
+
+/* LAYOUT */
+main{max-width:1320px;margin:auto;padding:2.2rem 1.25rem 4rem}
+section{margin-bottom:3rem;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
+
+.section-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:1.2rem
+}
 .section-left{display:flex;align-items:center;gap:.6rem}
-.section-left h2{margin:0;font-size:1.2rem}
-.section-actions button{opacity:.7;font-size:1.1rem}
-.section-actions button:hover{opacity:1}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.4rem}
+.section-left h2{margin:0;font-size:1.15rem}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:1.4rem
+}
+
+/* CARD */
 .card{
   position:relative;
-  padding:1.4rem 1.4rem 1.2rem;
+  padding:1.5rem;
   border-radius:var(--radius);
   background:var(--glass);
-  backdrop-filter:blur(20px) saturate(180%);
-  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(18px) saturate(180%);
+  border:1px solid var(--border);
   cursor:pointer;
-  transition:.25s
+  transition:transform .25s ease,box-shadow .25s ease,background .25s ease
 }
 .card:hover{
   transform:translateY(-6px) scale(1.02);
   background:var(--glass-strong);
   box-shadow:0 20px 45px rgba(0,0,0,.45)
 }
-.card-title{font-weight:600;color:var(--accent);font-size:1.05rem}
-.card-desc{font-size:.9rem;color:var(--muted);margin-top:.2rem}
-.card-menu{position:absolute;top:.8rem;right:.9rem;font-size:1.35rem;opacity:.7}
+.card-title{font-weight:600;color:var(--accent)}
+.card-desc{font-size:.9rem;color:var(--muted);margin-top:.25rem;line-height:1.4}
+.card-menu{
+  position:absolute;top:.7rem;right:.7rem;
+  opacity:.55
+}
 .card-menu:hover{opacity:1}
-.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.7);z-index:50}
+
+.empty{
+  padding:2.5rem;
+  border:1px dashed rgba(255,255,255,.18);
+  border-radius:var(--radius);
+  color:var(--muted);
+  text-align:center
+}
+
+/* MODAL */
+.modal{
+  position:fixed;inset:0;display:none;
+  align-items:center;justify-content:center;
+  background:rgba(0,0,0,.65);
+  z-index:50
+}
 .modal-box{
   width:100%;max-width:460px;
-  background:rgba(20,24,45,.95);
+  background:rgba(22,26,48,.95);
   backdrop-filter:blur(22px);
-  padding:2rem;border-radius:26px;
-  border:1px solid rgba(255,255,255,.2)
+  padding:2rem;
+  border-radius:28px;
+  border:1px solid var(--border)
 }
-.modal-box h3{margin-top:0;font-size:1.3rem}
+.modal-box h3{margin-top:0;font-size:1.25rem}
 .row{margin-bottom:1rem}
 .modal-actions{display:flex;justify-content:space-between;gap:.75rem}
+
+/* CONTEXT */
+.context{
+  position:fixed;display:none;flex-direction:column;
+  background:rgba(28,32,60,.95);
+  border:1px solid var(--border);
+  border-radius:16px;
+  backdrop-filter:blur(18px);
+  overflow:hidden;z-index:100
+}
+.context button{
+  border:none;background:none;text-align:left;
+  padding:.75rem 1.1rem
+}
+.context button:hover{background:rgba(255,255,255,.08)}
 </style>
 </head>
 <body>
 <header>
   <div class="header-inner">
-    <div class="header-title">📁 Link-Datenbank</div>
+    <div class="header-title">Link‑Dashboard</div>
     <div class="header-spacer"></div>
-    <button id="addCat">+ Kategorie</button>
-    <button class="primary" id="addLink">+ Link</button>
+    <button id="addCat">Kategorie</button>
+    <button class="primary" id="addLink">Link</button>
   </div>
 </header>
+
 <main id="app"></main>
 
 <!-- LINK MODAL -->
@@ -127,41 +188,78 @@ section{margin-bottom:2.8rem}
   </div>
 </div>
 
+<!-- CONTEXT MENU -->
+<div class="context" id="ctx">
+  <button id="ctxEdit">Bearbeiten</button>
+  <button id="ctxDelete" style="color:var(--danger)">Löschen</button>
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
 <script>
-const app = document.getElementById('app');
-const modalLink = document.getElementById('modalLink');
-const modalCat = document.getElementById('modalCat');
-const lCat = document.getElementById('lCat');
-let data = JSON.parse(localStorage.getItem('links')||'{}');
-let editCat=null, editLink=null;
+const app=document.getElementById('app'),modalLink=document.getElementById('modalLink'),modalCat=document.getElementById('modalCat'),ctx=document.getElementById('ctx');
+let data=JSON.parse(localStorage.getItem('links')||'{}');
+let editCat=null,editLink=null;
 
 function render(){
-  app.innerHTML=''; lCat.innerHTML='';
+  app.innerHTML='';
+  const sel=document.getElementById('lCat');sel.innerHTML='';
   Object.keys(data).sort().forEach(cat=>{
-    const opt=document.createElement('option'); opt.value=cat; opt.textContent=cat; lCat.appendChild(opt);
+    sel.add(new Option(cat,cat));
     const sec=document.createElement('section');
-    sec.innerHTML=`<div class="section-head"><div class="section-left"><h2>${cat}</h2></div><div class="section-actions"><button class="ghost" onclick="editCategory('${cat}')">✏️</button><button class="ghost" onclick="deleteCategory('${cat}')">🗑️</button></div></div>`;
-    const grid=document.createElement('div'); grid.className='grid';
+    sec.innerHTML=`<div class="section-head"><div class="section-left"><h2>${cat}</h2></div></div>`;
+    const grid=document.createElement('div');grid.className='grid';
+    if(!data[cat].length){grid.innerHTML='<div class="empty">Keine Links</div>'}
     data[cat].forEach((l,i)=>{
-      const c=document.createElement('div'); c.className='card';
-      c.innerHTML=`<div class="card-menu" onclick="event.stopPropagation();editLinkFunc('${cat}',${i})">✏️</div><div class="card-title">${l.title}</div><div class="card-desc">${l.desc}</div>`;
-      c.onclick=()=>window.open(l.url,'_blank'); grid.appendChild(c);
+      const c=document.createElement('div');c.className='card';
+      c.innerHTML=`<div class="card-menu" data-cat="${cat}" data-i="${i}"><i data-lucide="more-vertical"></i></div><div class="card-title">${l.title}</div><div class="card-desc">${l.desc}</div>`;
+      c.onclick=()=>window.open(l.url,'_blank');
+      grid.appendChild(c);
     });
-    sec.appendChild(grid); app.appendChild(sec);
+    sec.appendChild(grid);app.appendChild(sec);
   });
+  lucide.createIcons();
 }
 
-function save(){localStorage.setItem('links',JSON.stringify(data));render();}
-function editCategory(cat){editCat=cat;cName.value=cat;modalCat.style.display='flex';}
-function deleteCategory(cat){if(confirm(`Kategorie "${cat}" löschen?`)){delete data[cat];save();}}
-function saveCategory(){const n=cName.value.trim();if(!n)return;if(editCat){data[n]=data[editCat];if(n!==editCat)delete data[editCat];editCat=null;}else data[n]=data[n]||[];modalCat.style.display='none';save();}
-function editLinkFunc(cat,i){editLink={cat,i};const l=data[cat][i];lTitle.value=l.title;lDesc.value=l.desc;lUrl.value=l.url;lCat.value=cat;modalLink.style.display='flex';}
-function saveLink(){const cat=lCat.value;if(!cat)return;const obj={title:lTitle.value||'Ohne Titel',desc:lDesc.value||'',url:lUrl.value};if(editLink){data[editLink.cat].splice(editLink.i,1);editLink=null;}data[cat].push(obj);modalLink.style.display='none';save();}
+function save(){localStorage.setItem('links',JSON.stringify(data));render()}
 
-addLink.onclick=()=>{editLink=null;modalLink.style.display='flex';};
-addCat.onclick=()=>{editCat=null;cName.value='';modalCat.style.display='flex';};
-saveLinkBtn.onclick=saveLink;
-saveCatBtn.onclick=saveCategory;
+document.addEventListener('contextmenu',e=>{
+  const m=e.target.closest('.card-menu');if(!m)return;
+  e.preventDefault();
+  ctx.style.display='flex';
+  ctx.style.left=e.pageX+'px';ctx.style.top=e.pageY+'px';
+  ctx.dataset.cat=m.dataset.cat;ctx.dataset.i=m.dataset.i
+});
+document.addEventListener('click',()=>ctx.style.display='none');
+
+ctxEdit.onclick=()=>{
+  const {cat,i}=ctx.dataset;const l=data[cat][i];
+  editLink={cat,i};
+  lTitle.value=l.title;lDesc.value=l.desc;lUrl.value=l.url;lCat.value=cat;
+  modalLink.style.display='flex'
+};
+ctxDelete.onclick=()=>{
+  const {cat,i}=ctx.dataset;
+  if(confirm('Link löschen?')){data[cat].splice(i,1);save()}
+};
+
+addLink.onclick=()=>{editLink=null;modalLink.style.display='flex'};
+addCat.onclick=()=>{editCat=null;cName.value='';modalCat.style.display='flex'};
+
+saveLinkBtn.onclick=()=>{
+  const cat=lCat.value;
+  const obj={title:lTitle.value||'Ohne Titel',desc:lDesc.value||'',url:lUrl.value};
+  if(editLink){data[editLink.cat].splice(editLink.i,1)}
+  data[cat].push(obj);
+  editLink=null;modalLink.style.display='none';save()
+};
+
+saveCatBtn.onclick=()=>{
+  const n=cName.value.trim();if(!n)return;
+  if(editCat&&n!==editCat){data[n]=data[editCat];delete data[editCat]}
+  else if(!data[n])data[n]=[];
+  modalCat.style.display='none';save()
+};
+
 render();
 </script>
 </body>
