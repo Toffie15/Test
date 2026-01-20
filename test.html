@@ -1,171 +1,168 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/159/159604.png" />
-  <title>Link-Datenbank</title>
-  <style>
-    :root {
-      --bg-dark: #121212;
-      --text-dark: #00ffdd;
-      --card-dark: #252525;
-      --accent: #8c00ff;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: var(--bg-dark);
-      color: var(--text-dark);
-    }
-
-    h1 {
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 2rem;
-      color: var(--accent);
-    }
-
-    h2 {
-      font-size: 1.5rem;
-      color: var(--accent);
-      margin: 2rem 0 1rem 1rem;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 1rem;
-    }
-
-    .category {
-      margin-bottom: 2rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-
-    .card {
-      background-color: var(--card-dark);
-      border-radius: 10px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-      transition: transform 0.2s;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 4px 12px rgb(255, 0, 242);
-    }
-
-    .card-title {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      color: var(--accent);
-    }
-
-    .card-desc {
-      font-size: 0.95rem;
-    }
-
-    .card:focus {
-      outline: 2px solid var(--accent);
-      outline-offset: 4px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Link-Datenbank</title>
+<style>
+:root{
+  --bg:#0a0c12;
+  --glass:rgba(255,255,255,0.08);
+  --glass-strong:rgba(255,255,255,0.14);
+  --text:#f2f3f7;
+  --muted:#9aa0b3;
+  --accent:#7c6cff;
+  --danger:#ff5c5c;
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 10% -10%,#1b2040 0%,transparent 45%),
+    radial-gradient(900px 500px at 90% 10%,#241a3d 0%,transparent 40%),
+    #0a0c12;
+  color:var(--text);
+}
+header{
+  position:sticky;top:0;z-index:10;
+  backdrop-filter:blur(20px);
+  background:rgba(10,12,18,.7);
+  border-bottom:1px solid rgba(255,255,255,.08)
+}
+.header-inner{
+  max-width:1280px;margin:auto;padding:1rem 1.5rem;
+  display:flex;align-items:center;gap:.75rem
+}
+.header-title{font-size:1.3rem;font-weight:700;letter-spacing:.4px}
+.header-spacer{flex:1}
+button,input,select{
+  background:var(--glass);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.18);
+  color:var(--text);
+  padding:.65rem .95rem;
+  border-radius:14px;
+}
+button{cursor:pointer;transition:.2s}
+button:hover{transform:translateY(-1px)}
+button.primary{background:linear-gradient(135deg,#8b7bff,#6a5cff);border:none}
+button.ghost{background:transparent;border:none}
+main{max-width:1280px;margin:auto;padding:2.2rem 1.5rem 4rem}
+section{margin-bottom:2.8rem}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem}
+.section-left{display:flex;align-items:center;gap:.6rem}
+.section-left h2{margin:0;font-size:1.2rem}
+.section-actions button{opacity:.7;font-size:1.1rem}
+.section-actions button:hover{opacity:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.4rem}
+.card{
+  position:relative;
+  padding:1.4rem 1.4rem 1.2rem;
+  border-radius:var(--radius);
+  background:var(--glass);
+  backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid rgba(255,255,255,.18);
+  cursor:pointer;
+  transition:.25s
+}
+.card:hover{
+  transform:translateY(-6px) scale(1.02);
+  background:var(--glass-strong);
+  box-shadow:0 20px 45px rgba(0,0,0,.45)
+}
+.card-title{font-weight:600;color:var(--accent);font-size:1.05rem}
+.card-desc{font-size:.9rem;color:var(--muted);margin-top:.2rem}
+.card-menu{position:absolute;top:.8rem;right:.9rem;font-size:1.35rem;opacity:.7}
+.card-menu:hover{opacity:1}
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.7);z-index:50}
+.modal-box{
+  width:100%;max-width:460px;
+  background:rgba(20,24,45,.95);
+  backdrop-filter:blur(22px);
+  padding:2rem;border-radius:26px;
+  border:1px solid rgba(255,255,255,.2)
+}
+.modal-box h3{margin-top:0;font-size:1.3rem}
+.row{margin-bottom:1rem}
+.modal-actions{display:flex;justify-content:space-between;gap:.75rem}
+</style>
 </head>
 <body>
-
-  <h1>📁 Meine Link-Datenbank</h1>
-
-  <div class="container">
-
-    <!-- Kategorie: Allgemein -->
-    <div class="category">
-      <h2>🌐 Allgemein</h2>
-      <div class="grid">
-        <a class="card" href="https://google.com" target="_blank" rel="noopener noreferrer">
-          <div class="card-title">🔍 Google</div>
-          <div class="card-desc">Suchmaschine für alles Mögliche.</div>
-        </a>
-      </div>
-    </div>
-
-    <!-- Kategorie: SAHP -->
-    <div class="category">
-      <h2>🚔 SAHP</h2>
-      <div class="grid">
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1MRSdnFbXETHzZhz0UwyWJ0RhLahYwx3M0DimQ0KqoiQ/edit?gid=1847778166#gid=1847778166" target="_blank" rel="noopener noreferrer">
-          <div class="card-title">📡 SAHP-Leitstelle</div>
-          <div class="card-desc">Die Leitstelle vom SAHP zum Eintragen.</div>
-        </a>
-
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1DufMS-4hxX75e9bJk_z3jSHqCcO6JmimoqYh6M94zP0/edit?gid=1898147490#gid=1898147490" target="_blank" rel="noopener noreferrer">
-          <div class="card-title">⚖️ Straf- & Bußgeldkatalog</div>
-          <div class="card-desc">Straf- & Bußgeldkatalog.</div>
-        </a>
-
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1YayZveRHmKJa5gGuR-y3TRr6pP_tRv64_7JmkKNXb_I/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
-          <div class="card-title">📋 SP Mitarbeiterblatt</div>
-          <div class="card-desc">Liste aller SP-Mitarbeiter und Zuständigkeiten.</div>
-        </a>
-
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1AcTE7eIOGifiYTfeHFgHueQjJarqf2ZeoOzAURe67DU/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
-          <div class="card-title">📑 PA Leitstelle</div>
-          <div class="card-desc">Kontaktdaten und Aufgaben der PA-Leitstelle.</div>
-        </a>
-
-        <a class="card" href="https://grand-bussgeldkatalog.netlify.app/" target="_blank" rel="noopener noreferrer">
-          <div class="card-title">⚖️ Bußgeldrechner</div>
-          <div class="card-desc">Straf- & Bußgeldkatalog.</div>
-        </a>
-      </div>
-    </div>
-
-    <!-- Kategorie: Intern -->
-    <div class="category">
-      <h2>🔐 Intern</h2>
-      <div class="grid">
-        <a class="card" href="https://docs.google.com/document/d/1uAL5ocshBIkJMxQ--LYAkrm8SoKfBNVEzqcxqcd_FXw/edit?tab=t.0" target="_blank" rel="noopener noreferrer">
-          <div class="card-title">🏃‍♂️ Flucht</div>
-          <div class="card-desc">Der Fluchtplan von Luca Valentine (ENDE).</div>
-        </a>
-
-        <a class="card" href="https://docs.google.com/spreadsheets/d/1n6AB0hBrln9wCuMvyyNcfDlnF_uDG6OL1WUagg59Pvs/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
-          <div class="card-title">📊 Diagram Sheets</div>
-          <div class="card-desc">Volage für Diagram in sheets</div>
-        </a>
-      </div>
-    </div>
-
-    <!-- Kategorie: Sonstiges -->
-    <div class="category">
-      <h2>📦 Sonstiges</h2>
-      <div class="grid">
-        <a class="card" href="https://wzhub.gg/de/bo6-loadouts" target="_blank" rel="noopener noreferrer">
-          <div class="card-title">♾️ COD-WZHUB ♾️</div>
-          <div class="card-desc">COD Meta Waffen</div>
-        </a>
-
-        <a class="card" href="https://github.com/Toffie15/Test/tree/main" target="_blank" rel="noopener noreferrer">
-          <div class="card-title">📝 Github</div>
-          <div class="card-desc">Webcode</div>
-        </a>
-
-        <a class="card" href="https://toffie15.github.io/Test/test.html" target="_blank" rel="noopener noreferrer">
-          <div class="card-title">📝 Vorlage Titel</div>
-          <div class="card-desc">Vorlage Beispiel.</div>
-        </a>
-      </div>
-    </div>
-
+<header>
+  <div class="header-inner">
+    <div class="header-title">📁 Link-Datenbank</div>
+    <div class="header-spacer"></div>
+    <button id="addCat">+ Kategorie</button>
+    <button class="primary" id="addLink">+ Link</button>
   </div>
+</header>
+<main id="app"></main>
 
+<!-- LINK MODAL -->
+<div class="modal" id="modalLink">
+  <div class="modal-box">
+    <h3>Link</h3>
+    <div class="row"><input id="lTitle" placeholder="Titel"></div>
+    <div class="row"><input id="lDesc" placeholder="Beschreibung"></div>
+    <div class="row"><input id="lUrl" placeholder="https://"></div>
+    <div class="row"><select id="lCat"></select></div>
+    <div class="modal-actions">
+      <button onclick="modalLink.style.display='none'">Abbrechen</button>
+      <button class="primary" id="saveLinkBtn">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORY MODAL -->
+<div class="modal" id="modalCat">
+  <div class="modal-box">
+    <h3>Kategorie</h3>
+    <div class="row"><input id="cName" placeholder="Name"></div>
+    <div class="modal-actions">
+      <button onclick="modalCat.style.display='none'">Abbrechen</button>
+      <button class="primary" id="saveCatBtn">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const app = document.getElementById('app');
+const modalLink = document.getElementById('modalLink');
+const modalCat = document.getElementById('modalCat');
+const lCat = document.getElementById('lCat');
+let data = JSON.parse(localStorage.getItem('links')||'{}');
+let editCat=null, editLink=null;
+
+function render(){
+  app.innerHTML=''; lCat.innerHTML='';
+  Object.keys(data).sort().forEach(cat=>{
+    const opt=document.createElement('option'); opt.value=cat; opt.textContent=cat; lCat.appendChild(opt);
+    const sec=document.createElement('section');
+    sec.innerHTML=`<div class="section-head"><div class="section-left"><h2>${cat}</h2></div><div class="section-actions"><button class="ghost" onclick="editCategory('${cat}')">✏️</button><button class="ghost" onclick="deleteCategory('${cat}')">🗑️</button></div></div>`;
+    const grid=document.createElement('div'); grid.className='grid';
+    data[cat].forEach((l,i)=>{
+      const c=document.createElement('div'); c.className='card';
+      c.innerHTML=`<div class="card-menu" onclick="event.stopPropagation();editLinkFunc('${cat}',${i})">✏️</div><div class="card-title">${l.title}</div><div class="card-desc">${l.desc}</div>`;
+      c.onclick=()=>window.open(l.url,'_blank'); grid.appendChild(c);
+    });
+    sec.appendChild(grid); app.appendChild(sec);
+  });
+}
+
+function save(){localStorage.setItem('links',JSON.stringify(data));render();}
+function editCategory(cat){editCat=cat;cName.value=cat;modalCat.style.display='flex';}
+function deleteCategory(cat){if(confirm(`Kategorie "${cat}" löschen?`)){delete data[cat];save();}}
+function saveCategory(){const n=cName.value.trim();if(!n)return;if(editCat){data[n]=data[editCat];if(n!==editCat)delete data[editCat];editCat=null;}else data[n]=data[n]||[];modalCat.style.display='none';save();}
+function editLinkFunc(cat,i){editLink={cat,i};const l=data[cat][i];lTitle.value=l.title;lDesc.value=l.desc;lUrl.value=l.url;lCat.value=cat;modalLink.style.display='flex';}
+function saveLink(){const cat=lCat.value;if(!cat)return;const obj={title:lTitle.value||'Ohne Titel',desc:lDesc.value||'',url:lUrl.value};if(editLink){data[editLink.cat].splice(editLink.i,1);editLink=null;}data[cat].push(obj);modalLink.style.display='none';save();}
+
+addLink.onclick=()=>{editLink=null;modalLink.style.display='flex';};
+addCat.onclick=()=>{editCat=null;cName.value='';modalCat.style.display='flex';};
+saveLinkBtn.onclick=saveLink;
+saveCatBtn.onclick=saveCategory;
+render();
+</script>
 </body>
 </html>
