@@ -92,7 +92,9 @@ section{margin-bottom:3.5rem}
     <div class="header-title">Link-Dashboard</div>
     <div>
       <button id="addCat">Kategorie</button>
+    <button id="infoBtn" class="ghost" title="Info & Shortcuts">ⓘ</button>
       <button class="primary" id="addLink">Link</button>
+    <button id="quickAdd" class="ghost">Quick Add</button>
     </div>
   </div>
 </header>
@@ -110,6 +112,17 @@ section{margin-bottom:3.5rem}
     </div>
   </div>
 </div>
+<div class="modal" id="modalQuick">
+  <div class="modal-box">
+    <h3>Quick Add</h3>
+    <div class="row"><input id="qUrl" placeholder="https://"></div>
+    <div class="modal-actions">
+      <button onclick="modalQuick.style.display='none'">Abbrechen</button>
+      <button class="primary" id="saveQuickBtn">Speichern</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal" id="modalCat">
   <div class="modal-box">
     <h3>Kategorie</h3>
@@ -120,15 +133,38 @@ section{margin-bottom:3.5rem}
     </div>
   </div>
 </div>
+<div class="modal" id="modalInfo">
+  <div class="modal-box">
+    <h3>Info & Shortcuts</h3>
+    <div class="row">
+      <strong>Keyboard</strong><br>
+      N – Neuer Link<br>
+      C – Neue Kategorie<br>
+      Esc – Modal schließen
+    </div>
+    <div class="row">
+      <strong>Kategorien</strong><br>
+      Klick auf Titel – Ein/Ausklappen<br>
+      Zustand wird gespeichert
+    </div>
+    <div class="modal-actions">
+      <button class="primary" onclick="modalInfo.style.display='none'">OK</button>
+    </div>
+  </div>
+</div>
+
 <div class="context" id="ctx">
   <button id="ctxEdit">Bearbeiten</button>
   <button id="ctxDelete" style="color:var(--danger)">Löschen</button>
 </div>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
-const app=document.getElementById('app'),modalLink=document.getElementById('modalLink'),modalCat=document.getElementById('modalCat'),ctx=document.getElementById('ctx');
+// ===== Drag & Drop + Quick Add (Titel aus HTML) =====
+
+const app=document.getElementById('app'),modalLink=document.getElementById('modalLink'),modalCat=document.getElementById('modalCat'),modalInfo=document.getElementById('modalInfo'),modalQuick=document.getElementById('modalQuick'),ctx=document.getElementById('ctx');
 let data=JSON.parse(localStorage.getItem('links')||'{}');
 let editLink=null,editCat=null;
+let dragSrc=null;
 let collapsed=JSON.parse(localStorage.getItem('collapsedCats')||'{}');
 function render(){app.innerHTML='';const sel=document.getElementById('lCat');sel.innerHTML='';Object.keys(data).sort().forEach(cat=>{sel.add(new Option(cat,cat));const sec=document.createElement('section');
     const isCollapsed=collapsed[cat];
@@ -149,6 +185,17 @@ function render(){app.innerHTML='';const sel=document.getElementById('lCat');sel
     if(!data[cat].length){grid.innerHTML='<div class="empty">Keine Links</div>'}
     data[cat].forEach((l,i)=>{
       const c=document.createElement('div');
+      c.draggable=true;
+      c.addEventListener('dragstart',()=>dragSrc={cat,i});
+      c.addEventListener('dragover',e=>e.preventDefault());
+      c.addEventListener('drop',()=>{
+        if(!dragSrc)return;
+        const tmp=data[cat][dragSrc.i];
+        data[cat].splice(dragSrc.i,1);
+        data[cat].splice(i,0,tmp);
+        save();
+        dragSrc=null;
+      });
       c.className='card';
       c.innerHTML=`<div class="card-menu" data-cat="${cat}" data-i="${i}"><i data-lucide="more-vertical"></i></div><div class="card-title">${l.title}</div><div class="card-desc">${l.desc}</div>`;
       c.onclick=()=>window.open(l.url,'_blank');
@@ -157,7 +204,36 @@ function render(){app.innerHTML='';const sel=document.getElementById('lCat');sel
     sec.appendChild(grid);app.appendChild(sec)});lucide.createIcons()}
 function save(){
   localStorage.setItem('collapsedCats',JSON.stringify(collapsed));localStorage.setItem('links',JSON.stringify(data));render()}
-document.addEventListener('contextmenu',e=>{const m=e.target.closest('.card-menu');if(!m)return;e.preventDefault();ctx.style.display='flex';ctx.style.left=e.pageX+'px';ctx.style.top=e.pageY+'px';ctx.dataset.cat=m.dataset.cat;ctx.dataset.i=m.dataset.i});document.addEventListener('click',()=>ctx.style.display='none');ctxEdit.onclick=()=>{const {cat,i}=ctx.dataset;const l=data[cat][i];editLink={cat,i};lTitle.value=l.title;lDesc.value=l.desc;lUrl.value=l.url;lCat.value=cat;modalLink.style.display='flex'};ctxDelete.onclick=()=>{const {cat,i}=ctx.dataset;if(!confirm('Link löschen?'))return;data[cat].splice(i,1);save()};function editCategory(cat){editCat=cat;cName.value=cat;modalCat.style.display='flex'}function deleteCategory(cat){if(!confirm('Kategorie inkl. aller Links löschen?'))return;delete data[cat];save()}addLink.onclick=()=>{editLink=null;modalLink.style.display='flex'};addCat.onclick=()=>{editCat=null;cName.value='';modalCat.style.display='flex'};saveLinkBtn.onclick=()=>{const cat=lCat.value;const obj={title:lTitle.value||'Ohne Titel',desc:lDesc.value||'',url:lUrl.value};if(editLink){data[editLink.cat].splice(editLink.i,1)}data[cat].push(obj);editLink=null;modalLink.style.display='none';save()};saveCatBtn.onclick=()=>{const n=cName.value.trim();if(!n)return;if(editCat&&n!==editCat){data[n]=data[editCat];delete data[editCat]}else if(!data[n]){data[n]=[];}editCat=null;modalCat.style.display='none';save()};render();
+document.addEventListener('contextmenu',e=>{const m=e.target.closest('.card-menu');if(!m)return;e.preventDefault();ctx.style.display='flex';ctx.style.left=e.pageX+'px';ctx.style.top=e.pageY+'px';ctx.dataset.cat=m.dataset.cat;ctx.dataset.i=m.dataset.i});document.addEventListener('click',()=>ctx.style.display='none');ctxEdit.onclick=()=>{const {cat,i}=ctx.dataset;const l=data[cat][i];editLink={cat,i};lTitle.value=l.title;lDesc.value=l.desc;lUrl.value=l.url;lCat.value=cat;modalLink.style.display='flex'};ctxDelete.onclick=()=>{const {cat,i}=ctx.dataset;if(!confirm('Link löschen?'))return;data[cat].splice(i,1);save()};function editCategory(cat){editCat=cat;cName.value=cat;modalCat.style.display='flex'}function deleteCategory(cat){if(!confirm('Kategorie inkl. aller Links löschen?'))return;delete data[cat];save()}quickAdd.onclick=()=>{
+  qUrl.value='';
+  modalQuick.style.display='flex';
+};
+
+addLink.onclick=()=>{editLink=null;modalLink.style.display='flex'};infoBtn.onclick=()=>{
+  modalInfo.style.display='flex';
+};
+
+addCat.onclick=()=>{editCat=null;cName.value='';modalCat.style.display='flex'};saveLinkBtn.onclick=async()=>{const cat=lCat.value;let title=lTitle.value||'Ohne Titel';
+  if(lUrl.value && !lTitle.value){
+    try{
+      const res=await fetch(lUrl.value,{mode:'no-cors'});
+      const txt=await res.text();
+      const m=txt.match(/<title>(.*?)<\/title>/i);
+      if(m)title=m[1];
+    }catch(e){}
+  }
+  const obj={title,desc:lDesc.value||'',url:lUrl.value};if(editLink){data[editLink.cat].splice(editLink.i,1)}data[cat].push(obj);editLink=null;modalLink.style.display='none';save()};saveQuickBtn.onclick=()=>{
+  const url=qUrl.value.trim();
+  if(!url)return;
+  let title=url.replace(/^https?:\/\//,'').split('/')[0];
+  const cat=Object.keys(data)[0]||'Allgemein';
+  if(!data[cat])data[cat]=[];
+  data[cat].push({title,desc:'',url});
+  modalQuick.style.display='none';
+  save();
+};
+
+saveCatBtn.onclick=()=>{const n=cName.value.trim();if(!n)return;if(editCat&&n!==editCat){data[n]=data[editCat];delete data[editCat]}else if(!data[n]){data[n]=[];}editCat=null;modalCat.style.display='none';save()};render();
 
 function toggleCategory(cat){
   collapsed[cat]=!collapsed[cat];
