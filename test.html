@@ -129,9 +129,58 @@ section{margin-bottom:3.5rem}
 const app=document.getElementById('app'),modalLink=document.getElementById('modalLink'),modalCat=document.getElementById('modalCat'),ctx=document.getElementById('ctx');
 let data=JSON.parse(localStorage.getItem('links')||'{}');
 let editLink=null,editCat=null;
-function render(){app.innerHTML='';const sel=document.getElementById('lCat');sel.innerHTML='';Object.keys(data).sort().forEach(cat=>{sel.add(new Option(cat,cat));const sec=document.createElement('section');sec.innerHTML=`<div class="section-head"><div class="section-left"><h2>${cat}</h2></div><div><button class="ghost" onclick="editCategory('${cat}')">Bearbeiten</button><button class="ghost" style="color:var(--danger)" onclick="deleteCategory('${cat}')">Löschen</button></div></div>`;const grid=document.createElement('div');grid.className='grid';if(!data[cat].length){grid.innerHTML='<div class="empty">Keine Links</div>'}data[cat].forEach((l,i)=>{const c=document.createElement('div');c.className='card';c.innerHTML=`<div class="card-menu" data-cat="${cat}" data-i="${i}"><i data-lucide="more-vertical"></i></div><div class="card-title">${l.title}</div><div class="card-desc">${l.desc}</div>`;c.onclick=()=>window.open(l.url,'_blank');grid.appendChild(c)});sec.appendChild(grid);app.appendChild(sec)});lucide.createIcons()}
-function save(){localStorage.setItem('links',JSON.stringify(data));render()}
+let collapsed=JSON.parse(localStorage.getItem('collapsedCats')||'{}');
+function render(){app.innerHTML='';const sel=document.getElementById('lCat');sel.innerHTML='';Object.keys(data).sort().forEach(cat=>{sel.add(new Option(cat,cat));const sec=document.createElement('section');
+    const isCollapsed=collapsed[cat];
+    sec.innerHTML=`
+      <div class="section-head">
+        <div class="section-left">
+          <h2 style="cursor:pointer" onclick="toggleCategory('${cat}')">${isCollapsed?'▶':'▼'} ${cat}</h2>
+        </div>
+        <div>
+          <button class="ghost" onclick="editCategory('${cat}')">Bearbeiten</button>
+          <button class="ghost" style="color:var(--danger)" onclick="deleteCategory('${cat}')">Löschen</button>
+        </div>
+      </div>`;
+
+    const grid=document.createElement('div');
+    grid.className='grid';
+    if(isCollapsed){grid.style.display='none'}
+    if(!data[cat].length){grid.innerHTML='<div class="empty">Keine Links</div>'}
+    data[cat].forEach((l,i)=>{
+      const c=document.createElement('div');
+      c.className='card';
+      c.innerHTML=`<div class="card-menu" data-cat="${cat}" data-i="${i}"><i data-lucide="more-vertical"></i></div><div class="card-title">${l.title}</div><div class="card-desc">${l.desc}</div>`;
+      c.onclick=()=>window.open(l.url,'_blank');
+      grid.appendChild(c);
+    });
+    sec.appendChild(grid);app.appendChild(sec)});lucide.createIcons()}
+function save(){
+  localStorage.setItem('collapsedCats',JSON.stringify(collapsed));localStorage.setItem('links',JSON.stringify(data));render()}
 document.addEventListener('contextmenu',e=>{const m=e.target.closest('.card-menu');if(!m)return;e.preventDefault();ctx.style.display='flex';ctx.style.left=e.pageX+'px';ctx.style.top=e.pageY+'px';ctx.dataset.cat=m.dataset.cat;ctx.dataset.i=m.dataset.i});document.addEventListener('click',()=>ctx.style.display='none');ctxEdit.onclick=()=>{const {cat,i}=ctx.dataset;const l=data[cat][i];editLink={cat,i};lTitle.value=l.title;lDesc.value=l.desc;lUrl.value=l.url;lCat.value=cat;modalLink.style.display='flex'};ctxDelete.onclick=()=>{const {cat,i}=ctx.dataset;if(!confirm('Link löschen?'))return;data[cat].splice(i,1);save()};function editCategory(cat){editCat=cat;cName.value=cat;modalCat.style.display='flex'}function deleteCategory(cat){if(!confirm('Kategorie inkl. aller Links löschen?'))return;delete data[cat];save()}addLink.onclick=()=>{editLink=null;modalLink.style.display='flex'};addCat.onclick=()=>{editCat=null;cName.value='';modalCat.style.display='flex'};saveLinkBtn.onclick=()=>{const cat=lCat.value;const obj={title:lTitle.value||'Ohne Titel',desc:lDesc.value||'',url:lUrl.value};if(editLink){data[editLink.cat].splice(editLink.i,1)}data[cat].push(obj);editLink=null;modalLink.style.display='none';save()};saveCatBtn.onclick=()=>{const n=cName.value.trim();if(!n)return;if(editCat&&n!==editCat){data[n]=data[editCat];delete data[editCat]}else if(!data[n]){data[n]=[];}editCat=null;modalCat.style.display='none';save()};render();
+
+function toggleCategory(cat){
+  collapsed[cat]=!collapsed[cat];
+  save();
+}
+
+// Keyboard Shortcuts
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
+  if(e.key==='n'||e.key==='N'){
+    editLink=null;
+    modalLink.style.display='flex';
+  }
+  if(e.key==='c'||e.key==='C'){
+    editCat=null;
+    cName.value='';
+    modalCat.style.display='flex';
+  }
+  if(e.key==='Escape'){
+    modalLink.style.display='none';
+    modalCat.style.display='none';
+  }
+});
 </script>
 </body>
 </html>
