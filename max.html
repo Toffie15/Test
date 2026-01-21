@@ -1,155 +1,100 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Link-Dashboard Modern</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Link-Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0f111b;
-  --panel: rgba(255,255,255,0.05);
-  --glass: rgba(255,255,255,0.08);
-  --border: rgba(255,255,255,0.15);
-  --text: #f2f3f7;
-  --muted: #9aa0bd;
-  --accent: #7c6cff;
-  --accent-2: #4fd1c5;
-  --danger: #ff5c5c;
-  --radius: 20px;
+:root{
+  --bg:#0a0c14;
+  --panel:#111528;
+  --glass:rgba(255,255,255,.05);
+  --border:rgba(255,255,255,.12);
+  --text:#f2f3f7;
+  --muted:#8f93b2;
+  --accent:#7c6cff;
+  --accent-hover:#5a4dff;
+  --danger:#ff5c5c;
+  --radius:20px;
+  --shadow:0 10px 30px rgba(0,0,0,0.3);
 }
-
-* { box-sizing: border-box; margin:0; padding:0; font-family: Inter, sans-serif; }
-body { 
-  background: radial-gradient(700px 400px at 10% -10%, #1c2350 0%, transparent 40%),
-              radial-gradient(600px 400px at 90% 0%, #2a1f45 0%, transparent 35%), 
-              var(--bg);
-  color: var(--text);
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+  background:linear-gradient(160deg,#1c1f38,#0b0c14);
+  color:var(--text);
 }
-
-header {
-  position: sticky; top:0; z-index: 50;
-  backdrop-filter: blur(20px);
-  background: rgba(15,17,27,0.85);
-  border-bottom: 1px solid var(--border);
+header{
+  position:sticky;top:0;z-index:30;
+  backdrop-filter:blur(22px);
+  background:rgba(10,12,20,.85);
+  border-bottom:1px solid var(--border);
 }
-
-.header-inner {
-  max-width: 1200px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  gap: 1rem;
+.header-inner{
+  max-width:1320px;margin:auto;
+  padding:1rem 1.5rem;
+  display:flex;align-items:center;justify-content:space-between;
 }
-
-.header-title { font-weight: 700; font-size: 1.5rem; }
-.header-spacer { flex: 1; }
-
-button, select, input {
-  font-family: inherit;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  background: var(--glass);
-  color: var(--text);
-  padding: 0.65rem 1rem;
-  transition: all 0.2s ease;
-}
-
-button:hover { transform: translateY(-2px); }
-button.primary { background: linear-gradient(135deg,var(--accent),#5a4dff); border:none; }
-button.ghost { background: transparent; border:none; opacity:0.7; }
-button.ghost:hover { opacity:1; }
-
-main { max-width: 1200px; margin: auto; padding: 2rem 1.5rem 4rem; }
-section { margin-bottom: 3rem; }
-
-.section-head { display:flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; }
-.section-left h2 { font-weight: 600; font-size: 1.25rem; }
-
-.grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
-
-.card {
-  background: var(--panel);
-  backdrop-filter: blur(15px);
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  padding: 1.5rem 1.5rem 2rem;
-  cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  position: relative;
-}
-.card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 15px 25px rgba(0,0,0,0.4); }
-
-.card-title { font-weight: 600; color: #cfcaff; margin-bottom: 0.3rem; }
-.card-desc { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.5rem; line-height: 1.4; }
-
-.card-preview {
-  border-radius: 12px;
-  overflow: hidden;
-  height: 120px;
-  background: #1a1c2b;
-  display:flex; align-items:center; justify-content:center;
-  color: var(--muted);
-  font-size: 0.85rem;
-  transition: background 0.2s ease;
-}
-.card:hover .card-preview { background: #262940; }
-
-.card-menu { position:absolute; top:0.6rem; right:0.6rem; opacity:0.6; font-size:1.2rem; }
-.card-menu:hover { opacity:1; }
-
-.empty {
-  padding: 2rem;
-  text-align:center;
-  color: var(--muted);
-  border: 1px dashed var(--border);
-  border-radius: var(--radius);
-}
-
-.modal {
-  position: fixed; inset:0; display: none; align-items:center; justify-content:center; background: rgba(0,0,0,0.7); z-index:50;
-}
-
-.modal-box {
-  width:100%; max-width:460px;
-  background: var(--panel);
-  padding: 2rem;
-  border-radius: 24px;
-  border: 1px solid var(--border);
-}
-
-.modal-box h3 { margin-top:0; font-size: 1.3rem; margin-bottom: 1rem; }
-.row { margin-bottom: 1rem; }
-
-.modal-actions { display:flex; justify-content:space-between; gap:0.75rem; }
-
-.context {
-  position: fixed; display:none; flex-direction: column;
-  background: var(--panel);
+.header-title{font-weight:700;font-size:1.5rem;letter-spacing:.4px}
+button,input,select{
+  font-family:inherit;
+  background:var(--glass);
   border:1px solid var(--border);
-  border-radius:16px;
-  overflow:hidden; z-index:100;
+  color:var(--text);
+  padding:.7rem 1rem;
+  border-radius:var(--radius);
+  transition:.2s ease;
 }
-.context button { border:none; background:none; text-align:left; padding:0.75rem 1.2rem; }
-.context button:hover { background: rgba(255,255,255,0.08); }
-
+button:hover{transform:translateY(-2px);opacity:.9}
+button.primary{background:linear-gradient(135deg,var(--accent),var(--accent-hover));border:none;color:#fff}
+button.ghost{background:transparent;border:none;opacity:.7}
+button.ghost:hover{opacity:1}
+main{max-width:1320px;margin:auto;padding:2.5rem 1.5rem 4rem}
+section{margin-bottom:3.5rem}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.section-left h2{margin:0;font-size:1.3rem;letter-spacing:.2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.8rem}
+.card{
+  position:relative;
+  padding:1.8rem 1.6rem 2rem;
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+  cursor:pointer;
+  box-shadow:var(--shadow);
+  transition:.25s ease;
+}
+.card-title{font-weight:600;color:#cfcaff}
+.card-desc{font-size:.9rem;color:var(--muted);margin-top:.4rem;line-height:1.5}
+.card-menu{position:absolute;top:.7rem;right:.7rem;opacity:.6;font-size:1.2rem}
+.card-menu:hover{opacity:1}
+.empty{padding:3rem;border:1px dashed var(--border);border-radius:var(--radius);color:var(--muted);text-align:center}
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.75);z-index:50}
+.modal-box{width:100%;max-width:480px;background:var(--panel);padding:2.5rem;border-radius:28px;border:1px solid var(--border);box-shadow:var(--shadow)}
+.modal-box h3{margin-top:0;font-size:1.35rem}
+.row{margin-bottom:1.2rem}
+.modal-actions{display:flex;justify-content:space-between;gap:.8rem}
+.context{position:fixed;display:none;flex-direction:column;background:var(--panel);border:1px solid var(--border);border-radius:20px;overflow:hidden;z-index:100}
+.context button{border:none;background:none;text-align:left;padding:.8rem 1.2rem}
+.context button:hover{background:rgba(255,255,255,.08)}
 </style>
 </head>
 <body>
 <header>
   <div class="header-inner">
     <div class="header-title">Link-Dashboard</div>
-    <div class="header-spacer"></div>
-    <button id="addCat">Kategorie</button>
-    <button class="primary" id="addLink">Link</button>
+    <div>
+      <button id="addCat">Kategorie</button>
+      <button id="infoBtn" class="ghost" title="Info & Shortcuts">ⓘ</button>
+      <button class="primary" id="addLink">Link</button>
+      <button id="quickAdd" class="ghost">Quick Add</button>
+    </div>
   </div>
 </header>
-
 <main id="app"></main>
-
 <div class="modal" id="modalLink">
   <div class="modal-box">
     <h3>Link</h3>
@@ -157,152 +102,60 @@ section { margin-bottom: 3rem; }
     <div class="row"><input id="lDesc" placeholder="Beschreibung"></div>
     <div class="row"><input id="lUrl" placeholder="https://"></div>
     <div class="row"><select id="lCat"></select></div>
+    <div class="row"><label>Card Farbe: <input type="color" id="lColor" value="#7c6cff"></label></div>
     <div class="modal-actions">
       <button onclick="modalLink.style.display='none'">Abbrechen</button>
       <button class="primary" id="saveLinkBtn">Speichern</button>
     </div>
   </div>
 </div>
-
-<div class="modal" id="modalCat">
-  <div class="modal-box">
-    <h3>Kategorie</h3>
-    <div class="row"><input id="cName" placeholder="Name"></div>
-    <div class="modal-actions">
-      <button onclick="modalCat.style.display='none'">Abbrechen</button>
-      <button class="primary" id="saveCatBtn">Speichern</button>
-    </div>
-  </div>
-</div>
-
 <div class="context" id="ctx">
   <button id="ctxEdit">Bearbeiten</button>
   <button id="ctxDelete" style="color:var(--danger)">Löschen</button>
 </div>
-
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
-const app=document.getElementById('app'),modalLink=document.getElementById('modalLink'),modalCat=document.getElementById('modalCat'),ctx=document.getElementById('ctx');
+const app=document.getElementById('app'),modalLink=document.getElementById('modalLink'),modalCat=document.getElementById('modalCat'),modalInfo=document.getElementById('modalInfo'),modalQuick=document.getElementById('modalQuick'),ctx=document.getElementById('ctx');
 let data=JSON.parse(localStorage.getItem('links')||'{}');
 let editLink=null,editCat=null;
-
+let collapsed=JSON.parse(localStorage.getItem('collapsedCats')||'{}');
 function render(){
   app.innerHTML='';
-  const sel=document.getElementById('lCat');
-  sel.innerHTML='';
-
+  const sel=document.getElementById('lCat'); sel.innerHTML='';
   Object.keys(data).sort().forEach(cat=>{
     sel.add(new Option(cat,cat));
-
     const sec=document.createElement('section');
-    sec.innerHTML=`
-      <div class="section-head">
-        <div class="section-left"><h2>${cat}</h2></div>
-        <div>
-          <button class="ghost" onclick="editCategory('${cat}')">Bearbeiten</button>
-          <button class="ghost" style="color:var(--danger)" onclick="deleteCategory('${cat}')">Löschen</button>
-        </div>
-      </div>`;
-
-    const grid=document.createElement('div');
-    grid.className='grid';
-
-    if(!data[cat].length){
-      grid.innerHTML='<div class="empty">Keine Links</div>';
-    }
-
+    const isCollapsed=collapsed[cat];
+    sec.innerHTML=`<div class="section-head"><div class="section-left"><h2 style="cursor:pointer" onclick="toggleCategory('${cat}')">${isCollapsed?'▶':'▼'} ${cat}</h2></div><div><button class="ghost" onclick="editCategory('${cat}')">Bearbeiten</button><button class="ghost" style="color:var(--danger)" onclick="deleteCategory('${cat}')">Löschen</button></div></div>`;
+    const grid=document.createElement('div'); grid.className='grid'; if(isCollapsed){grid.style.display='none'}
+    if(!data[cat].length){grid.innerHTML='<div class="empty">Keine Links</div>'}
     data[cat].forEach((l,i)=>{
       const c=document.createElement('div');
+      c.draggable=true;
+      c.style.background=l.color||'linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.01))';
+      c.addEventListener('dragstart',()=>dragSrc={cat,i});
+      c.addEventListener('dragover',e=>e.preventDefault());
+      c.addEventListener('drop',()=>{if(!dragSrc)return;const tmp=data[cat][dragSrc.i];data[cat].splice(dragSrc.i,1);data[cat].splice(i,0,tmp);save();dragSrc=null;});
       c.className='card';
-      c.innerHTML=`
-        <div class="card-menu" data-cat="${cat}" data-i="${i}">
-          <i data-lucide="more-vertical"></i>
-        </div>
-        <div class="card-title">${l.title}</div>
-        <div class="card-desc">${l.desc}</div>
-        <div class="card-preview">${l.url ? 'Vorschau: ' + l.url : 'Keine Vorschau'}</div>`;
+      c.innerHTML=`<div class="card-menu" data-cat="${cat}" data-i="${i}"><i data-lucide="more-vertical"></i></div><div class="card-title">${l.title}</div><div class="card-desc">${l.desc}</div>`;
       c.onclick=()=>window.open(l.url,'_blank');
       grid.appendChild(c);
     });
-
-    sec.appendChild(grid);
-    app.appendChild(sec);
+    sec.appendChild(grid); app.appendChild(sec);
   });
-
   lucide.createIcons();
 }
-
-document.addEventListener('contextmenu', e => {
-  const m = e.target.closest('.card-menu');
-  if(!m) return;
-  e.preventDefault();
-  ctx.style.display='flex';
-  ctx.style.left = e.pageX+'px';
-  ctx.style.top = e.pageY+'px';
-  ctx.dataset.cat = m.dataset.cat;
-  ctx.dataset.i = m.dataset.i;
-});
-
-document.addEventListener('click', ()=>ctx.style.display='none');
-
-ctxEdit.onclick = () => {
-  const {cat,i} = ctx.dataset;
-  const l = data[cat][i];
-  editLink={cat,i};
-  lTitle.value = l.title;
-  lDesc.value = l.desc;
-  lUrl.value = l.url;
-  lCat.value = cat;
-  modalLink.style.display='flex';
-};
-
-ctxDelete.onclick = () => {
-  const {cat,i} = ctx.dataset;
-  if(!confirm('Link löschen?')) return;
-  data[cat].splice(i,1);
-  save();
-};
-
-function editCategory(cat){
-  editCat=cat;
-  cName.value=cat;
-  modalCat.style.display='flex';
+function save(){
+  localStorage.setItem('collapsedCats',JSON.stringify(collapsed));
+  localStorage.setItem('links',JSON.stringify(data));
+  render();
 }
-
-function deleteCategory(cat){
-  if(!confirm('Kategorie inkl. aller Links löschen?')) return;
-  delete data[cat];
-  save();
-}
-
-addLink.onclick = () => { editLink=null; modalLink.style.display='flex'; };
-addCat.onclick = () => { editCat=null; cName.value=''; modalCat.style.display='flex'; };
-
-saveLinkBtn.onclick = () => {
+saveLinkBtn.onclick=()=>{
   const cat=lCat.value;
-  const obj={ title:lTitle.value||'Ohne Titel', desc:lDesc.value||'', url:lUrl.value };
-  if(editLink) data[editLink.cat].splice(editLink.i,1);
-  if(!data[cat]) data[cat]=[];
-  data[cat].push(obj);
-  editLink=null;
-  modalLink.style.display='none';
-  save();
+  const obj={title:lTitle.value||'Ohne Titel',desc:lDesc.value||'',url:lUrl.value,color:lColor.value};
+  if(editLink){data[editLink.cat].splice(editLink.i,1)}
+  data[cat].push(obj); editLink=null; modalLink.style.display='none'; save();
 };
-
-saveCatBtn.onclick = () => {
-  const n=cName.value.trim();
-  if(!n) return;
-  if(editCat && n!==editCat){
-    data[n]=data[editCat];
-    delete data[editCat];
-  } else if(!data[n]) data[n]=[];
-  editCat=null;
-  modalCat.style.display='none';
-  save();
-};
-
-function save(){ localStorage.setItem('links',JSON.stringify(data)); render(); }
-
 render();
 </script>
 </body>
