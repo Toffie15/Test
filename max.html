@@ -72,7 +72,7 @@ section{margin-bottom:3.5rem}
 }
 .card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 20px 50px rgba(0,0,0,0.4)}
 .card-title{font-weight:600}
-.card-desc{font-size:.9rem;margin-top:.4rem;line-height:1.5}
+.card-desc{font-size:.9rem;color:var(--muted);margin-top:.4rem;line-height:1.5}
 .card-menu{position:absolute;top:.7rem;right:.7rem;opacity:.6;font-size:1.2rem}
 .card-menu:hover{opacity:1}
 .empty{padding:3rem;border:1px dashed var(--border);border-radius:var(--radius);color:var(--muted);text-align:center}
@@ -216,7 +216,7 @@ function render(){
       c.innerHTML=`
         <div class="card-menu" data-cat="${cat}" data-i="${i}"><i data-lucide="more-vertical"></i></div>
         <div class="card-title" style="color:${l.color||'var(--accent)'}">${l.title}</div>
-        <div class="card-desc" style="color:${l.color||'var(--muted)'}">${l.desc}</div>`;
+        <div class="card-desc">${l.desc}</div>`;
       c.onclick=()=>window.open(l.url,'_blank');
       grid.appendChild(c);
     });
