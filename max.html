@@ -1,129 +1,162 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Link-Datenbank</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Link-Dashboard Modern</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#0a0c12;
-  --panel:rgba(255,255,255,0.08);
-  --panel-strong:rgba(255,255,255,0.14);
-  --text:#f1f2f6;
-  --muted:#9aa0b3;
-  --accent:#7c6cff;
-  --danger:#ff5c5c;
-  --radius:20px;
+:root {
+  --bg: #0f111b;
+  --panel: rgba(255,255,255,0.05);
+  --glass: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.15);
+  --text: #f2f3f7;
+  --muted: #9aa0bd;
+  --accent: #7c6cff;
+  --accent-2: #4fd1c5;
+  --danger: #ff5c5c;
+  --radius: 20px;
 }
-*{box-sizing:border-box}
-html,body{margin:0;}
-body{
-  font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
-  background:
-    radial-gradient(1200px 600px at 10% -10%,#1b2040 0%,transparent 45%),
-    radial-gradient(900px 500px at 90% 10%,#241a3d 0%,transparent 40%),
-    #0a0c12;
-  color:var(--text);
+
+* { box-sizing: border-box; margin:0; padding:0; font-family: Inter, sans-serif; }
+body { 
+  background: radial-gradient(700px 400px at 10% -10%, #1c2350 0%, transparent 40%),
+              radial-gradient(600px 400px at 90% 0%, #2a1f45 0%, transparent 35%), 
+              var(--bg);
+  color: var(--text);
 }
-header{
-  position:sticky;top:0;z-index:10;
-  backdrop-filter:blur(18px);
-  background:rgba(10,12,18,.75);
-  border-bottom:1px solid rgba(255,255,255,.08);
+
+header {
+  position: sticky; top:0; z-index: 50;
+  backdrop-filter: blur(20px);
+  background: rgba(15,17,27,0.85);
+  border-bottom: 1px solid var(--border);
 }
-.header-inner{
-  max-width:1280px;margin:auto;padding:1rem 1.25rem;
-  display:flex;align-items:center;gap:.75rem;
+
+.header-inner {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  gap: 1rem;
 }
-.header-title{font-weight:700;letter-spacing:.4px;font-size:1.2rem;}
-.header-spacer{flex:1}
-button,input,select{
-  background:var(--panel);
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,.18);
-  color:var(--text);
-  padding:.6rem .9rem;
-  border-radius:12px;
+
+.header-title { font-weight: 700; font-size: 1.5rem; }
+.header-spacer { flex: 1; }
+
+button, select, input {
+  font-family: inherit;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  color: var(--text);
+  padding: 0.65rem 1rem;
+  transition: all 0.2s ease;
 }
-button{cursor:pointer;transition:transform .2s;}
-button:hover{transform:scale(1.03);}
-button.primary{background:linear-gradient(135deg,#8b7bff,#6a5cff);border:none;color:#fff;}
-button.ghost{background:transparent;border:none;}
-main{max-width:1280px;margin:auto;padding:2rem 1.25rem 4rem;}
-section{margin-bottom:2.5rem;}
-.section-head{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:1rem;
+
+button:hover { transform: translateY(-2px); }
+button.primary { background: linear-gradient(135deg,var(--accent),#5a4dff); border:none; }
+button.ghost { background: transparent; border:none; opacity:0.7; }
+button.ghost:hover { opacity:1; }
+
+main { max-width: 1200px; margin: auto; padding: 2rem 1.5rem 4rem; }
+section { margin-bottom: 3rem; }
+
+.section-head { display:flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; }
+.section-left h2 { font-weight: 600; font-size: 1.25rem; }
+
+.grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+
+.card {
+  background: var(--panel);
+  backdrop-filter: blur(15px);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 1.5rem 1.5rem 2rem;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
 }
-.section-left{display:flex;align-items:center;gap:.5rem;}
-.section-left h2{margin:0;font-size:1.15rem;}
-.section-actions button{opacity:.7;}
-.section-actions button:hover{opacity:1;}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:1.25rem;
+.card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 15px 25px rgba(0,0,0,0.4); }
+
+.card-title { font-weight: 600; color: #cfcaff; margin-bottom: 0.3rem; }
+.card-desc { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.5rem; line-height: 1.4; }
+
+.card-preview {
+  border-radius: 12px;
+  overflow: hidden;
+  height: 120px;
+  background: #1a1c2b;
+  display:flex; align-items:center; justify-content:center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  transition: background 0.2s ease;
 }
-.card{
-  position:relative;
-  padding:1.3rem 1.3rem 1.1rem;
-  border-radius:var(--radius);
-  background:var(--panel);
-  backdrop-filter:blur(18px) saturate(180%);
-  border:1px solid rgba(255,255,255,.18);
-  transition:transform .25s, box-shadow .25s, background .25s;
-  cursor:pointer;
+.card:hover .card-preview { background: #262940; }
+
+.card-menu { position:absolute; top:0.6rem; right:0.6rem; opacity:0.6; font-size:1.2rem; }
+.card-menu:hover { opacity:1; }
+
+.empty {
+  padding: 2rem;
+  text-align:center;
+  color: var(--muted);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
 }
-.card:hover{
-  transform:translateY(-6px) scale(1.02);
-  background:var(--panel-strong);
-  box-shadow:0 18px 40px rgba(0,0,0,.45);
+
+.modal {
+  position: fixed; inset:0; display: none; align-items:center; justify-content:center; background: rgba(0,0,0,0.7); z-index:50;
 }
-.card-title{font-weight:600;color:var(--accent);}
-.card-desc{font-size:.9rem;color:var(--muted);margin-top:.15rem;}
-.card-menu{
-  position:absolute;top:.7rem;right:.7rem;
-  font-size:1.4rem;opacity:.65;cursor:pointer;
+
+.modal-box {
+  width:100%; max-width:460px;
+  background: var(--panel);
+  padding: 2rem;
+  border-radius: 24px;
+  border: 1px solid var(--border);
 }
-.card-menu:hover{opacity:1;}
-.modal{
-  position:fixed;inset:0;display:none;
-  align-items:center;justify-content:center;
-  background:rgba(0,0,0,.65);z-index:50;
+
+.modal-box h3 { margin-top:0; font-size: 1.3rem; margin-bottom: 1rem; }
+.row { margin-bottom: 1rem; }
+
+.modal-actions { display:flex; justify-content:space-between; gap:0.75rem; }
+
+.context {
+  position: fixed; display:none; flex-direction: column;
+  background: var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden; z-index:100;
 }
-.modal-box{
-  width:100%;max-width:440px;
-  background:rgba(20,24,45,.95);
-  backdrop-filter:blur(20px);
-  padding:1.8rem;border-radius:24px;
-  border:1px solid rgba(255,255,255,.18);
-}
-.modal-box h3{margin-top:0;font-size:1.2rem;}
-.row{margin-bottom:.9rem;}
-.modal-actions{display:flex;justify-content:space-between;gap:.5rem;}
+.context button { border:none; background:none; text-align:left; padding:0.75rem 1.2rem; }
+.context button:hover { background: rgba(255,255,255,0.08); }
+
 </style>
 </head>
 <body>
 <header>
   <div class="header-inner">
-    <div class="header-title">📁 Link-Datenbank</div>
+    <div class="header-title">Link-Dashboard</div>
     <div class="header-spacer"></div>
-    <button id="addCat">+ Kategorie</button>
-    <button class="primary" id="addLink">+ Link</button>
+    <button id="addCat">Kategorie</button>
+    <button class="primary" id="addLink">Link</button>
   </div>
 </header>
+
 <main id="app"></main>
 
-<!-- LINK MODAL -->
 <div class="modal" id="modalLink">
   <div class="modal-box">
-    <h3>Link hinzufügen / bearbeiten</h3>
+    <h3>Link</h3>
     <div class="row"><input id="lTitle" placeholder="Titel"></div>
     <div class="row"><input id="lDesc" placeholder="Beschreibung"></div>
     <div class="row"><input id="lUrl" placeholder="https://"></div>
-    <div class="row">
-      <select id="lCat"></select>
-    </div>
+    <div class="row"><select id="lCat"></select></div>
     <div class="modal-actions">
       <button onclick="modalLink.style.display='none'">Abbrechen</button>
       <button class="primary" id="saveLinkBtn">Speichern</button>
@@ -131,10 +164,9 @@ section{margin-bottom:2.5rem;}
   </div>
 </div>
 
-<!-- CATEGORY MODAL -->
 <div class="modal" id="modalCat">
   <div class="modal-box">
-    <h3>Kategorie hinzufügen / bearbeiten</h3>
+    <h3>Kategorie</h3>
     <div class="row"><input id="cName" placeholder="Name"></div>
     <div class="modal-actions">
       <button onclick="modalCat.style.display='none'">Abbrechen</button>
@@ -143,43 +175,52 @@ section{margin-bottom:2.5rem;}
   </div>
 </div>
 
+<div class="context" id="ctx">
+  <button id="ctxEdit">Bearbeiten</button>
+  <button id="ctxDelete" style="color:var(--danger)">Löschen</button>
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
 <script>
-const app = document.getElementById('app');
-const modalLink = document.getElementById('modalLink');
-const modalCat = document.getElementById('modalCat');
-const lCatSelect = document.getElementById('lCat');
-let data = JSON.parse(localStorage.getItem('links') || '{}');
-let editCat = null;
-let editLink = null;
+const app=document.getElementById('app'),modalLink=document.getElementById('modalLink'),modalCat=document.getElementById('modalCat'),ctx=document.getElementById('ctx');
+let data=JSON.parse(localStorage.getItem('links')||'{}');
+let editLink=null,editCat=null;
 
 function render(){
   app.innerHTML='';
-  lCatSelect.innerHTML='';
+  const sel=document.getElementById('lCat');
+  sel.innerHTML='';
+
   Object.keys(data).sort().forEach(cat=>{
-    const option = document.createElement('option');
-    option.value=cat; option.textContent=cat;
-    lCatSelect.appendChild(option);
+    sel.add(new Option(cat,cat));
 
     const sec=document.createElement('section');
     sec.innerHTML=`
       <div class="section-head">
         <div class="section-left"><h2>${cat}</h2></div>
-        <div class="section-actions">
-          <button class="ghost" onclick="editCategory('${cat}')">✏️</button>
-          <button class="ghost" onclick="deleteCategory('${cat}')">🗑️</button>
+        <div>
+          <button class="ghost" onclick="editCategory('${cat}')">Bearbeiten</button>
+          <button class="ghost" style="color:var(--danger)" onclick="deleteCategory('${cat}')">Löschen</button>
         </div>
       </div>`;
 
     const grid=document.createElement('div');
     grid.className='grid';
 
+    if(!data[cat].length){
+      grid.innerHTML='<div class="empty">Keine Links</div>';
+    }
+
     data[cat].forEach((l,i)=>{
       const c=document.createElement('div');
       c.className='card';
       c.innerHTML=`
-        <div class="card-menu" onclick=\"editLinkFunc('${cat}',${i})\">✏️</div>
+        <div class="card-menu" data-cat="${cat}" data-i="${i}">
+          <i data-lucide="more-vertical"></i>
+        </div>
         <div class="card-title">${l.title}</div>
-        <div class="card-desc">${l.desc}</div>`;
+        <div class="card-desc">${l.desc}</div>
+        <div class="card-preview">${l.url ? 'Vorschau: ' + l.url : 'Keine Vorschau'}</div>`;
       c.onclick=()=>window.open(l.url,'_blank');
       grid.appendChild(c);
     });
@@ -187,54 +228,80 @@ function render(){
     sec.appendChild(grid);
     app.appendChild(sec);
   });
+
+  lucide.createIcons();
 }
 
-function save(){
-  localStorage.setItem('links',JSON.stringify(data));
-  render();
+document.addEventListener('contextmenu', e => {
+  const m = e.target.closest('.card-menu');
+  if(!m) return;
+  e.preventDefault();
+  ctx.style.display='flex';
+  ctx.style.left = e.pageX+'px';
+  ctx.style.top = e.pageY+'px';
+  ctx.dataset.cat = m.dataset.cat;
+  ctx.dataset.i = m.dataset.i;
+});
+
+document.addEventListener('click', ()=>ctx.style.display='none');
+
+ctxEdit.onclick = () => {
+  const {cat,i} = ctx.dataset;
+  const l = data[cat][i];
+  editLink={cat,i};
+  lTitle.value = l.title;
+  lDesc.value = l.desc;
+  lUrl.value = l.url;
+  lCat.value = cat;
+  modalLink.style.display='flex';
+};
+
+ctxDelete.onclick = () => {
+  const {cat,i} = ctx.dataset;
+  if(!confirm('Link löschen?')) return;
+  data[cat].splice(i,1);
+  save();
+};
+
+function editCategory(cat){
+  editCat=cat;
+  cName.value=cat;
+  modalCat.style.display='flex';
 }
 
-function editCategory(cat){ editCat=cat; cName.value=cat; modalCat.style.display='flex'; }
-function deleteCategory(cat){ if(confirm(`Kategorie "${cat}" löschen?`)){ delete data[cat]; save(); } }
-function saveCategory(){
-  const name = cName.value.trim();
-  if(!name) return;
-  if(editCat){
-    if(name!==editCat){ data[name]=data[editCat]; delete data[editCat]; }
-    editCat=null;
-  } else if(!data[name]) data[name]=[];
-  modalCat.style.display='none';
+function deleteCategory(cat){
+  if(!confirm('Kategorie inkl. aller Links löschen?')) return;
+  delete data[cat];
   save();
 }
 
-function editLinkFunc(cat,i){
-  editLink={cat,i};
-  const l=data[cat][i];
-  lTitle.value=l.title;lDesc.value=l.desc;lUrl.value=l.url;lCatSelect.value=cat;
-  modalLink.style.display='flex';
-}
+addLink.onclick = () => { editLink=null; modalLink.style.display='flex'; };
+addCat.onclick = () => { editCat=null; cName.value=''; modalCat.style.display='flex'; };
 
-function saveLink(){
-  const cat = lCatSelect.value;
-  if(!cat) return;
-  const linkObj={title:lTitle.value||'Ohne Titel',desc:lDesc.value||'',url:lUrl.value};
-  if(editLink){
-    data[editLink.cat].splice(editLink.i,1);
-    if(!data[cat]) data[cat]=[];
-    data[cat].push(linkObj);
-    editLink=null;
-  } else {
-    if(!data[cat]) data[cat]=[];
-    data[cat].push(linkObj);
-  }
+saveLinkBtn.onclick = () => {
+  const cat=lCat.value;
+  const obj={ title:lTitle.value||'Ohne Titel', desc:lDesc.value||'', url:lUrl.value };
+  if(editLink) data[editLink.cat].splice(editLink.i,1);
+  if(!data[cat]) data[cat]=[];
+  data[cat].push(obj);
+  editLink=null;
   modalLink.style.display='none';
   save();
-}
+};
 
-addLink.onclick=()=>{ editLink=null; modalLink.style.display='flex'; };
-addCat.onclick=()=>{ editCat=null; cName.value=''; modalCat.style.display='flex'; };
-saveLinkBtn.onclick=saveLink;
-saveCatBtn.onclick=saveCategory;
+saveCatBtn.onclick = () => {
+  const n=cName.value.trim();
+  if(!n) return;
+  if(editCat && n!==editCat){
+    data[n]=data[editCat];
+    delete data[editCat];
+  } else if(!data[n]) data[n]=[];
+  editCat=null;
+  modalCat.style.display='none';
+  save();
+};
+
+function save(){ localStorage.setItem('links',JSON.stringify(data)); render(); }
 
 render();
 </script>
