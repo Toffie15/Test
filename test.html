@@ -3,165 +3,100 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Link‑Dashboard</title>
-<link href="https://unpkg.com/lucide@latest/dist/umd/lucide.js" rel="preload" as="script">
+<title>Link-Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0b0e16;
-  --glass:rgba(255,255,255,.08);
-  --glass-strong:rgba(255,255,255,.16);
-  --border:rgba(255,255,255,.18);
-  --text:#f3f4f8;
-  --muted:#a0a6bf;
+  --bg:#0a0c14;
+  --panel:#111528;
+  --glass:rgba(255,255,255,.05);
+  --border:rgba(255,255,255,.12);
+  --text:#f2f3f7;
+  --muted:#8f93b2;
   --accent:#7c6cff;
+  --accent-hover:#5a4dff;
   --danger:#ff5c5c;
-  --radius:22px;
+  --radius:20px;
+  --shadow:0 10px 30px rgba(0,0,0,0.3);
 }
 *{box-sizing:border-box}
 html,body{margin:0}
 body{
   font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
-  background:
-    radial-gradient(900px 500px at 15% -10%,#1f2550 0%,transparent 45%),
-    radial-gradient(900px 500px at 85% 10%,#2b1f45 0%,transparent 40%),
-    var(--bg);
+  background:linear-gradient(160deg,#1c1f38,#0b0c14);
   color:var(--text);
 }
-
-/* HEADER */
 header{
-  position:sticky;top:0;z-index:20;
-  backdrop-filter:blur(18px);
-  background:rgba(10,12,20,.7);
+  position:sticky;top:0;z-index:30;
+  backdrop-filter:blur(22px);
+  background:rgba(10,12,20,.85);
   border-bottom:1px solid var(--border);
 }
 .header-inner{
   max-width:1320px;margin:auto;
-  padding:1rem 1.25rem;
-  display:flex;align-items:center;gap:.75rem
+  padding:1rem 1.5rem;
+  display:flex;align-items:center;justify-content:space-between;
 }
-.header-title{font-weight:700;font-size:1.25rem;letter-spacing:.3px}
-.header-spacer{flex:1}
+.header-title{font-weight:700;font-size:1.5rem;letter-spacing:.4px}
 
-/* CONTROLS */
 button,input,select{
+  font-family:inherit;
   background:var(--glass);
-  backdrop-filter:blur(14px);
   border:1px solid var(--border);
   color:var(--text);
-  padding:.65rem 1rem;
-  border-radius:16px;
+  padding:.7rem 1rem;
+  border-radius:var(--radius);
+  transition:.2s ease;
 }
-button{
-  cursor:pointer;
-  transition:transform .2s ease,background .2s ease,opacity .2s ease
-}
-button:hover{transform:translateY(-1px)}
-button.primary{
-  background:linear-gradient(135deg,#8f83ff,#6a5cff);
-  border:none
-}
+button:hover{transform:translateY(-2px);opacity:.9}
+button.primary{background:linear-gradient(135deg,var(--accent),var(--accent-hover));border:none;color:#fff}
 button.ghost{background:transparent;border:none;opacity:.7}
 button.ghost:hover{opacity:1}
 
-/* LAYOUT */
-main{max-width:1320px;margin:auto;padding:2.2rem 1.25rem 4rem}
-section{margin-bottom:3rem;animation:fade .35s ease}
-@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
-
-.section-head{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:1.2rem
-}
-.section-left{display:flex;align-items:center;gap:.6rem}
-.section-left h2{margin:0;font-size:1.15rem}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:1.4rem
-}
-
-/* CARD */
+main{max-width:1320px;margin:auto;padding:2.5rem 1.5rem 4rem}
+section{margin-bottom:3.5rem}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.section-left h2{margin:0;font-size:1.3rem;letter-spacing:.2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.8rem}
 .card{
   position:relative;
-  padding:1.5rem;
+  padding:1.8rem 1.6rem 2rem;
   border-radius:var(--radius);
-  background:var(--glass);
-  backdrop-filter:blur(18px) saturate(180%);
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.01));
   border:1px solid var(--border);
   cursor:pointer;
-  transition:transform .25s ease,box-shadow .25s ease,background .25s ease
+  box-shadow:var(--shadow);
+  transition:.25s ease;
 }
-.card:hover{
-  transform:translateY(-6px) scale(1.02);
-  background:var(--glass-strong);
-  box-shadow:0 20px 45px rgba(0,0,0,.45)
-}
+.card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 20px 50px rgba(0,0,0,0.4)}
 .card-title{font-weight:600;color:var(--accent)}
-.card-desc{font-size:.9rem;color:var(--muted);margin-top:.25rem;line-height:1.4}
-.card-menu{
-  position:absolute;top:.7rem;right:.7rem;
-  opacity:.55
-}
+.card-desc{font-size:.9rem;color:var(--muted);margin-top:.4rem;line-height:1.5}
+.card-menu{position:absolute;top:.7rem;right:.7rem;opacity:.6;font-size:1.2rem}
 .card-menu:hover{opacity:1}
-
-.empty{
-  padding:2.5rem;
-  border:1px dashed rgba(255,255,255,.18);
-  border-radius:var(--radius);
-  color:var(--muted);
-  text-align:center
-}
-
-/* MODAL */
-.modal{
-  position:fixed;inset:0;display:none;
-  align-items:center;justify-content:center;
-  background:rgba(0,0,0,.65);
-  z-index:50
-}
-.modal-box{
-  width:100%;max-width:460px;
-  background:rgba(22,26,48,.95);
-  backdrop-filter:blur(22px);
-  padding:2rem;
-  border-radius:28px;
-  border:1px solid var(--border)
-}
-.modal-box h3{margin-top:0;font-size:1.25rem}
-.row{margin-bottom:1rem}
-.modal-actions{display:flex;justify-content:space-between;gap:.75rem}
-
-/* CONTEXT */
-.context{
-  position:fixed;display:none;flex-direction:column;
-  background:rgba(28,32,60,.95);
-  border:1px solid var(--border);
-  border-radius:16px;
-  backdrop-filter:blur(18px);
-  overflow:hidden;z-index:100
-}
-.context button{
-  border:none;background:none;text-align:left;
-  padding:.75rem 1.1rem
-}
+.empty{padding:3rem;border:1px dashed var(--border);border-radius:var(--radius);color:var(--muted);text-align:center}
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.75);z-index:50}
+.modal-box{width:100%;max-width:480px;background:var(--panel);padding:2.5rem;border-radius:28px;border:1px solid var(--border);box-shadow:var(--shadow)}
+.modal-box h3{margin-top:0;font-size:1.35rem}
+.row{margin-bottom:1.2rem}
+.modal-actions{display:flex;justify-content:space-between;gap:.8rem}
+.context{position:fixed;display:none;flex-direction:column;background:var(--panel);border:1px solid var(--border);border-radius:20px;overflow:hidden;z-index:100}
+.context button{border:none;background:none;text-align:left;padding:.8rem 1.2rem}
 .context button:hover{background:rgba(255,255,255,.08)}
 </style>
 </head>
 <body>
 <header>
   <div class="header-inner">
-    <div class="header-title">Link‑Dashboard</div>
-    <div class="header-spacer"></div>
-    <button id="addCat">Kategorie</button>
-    <button class="primary" id="addLink">Link</button>
+    <div class="header-title">Link-Dashboard</div>
+    <div>
+      <button id="addCat">Kategorie</button>
+      <button class="primary" id="addLink">Link</button>
+    </div>
   </div>
 </header>
-
 <main id="app"></main>
-
-<!-- LINK MODAL -->
 <div class="modal" id="modalLink">
   <div class="modal-box">
     <h3>Link</h3>
@@ -175,8 +110,6 @@ section{margin-bottom:3rem;animation:fade .35s ease}
     </div>
   </div>
 </div>
-
-<!-- CATEGORY MODAL -->
 <div class="modal" id="modalCat">
   <div class="modal-box">
     <h3>Kategorie</h3>
@@ -187,80 +120,18 @@ section{margin-bottom:3rem;animation:fade .35s ease}
     </div>
   </div>
 </div>
-
-<!-- CONTEXT MENU -->
 <div class="context" id="ctx">
   <button id="ctxEdit">Bearbeiten</button>
   <button id="ctxDelete" style="color:var(--danger)">Löschen</button>
 </div>
-
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
 const app=document.getElementById('app'),modalLink=document.getElementById('modalLink'),modalCat=document.getElementById('modalCat'),ctx=document.getElementById('ctx');
 let data=JSON.parse(localStorage.getItem('links')||'{}');
-let editCat=null,editLink=null;
-
-function render(){
-  app.innerHTML='';
-  const sel=document.getElementById('lCat');sel.innerHTML='';
-  Object.keys(data).sort().forEach(cat=>{
-    sel.add(new Option(cat,cat));
-    const sec=document.createElement('section');
-    sec.innerHTML=`<div class="section-head"><div class="section-left"><h2>${cat}</h2></div></div>`;
-    const grid=document.createElement('div');grid.className='grid';
-    if(!data[cat].length){grid.innerHTML='<div class="empty">Keine Links</div>'}
-    data[cat].forEach((l,i)=>{
-      const c=document.createElement('div');c.className='card';
-      c.innerHTML=`<div class="card-menu" data-cat="${cat}" data-i="${i}"><i data-lucide="more-vertical"></i></div><div class="card-title">${l.title}</div><div class="card-desc">${l.desc}</div>`;
-      c.onclick=()=>window.open(l.url,'_blank');
-      grid.appendChild(c);
-    });
-    sec.appendChild(grid);app.appendChild(sec);
-  });
-  lucide.createIcons();
-}
-
+let editLink=null,editCat=null;
+function render(){app.innerHTML='';const sel=document.getElementById('lCat');sel.innerHTML='';Object.keys(data).sort().forEach(cat=>{sel.add(new Option(cat,cat));const sec=document.createElement('section');sec.innerHTML=`<div class="section-head"><div class="section-left"><h2>${cat}</h2></div><div><button class="ghost" onclick="editCategory('${cat}')">Bearbeiten</button><button class="ghost" style="color:var(--danger)" onclick="deleteCategory('${cat}')">Löschen</button></div></div>`;const grid=document.createElement('div');grid.className='grid';if(!data[cat].length){grid.innerHTML='<div class="empty">Keine Links</div>'}data[cat].forEach((l,i)=>{const c=document.createElement('div');c.className='card';c.innerHTML=`<div class="card-menu" data-cat="${cat}" data-i="${i}"><i data-lucide="more-vertical"></i></div><div class="card-title">${l.title}</div><div class="card-desc">${l.desc}</div>`;c.onclick=()=>window.open(l.url,'_blank');grid.appendChild(c)});sec.appendChild(grid);app.appendChild(sec)});lucide.createIcons()}
 function save(){localStorage.setItem('links',JSON.stringify(data));render()}
-
-document.addEventListener('contextmenu',e=>{
-  const m=e.target.closest('.card-menu');if(!m)return;
-  e.preventDefault();
-  ctx.style.display='flex';
-  ctx.style.left=e.pageX+'px';ctx.style.top=e.pageY+'px';
-  ctx.dataset.cat=m.dataset.cat;ctx.dataset.i=m.dataset.i
-});
-document.addEventListener('click',()=>ctx.style.display='none');
-
-ctxEdit.onclick=()=>{
-  const {cat,i}=ctx.dataset;const l=data[cat][i];
-  editLink={cat,i};
-  lTitle.value=l.title;lDesc.value=l.desc;lUrl.value=l.url;lCat.value=cat;
-  modalLink.style.display='flex'
-};
-ctxDelete.onclick=()=>{
-  const {cat,i}=ctx.dataset;
-  if(confirm('Link löschen?')){data[cat].splice(i,1);save()}
-};
-
-addLink.onclick=()=>{editLink=null;modalLink.style.display='flex'};
-addCat.onclick=()=>{editCat=null;cName.value='';modalCat.style.display='flex'};
-
-saveLinkBtn.onclick=()=>{
-  const cat=lCat.value;
-  const obj={title:lTitle.value||'Ohne Titel',desc:lDesc.value||'',url:lUrl.value};
-  if(editLink){data[editLink.cat].splice(editLink.i,1)}
-  data[cat].push(obj);
-  editLink=null;modalLink.style.display='none';save()
-};
-
-saveCatBtn.onclick=()=>{
-  const n=cName.value.trim();if(!n)return;
-  if(editCat&&n!==editCat){data[n]=data[editCat];delete data[editCat]}
-  else if(!data[n])data[n]=[];
-  modalCat.style.display='none';save()
-};
-
-render();
+document.addEventListener('contextmenu',e=>{const m=e.target.closest('.card-menu');if(!m)return;e.preventDefault();ctx.style.display='flex';ctx.style.left=e.pageX+'px';ctx.style.top=e.pageY+'px';ctx.dataset.cat=m.dataset.cat;ctx.dataset.i=m.dataset.i});document.addEventListener('click',()=>ctx.style.display='none');ctxEdit.onclick=()=>{const {cat,i}=ctx.dataset;const l=data[cat][i];editLink={cat,i};lTitle.value=l.title;lDesc.value=l.desc;lUrl.value=l.url;lCat.value=cat;modalLink.style.display='flex'};ctxDelete.onclick=()=>{const {cat,i}=ctx.dataset;if(!confirm('Link löschen?'))return;data[cat].splice(i,1);save()};function editCategory(cat){editCat=cat;cName.value=cat;modalCat.style.display='flex'}function deleteCategory(cat){if(!confirm('Kategorie inkl. aller Links löschen?'))return;delete data[cat];save()}addLink.onclick=()=>{editLink=null;modalLink.style.display='flex'};addCat.onclick=()=>{editCat=null;cName.value='';modalCat.style.display='flex'};saveLinkBtn.onclick=()=>{const cat=lCat.value;const obj={title:lTitle.value||'Ohne Titel',desc:lDesc.value||'',url:lUrl.value};if(editLink){data[editLink.cat].splice(editLink.i,1)}data[cat].push(obj);editLink=null;modalLink.style.display='none';save()};saveCatBtn.onclick=()=>{const n=cName.value.trim();if(!n)return;if(editCat&&n!==editCat){data[n]=data[editCat];delete data[editCat]}else if(!data[n]){data[n]=[];}editCat=null;modalCat.style.display='none';save()};render();
 </script>
 </body>
 </html>
