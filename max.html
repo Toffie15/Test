@@ -1,332 +1,143 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Link-Dashboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#0a0c14;
-  --panel:#111528;
-  --glass:rgba(255,255,255,.05);
-  --border:rgba(255,255,255,.12);
-  --text:#f2f3f7;
-  --muted:#8f93b2;
-  --accent:#7c6cff;
-  --accent-hover:#5a4dff;
-  --danger:#ff5c5c;
-  --radius:20px;
-  --shadow:0 10px 30px rgba(0,0,0,0.3);
-}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{
-  font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
-  background:linear-gradient(160deg,#1c1f38,#0b0c14);
-  color:var(--text);
-}
-header{
-  position:sticky;top:0;z-index:30;
-  backdrop-filter:blur(22px);
-  background:rgba(10,12,20,.85);
-  border-bottom:1px solid var(--border);
-}
-.header-inner{
-  max-width:1320px;margin:auto;
-  padding:1rem 1.5rem;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.header-title{font-weight:700;font-size:1.5rem;letter-spacing:.4px}
-
-button,input,select{
-  font-family:inherit;
-  background:var(--glass);
-  border:1px solid var(--border);
-  color:var(--text);
-  padding:.7rem 1rem;
-  border-radius:var(--radius);
-  transition:.2s ease;
-}
-button:hover{transform:translateY(-2px);opacity:.9}
-button.primary{background:linear-gradient(135deg,var(--accent),var(--accent-hover));border:none;color:#fff}
-button.ghost{background:transparent;border:none;opacity:.7}
-button.ghost:hover{opacity:1}
-
-main{max-width:1320px;margin:auto;padding:2.5rem 1.5rem 4rem}
-section{margin-bottom:3.5rem}
-.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
-.section-left h2{margin:0;font-size:1.3rem;letter-spacing:.2px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.8rem}
-.card{
-  position:relative;
-  padding:1.8rem 1.6rem 2rem;
-  border-radius:var(--radius);
-  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.01));
-  border:1px solid var(--border);
-  cursor:pointer;
-  box-shadow:var(--shadow);
-  transition:.25s ease;
-}
-.card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 20px 50px rgba(0,0,0,0.4)}
-.card-title{font-weight:600}
-.card-desc{font-size:.9rem;color:var(--muted);margin-top:.4rem;line-height:1.5}
-.card-menu{position:absolute;top:.7rem;right:.7rem;opacity:.6;font-size:1.2rem}
-.card-menu:hover{opacity:1}
-.empty{padding:3rem;border:1px dashed var(--border);border-radius:var(--radius);color:var(--muted);text-align:center}
-.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.75);z-index:50}
-.modal-box{width:100%;max-width:480px;background:var(--panel);padding:2.5rem;border-radius:28px;border:1px solid var(--border);box-shadow:var(--shadow)}
-.modal-box h3{margin-top:0;font-size:1.35rem}
-.row{margin-bottom:1.2rem}
-.modal-actions{display:flex;justify-content:space-between;gap:.8rem}
-.context{position:fixed;display:none;flex-direction:column;background:var(--panel);border:1px solid var(--border);border-radius:20px;overflow:hidden;z-index:100}
-.context button{border:none;background:none;text-align:left;padding:.8rem 1.2rem}
-.context button:hover{background:rgba(255,255,255,.08)}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arc Raiders Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
+    body { background: #121212; color: #f5f5f5; line-height: 1.6; }
+    header { background: #1f1f1f; padding: 20px; text-align: center; border-bottom: 2px solid #00bcd4; }
+    header h1 { font-size: 2em; color: #00bcd4; }
+    nav { display: flex; justify-content: center; gap: 20px; margin: 15px 0; }
+    nav a { color: #f5f5f5; text-decoration: none; font-weight: bold; transition: color 0.3s; }
+    nav a:hover { color: #00bcd4; }
+    main { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+    section { margin-bottom: 50px; }
+    section h2 { font-size: 1.8em; margin-bottom: 15px; border-left: 5px solid #00bcd4; padding-left: 10px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+    .card { background: #1f1f1f; padding: 15px; border-radius: 10px; transition: transform 0.3s; }
+    .card:hover { transform: scale(1.03); }
+    .card img { width: 100%; border-radius: 10px; margin-bottom: 10px; }
+    .loadout { display: flex; flex-direction: column; gap: 15px; }
+    .loadout div { background: #1f1f1f; padding: 15px; border-radius: 10px; }
+    footer { text-align: center; padding: 20px; border-top: 2px solid #00bcd4; margin-top: 50px; }
+  </style>
 </head>
 <body>
-<header>
-  <div class="header-inner">
-    <div class="header-title">Link-Dashboard</div>
-    <div>
-      <button id="addCat">Kategorie</button>
-      <button id="infoBtn" class="ghost" title="Info & Shortcuts">ⓘ</button>
-      <button class="primary" id="addLink">Link</button>
-      <button id="quickAdd" class="ghost">Quick Add</button>
-    </div>
-  </div>
-</header>
-<main id="app"></main>
+  <header>
+    <h1>Arc Raiders Guide</h1>
+    <nav>
+      <a href="#was-ist">Was ist das?</a>
+      <a href="#arcs">Arcs & Schwächen</a>
+      <a href="#waffen">Beste Waffen</a>
+      <a href="#items">Items & Waffen</a>
+      <a href="#loadouts">Loadouts</a>
+    </nav>
+  </header>
 
-<!-- Modals -->
-<div class="modal" id="modalLink">
-  <div class="modal-box">
-    <h3>Link</h3>
-    <div class="row"><input id="lTitle" placeholder="Titel"></div>
-    <div class="row"><input id="lDesc" placeholder="Beschreibung"></div>
-    <div class="row"><input id="lUrl" placeholder="https://"></div>
-    <div class="row"><input type="color" id="lColor" value="#7c6cff"></div>
-    <div class="row"><select id="lCat"></select></div>
-    <div class="modal-actions">
-      <button onclick="modalLink.style.display='none'">Abbrechen</button>
-      <button class="primary" id="saveLinkBtn">Speichern</button>
-    </div>
-  </div>
-</div>
+  <main>
+    <!-- Was ist das? -->
+    <section id="was-ist">
+      <h2>Was ist Arc Raiders?</h2>
+      <p>Arc Raiders ist ein actiongeladenes Koop-Spiel, bei dem Spieler taktisch zusammenarbeiten müssen, um Gegner und Missionen zu meistern. Man kämpft gegen verschiedene Arc-Gegner, sammelt Items und optimiert sein Loadout, um die Missionen effizient zu bestehen.</p>
+      <img src="https://via.placeholder.com/800x400?text=Arc+Raiders+Gameplay" alt="Arc Raiders Gameplay">
+    </section>
 
-<div class="modal" id="modalQuick">
-  <div class="modal-box">
-    <h3>Quick Add</h3>
-    <div class="row"><input id="qUrl" placeholder="https://"></div>
-    <div class="modal-actions">
-      <button onclick="modalQuick.style.display='none'">Abbrechen</button>
-      <button class="primary" id="saveQuickBtn">Speichern</button>
-    </div>
-  </div>
-</div>
+    <!-- Arcs & Schwächen -->
+    <section id="arcs">
+      <h2>Arcs und ihre Schwächen</h2>
+      <div class="grid">
+        <div class="card">
+          <img src="https://via.placeholder.com/400x200?text=Arc+1" alt="Arc 1">
+          <h3>Arc Alpha</h3>
+          <p>Schwach gegen Plasma-Waffen. Langsames Tempo, aber hoher Schaden.</p>
+        </div>
+        <div class="card">
+          <img src="https://via.placeholder.com/400x200?text=Arc+2" alt="Arc 2">
+          <h3>Arc Beta</h3>
+          <p>Schwach gegen Explosiv-Waffen. Schnell und agil, schwer zu treffen.</p>
+        </div>
+        <div class="card">
+          <img src="https://via.placeholder.com/400x200?text=Arc+3" alt="Arc 3">
+          <h3>Arc Gamma</h3>
+          <p>Schwach gegen Scharfschützen. Verteidigt sich mit Schilden.</p>
+        </div>
+      </div>
+    </section>
 
-<div class="modal" id="modalCat">
-  <div class="modal-box">
-    <h3>Kategorie</h3>
-    <div class="row"><input id="cName" placeholder="Name"></div>
-    <div class="modal-actions">
-      <button onclick="modalCat.style.display='none'">Abbrechen</button>
-      <button class="primary" id="saveCatBtn">Speichern</button>
-    </div>
-  </div>
-</div>
+    <!-- Beste Waffen -->
+    <section id="waffen">
+      <h2>Welche Waffen sind am besten geeignet?</h2>
+      <div class="grid">
+        <div class="card">
+          <img src="https://via.placeholder.com/400x200?text=Waffe+1" alt="Waffe 1">
+          <h3>Plasma Rifle</h3>
+          <p>Ideal gegen Arc Alpha. Hoher Schaden und mittlere Feuerrate.</p>
+        </div>
+        <div class="card">
+          <img src="https://via.placeholder.com/400x200?text=Waffe+2" alt="Waffe 2">
+          <h3>Rocket Launcher</h3>
+          <p>Perfekt gegen Arc Beta. Explosiver Flächenschaden.</p>
+        </div>
+        <div class="card">
+          <img src="https://via.placeholder.com/400x200?text=Waffe+3" alt="Waffe 3">
+          <h3>Sniper</h3>
+          <p>Bestens geeignet gegen Arc Gamma. Hohe Reichweite, kritischer Treffer.</p>
+        </div>
+      </div>
+    </section>
 
-<div class="modal" id="modalInfo">
-  <div class="modal-box">
-    <h3>Info & Shortcuts</h3>
-    <div class="row">
-      <strong>Keyboard</strong><br>
-      N – Neuer Link<br>
-      C – Neue Kategorie<br>
-      Esc – Modal schließen
-    </div>
-    <div class="row">
-      <strong>Kategorien</strong><br>
-      Klick auf Titel – Ein/Ausklappen<br>
-      Zustand wird gespeichert
-    </div>
-    <div class="modal-actions">
-      <button class="primary" onclick="modalInfo.style.display='none'">OK</button>
-    </div>
-  </div>
-</div>
+    <!-- Items & Waffen Überblick -->
+    <section id="items">
+      <h2>Alle Items und Waffen im Überblick</h2>
+      <div class="grid">
+        <div class="card">
+          <img src="https://via.placeholder.com/400x200?text=Item+1" alt="Item 1">
+          <h3>Medkit</h3>
+          <p>Heilt den Spieler sofort.</p>
+        </div>
+        <div class="card">
+          <img src="https://via.placeholder.com/400x200?text=Item+2" alt="Item 2">
+          <h3>Shield Booster</h3>
+          <p>Erhöht temporär den Schild.</p>
+        </div>
+        <div class="card">
+          <img src="https://via.placeholder.com/400x200?text=Waffe+4" alt="Waffe 4">
+          <h3>Laser Gun</h3>
+          <p>Hohe Feuerrate, schwacher Schaden pro Schuss.</p>
+        </div>
+        <div class="card">
+          <img src="https://via.placeholder.com/400x200?text=Waffe+5" alt="Waffe 5">
+          <h3>EMP Grenade</h3>
+          <p>Stunnt Gegner für kurze Zeit.</p>
+        </div>
+      </div>
+    </section>
 
-<div class="context" id="ctx">
-  <button id="ctxEdit">Bearbeiten</button>
-  <button id="ctxDelete" style="color:var(--danger)">Löschen</button>
-</div>
-
-<script src="https://unpkg.com/lucide@latest"></script>
-<script>
-const app=document.getElementById('app'),
-      modalLink=document.getElementById('modalLink'),
-      modalCat=document.getElementById('modalCat'),
-      modalInfo=document.getElementById('modalInfo'),
-      modalQuick=document.getElementById('modalQuick'),
-      ctx=document.getElementById('ctx');
-
-let data=JSON.parse(localStorage.getItem('links')||'{}');
-let editLink=null,editCat=null;
-let dragSrc=null;
-let collapsed=JSON.parse(localStorage.getItem('collapsedCats')||'{}');
-
-function render(){
-  app.innerHTML='';
-  const sel=document.getElementById('lCat');
-  sel.innerHTML='';
-  Object.keys(data).sort().forEach(cat=>{
-    sel.add(new Option(cat,cat));
-    const sec=document.createElement('section');
-    const isCollapsed=collapsed[cat];
-    sec.innerHTML=`
-      <div class="section-head">
-        <div class="section-left">
-          <h2 style="cursor:pointer" onclick="toggleCategory('${cat}')">${isCollapsed?'▶':'▼'} ${cat}</h2>
+    <!-- Loadout-Vorschläge -->
+    <section id="loadouts">
+      <h2>Loadout-Vorschläge</h2>
+      <div class="loadout">
+        <div>
+          <h3>Assault Build</h3>
+          <p>Plasma Rifle + Medkit + Shield Booster</p>
         </div>
         <div>
-          <button class="ghost" onclick="editCategory('${cat}')">Bearbeiten</button>
-          <button class="ghost" style="color:var(--danger)" onclick="deleteCategory('${cat}')">Löschen</button>
+          <h3>Explosive Build</h3>
+          <p>Rocket Launcher + EMP Grenade + Medkit</p>
         </div>
-      </div>`;
-    const grid=document.createElement('div');
-    grid.className='grid';
-    if(isCollapsed){grid.style.display='none'}
-    if(!data[cat].length){grid.innerHTML='<div class="empty">Keine Links</div>'}
-    data[cat].forEach((l,i)=>{
-      const c=document.createElement('div');
-      c.draggable=true;
-      c.addEventListener('dragstart',()=>dragSrc={cat,i});
-      c.addEventListener('dragover',e=>e.preventDefault());
-      c.addEventListener('drop',()=>{
-        if(!dragSrc)return;
-        const tmp=data[cat][dragSrc.i];
-        data[cat].splice(dragSrc.i,1);
-        data[cat].splice(i,0,tmp);
-        save();
-        dragSrc=null;
-      });
-      c.className='card';
-      c.innerHTML=`
-        <div class="card-menu" data-cat="${cat}" data-i="${i}"><i data-lucide="more-vertical"></i></div>
-        <div class="card-title" style="color:${l.color||'var(--accent)'}">${l.title}</div>
-        <div class="card-desc">${l.desc}</div>`;
-      c.onclick=()=>window.open(l.url,'_blank');
-      grid.appendChild(c);
-    });
-    sec.appendChild(grid);app.appendChild(sec);
-  });
-  lucide.createIcons();
-}
+        <div>
+          <h3>Sniper Build</h3>
+          <p>Sniper + Shield Booster + Medkit</p>
+        </div>
+      </div>
+    </section>
+  </main>
 
-function save(){
-  localStorage.setItem('collapsedCats',JSON.stringify(collapsed));
-  localStorage.setItem('links',JSON.stringify(data));
-  render();
-}
-
-document.addEventListener('contextmenu',e=>{
-  const m=e.target.closest('.card-menu');
-  if(!m)return;
-  e.preventDefault();
-  ctx.style.display='flex';
-  ctx.style.left=e.pageX+'px';
-  ctx.style.top=e.pageY+'px';
-  ctx.dataset.cat=m.dataset.cat;
-  ctx.dataset.i=m.dataset.i;
-});
-
-document.addEventListener('click',()=>ctx.style.display='none');
-
-ctxEdit.onclick=()=>{
-  const {cat,i}=ctx.dataset;
-  const l=data[cat][i];
-  editLink={cat,i};
-  lTitle.value=l.title;
-  lDesc.value=l.desc;
-  lUrl.value=l.url;
-  lColor.value=l.color||'#7c6cff';
-  lCat.value=cat;
-  modalLink.style.display='flex';
-};
-
-ctxDelete.onclick=()=>{
-  const {cat,i}=ctx.dataset;
-  if(!confirm('Link löschen?'))return;
-  data[cat].splice(i,1);
-  save();
-};
-
-function editCategory(cat){editCat=cat;cName.value=cat;modalCat.style.display='flex'}
-function deleteCategory(cat){if(!confirm('Kategorie inkl. aller Links löschen?'))return;delete data[cat];save()}
-
-document.getElementById('quickAdd').onclick=()=>{
-  qUrl.value='';
-  modalQuick.style.display='flex';
-};
-document.getElementById('addLink').onclick=()=>{editLink=null;modalLink.style.display='flex'};
-document.getElementById('infoBtn').onclick=()=>{modalInfo.style.display='flex'};
-document.getElementById('addCat').onclick=()=>{editCat=null;cName.value='';modalCat.style.display='flex'};
-
-saveLinkBtn.onclick=async()=>{
-  const cat=lCat.value;
-  let title=lTitle.value||'Ohne Titel';
-  if(lUrl.value && !lTitle.value){
-    try{
-      const res=await fetch(lUrl.value,{mode:'no-cors'});
-      const txt=await res.text();
-      const m=txt.match(/<title>(.*?)<\/title>/i);
-      if(m)title=m[1];
-    }catch(e){}
-  }
-  const obj={title,desc:lDesc.value||'',url:lUrl.value,color:lColor.value};
-  if(editLink){data[editLink.cat].splice(editLink.i,1)}
-  data[cat].push(obj);
-  editLink=null;
-  modalLink.style.display='none';
-  save();
-};
-
-saveQuickBtn.onclick=()=>{
-  const url=qUrl.value.trim();
-  if(!url)return;
-  let title=url.replace(/^https?:\/\//,'').split('/')[0];
-  const cat=Object.keys(data)[0]||'Allgemein';
-  if(!data[cat])data[cat]=[];
-  data[cat].push({title,desc:'',url,color:'#7c6cff'});
-  modalQuick.style.display='none';
-  save();
-};
-
-saveCatBtn.onclick=()=>{
-  const n=cName.value.trim();if(!n)return;
-  if(editCat&&n!==editCat){data[n]=data[editCat];delete data[editCat]}
-  else if(!data[n]){data[n]=[];}
-  editCat=null;
-  modalCat.style.display='none';
-  save();
-};
-
-function toggleCategory(cat){
-  collapsed[cat]=!collapsed[cat];
-  save();
-}
-
-// Keyboard Shortcuts
-document.addEventListener('keydown',e=>{
-  if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
-  if(e.key==='n'||e.key==='N'){editLink=null;modalLink.style.display='flex'}
-  if(e.key==='c'||e.key==='C'){editCat=null;cName.value='';modalCat.style.display='flex'}
-  if(e.key==='Escape'){modalLink.style.display='none';modalCat.style.display='none'}
-});
-
-render();
-</script>
+  <footer>
+    &copy; 2026 Arc Raiders Guide. Alle Rechte vorbehalten.
+  </footer>
 </body>
 </html>
