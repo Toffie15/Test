@@ -1,165 +1,198 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arc Raiders Guide</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        /* Grundlayout */
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #0f0f0f;
-            color: #f0f0f0;
-        }
-        header {
-            background: #1f1f1f;
-            padding: 20px;
-            text-align: center;
-            border-bottom: 2px solid #ff4f4f;
-        }
-        header h1 {
-            margin: 0;
-            color: #ff4f4f;
-        }
-        nav {
-            display: flex;
-            justify-content: center;
-            background: #222;
-        }
-        nav a {
-            color: #f0f0f0;
-            text-decoration: none;
-            margin: 0 15px;
-            padding: 15px 0;
-            display: block;
-        }
-        nav a:hover {
-            color: #ff4f4f;
-        }
-        section {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        h2 {
-            color: #ff4f4f;
-            margin-bottom: 20px;
-        }
-        .arc, .weapon, .item, .loadout {
-            background: #1a1a1a;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-        }
-        img {
-            max-width: 100%;
-            border-radius: 5px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: #1f1f1f;
-            border-top: 2px solid #ff4f4f;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arc Raiders Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #1a1a1a;
+      color: #f0f0f0;
+    }
+    header {
+      background: #0d6efd;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      background: #333;
+    }
+    nav a {
+      color: #f0f0f0;
+      text-decoration: none;
+      padding: 15px 20px;
+      transition: background 0.3s;
+    }
+    nav a:hover {
+      background: #0d6efd;
+    }
+    section {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    h2 {
+      color: #0d6efd;
+      margin-bottom: 20px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #2a2a2a;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    }
+    .card img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #333;
+      margin-top: 40px;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Arc Raiders Guide</h1>
-    </header>
-    <nav>
-        <a href="#was-ist-das">Was ist das?</a>
-        <a href="#arcs">Arcs & Schwächen</a>
-        <a href="#waffen">Beste Waffen</a>
-        <a href="#items">Items & Waffen</a>
-        <a href="#loadouts">Loadouts</a>
-    </nav>
 
-    <section id="was-ist-das">
-        <h2>Was ist Arc Raiders?</h2>
-        <p>Arc Raiders ist ein futuristisches Action-Spiel, bei dem Spieler in dynamischen Levels gegen mächtige Gegner, die sogenannten Arc-Raider, kämpfen. Teamwork, Taktik und die richtige Ausrüstung sind entscheidend für den Erfolg.</p>
-        <img src="placeholder_arcraiders.jpg" alt="Arc Raiders Gameplay">
-    </section>
+<header>
+  <h1>Arc Raiders - Komplettguide</h1>
+</header>
 
-    <section id="arcs">
-        <h2>Alle Arcs & Schwächen</h2>
-        <div class="grid">
-            <div class="arc">
-                <h3>Arc Alpha</h3>
-                <p>Schwäche: Feuerwaffen</p>
-                <img src="placeholder_arc_alpha.jpg" alt="Arc Alpha">
-            </div>
-            <div class="arc">
-                <h3>Arc Beta</h3>
-                <p>Schwäche: EMP</p>
-                <img src="placeholder_arc_beta.jpg" alt="Arc Beta">
-            </div>
-            <div class="arc">
-                <h3>Arc Gamma</h3>
-                <p>Schwäche: Schallangriffe</p>
-                <img src="placeholder_arc_gamma.jpg" alt="Arc Gamma">
-            </div>
-        </div>
-    </section>
+<nav>
+  <a href="#what">Was ist Arc Raiders?</a>
+  <a href="#arcs">Arcs & Schwächen</a>
+  <a href="#weapons">Waffen</a>
+  <a href="#items">Items</a>
+  <a href="#loadouts">Loadouts</a>
+</nav>
 
-    <section id="waffen">
-        <h2>Beste Waffen</h2>
-        <div class="grid">
-            <div class="weapon">
-                <h3>Plasma Rifle</h3>
-                <p>Hoher Schaden, ideal gegen Arc Beta.</p>
-                <img src="placeholder_plasma_rifle.jpg" alt="Plasma Rifle">
-            </div>
-            <div class="weapon">
-                <h3>EMP Launcher</h3>
-                <p>Schaltet Arc-Gegner temporär aus.</p>
-                <img src="placeholder_emp_launcher.jpg" alt="EMP Launcher">
-            </div>
-        </div>
-    </section>
+<section id="what">
+  <h2>Was ist Arc Raiders?</h2>
+  <p>Arc Raiders ist ein taktisches Action-Spiel mit Fokus auf Teamplay, ARCs (Automatisierte Kampfroboter) und vielseitigen Waffen‑ und Ausrüstungsoptionen. Spieler bekämpfen unterschiedliche ARC-Typen, sammeln Ressourcen und optimieren Loadouts.</p>
+</section>
 
-    <section id="items">
-        <h2>Items & Waffen</h2>
-        <div class="grid">
-            <div class="item">
-                <h3>Medkit</h3>
-                <p>Stellt Gesundheit wieder her.</p>
-                <img src="placeholder_medkit.jpg" alt="Medkit">
-            </div>
-            <div class="item">
-                <h3>Shield Booster</h3>
-                <p>Erhöht temporär den Schutz.</p>
-                <img src="placeholder_shield_booster.jpg" alt="Shield Booster">
-            </div>
-        </div>
-    </section>
+<section id="arcs">
+  <h2>Arcs & Schwächen</h2>
+  <div class="grid">
+    <div class="card">
+      <img src="images/wasp.png" alt="Wasp">
+      <h3>Wasp</h3>
+      <p>Schwach gegen Kinetik-Waffen. Beweglich, leichte Panzerung.</p>
+    </div>
+    <div class="card">
+      <img src="images/hornet.png" alt="Hornet">
+      <h3>Hornet</h3>
+      <p>Schwach gegen Feuer. Schnell und aggressiv.</p>
+    </div>
+    <div class="card">
+      <img src="images/snitch.png" alt="Snitch">
+      <h3>Snitch</h3>
+      <p>Schwach gegen EMP- oder elektrische Waffen.</p>
+    </div>
+    <!-- Weitere ARCs hier hinzufügen -->
+  </div>
+</section>
 
-    <section id="loadouts">
-        <h2>Loadout-Vorschläge</h2>
-        <div class="grid">
-            <div class="loadout">
-                <h3>Stealth Loadout</h3>
-                <p>EMP Launcher + Medkit + Leichter Panzer.</p>
-                <img src="placeholder_loadout_stealth.jpg" alt="Stealth Loadout">
-            </div>
-            <div class="loadout">
-                <h3>Heavy Assault</h3>
-                <p>Plasma Rifle + Shield Booster + Granaten.</p>
-                <img src="placeholder_loadout_heavy.jpg" alt="Heavy Assault">
-            </div>
-        </div>
-    </section>
+<section id="weapons">
+  <h2>Waffen & Mods</h2>
+  <div class="grid">
+    <div class="card">
+      <img src="images/anvil.png" alt="Anvil">
+      <h3>Anvil</h3>
+      <p>Allrounder-Waffe, sehr zuverlässig.</p>
+    </div>
+    <div class="card">
+      <img src="images/aphelion.png" alt="Aphelion">
+      <h3>Aphelion</h3>
+      <p>Hoher Schaden, geeignet für lange Distanzen.</p>
+    </div>
+    <!-- Weitere Waffen hier einfügen -->
+  </div>
+  <h3>Aufsätze</h3>
+  <ul>
+    <li>Mündungsaufsätze: Compensator I-III, Silencer I-III, Shotgun Choke I-III</li>
+    <li>Grips: Angled Grip I-III, Vertical Grip I-III</li>
+    <li>Magazine: Extended Light/Medium/Shotgun Mag I-III</li>
+    <li>Stocks: Lightweight, Padded, Stable Stock I-III</li>
+    <li>Legendäre Mods: Anvil Splitter, Kinetic Converter</li>
+  </ul>
+</section>
 
-    <footer>
-        <p>&copy; 2026 Arc Raiders Guide</p>
-    </footer>
+<section id="items">
+  <h2>Items</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Non-Weapons</h3>
+      <ul>
+        <li>Advanced ARC Powercell</li>
+        <li>Adrenaline Shot</li>
+        <li>Agave</li>
+        <li>Backpack (Black Hiker Color)</li>
+        <li>Bandage</li>
+        <li>… (alle weiteren Non-Weapons einfügen)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Weapons</h3>
+      <ul>
+        <li>Anvil</li>
+        <li>Aphelion</li>
+        <li>Arpeggio</li>
+        <li>Bettina</li>
+        <li>Bobcat</li>
+        <li>… (weitere Waffen einfügen)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="loadouts">
+  <h2>Loadout-Vorschläge</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Allrounder</h3>
+      <p>Waffen: Anvil + Aphelion</p>
+      <p>Items: Adrenaline Shot, Bandage, Advanced ARC Powercell</p>
+      <p>Modifikationen: Compensator II, Vertical Grip II, Stable Stock II</p>
+    </div>
+    <div class="card">
+      <h3>Sniper</h3>
+      <p>Waffen: Arpeggio + Il Toro</p>
+      <p>Items: Antiseptic, Advanced Electrical Components</p>
+      <p>Mods: Silencer III, Angled Grip III, Extended Light Mag III</p>
+    </div>
+    <!-- Weitere Loadouts hier hinzufügen -->
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 Arc Raiders Guide</p>
+</footer>
+
 </body>
 </html>
