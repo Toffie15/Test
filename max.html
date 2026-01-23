@@ -6,261 +6,115 @@
 <title>Arc Raiders Guide</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/tailwind.min.css" rel="stylesheet">
 <style>
-  body { font-family: 'Inter', sans-serif; background-color: #1a1a1a; color: #f5f5f5; }
+  body { font-family: 'Inter', sans-serif; background-color: #121212; color: #f5f5f5; }
   h1, h2, h3 { color: #facc15; }
-  a { color: #38bdf8; }
-  .card { background-color: #111; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
-  .grid-cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-  img { border-radius: 8px; }
+  a { color: #38bdf8; transition: color 0.2s; }
+  a:hover { color: #facc15; }
+  .card { background-color: #1e1e1e; border-radius: 12px; padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
 </style>
 </head>
 <body class="p-6">
 
-<header class="text-center mb-8">
-  <h1 class="text-4xl font-bold mb-2">Arc Raiders Guide</h1>
-  <p class="text-lg text-gray-400">Alles über Arcs, Waffen, Items und Loadouts</p>
+<header class="mb-8">
+  <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+    <h1 class="text-4xl font-bold mb-2 md:mb-0">Arc Raiders Guide</h1>
+    <nav class="space-x-4 text-gray-400 text-lg">
+      <a href="#arcs">Arcs</a>
+      <a href="#weapons">Waffen</a>
+      <a href="#items">Items</a>
+      <a href="#loadouts">Loadouts</a>
+    </nav>
+  </div>
+  <p class="mt-2 text-gray-400 text-lg">Alles über Arcs, Waffen, Items und Loadouts</p>
 </header>
 
-<section class="mb-8">
-  <h2 class="text-2xl font-bold mb-4">Was ist Arc Raiders?</h2>
-  <p>Arc Raiders ist ein taktisches Action-Spiel, in dem du verschiedene Gegner (Arcs) bekämpfst, Items sammelst und deine Ausrüstung strategisch zusammenstellst. Nutze die Stärken und Schwächen jedes Gegners und wähle die richtigen Waffen für jeden Kampf.</p>
-</section>
+<main class="space-y-12">
 
-<section class="mb-8">
-  <h2 class="text-2xl font-bold mb-4">Arcs und ihre Schwächen</h2>
-  <div class="grid grid-cols-2 gap-4">
-    <div class="card">
-      <h3 class="text-xl font-semibold">Wasp</h3>
-      <p>Schwach gegen: Elektrowaffen, schnelle Angriffe</p>
-    </div>
-    <div class="card">
-      <h3 class="text-xl font-semibold">Hornet</h3>
-      <p>Schwach gegen: Präzisionsschüsse, Feuer</p>
-    </div>
-    <div class="card">
-      <h3 class="text-xl font-semibold">Snitch</h3>
-      <p>Schwach gegen: EMP, Stun-Effekte</p>
-    </div>
-    <div class="card">
-      <h3 class="text-xl font-semibold">Fireball</h3>
-      <p>Schwach gegen: Wasser und Kälte</p>
-    </div>
-    <div class="card">
-      <h3 class="text-xl font-semibold">Pop</h3>
-      <p>Schwach gegen: Explosiv- und Schockwaffen</p>
-    </div>
-    <div class="card">
-      <h3 class="text-xl font-semibold">Tick</h3>
-      <p>Schwach gegen: Präzision und Scharfschützenwaffen</p>
-    </div>
-    <div class="card">
-      <h3 class="text-xl font-semibold">Turret</h3>
-      <p>Schwach gegen: Hack-Tools, EMP</p>
-    </div>
-    <div class="card">
-      <h3 class="text-xl font-semibold">Sentinel</h3>
-      <p>Schwach gegen: Kinetische Waffen</p>
-    </div>
-    <div class="card">
-      <h3 class="text-xl font-semibold">Surveyor</h3>
-      <p>Schwach gegen: Schnelle Angriffe, Feuer</p>
-    </div>
-    <div class="card">
-      <h3 class="text-xl font-semibold">Leaper</h3>
-      <p>Schwach gegen: Netzfallen, Schüsse beim Landen</p>
-    </div>
-    <div class="card">
-      <h3 class="text-xl font-semibold">Rocketeer</h3>
-      <p>Schwach gegen: Bodenangriffe, EMP</p>
-    </div>
-    <div class="card">
-      <h3 class="text-xl font-semibold">Bastion</h3>
-      <p>Schwach gegen: Durchschlag und schwere Waffen</p>
-    </div>
-    <div class="card">
-      <h3 class="text-xl font-semibold">Bombardier</h3>
-      <p>Schwach gegen: Schnelle Angriffe und Nahkampf</p>
-    </div>
-    <div class="card">
-      <h3 class="text-xl font-semibold">Queen</h3>
-      <p>Schwach gegen: Kinetische Waffen, Team-Taktik</p>
-    </div>
+<section id="arcs">
+  <h2 class="text-3xl font-bold mb-4">Arcs und ihre Schwächen</h2>
+  <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div class="card"><h3 class="font-semibold text-xl mb-1">Wasp</h3><p>Schwach gegen: Elektrowaffen, schnelle Angriffe</p></div>
+    <div class="card"><h3 class="font-semibold text-xl mb-1">Hornet</h3><p>Schwach gegen: Präzisionsschüsse, Feuer</p></div>
+    <div class="card"><h3 class="font-semibold text-xl mb-1">Snitch</h3><p>Schwach gegen: EMP, Stun-Effekte</p></div>
+    <div class="card"><h3 class="font-semibold text-xl mb-1">Fireball</h3><p>Schwach gegen: Wasser und Kälte</p></div>
+    <div class="card"><h3 class="font-semibold text-xl mb-1">Pop</h3><p>Schwach gegen: Explosiv- und Schockwaffen</p></div>
+    <div class="card"><h3 class="font-semibold text-xl mb-1">Tick</h3><p>Schwach gegen: Präzision und Scharfschützenwaffen</p></div>
+    <div class="card"><h3 class="font-semibold text-xl mb-1">Turret</h3><p>Schwach gegen: Hack-Tools, EMP</p></div>
+    <div class="card"><h3 class="font-semibold text-xl mb-1">Sentinel</h3><p>Schwach gegen: Kinetische Waffen</p></div>
   </div>
 </section>
 
-<section class="mb-8">
-  <h2 class="text-2xl font-bold mb-4">Waffen und Mods</h2>
-  <div class="grid grid-cols-2 gap-4">
-    <div class="card"><h3 class="font-semibold">Anvil</h3></div>
-    <div class="card"><h3 class="font-semibold">Aphelion</h3></div>
-    <div class="card"><h3 class="font-semibold">Arpeggio</h3></div>
-    <div class="card"><h3 class="font-semibold">Bettina</h3></div>
-    <div class="card"><h3 class="font-semibold">Bobcat</h3></div>
-    <div class="card"><h3 class="font-semibold">Burletta</h3></div>
-    <div class="card"><h3 class="font-semibold">Equalizer</h3></div>
-    <div class="card"><h3 class="font-semibold">Ferro</h3></div>
-    <div class="card"><h3 class="font-semibold">Hairpin</h3></div>
-    <div class="card"><h3 class="font-semibold">Hullcracker</h3></div>
-    <div class="card"><h3 class="font-semibold">Il Toro</h3></div>
-    <div class="card"><h3 class="font-semibold">Jupiter</h3></div>
-    <div class="card"><h3 class="font-semibold">Kettle</h3></div>
-    <div class="card"><h3 class="font-semibold">Osprey</h3></div>
-    <div class="card"><h3 class="font-semibold">Rattler</h3></div>
-    <div class="card"><h3 class="font-semibold">Renegade</h3></div>
-    <div class="card"><h3 class="font-semibold">Stitcher</h3></div>
-    <div class="card"><h3 class="font-semibold">Tempest</h3></div>
-    <div class="card"><h3 class="font-semibold">Torrente</h3></div>
-    <div class="card"><h3 class="font-semibold">Venator</h3></div>
-    <div class="card"><h3 class="font-semibold">Vulcano</h3></div>
+<section id="weapons">
+  <h2 class="text-3xl font-bold mb-4">Waffen & Mods</h2>
+  <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div class="card">Anvil</div>
+    <div class="card">Aphelion</div>
+    <div class="card">Arpeggio</div>
+    <div class="card">Bettina</div>
+    <div class="card">Bobcat</div>
+    <div class="card">Burletta</div>
+    <div class="card">Equalizer</div>
+    <div class="card">Ferro</div>
+    <div class="card">Hairpin</div>
+    <div class="card">Hullcracker</div>
+    <div class="card">Il Toro</div>
+    <div class="card">Jupiter</div>
+    <div class="card">Kettle</div>
+    <div class="card">Osprey</div>
+    <div class="card">Rattler</div>
+    <div class="card">Renegade</div>
+    <div class="card">Stitcher</div>
+    <div class="card">Tempest</div>
+    <div class="card">Torrente</div>
+    <div class="card">Venator</div>
+    <div class="card">Vulcano</div>
   </div>
 </section>
 
-<section class="mb-8">
-  <h2 class="text-2xl font-bold mb-4">Mündungs- / Barrel‑Aufsätze</h2>
-  <p>Compensator I–III, Extended Barrel, Muzzle Brake I–III, Shotgun Choke I–III, Silencer I–III</p>
-  <h2 class="text-2xl font-bold mb-4 mt-4">Grips / Unterlauf‑Aufsätze</h2>
-  <p>Angled Grip I–III, Vertical Grip I–III</p>
-  <h2 class="text-2xl font-bold mb-4 mt-4">Magazin‑Aufsätze</h2>
-  <p>Extended Light/Medium/Shotgun Mag I–III</p>
-  <h2 class="text-2xl font-bold mb-4 mt-4">Schäfte / Stocks</h2>
-  <p>Lightweight Stock, Padded Stock, Stable Stock I–III</p>
-  <h2 class="text-2xl font-bold mb-4 mt-4">Legendäre / Special‑Mods</h2>
-  <p>Anvil Splitter, Kinetic Converter</p>
-</section>
-
-<section class="mb-8">
-  <h2 class="text-2xl font-bold mb-4">Non‑Weapons / Items</h2>
-  <div class="grid grid-cols-3 gap-2">
+<section id="items">
+  <h2 class="text-3xl font-bold mb-4">Non-Weapons / Items</h2>
+  <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
     <div class="card">Advanced ARC Powercell</div>
-    <div class="card">Advanced Electrical Components</div>
-    <div class="card">Advanced Mechanical Components</div>
     <div class="card">Adrenaline Shot</div>
-    <div class="card">Agave</div>
     <div class="card">Agave Juice</div>
-    <div class="card">Air Freshener</div>
     <div class="card">Alarm Clock</div>
-    <div class="card">Antiseptic</div>
-    <div class="card">Apricot</div>
-    <div class="card">Assorted Seeds</div>
-    <div class="card">Backpack (Black Hiker Color)</div>
-    <div class="card">Banana</div>
     <div class="card">Bandage</div>
-    <div class="card">Barricade Kit</div>
-    <div class="card">Bastion Cell</div>
     <div class="card">Battery</div>
-    <div class="card">Bicycle Pump</div>
     <div class="card">Binoculars</div>
-    <div class="card">Bloated Tuna Can</div>
-    <div class="card">Blown Fuses</div>
-    <div class="card">Blue Gate Communication Tower Key</div>
-    <div class="card">Blue Gate Confiscation Room Key</div>
-    <div class="card">Blue Gate Cellar Key</div>
-    <div class="card">Blue Gate Village Key</div>
-    <div class="card">Bombardier Cell</div>
-    <div class="card">Breathtaking Snow Globe</div>
-    <div class="card">Broken Flashlight</div>
-    <div class="card">Broken Guidance System</div>
-    <div class="card">Broken Handheld Radio</div>
-    <div class="card">Broken Taser</div>
-    <div class="card">Burned ARC Circuitry</div>
-    <div class="card">Burned Tick Pod</div>
-    <div class="card">Canister</div>
-    <div class="card">Camera Lens</div>
-    <div class="card">Chemicals</div>
-    <div class="card">Crude Explosives</div>
-    <div class="card">Damaged Hornet Driver</div>
-    <div class="card">Damaged Rocketeer Driver</div>
-    <div class="card">Dried-Out ARC Resin</div>
-    <div class="card">Durable Cloth</div>
-    <div class="card">Electrical Components</div>
-    <div class="card">Fabric</div>
     <div class="card">Fireball Burner</div>
-    <div class="card">Fertilizer</div>
     <div class="card">Hornet Driver</div>
-    <div class="card">Impure ARC Coolant</div>
     <div class="card">Leaper Pulse Unit</div>
-    <div class="card">Lemon</div>
-    <div class="card">Light Ammo</div>
-    <div class="card">Magnet</div>
-    <div class="card">Mechanical Components</div>
-    <div class="card">Metal Parts</div>
-    <div class="card">Oil</div>
-    <div class="card">Olives</div>
-    <div class="card">Plastic Parts</div>
-    <div class="card">Pop Trigger</div>
-    <div class="card">Processor</div>
-    <div class="card">Prickly Pear</div>
     <div class="card">Queen Reactor</div>
-    <div class="card">Rope</div>
-    <div class="card">Rosary</div>
     <div class="card">Rubber Duck</div>
-    <div class="card">Rubber Pad</div>
-    <div class="card">Rubber Parts</div>
-    <div class="card">Ruined Accordion</div>
-    <div class="card">Ruined Augment</div>
-    <div class="card">Ruined Baton</div>
-    <div class="card">Ruined Handcuffs</div>
-    <div class="card">Ruined Parachute</div>
-    <div class="card">Ruined Tactical Vest</div>
-    <div class="card">Ruined Riot Shield</div>
-    <div class="card">Rusted Bolts</div>
-    <div class="card">Rusted Gear</div>
-    <div class="card">Rusted Shut Medical Kit</div>
-    <div class="card">Rusted Tools</div>
-    <div class="card">Rusty ARC Steel</div>
-    <div class="card">Sensors</div>
-    <div class="card">Sentinel Firing Core</div>
-    <div class="card">Snitch Scanner</div>
-    <div class="card">Spaceport Container Storage Key</div>
-    <div class="card">Spaceport Control Tower Key</div>
-    <div class="card">Spaceport Trench Tower Key</div>
-    <div class="card">Spaceport Warehouse Key</div>
-    <div class="card">Speaker Component</div>
-    <div class="card">Spring Cushion</div>
-    <div class="card">Spotter Relay</div>
-    <div class="card">Statuette</div>
-    <div class="card">Simple Gun Parts</div>
-    <div class="card">Surveyor Vault</div>
-    <div class="card">Synthesized Fuel</div>
-    <div class="card">Syringe</div>
-    <div class="card">Tattered ARC Lining</div>
-    <div class="card">Tattered Clothes</div>
-    <div class="card">Thermostat</div>
     <div class="card">Tick Pod</div>
-    <div class="card">Toaster</div>
-    <div class="card">Torn Book</div>
-    <div class="card">Torn Blanket</div>
-    <div class="card">Turbo Pump</div>
-    <div class="card">Unusable Weapon</div>
-    <div class="card">Vase</div>
-    <div class="card">Very Comfortable Pillow</div>
-    <div class="card">Volcanic Rock</div>
-    <div class="card">Voltage Converter</div>
     <div class="card">Water Filter</div>
-    <div class="card">Water Pump</div>
+    <div class="card">Voltage Converter</div>
     <div class="card">Wires</div>
   </div>
 </section>
 
-<section class="mb-8">
-  <h2 class="text-2xl font-bold mb-4">Loadout-Vorschläge</h2>
-  <div class="grid grid-cols-1 gap-4">
+<section id="loadouts">
+  <h2 class="text-3xl font-bold mb-4">Loadout-Vorschläge</h2>
+  <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <div class="card">
-      <h3 class="font-semibold">Sniper Setup</h3>
+      <h3 class="font-semibold text-xl mb-1">Sniper Setup</h3>
       <p>Waffe: Il Toro / Aufsätze: Silencer III, Stable Stock III, Extended Medium Mag III</p>
     </div>
     <div class="card">
-      <h3 class="font-semibold">Assault Setup</h3>
+      <h3 class="font-semibold text-xl mb-1">Assault Setup</h3>
       <p>Waffe: Equalizer / Aufsätze: Compensator II, Angled Grip II, Extended Light Mag II</p>
     </div>
     <div class="card">
-      <h3 class="font-semibold">Support Setup</h3>
+      <h3 class="font-semibold text-xl mb-1">Support Setup</h3>
       <p>Waffe: Rattler / Aufsätze: Shotgun Choke II, Padded Stock, Extended Shotgun Mag II</p>
     </div>
   </div>
 </section>
 
-<footer class="text-center mt-12 text-gray-500">
+</main>
+
+<footer class="text-center mt-12 text-gray-400">
   <p>&copy; 2026 Arc Raiders Guide</p>
 </footer>
 
