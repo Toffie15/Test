@@ -3,180 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arc Raiders Kompendium</title>
+    <title>Arc Raiders – Komplettguide</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #111; color: #eee; }
-        header { background: #1f1f1f; padding: 20px; text-align: center; }
-        section { padding: 20px; margin: 0 10px; border-bottom: 1px solid #333; }
-        h1, h2, h3 { color: #f0a500; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
-        .card { background: #222; padding: 15px; border-radius: 8px; }
-        img { max-width: 100%; border-radius: 4px; }
-        .weak { color: #e74c3c; }
-        .strong { color: #2ecc71; }
+        body { margin: 0; font-family: Inter, Arial, sans-serif; background: #0f1115; color: #e6e6e6; }
+        header { background: linear-gradient(135deg, #1b1f2a, #0f1115); padding: 40px 20px; text-align: center; }
+        section { padding: 40px 20px; max-width: 1200px; margin: auto; }
+        h1, h2, h3 { color: #f5b942; }
+        p { line-height: 1.6; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+        .card { background: #1b1f2a; border-radius: 14px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .card img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; }
+        footer { text-align: center; padding: 30px; background: #0b0d12; color: #888; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Arc Raiders – Vollständiger Guide</h1>
-    <p>Alles über Arcs, Waffen, Items und Loadouts</p>
+    <h1>ARC RAIDERS</h1>
+    <p>Kompletter Guide – Arcs, Waffen, Items & Loadouts</p>
 </header>
 
-<section id="was-ist-das">
+<section>
     <h2>Was ist Arc Raiders?</h2>
     <p>
-        Arc Raiders ist ein kooperativer Third-Person-Extraction-Shooter von Embark Studios, veröffentlicht 2025. Spieler
-        begeben sich „Topside“, um Ressourcen zu sammeln und gegen KI-Gegner (“Arcs”) sowie andere Spieler zu kämpfen.
-        Es kombiniert Team-Strategie, High-Risk-PvE und PvP-Elemente in offenen Arenen. :contentReference[oaicite:0]{index=0}
+        Arc Raiders ist ein kooperativer Third‑Person‑Extraction‑Shooter von Embark Studios.
+        Spieler betreten die Oberfläche („Topside“), kämpfen gegen KI‑Maschinen (Arcs)
+        und andere Spieler, sammeln Beute und extrahieren lebend.
     </p>
 </section>
 
-<section id="arcs">
+<section>
     <h2>Arcs – Gegner & Schwächen</h2>
     <div class="grid">
-        <div class="card">
-            <h3>Wasp</h3>
-            <img src="PLACEHOLDER_WASP_IMAGE.jpg" alt="Wasp ARC">
-            <p class="weak">Schwachpunkte: Antriebsdüsen</p>
-            <p>Leicht, schnell – fällt bei Dauerfeuer schnell um.</p>
-        </div>
-        <div class="card">
-            <h3>Hornet</h3>
-            <img src="PLACEHOLDER_HORNET_IMAGE.jpg" alt="Hornet ARC">
-            <p class="weak">Schwachpunkte: Rücken-Thruster</p>
-            <p>Elektrisch, weicht viel aus – Gegenfeuer über Kopf.</p>
-        </div>
-        <div class="card">
-            <h3>Pop</h3>
-            <img src="PLACEHOLDER_POP_IMAGE.jpg" alt="Pop ARC">
-            <p class="weak">Zentrum im Inneren</p>
-            <p>Rollt, dann Flammenstoß – schnell ausschalten.</p>
-        </div>
-        <div class="card">
-            <h3>Leaper</h3>
-            <img src="PLACEHOLDER_LEAPER_IMAGE.jpg" alt="Leaper ARC">
-            <p class="weak">Augen & Gelenke</p>
-            <p>Springt nah ran – Beine zerstören verlangsamt ihn.</p>
-        </div>
-        <div class="card">
-            <h3>Bastion</h3>
-            <img src="PLACEHOLDER_BASTION_IMAGE.jpg" alt="Bastion ARC">
-            <p class="strong">Sehr gepanzert</p>
-            <p>Front rau, Flanke anfällig – seitlich attackieren.</p>
-        </div>
-        <div class="card">
-            <h3>Bombardier</h3>
-            <img src="PLACEHOLDER_BOMBARDIER_IMAGE.jpg" alt="Bombardier ARC">
-            <p class="weak">Joints & Eye</p>
-            <p>Artillerie-ARC mit großer Reichweite – Drohnen zuerst.</p>
-        </div>
-        <div class="card">
-            <h3>Rocketeer</h3>
-            <img src="PLACEHOLDER_ROCKETEER_IMAGE.jpg" alt="Rocketeer ARC">
-            <p>Fliegt, feuert Raketen – bei Nähe schwer.</p>
-        </div>
-        <div class="card">
-            <h3>Queen</h3>
-            <img src="PLACEHOLDER_QUEEN_IMAGE.jpg" alt="Queen ARC">
-            <p class="strong">Boss-ARC</p>
-            <p>Extrem robust, heftiges Feuer – Fokus Team-Koordination.</p>
-        </div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Wasp"><h3>Wasp</h3><p>Schneller Luft‑ARC. Schwach an Triebwerken.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Hornet"><h3>Hornet</h3><p>Elektrischer Flug‑ARC. Rücken‑Thruster angreifen.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Snitch"><h3>Snitch</h3><p>Alarm‑ARC. Zerstören, bevor er Verstärkung ruft.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Fireball"><h3>Fireball</h3><p>Explosiv. Abstand halten, Core treffen.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Pop"><h3>Pop</h3><p>Rollender ARC. Inneren Kern zerstören.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Tick"><h3>Tick</h3><p>Kleiner Selbstmord‑ARC. Ein Schuss reicht.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Turret"><h3>Turret</h3><p>Stationär. Seitlich oder von hinten.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Sentinel"><h3>Sentinel</h3><p>Schwere Einheit. Gelenke fokussieren.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Surveyor"><h3>Surveyor</h3><p>Aufklärer. Erst ausschalten.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Leaper"><h3>Leaper</h3><p>Springt aggressiv. Beine zerstören.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Rocketeer"><h3>Rocketeer</h3><p>Raketen‑ARC. Distanz wahren.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Bastion"><h3>Bastion</h3><p>Extrem gepanzert. Flankenangriff.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Bombardier"><h3>Bombardier</h3><p>Artillerie. Drohnen zuerst.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Queen"><h3>Queen</h3><p>Boss‑ARC. Team‑Koordination nötig.</p></div>
     </div>
-    <p>Die Arcs sind oft gepanzert – flankiere und ziel auf Schwachpunkte für schnellen Erfolg. :contentReference[oaicite:1]{index=1}</p>
 </section>
 
-<section id="waffen">
-    <h2>Waffen – Überblick & Empfehlungen</h2>
+<section>
+    <h2>Waffen – Alle Modelle</h2>
     <div class="grid">
-
-        <!-- Illustrative examples, more can be added -->
-        <div class="card">
-            <h3>Anvil</h3>
-            <img src="PLACEHOLDER_ANVIL_IMAGE.jpg" alt="Anvil Weapon">
-            <p>Hand Cannon – hohe Durchschlagskraft.</p>
-        </div>
-        <div class="card">
-            <h3>Aphelion</h3>
-            <img src="PLACEHOLDER_APHELION_IMAGE.jpg" alt="Aphelion Weapon">
-            <p>Legendary Battle Rifle – starke Energie-Schüsse. :contentReference[oaicite:2]{index=2}</p>
-        </div>
-        <div class="card">
-            <h3>Bettina</h3>
-            <img src="PLACEHOLDER_BETTINA_IMAGE.jpg" alt="Bettina Weapon">
-            <p>Assault Rifle – guter Allrounder.</p>
-        </div>
-        <div class="card">
-            <h3>Osprey</h3>
-            <img src="PLACEHOLDER_OSPREY_IMAGE.jpg" alt="Osprey Weapon">
-            <p>Sniper – hohe Präzision auf Distanz.</p>
-        </div>
-        <div class="card">
-            <h3>Vulcano</h3>
-            <img src="PLACEHOLDER_VULCANO_IMAGE.jpg" alt="Vulcano Weapon">
-            <p>Shotgun – extrem stark im Nahkampf.</p>
-        </div>
-        <div class="card">
-            <h3>Rattler</h3>
-            <img src="PLACEHOLDER_RATTLER_IMAGE.jpg" alt="Rattler Weapon">
-            <p>SMG – hohe Feuerrate.</p>
-        </div>
-
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Anvil"><h3>Anvil</h3><p>Handkanone – extrem hoher Schaden.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Aphelion"><h3>Aphelion</h3><p>Energie‑Battle‑Rifle.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Arpeggio"><h3>Arpeggio</h3><p>SMG – hohe Feuerrate.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Bettina"><h3>Bettina</h3><p>Allround‑Assault‑Rifle.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Bobcat"><h3>Bobcat</h3><p>Stabiles Sturmgewehr.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Burletta"><h3>Burletta</h3><p>Präzise Semi‑Auto.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Equalizer"><h3>Equalizer</h3><p>Ausgeglichenes Rifle.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Ferro"><h3>Ferro</h3><p>Hohe Durchschlagskraft.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Hairpin"><h3>Hairpin</h3><p>Einsteiger‑Waffe.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Hullcracker"><h3>Hullcracker</h3><p>Panzerbrecher.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Il+Toro"><h3>Il Toro</h3><p>Shotgun – brutal im Nahkampf.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Jupiter"><h3>Jupiter</h3><p>Explosiv‑Waffe.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Kettle"><h3>Kettle</h3><p>Unterstützungs‑Tool.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Osprey"><h3>Osprey</h3><p>Sniper‑Rifle.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Rattler"><h3>Rattler</h3><p>Schnelle SMG.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Renegade"><h3>Renegade</h3><p>Hochriskant, hoher DPS.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Stitcher"><h3>Stitcher</h3><p>Präzisions‑Waffe.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Tempest"><h3>Tempest</h3><p>Automatik‑Rifle.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Torrente"><h3>Torrente</h3><p>Feuer‑basierter Schaden.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Venator"><h3>Venator</h3><p>Jagd‑Rifle.</p></div>
+        <div class="card"><img src="https://via.placeholder.com/400x250?text=Vulcano"><h3>Vulcano</h3><p>Shotgun – Meta‑Waffe.</p></div>
     </div>
-
-    <h3>Empfohlene Waffen-Tierliste</h3>
-    <ul>
-        <li><strong>S-Tier:</strong> Anvil, Bettina, Osprey, Renegade, Vulcano, Ferro, Venator</li>
-        <li><strong>A-Tier:</strong> Torrente, Il Toro</li>
-        <li><strong>B-Tier:</strong> Tempest, Bobcat, Burletta</li>
-        <li><strong>C-Tier:</strong> Arpeggio, Stitcher, Rattler, Kettle</li>
-        <li><strong>D-Tier:</strong> Jupiter, Hairpin</li>
-    </ul>
-    <p>Tier basiert auf Schaden, Rüstungsdurchdringung und Nützlichkeit im Raid. :contentReference[oaicite:3]{index=3}</p>
 </section>
 
-<section id="items">
-    <h2>Items – Material & Nutzen</h2>
-    <p>Es gibt hunderte Gegenstände: Waffen, Munition, Materialien, Tränke, Modifikationen und mehr. Viele werden zum Craften genutzt oder bringen Boni.</p>
-    <p>Beispiele:</p>
-    <ul>
-        <li>ARC Alloy – Material für Waffen/Mods</li>
-        <li>Advanced Electrical Components – seltenes Bauteil</li>
-        <li>Adrenaline Shot – schnelle Heilspritze</li>
-        <li>Backpack Charms & Cosmetics</li>
-    </ul>
-    <p>Komplette Liste: über 400 Items verfügbar. :contentReference[oaicite:4]{index=4}</p>
+<section>
+    <h2>Loadout‑Beispiele</h2>
+    <div class="grid">
+        <div class="card"><h3>Solo PvE</h3><p>Bettina + Osprey<br>Heilitems + Granaten</p></div>
+        <div class="card"><h3>PvP Aggressiv</h3><p>Vulcano + Renegade<br>Flash + Shield</p></div>
+        <div class="card"><h3>ARC‑Jäger</h3><p>Aphelion + Anvil<br>Armor‑Piercing Ammo</p></div>
+    </div>
 </section>
 
-<section id="loadouts">
-    <h2>Loadout-Vorschläge</h2>
-
-    <div class="card">
-        <h3>Balanced PvE</h3>
-        <p><strong>Primär:</strong> Bettina / Ferro</p>
-        <p><strong>Sekundär:</strong> Osprey</p>
-        <p><strong>Utilities:</strong> Heilitems, Smoke, Frag-Granaten</p>
-    </div>
-
-    <div class="card">
-        <h3>Aggressiv PvP</h3>
-        <p><strong>Primär:</strong> Vulcano</p>
-        <p><strong>Sekundär:</strong> Renegade</p>
-        <p><strong>Utilities:</strong> Flashbang, Shield</p>
-    </div>
-
-    <div class="card">
-        <h3>Arc-Jagd</h3>
-        <p><strong>Primär:</strong> Aphelion (Energie-Rifle)</p>
-        <p><strong>Sekundär:</strong> Anvil</p>
-        <p><strong>Utilities:</strong> Armor-Piercing Ammo, Bandagen</p>
-    </div>
-
-    <p>Tipp: Je nach Rolle & Karte anpassen.</p>
-</section>
-
-<footer style="text-align:center; padding: 15px; font-size: 14px;">
-    <p>&copy; Arc Raiders Guide – Daten aus Wiki & Community Quelllisten</p>
+<footer>
+    <p>Arc Raiders Fan‑Guide – nicht offiziell</p>
 </footer>
 
 </body>
