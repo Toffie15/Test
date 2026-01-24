@@ -1,121 +1,182 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arc Raiders Guide</title>
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/tailwind.min.css" rel="stylesheet">
-<style>
-  body { font-family: 'Inter', sans-serif; background-color: #121212; color: #f5f5f5; }
-  h1, h2, h3 { color: #facc15; }
-  a { color: #38bdf8; transition: color 0.2s; }
-  a:hover { color: #facc15; }
-  .card { background-color: #1e1e1e; border-radius: 12px; padding: 1.5rem; transition: transform 0.2s, box-shadow 0.2s; }
-  .card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arc Raiders Kompendium</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #111; color: #eee; }
+        header { background: #1f1f1f; padding: 20px; text-align: center; }
+        section { padding: 20px; margin: 0 10px; border-bottom: 1px solid #333; }
+        h1, h2, h3 { color: #f0a500; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+        .card { background: #222; padding: 15px; border-radius: 8px; }
+        img { max-width: 100%; border-radius: 4px; }
+        .weak { color: #e74c3c; }
+        .strong { color: #2ecc71; }
+    </style>
 </head>
-<body class="p-6">
+<body>
 
-<header class="mb-8">
-  <div class="flex flex-col md:flex-row md:justify-between md:items-center">
-    <h1 class="text-4xl font-bold mb-2 md:mb-0">Arc Raiders Guide</h1>
-    <nav class="space-x-4 text-gray-400 text-lg">
-      <a href="#arcs">Arcs</a>
-      <a href="#weapons">Waffen</a>
-      <a href="#items">Items</a>
-      <a href="#loadouts">Loadouts</a>
-    </nav>
-  </div>
-  <p class="mt-2 text-gray-400 text-lg">Alles über Arcs, Waffen, Items und Loadouts</p>
+<header>
+    <h1>Arc Raiders – Vollständiger Guide</h1>
+    <p>Alles über Arcs, Waffen, Items und Loadouts</p>
 </header>
 
-<main class="space-y-12">
-
-<section id="arcs">
-  <h2 class="text-3xl font-bold mb-4">Arcs und ihre Schwächen</h2>
-  <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-    <div class="card"><h3 class="font-semibold text-xl mb-1">Wasp</h3><p>Schwach gegen: Elektrowaffen, schnelle Angriffe</p></div>
-    <div class="card"><h3 class="font-semibold text-xl mb-1">Hornet</h3><p>Schwach gegen: Präzisionsschüsse, Feuer</p></div>
-    <div class="card"><h3 class="font-semibold text-xl mb-1">Snitch</h3><p>Schwach gegen: EMP, Stun-Effekte</p></div>
-    <div class="card"><h3 class="font-semibold text-xl mb-1">Fireball</h3><p>Schwach gegen: Wasser und Kälte</p></div>
-    <div class="card"><h3 class="font-semibold text-xl mb-1">Pop</h3><p>Schwach gegen: Explosiv- und Schockwaffen</p></div>
-    <div class="card"><h3 class="font-semibold text-xl mb-1">Tick</h3><p>Schwach gegen: Präzision und Scharfschützenwaffen</p></div>
-    <div class="card"><h3 class="font-semibold text-xl mb-1">Turret</h3><p>Schwach gegen: Hack-Tools, EMP</p></div>
-    <div class="card"><h3 class="font-semibold text-xl mb-1">Sentinel</h3><p>Schwach gegen: Kinetische Waffen</p></div>
-  </div>
+<section id="was-ist-das">
+    <h2>Was ist Arc Raiders?</h2>
+    <p>
+        Arc Raiders ist ein kooperativer Third-Person-Extraction-Shooter von Embark Studios, veröffentlicht 2025. Spieler
+        begeben sich „Topside“, um Ressourcen zu sammeln und gegen KI-Gegner (“Arcs”) sowie andere Spieler zu kämpfen.
+        Es kombiniert Team-Strategie, High-Risk-PvE und PvP-Elemente in offenen Arenen. :contentReference[oaicite:0]{index=0}
+    </p>
 </section>
 
-<section id="weapons">
-  <h2 class="text-3xl font-bold mb-4">Waffen & Mods</h2>
-  <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-    <div class="card">Anvil</div>
-    <div class="card">Aphelion</div>
-    <div class="card">Arpeggio</div>
-    <div class="card">Bettina</div>
-    <div class="card">Bobcat</div>
-    <div class="card">Burletta</div>
-    <div class="card">Equalizer</div>
-    <div class="card">Ferro</div>
-    <div class="card">Hairpin</div>
-    <div class="card">Hullcracker</div>
-    <div class="card">Il Toro</div>
-    <div class="card">Jupiter</div>
-    <div class="card">Kettle</div>
-    <div class="card">Osprey</div>
-    <div class="card">Rattler</div>
-    <div class="card">Renegade</div>
-    <div class="card">Stitcher</div>
-    <div class="card">Tempest</div>
-    <div class="card">Torrente</div>
-    <div class="card">Venator</div>
-    <div class="card">Vulcano</div>
-  </div>
+<section id="arcs">
+    <h2>Arcs – Gegner & Schwächen</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Wasp</h3>
+            <img src="PLACEHOLDER_WASP_IMAGE.jpg" alt="Wasp ARC">
+            <p class="weak">Schwachpunkte: Antriebsdüsen</p>
+            <p>Leicht, schnell – fällt bei Dauerfeuer schnell um.</p>
+        </div>
+        <div class="card">
+            <h3>Hornet</h3>
+            <img src="PLACEHOLDER_HORNET_IMAGE.jpg" alt="Hornet ARC">
+            <p class="weak">Schwachpunkte: Rücken-Thruster</p>
+            <p>Elektrisch, weicht viel aus – Gegenfeuer über Kopf.</p>
+        </div>
+        <div class="card">
+            <h3>Pop</h3>
+            <img src="PLACEHOLDER_POP_IMAGE.jpg" alt="Pop ARC">
+            <p class="weak">Zentrum im Inneren</p>
+            <p>Rollt, dann Flammenstoß – schnell ausschalten.</p>
+        </div>
+        <div class="card">
+            <h3>Leaper</h3>
+            <img src="PLACEHOLDER_LEAPER_IMAGE.jpg" alt="Leaper ARC">
+            <p class="weak">Augen & Gelenke</p>
+            <p>Springt nah ran – Beine zerstören verlangsamt ihn.</p>
+        </div>
+        <div class="card">
+            <h3>Bastion</h3>
+            <img src="PLACEHOLDER_BASTION_IMAGE.jpg" alt="Bastion ARC">
+            <p class="strong">Sehr gepanzert</p>
+            <p>Front rau, Flanke anfällig – seitlich attackieren.</p>
+        </div>
+        <div class="card">
+            <h3>Bombardier</h3>
+            <img src="PLACEHOLDER_BOMBARDIER_IMAGE.jpg" alt="Bombardier ARC">
+            <p class="weak">Joints & Eye</p>
+            <p>Artillerie-ARC mit großer Reichweite – Drohnen zuerst.</p>
+        </div>
+        <div class="card">
+            <h3>Rocketeer</h3>
+            <img src="PLACEHOLDER_ROCKETEER_IMAGE.jpg" alt="Rocketeer ARC">
+            <p>Fliegt, feuert Raketen – bei Nähe schwer.</p>
+        </div>
+        <div class="card">
+            <h3>Queen</h3>
+            <img src="PLACEHOLDER_QUEEN_IMAGE.jpg" alt="Queen ARC">
+            <p class="strong">Boss-ARC</p>
+            <p>Extrem robust, heftiges Feuer – Fokus Team-Koordination.</p>
+        </div>
+    </div>
+    <p>Die Arcs sind oft gepanzert – flankiere und ziel auf Schwachpunkte für schnellen Erfolg. :contentReference[oaicite:1]{index=1}</p>
+</section>
+
+<section id="waffen">
+    <h2>Waffen – Überblick & Empfehlungen</h2>
+    <div class="grid">
+
+        <!-- Illustrative examples, more can be added -->
+        <div class="card">
+            <h3>Anvil</h3>
+            <img src="PLACEHOLDER_ANVIL_IMAGE.jpg" alt="Anvil Weapon">
+            <p>Hand Cannon – hohe Durchschlagskraft.</p>
+        </div>
+        <div class="card">
+            <h3>Aphelion</h3>
+            <img src="PLACEHOLDER_APHELION_IMAGE.jpg" alt="Aphelion Weapon">
+            <p>Legendary Battle Rifle – starke Energie-Schüsse. :contentReference[oaicite:2]{index=2}</p>
+        </div>
+        <div class="card">
+            <h3>Bettina</h3>
+            <img src="PLACEHOLDER_BETTINA_IMAGE.jpg" alt="Bettina Weapon">
+            <p>Assault Rifle – guter Allrounder.</p>
+        </div>
+        <div class="card">
+            <h3>Osprey</h3>
+            <img src="PLACEHOLDER_OSPREY_IMAGE.jpg" alt="Osprey Weapon">
+            <p>Sniper – hohe Präzision auf Distanz.</p>
+        </div>
+        <div class="card">
+            <h3>Vulcano</h3>
+            <img src="PLACEHOLDER_VULCANO_IMAGE.jpg" alt="Vulcano Weapon">
+            <p>Shotgun – extrem stark im Nahkampf.</p>
+        </div>
+        <div class="card">
+            <h3>Rattler</h3>
+            <img src="PLACEHOLDER_RATTLER_IMAGE.jpg" alt="Rattler Weapon">
+            <p>SMG – hohe Feuerrate.</p>
+        </div>
+
+    </div>
+
+    <h3>Empfohlene Waffen-Tierliste</h3>
+    <ul>
+        <li><strong>S-Tier:</strong> Anvil, Bettina, Osprey, Renegade, Vulcano, Ferro, Venator</li>
+        <li><strong>A-Tier:</strong> Torrente, Il Toro</li>
+        <li><strong>B-Tier:</strong> Tempest, Bobcat, Burletta</li>
+        <li><strong>C-Tier:</strong> Arpeggio, Stitcher, Rattler, Kettle</li>
+        <li><strong>D-Tier:</strong> Jupiter, Hairpin</li>
+    </ul>
+    <p>Tier basiert auf Schaden, Rüstungsdurchdringung und Nützlichkeit im Raid. :contentReference[oaicite:3]{index=3}</p>
 </section>
 
 <section id="items">
-  <h2 class="text-3xl font-bold mb-4">Non-Weapons / Items</h2>
-  <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    <div class="card">Advanced ARC Powercell</div>
-    <div class="card">Adrenaline Shot</div>
-    <div class="card">Agave Juice</div>
-    <div class="card">Alarm Clock</div>
-    <div class="card">Bandage</div>
-    <div class="card">Battery</div>
-    <div class="card">Binoculars</div>
-    <div class="card">Fireball Burner</div>
-    <div class="card">Hornet Driver</div>
-    <div class="card">Leaper Pulse Unit</div>
-    <div class="card">Queen Reactor</div>
-    <div class="card">Rubber Duck</div>
-    <div class="card">Tick Pod</div>
-    <div class="card">Water Filter</div>
-    <div class="card">Voltage Converter</div>
-    <div class="card">Wires</div>
-  </div>
+    <h2>Items – Material & Nutzen</h2>
+    <p>Es gibt hunderte Gegenstände: Waffen, Munition, Materialien, Tränke, Modifikationen und mehr. Viele werden zum Craften genutzt oder bringen Boni.</p>
+    <p>Beispiele:</p>
+    <ul>
+        <li>ARC Alloy – Material für Waffen/Mods</li>
+        <li>Advanced Electrical Components – seltenes Bauteil</li>
+        <li>Adrenaline Shot – schnelle Heilspritze</li>
+        <li>Backpack Charms & Cosmetics</li>
+    </ul>
+    <p>Komplette Liste: über 400 Items verfügbar. :contentReference[oaicite:4]{index=4}</p>
 </section>
 
 <section id="loadouts">
-  <h2 class="text-3xl font-bold mb-4">Loadout-Vorschläge</h2>
-  <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <h2>Loadout-Vorschläge</h2>
+
     <div class="card">
-      <h3 class="font-semibold text-xl mb-1">Sniper Setup</h3>
-      <p>Waffe: Il Toro / Aufsätze: Silencer III, Stable Stock III, Extended Medium Mag III</p>
+        <h3>Balanced PvE</h3>
+        <p><strong>Primär:</strong> Bettina / Ferro</p>
+        <p><strong>Sekundär:</strong> Osprey</p>
+        <p><strong>Utilities:</strong> Heilitems, Smoke, Frag-Granaten</p>
     </div>
+
     <div class="card">
-      <h3 class="font-semibold text-xl mb-1">Assault Setup</h3>
-      <p>Waffe: Equalizer / Aufsätze: Compensator II, Angled Grip II, Extended Light Mag II</p>
+        <h3>Aggressiv PvP</h3>
+        <p><strong>Primär:</strong> Vulcano</p>
+        <p><strong>Sekundär:</strong> Renegade</p>
+        <p><strong>Utilities:</strong> Flashbang, Shield</p>
     </div>
+
     <div class="card">
-      <h3 class="font-semibold text-xl mb-1">Support Setup</h3>
-      <p>Waffe: Rattler / Aufsätze: Shotgun Choke II, Padded Stock, Extended Shotgun Mag II</p>
+        <h3>Arc-Jagd</h3>
+        <p><strong>Primär:</strong> Aphelion (Energie-Rifle)</p>
+        <p><strong>Sekundär:</strong> Anvil</p>
+        <p><strong>Utilities:</strong> Armor-Piercing Ammo, Bandagen</p>
     </div>
-  </div>
+
+    <p>Tipp: Je nach Rolle & Karte anpassen.</p>
 </section>
 
-</main>
-
-<footer class="text-center mt-12 text-gray-400">
-  <p>&copy; 2026 Arc Raiders Guide</p>
+<footer style="text-align:center; padding: 15px; font-size: 14px;">
+    <p>&copy; Arc Raiders Guide – Daten aus Wiki & Community Quelllisten</p>
 </footer>
 
 </body>
