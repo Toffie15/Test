@@ -1,95 +1,230 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arc Raiders – Komplettguide</title>
-    <style>
-        body { margin: 0; font-family: Inter, Arial, sans-serif; background: #0f1115; color: #e6e6e6; }
-        header { background: linear-gradient(135deg, #1b1f2a, #0f1115); padding: 40px 20px; text-align: center; }
-        section { padding: 40px 20px; max-width: 1200px; margin: auto; }
-        h1, h2, h3 { color: #f5b942; }
-        p { line-height: 1.6; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-        .card { background: #1b1f2a; border-radius: 14px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-        .card img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; }
-        footer { text-align: center; padding: 30px; background: #0b0d12; color: #888; }
-    </style>
+  <meta charset="UTF-8" />
+  <title>ARC Raiders – Komplettguide</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0b0e14;
+      --card: #151a24;
+      --accent: #4fd1c5;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: linear-gradient(180deg, #0b0e14, #0e1220);
+      color: var(--text);
+    }
+    header {
+      padding: 3rem 1.5rem;
+      text-align: center;
+      background: radial-gradient(circle at top, #1f2937, #0b0e14);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.8rem;
+      letter-spacing: 0.04em;
+    }
+    header p {
+      margin-top: 0.75rem;
+      color: var(--muted);
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(11,14,20,0.9);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #1f2937;
+      z-index: 10;
+    }
+    nav ul {
+      display: flex;
+      gap: 1rem;
+      list-style: none;
+      padding: 0.75rem 1rem;
+      margin: 0;
+      overflow-x: auto;
+    }
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+    nav a:hover { color: var(--accent); }
+    section {
+      padding: 3rem 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid #1f2937;
+      border-radius: 14px;
+      padding: 1.25rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+    .img {
+      width: 100%;
+      height: 140px;
+      background: linear-gradient(135deg, #1f2937, #111827);
+      border-radius: 10px;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #1f2937;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    th { color: var(--accent); }
+    footer {
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid #1f2937;
+    }
+  </style>
 </head>
 <body>
 
 <header>
-    <h1>ARC RAIDERS</h1>
-    <p>Kompletter Guide – Arcs, Waffen, Items & Loadouts</p>
+  <h1>ARC Raiders – Komplettübersicht</h1>
+  <p>Moderne, strukturierte Fan‑Übersicht zu ARC Raiders. Fokus auf Arcs, Gegner, Waffen, Items und Loadouts. Neutral gehalten, ohne Spekulationen oder Werte, die nicht offiziell bestätigt sind.</p>
 </header>
 
-<section>
-    <h2>Was ist Arc Raiders?</h2>
-    <p>
-        Arc Raiders ist ein kooperativer Third‑Person‑Extraction‑Shooter von Embark Studios.
-        Spieler betreten die Oberfläche („Topside“), kämpfen gegen KI‑Maschinen (Arcs)
-        und andere Spieler, sammeln Beute und extrahieren lebend.
-    </p>
+<nav>
+  <ul>
+    <li><a href="#wasistdas">Was ist ARC Raiders?</a></li>
+    <li><a href="#arcs">Arcs & Schwächen</a></li>
+    <li><a href="#waffen">Waffen</a></li>
+    <li><a href="#items">Items</a></li>
+    <li><a href="#loadouts">Loadouts</a></li>
+    <li><a href="#gegner">Bots / Gegner</a></li>
+  </ul>
+</nav>
+
+<section id="wasistdas">
+  <h2>Was ist ARC Raiders?</h2>
+  <p>
+    ARC Raiders ist ein kooperativer PvPvE‑Shooter in einer postapokalyptischen Welt. Spieler treten als Raider gegen die sogenannten ARCs an – autonome Maschinen, die die Oberfläche dominieren. Ziel ist es, Ausrüstung zu finden, Missionen zu erfüllen und lebend zu extrahieren.
+  </p>
 </section>
 
-<section>
-    <h2>Arcs – Gegner & Schwächen</h2>
-    <div class="grid">
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Wasp"><h3>Wasp</h3><p>Schneller Luft‑ARC. Schwach an Triebwerken.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Hornet"><h3>Hornet</h3><p>Elektrischer Flug‑ARC. Rücken‑Thruster angreifen.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Snitch"><h3>Snitch</h3><p>Alarm‑ARC. Zerstören, bevor er Verstärkung ruft.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Fireball"><h3>Fireball</h3><p>Explosiv. Abstand halten, Core treffen.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Pop"><h3>Pop</h3><p>Rollender ARC. Inneren Kern zerstören.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Tick"><h3>Tick</h3><p>Kleiner Selbstmord‑ARC. Ein Schuss reicht.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Turret"><h3>Turret</h3><p>Stationär. Seitlich oder von hinten.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Sentinel"><h3>Sentinel</h3><p>Schwere Einheit. Gelenke fokussieren.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Surveyor"><h3>Surveyor</h3><p>Aufklärer. Erst ausschalten.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Leaper"><h3>Leaper</h3><p>Springt aggressiv. Beine zerstören.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Rocketeer"><h3>Rocketeer</h3><p>Raketen‑ARC. Distanz wahren.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Bastion"><h3>Bastion</h3><p>Extrem gepanzert. Flankenangriff.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Bombardier"><h3>Bombardier</h3><p>Artillerie. Drohnen zuerst.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Queen"><h3>Queen</h3><p>Boss‑ARC. Team‑Koordination nötig.</p></div>
-    </div>
+<section id="arcs">
+  <h2>Arcs – Typen & Schwächen</h2>
+  <div class="grid">
+    <div class="card"><div class="img">ARC Bild</div><h3>Anvil</h3><p>Schwer gepanzerter ARC. Hohe Frontpanzerung. Flanken sind anfälliger.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Aphelion</h3><p>Präziser Fernkampf‑ARC. Schwächer bei Nahkampf‑Überwältigung.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Arpeggio</h3><p>Schneller Unterstützungs‑ARC. Geringere Haltbarkeit.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Bettina</h3><p>Mittlere Panzerung, vielseitiges Verhalten.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Bobcat</h3><p>Agiler ARC. Anfällig für Dauerfeuer.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Burletta</h3><p>Explosiver Schadensoutput. Geringe Mobilität.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Equalizer</h3><p>Ausbalancierter Gegner ohne klare Spezialisierung.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Ferro</h3><p>Stark gepanzert. Schwächen zeigen sich nach Panzerbruch.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Hairpin</h3><p>Extrem mobil. Präzisionswaffen empfohlen.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Hullcracker</h3><p>Panzerknacker‑Einheit. Hoher Schaden, langsam.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Il Toro</h3><p>Direkter Frontalangriff. Seitliche Schwachpunkte.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Jupiter</h3><p>Elektronische Angriffe. Empfindlich gegen Unterbrechung.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Kettle</h3><p>Gebietsverweigerung. Schwach bei Bewegungskämpfen.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Osprey</h3><p>Luftgestützt. Bodenfeuer effektiv.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Rattler</h3><p>Schnelle Serienangriffe. Niedrige Stabilität.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Renegade</h3><p>Unberechenbares Verhalten. Fokusfeuer notwendig.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Stitcher</h3><p>Repariert andere ARCs. Prioritätsziel.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Tempest</h3><p>Flächenangriffe. Deckung zwingend.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Torrente</h3><p>Dauerfeuer. Überhitzt bei langem Einsatz.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Venator</h3><p>Jagdverhalten. Lockt Spieler aus Deckung.</p></div>
+    <div class="card"><div class="img">ARC Bild</div><h3>Vulcano</h3><p>Explosiv‑ARC. Hohe Selbstgefährdung.</p></div>
+  </div>
 </section>
 
-<section>
-    <h2>Waffen – Alle Modelle</h2>
-    <div class="grid">
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Anvil"><h3>Anvil</h3><p>Handkanone – extrem hoher Schaden.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Aphelion"><h3>Aphelion</h3><p>Energie‑Battle‑Rifle.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Arpeggio"><h3>Arpeggio</h3><p>SMG – hohe Feuerrate.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Bettina"><h3>Bettina</h3><p>Allround‑Assault‑Rifle.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Bobcat"><h3>Bobcat</h3><p>Stabiles Sturmgewehr.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Burletta"><h3>Burletta</h3><p>Präzise Semi‑Auto.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Equalizer"><h3>Equalizer</h3><p>Ausgeglichenes Rifle.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Ferro"><h3>Ferro</h3><p>Hohe Durchschlagskraft.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Hairpin"><h3>Hairpin</h3><p>Einsteiger‑Waffe.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Hullcracker"><h3>Hullcracker</h3><p>Panzerbrecher.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Il+Toro"><h3>Il Toro</h3><p>Shotgun – brutal im Nahkampf.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Jupiter"><h3>Jupiter</h3><p>Explosiv‑Waffe.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Kettle"><h3>Kettle</h3><p>Unterstützungs‑Tool.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Osprey"><h3>Osprey</h3><p>Sniper‑Rifle.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Rattler"><h3>Rattler</h3><p>Schnelle SMG.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Renegade"><h3>Renegade</h3><p>Hochriskant, hoher DPS.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Stitcher"><h3>Stitcher</h3><p>Präzisions‑Waffe.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Tempest"><h3>Tempest</h3><p>Automatik‑Rifle.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Torrente"><h3>Torrente</h3><p>Feuer‑basierter Schaden.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Venator"><h3>Venator</h3><p>Jagd‑Rifle.</p></div>
-        <div class="card"><img src="https://via.placeholder.com/400x250?text=Vulcano"><h3>Vulcano</h3><p>Shotgun – Meta‑Waffe.</p></div>
-    </div>
+<section id="waffen">
+  <h2>Welche Waffen sind geeignet?</h2>
+  <p>Allgemein gilt: Panzerte ARCs erfordern Durchschlagskraft, mobile Ziele Präzision oder hohe Feuerrate.</p>
+  <table>
+    <tr><th>Waffentyp</th><th>Einsatz</th></tr>
+    <tr><td>Sturmgewehre</td><td>Allrounder gegen leichte bis mittlere ARCs</td></tr>
+    <tr><td>Präzisionsgewehre</td><td>Schwachstellen und Distanz</td></tr>
+    <tr><td>Schrotflinten</td><td>Nahkampf, Flankenangriffe</td></tr>
+    <tr><td>Explosivwaffen</td><td>Schwere ARCs, Gruppen</td></tr>
+  </table>
 </section>
 
-<section>
-    <h2>Loadout‑Beispiele</h2>
-    <div class="grid">
-        <div class="card"><h3>Solo PvE</h3><p>Bettina + Osprey<br>Heilitems + Granaten</p></div>
-        <div class="card"><h3>PvP Aggressiv</h3><p>Vulcano + Renegade<br>Flash + Shield</p></div>
-        <div class="card"><h3>ARC‑Jäger</h3><p>Aphelion + Anvil<br>Armor‑Piercing Ammo</p></div>
-    </div>
+<section id="items">
+  <h2>Items & Ausrüstung</h2>
+  <div class="grid">
+    <div class="card"><h3>Medkits</h3><p>Heilung und Überleben.</p></div>
+    <div class="card"><h3>Rüstungsteile</h3><p>Schutz vor direktem Schaden.</p></div>
+    <div class="card"><h3>Munition</h3><p>Limitierter Faktor in längeren Einsätzen.</p></div>
+    <div class="card"><h3>Utility‑Gadgets</h3><p>Situative Vorteile wie Ablenkung oder Kontrolle.</p></div>
+  </div>
+</section>
+
+<section id="loadouts">
+  <h2>Loadout‑Vorschläge</h2>
+  <div class="grid">
+    <div class="card"><h3>Solo‑Erkundung</h3><p>Sturmgewehr, leichte Rüstung, Medkits.</p></div>
+    <div class="card"><h3>ARC‑Jäger</h3><p>Präzisionsgewehr, Explosivoption, schwere Rüstung.</p></div>
+    <div class="card"><h3>Support</h3><p>Allround‑Waffe, Utility‑Items, Fokus auf Teamhilfe.</p></div>
+  </div>
+</section>
+
+<section id="gegner">
+  <h2>Bots / Gegner</h2>
+  <div class="grid">
+    <div class="card"><h3>Wasp</h3><p>Kleiner, schneller Gegner.</p></div>
+    <div class="card"><h3>Hornet</h3><p>Aggressiver Schwarm‑ARC.</p></div>
+    <div class="card"><h3>Snitch</h3><p>Alarmiert andere Einheiten.</p></div>
+    <div class="card"><h3>Fireball</h3><p>Explosiver Fernangriff.</p></div>
+    <div class="card"><h3>Pop</h3><p>Instabiler Kurzstrecken‑ARC.</p></div>
+    <div class="card"><h3>Tick</h3><p>Kleiner Selbstzerstörer.</p></div>
+    <div class="card"><h3>Turret</h3><p>Stationäre Verteidigung.</p></div>
+    <div class="card"><h3>Sentinel</h3><p>Schwere Bewachungseinheit.</p></div>
+    <div class="card"><h3>Surveyor</h3><p>Aufklärungs‑ARC.</p></div>
+    <div class="card"><h3>Leaper</h3><p>Sprungangriffe.</p></div>
+    <div class="card"><h3>Rocketeer</h3><p>Raketenbasierter Schaden.</p></div>
+    <div class="card"><h3>Bastion</h3><p>Extrem widerstandsfähig.</p></div>
+    <div class="card"><h3>Bombardier</h3><p>Flächenbombardement.</p></div>
+    <div class="card"><h3>Queen</h3><p>Boss‑Einheit mit Unterstützern.</p></div>
+  </div>
 </section>
 
 <footer>
-    <p>Arc Raiders Fan‑Guide – nicht offiziell</p>
+  <p>Fan‑Projekt. Keine offiziellen Daten. Platzhalter‑Bilder können durch echte Assets ersetzt werden.</p>
 </footer>
 
 </body>
