@@ -91,14 +91,10 @@
     .img {
       width: 100%;
       height: 140px;
-      background: linear-gradient(135deg, #1f2937, #111827);
+      object-fit: cover;
       border-radius: 10px;
       margin-bottom: 0.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      font-size: 0.8rem;
+      background: #111827;
     }
     table {
       width: 100%;
@@ -148,27 +144,37 @@
 <section id="arcs">
   <h2>Arcs – Typen & Schwächen</h2>
   <div class="grid">
-    <div class="card"><div class="img">https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Anvil-Level1.png</div><h3>Anvil</h3><p>Schwer gepanzerter ARC. Hohe Frontpanzerung. Flanken sind anfälliger.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Aphelion</h3><p>Präziser Fernkampf‑ARC. Schwächer bei Nahkampf‑Überwältigung.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Arpeggio</h3><p>Schneller Unterstützungs‑ARC. Geringere Haltbarkeit.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Bettina</h3><p>Mittlere Panzerung, vielseitiges Verhalten.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Bobcat</h3><p>Agiler ARC. Anfällig für Dauerfeuer.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Burletta</h3><p>Explosiver Schadensoutput. Geringe Mobilität.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Equalizer</h3><p>Ausbalancierter Gegner ohne klare Spezialisierung.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Ferro</h3><p>Stark gepanzert. Schwächen zeigen sich nach Panzerbruch.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Hairpin</h3><p>Extrem mobil. Präzisionswaffen empfohlen.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Hullcracker</h3><p>Panzerknacker‑Einheit. Hoher Schaden, langsam.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Il Toro</h3><p>Direkter Frontalangriff. Seitliche Schwachpunkte.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Jupiter</h3><p>Elektronische Angriffe. Empfindlich gegen Unterbrechung.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Kettle</h3><p>Gebietsverweigerung. Schwach bei Bewegungskämpfen.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Osprey</h3><p>Luftgestützt. Bodenfeuer effektiv.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Rattler</h3><p>Schnelle Serienangriffe. Niedrige Stabilität.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Renegade</h3><p>Unberechenbares Verhalten. Fokusfeuer notwendig.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Stitcher</h3><p>Repariert andere ARCs. Prioritätsziel.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Tempest</h3><p>Flächenangriffe. Deckung zwingend.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Torrente</h3><p>Dauerfeuer. Überhitzt bei langem Einsatz.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Venator</h3><p>Jagdverhalten. Lockt Spieler aus Deckung.</p></div>
-    <div class="card"><div class="img">ARC Bild</div><h3>Vulcano</h3><p>Explosiv‑ARC. Hohe Selbstgefährdung.</p></div>
+
+    <div class="card">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/main/images/Anvil-Level1.png" alt="Anvil ARC">
+      <h3>Anvil</h3>
+      <p>Schwer gepanzerter ARC. Hohe Frontpanzerung. Flanken sind anfälliger.</p>
+    </div>
+
+    <div class="card">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/main/images/Aphelion.png" alt="Aphelion ARC">
+      <h3>Aphelion</h3>
+      <p>Präziser Fernkampf-ARC. Schwächer bei Nahkampf-Überwältigung.</p>
+    </div>
+
+    <div class="card">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/main/images/Arpeggio.png" alt="Arpeggio ARC">
+      <h3>Arpeggio</h3>
+      <p>Schneller Unterstützungs-ARC. Geringere Haltbarkeit.</p>
+    </div>
+
+    <div class="card">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/main/images/Bettina.png" alt="Bettina ARC">
+      <h3>Bettina</h3>
+      <p>Mittlere Panzerung, vielseitiges Verhalten.</p>
+    </div>
+
+    <div class="card">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/main/images/Bobcat.png" alt="Bobcat ARC">
+      <h3>Bobcat</h3>
+      <p>Agiler ARC. Anfällig für Dauerfeuer.</p>
+    </div>
+
   </div>
 </section>
 
