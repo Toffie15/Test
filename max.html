@@ -83,7 +83,9 @@
       border-radius: 14px;
       padding: 1.25rem;
       box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      transition: transform 0.2s ease;
     }
+    .card:hover { transform: translateY(-4px); }
     .card h3 {
       margin-top: 0;
       margin-bottom: 0.5rem;
@@ -97,6 +99,13 @@
       background: #111827;
       padding: 8px;
     }
+    /* Farbverläufe nach Seltenheit / Typ */
+    .rarity.common { background: linear-gradient(135deg,#6b7280,#4b5563); }
+    .rarity.uncommon { background: linear-gradient(135deg,#10b981,#047857); }
+    .rarity.rare { background: linear-gradient(135deg,#3b82f6,#1e40af); }
+    .rarity.epic { background: linear-gradient(135deg,#ec4899,#9d174d); }
+    .rarity.legendary { background: linear-gradient(135deg,#facc15,#b45309); }
+    .rarity.boss { background: linear-gradient(135deg,#ef4444,#991b1b); }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -146,31 +155,31 @@
   <h2>Waffen – Typen & Infos</h2>
   <div class="grid">
 
-    <div class="card">
+    <div class="card rarity.common">
       <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/main/images/Anvil-Level1.png" alt="Anvil ARC">
       <h3>Anvil</h3>
       <p>Informationen kommen noch.</p>
     </div>
 
-    <div class="card">
+    <div class="card rarity.uncommon">
       <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/main/images/Aphelion.png" alt="Aphelion ARC">
       <h3>Aphelion</h3>
       <p>Informationen kommen noch.</p>
     </div>
 
-    <div class="card">
+    <div class="card rarity.rare">
       <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/main/images/Arpeggio-Level1.png" alt="Arpeggio ARC">
       <h3>Arpeggio</h3>
       <p>Informationen kommen noch.</p>
     </div>
 
-    <div class="card">
+    <div class="card rarity.epic">
       <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/main/images/Bettina.png" alt="Bettina ARC">
       <h3>Bettina</h3>
       <p>Informationen kommen noch.</p>
     </div>
 
-    <div class="card">
+    <div class="card rarity.legendary">
       <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Bobcat-Level1.png" alt="Bobcat ARC">
       <h3>Bobcat</h3>
       <p>Informationen kommen noch.</p>
@@ -194,39 +203,30 @@
 <section id="items">
   <h2>Items & Ausrüstung</h2>
   <div class="grid">
-    <div class="card"><h3>Medkits</h3><p>Heilung und Überleben.</p></div>
-    <div class="card"><h3>Rüstungsteile</h3><p>Schutz vor direktem Schaden.</p></div>
-    <div class="card"><h3>Munition</h3><p>Limitierter Faktor in längeren Einsätzen.</p></div>
-    <div class="card"><h3>Utility‑Gadgets</h3><p>Situative Vorteile wie Ablenkung oder Kontrolle.</p></div>
+    <div class="card rarity.common"><h3>Medkits</h3><p>Heilung und Überleben.</p></div>
+    <div class="card rarity.common"><h3>Rüstungsteile</h3><p>Schutz vor direktem Schaden.</p></div>
+    <div class="card rarity.uncommon"><h3>Munition</h3><p>Limitierter Faktor in längeren Einsätzen.</p></div>
+    <div class="card rarity.rare"><h3>Utility‑Gadgets</h3><p>Situative Vorteile wie Ablenkung oder Kontrolle.</p></div>
   </div>
 </section>
 
 <section id="loadouts">
   <h2>Loadout‑Vorschläge</h2>
   <div class="grid">
-    <div class="card"><h3>Solo‑Erkundung</h3><p>Sturmgewehr, leichte Rüstung, Medkits.</p></div>
-    <div class="card"><h3>ARC‑Jäger</h3><p>Präzisionsgewehr, Explosivoption, schwere Rüstung.</p></div>
-    <div class="card"><h3>Support</h3><p>Allround‑Waffe, Utility‑Items, Fokus auf Teamhilfe.</p></div>
+    <div class="card rarity.common"><h3>Solo‑Erkundung</h3><p>Sturmgewehr, leichte Rüstung, Medkits.</p></div>
+    <div class="card rarity.rare"><h3>ARC‑Jäger</h3><p>Präzisionsgewehr, Explosivoption, schwere Rüstung.</p></div>
+    <div class="card rarity.epic"><h3>Support</h3><p>Allround‑Waffe, Utility‑Items, Fokus auf Teamhilfe.</p></div>
   </div>
 </section>
 
 <section id="gegner">
   <h2>Bots / Gegner</h2>
   <div class="grid">
-    <div class="card"><h3>Wasp</h3><p>Kleiner, schneller Gegner.</p></div>
-    <div class="card"><h3>Hornet</h3><p>Aggressiver Schwarm‑ARC.</p></div>
-    <div class="card"><h3>Snitch</h3><p>Alarmiert andere Einheiten.</p></div>
-    <div class="card"><h3>Fireball</h3><p>Explosiver Fernangriff.</p></div>
-    <div class="card"><h3>Pop</h3><p>Instabiler Kurzstrecken‑ARC.</p></div>
-    <div class="card"><h3>Tick</h3><p>Kleiner Selbstzerstörer.</p></div>
-    <div class="card"><h3>Turret</h3><p>Stationäre Verteidigung.</p></div>
-    <div class="card"><h3>Sentinel</h3><p>Schwere Bewachungseinheit.</p></div>
-    <div class="card"><h3>Surveyor</h3><p>Aufklärungs‑ARC.</p></div>
-    <div class="card"><h3>Leaper</h3><p>Sprungangriffe.</p></div>
-    <div class="card"><h3>Rocketeer</h3><p>Raketenbasierter Schaden.</p></div>
-    <div class="card"><h3>Bastion</h3><p>Extrem widerstandsfähig.</p></div>
-    <div class="card"><h3>Bombardier</h3><p>Flächenbombardement.</p></div>
-    <div class="card"><h3>Queen</h3><p>Boss‑Einheit mit Unterstützern.</p></div>
+    <div class="card rarity.common"><h3>Wasp</h3><p>Kleiner, schneller Gegner.</p></div>
+    <div class="card rarity.uncommon"><h3>Hornet</h3><p>Aggressiver Schwarm‑ARC.</p></div>
+    <div class="card rarity.rare"><h3>Snitch</h3><p>Alarmiert andere Einheiten.</p></div>
+    <div class="card rarity.epic"><h3>Fireball</h3><p>Explosiver Fernangriff.</p></div>
+    <div class="card rarity.boss"><h3>Queen</h3><p>Boss‑Einheit mit Unterstützern.</p></div>
   </div>
 </section>
 
