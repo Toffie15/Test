@@ -84,6 +84,7 @@
       padding: 1.25rem;
       box-shadow: 0 10px 25px rgba(0,0,0,0.25);
       transition: transform 0.2s ease;
+      color: var(--text);
     }
     .card:hover { transform: translateY(-4px); }
     .card h3 {
@@ -96,10 +97,10 @@
       object-fit: contain;
       border-radius: 10px;
       margin-bottom: 0.75rem;
-      background: #111827;
+      background: transparent;
       padding: 8px;
     }
-    /* Farbverläufe nach Seltenheit / Typ */
+    /* Farbverläufe nach Seltenheit / Typ, immer sichtbar im Hintergrund */
     .rarity.common { background: linear-gradient(135deg,#6b7280,#4b5563); }
     .rarity.uncommon { background: linear-gradient(135deg,#10b981,#047857); }
     .rarity.rare { background: linear-gradient(135deg,#3b82f6,#1e40af); }
@@ -155,7 +156,7 @@
   <h2>Waffen – Typen & Infos</h2>
   <div class="grid">
 
-    <div class="card rarity.uncommon">
+    <div class="card rarity.common">
       <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/main/images/Anvil-Level1.png" alt="Anvil ARC">
       <h3>Anvil</h3>
       <p>Informationen kommen noch.</p>
