@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>ARC Raiders – Komplettguide</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0b0e14;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: linear-gradient(180deg, #0b0e14, #0e1220);
+      color: var(--text);
+    }
+    header {
+      padding: 3rem 1.5rem;
+      text-align: center;
+      background: radial-gradient(circle at top, #1f2937, #0b0e14);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.8rem;
+      letter-spacing: 0.04em;
+    }
+    header p {
+      margin-top: 0.75rem;
+      color: var(--muted);
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(11,14,20,0.9);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #1f2937;
+      z-index: 10;
+    }
+    nav ul {
+      display: flex;
+      gap: 1rem;
+      list-style: none;
+      padding: 0.75rem 1rem;
+      margin: 0;
+      overflow-x: auto;
+    }
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+    nav a:hover { color: #4fd1c5; }
+    section {
+      padding: 3rem 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      padding: 1.25rem;
+      background: linear-gradient(180deg, #0a0d14, #0f1320);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+    .img {
+      width: 100%;
+      height: 220px;
+      object-fit: contain;
+      border-radius: 10px;
+      margin-bottom: 0.75rem;
+      background: rgba(0,0,0,0.2);
+      padding: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #1f2937;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    th { color: #4fd1c5; }
+    footer {
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid #1f2937;
+    }
+
+    /* Farbverläufe pro Seltenheit */
+    .common::before { background: radial-gradient(120% 120% at 0% 100%, rgba(180,180,180,.40), transparent 60%); }
+    .uncommon::before { background: radial-gradient(120% 120% at 0% 100%, rgb(40, 200, 120,.40), transparent 60%); }
+    .rare::before { background: radial-gradient(120% 120% at 0% 100%, rgb(60, 141, 255,.40), transparent 60%); }
+    .epic::before { background: radial-gradient(120% 120% at 0% 100%, rgba(255, 87, 247, 0.4), transparent 60%); }
+    .legendary::before { background: radial-gradient(120% 120% at 0% 100%, rgb(255, 180, 40,.40), transparent 60%); }
+    .leicht::before { background: radial-gradient(120% 120% at 0% 100%, rgb(255, 180, 40,.40), transparent 60%); }
+    .boss::before { background: radial-gradient(120% 120% at 0% 100%, rgb(255, 60, 60,.40), transparent 60%); }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>ARC Raiders – Komplettübersicht</h1>
+  <p>Moderne, strukturierte Fan‑Übersicht zu ARC Raiders. Fokus auf Arcs, Gegner, Waffen, Items und Loadouts. Neutral gehalten, ohne Spekulationen oder Werte, die nicht offiziell bestätigt sind.</p>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#wasistdas">Was ist ARC Raiders?</a></li>
+    <li><a href="#arcs">Waffen – Typen & Infos</a></li>
+    <li><a href="#items">Items</a></li>
+    <li><a href="#loadouts">Loadouts</a></li>
+    <li><a href="#gegner">Bots / Gegner</a></li>
+  </ul>
+</nav>
+
+<section id="wasistdas">
+  <h2>Was ist ARC Raiders?</h2>
+  <p>
+    ARC Raiders ist ein kooperativer PvPvE‑Shooter in einer postapokalyptischen Welt. Spieler treten als Raider gegen die sogenannten ARCs an – autonome Maschinen, die die Oberfläche dominieren. Ziel ist es, Ausrüstung zu finden, Missionen zu erfüllen und lebend zu extrahieren.
+  </p>
+</section>
+
+<section id="arcs">
+  <h2>Waffen – Typen & Infos</h2>
+  <div class="grid weapons-grid">
+
+    <!-- Legendär -->
+    <div class="card legendary">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Aphelion.png" alt="Aphelion Battle Rifle">
+      <h3>Aphelion</h3>
+      <p>
+    • Munition: Energy Clip<br>
+    • 10 Schuss Magazin 2 Schuss Mode<br>
+    • 25 Schaden pro Treffer<br>
+    • Stark gegen Arcs<br>
+    • Gewicht: 10.0<br>
+    • Verkaufspreis: 27.500<br>
+    • Module: Griff, Schaft
+  </p>
+    </div>
+    <div class="card legendary">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Equalizer.png" alt="Equalizer Energy Rifle">
+      <h3>Equalizer</h3>
+      <p>
+    • Munition: Energy Clip<br>
+    • 50 Schuss Magazin Vollautomatisch<br>
+    • 8 Schaden pro Treffer<br>
+    • Sehr stark gegen Arcs<br>
+    • Gewicht: 14.0<br>
+    • Verkaufspreis: 27.500<br>
+    • Keine Erweiterrungs Module
+  </p>
+    </div>
+    <div class="card legendary">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Jupiter.png" alt="Jupiter Sniper">
+      <h3>Jupiter</h3>
+      <p>
+    • Munition: Energy Clip<br>
+    • 5 Schuss Magazin 1 Schuss Mode<br>
+    • 60 Schaden pro Treffer<br>
+    • Sehr stark gegen Arcs<br>
+    • Gewicht: 9.0<br>
+    • Verkaufspreis: 27.500<br>
+    • Keine Erweiterrungs Module
+  </p>
+    </div>
+
+    <!-- Episch -->
+    <div class="card epic">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Bettina.png" alt="Bettina Assault Rifle">
+      <h3>Bettina</h3>
+      <p>
+    • Munition: Schwere<br>
+    • 22 Schuss Magazin Vollautomatisch<br>
+    • 14 Schaden pro Treffer<br>
+    • Stark gegen Arcs<br>
+    • Gewicht: 11.0<br>
+    • Verkaufspreis: 8.000 pro LVL mehr.<br>
+    • Module: Mündung, Griff, Schaft
+  </p>
+    </div>
+    <div class="card epic">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Bobcat.png" alt="Bobcat SMG">
+      <h3>Bobcat</h3>
+      <p>
+    • Munition: Leichte<br>
+    • 20 Schuss Magazin Vollautomatisch<br>
+    • 6 Schaden pro Treffer<br>
+    • Sehr schwach gegen Arcs<br>
+    • Gewicht: 7.0<br>
+    • Verkaufspreis: 13.000 pro LVL mehr.<br>
+    • Module: Mündung, Griff, Magazin, Schaft
+  </p>
+    </div>
+    <div class="card epic">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Tempest.png" alt="Tempest Assault Rifle">
+      <h3>Tempest</h3>
+      <p>
+    • Munition: Mittlere<br>
+    • 25 Schuss Magazin Vollautomatisch<br>
+    • 10 Schaden pro Treffer<br>
+    • Mäßig gegen Arcs<br>
+    • Gewicht: 11.0<br>
+    • Verkaufspreis: 13.000 pro LVL mehr.<br>
+    • Module: Mündung, Griff, Magazin
+  </p>
+    </div>
+    <div class="card epic">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Vulcano.png" alt="Vulcano Shotgun">
+      <h3>Vulcano</h3>
+      <p>
+    • Munition: Schrotflinte<br>
+    • 6 Schuss Magazin Halbautomatisch<br>
+    • 49,5 Schaden pro Treffer<br>
+    • Schwach gegen Arcs<br>
+    • Gewicht: 8.0<br>
+    • Verkaufspreis: 10.000<br>
+    • Module: Mündung, Griff, Magazin, Schaft
+  </p>
+    </div>
+    <div class="card epic">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Hullcracker.png" alt="Hullcracker Launcher">
+      <h3>Hullcracker</h3>
+      <p>
+    • Munition: Werfer<br>
+    • 5 Schuss Magazin 1 Schuss Mode<br>
+    • 100 Schaden pro Treffer<br>
+    • Sehr stark gegen Arcs<br>
+    • Gewicht: 7.0<br>
+    • Verkaufspreis: 10.000<br>
+    • Module: Griff, Schaft
+  </p>
+    </div>
+
+    <!-- Selten -->
+    <div class="card rare">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Venator.png" alt="Venator Pistol">
+      <h3>Venator</h3>
+      <p>
+    • Munition: Mittlere<br>
+    • 10 Schuss Magazin Halbautomatisch<br>
+    • 18 Schaden pro Treffer<br>
+    • Mäßig gegen Arcs<br>
+    • Gewicht: 5.0<br>
+    • Verkaufspreis: 7.000<br>
+    • Module: Griff, Magazin
+  </p>
+    </div>
+    <div class="card rare">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Osprey.png" alt="Osprey Sniper">
+      <h3>Osprey</h3>
+      <p>
+    • Munition: Mittlere<br>
+    • 8 Schuss Magazin 1 Schuss Mode<br>
+    • 45 Schaden pro Treffer<br>
+    • Mäßig gegen Arcs<br>
+    • Gewicht: 7.0<br>
+    • Verkaufspreis: 7.000<br>
+    • Module: Mündung, Griff, Magazin, Schaft
+  </p>
+    </div>
+    <div class="card rare">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Renegade.png" alt="Renegade Battle Rifle">
+      <h3>Renegade</h3>
+      <p>
+    • Munition: Mittlere<br>
+    • 8 Schuss Magazin<br>
+    • 35 Schaden pro Treffer<br>
+    • Mäßig gegen Arcs<br>
+    • Gewicht: 10.0<br>
+    • Verkaufspreis: 7.000<br>
+    • Module: Mündung, Magazin, Schaft
+  </p>
+    </div>
+    <div class="card rare">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Torrente.png" alt="Torrente LMG">
+      <h3>Torrente</h3>
+      <p>
+    • Munition: Mittlere<br>
+    • 60 Schuss Magazin Vollautomatisch<br>
+    • 8 Schaden pro Treffer<br>
+    • Mäßig gegen Arcs<br>
+    • Gewicht: 12.0<br>
+    • Verkaufspreis: 7.000<br>
+    • Module: Mündung, Magazin, Schaft
+  </p>
+    </div>
+
+    <!-- Ungewöhnlich -->
+    <div class="card uncommon">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Anvil.png" alt="Anvil Hand Cannon">
+      <h3>Anvil</h3>
+      <p>
+    • Munition: Schwere<br>
+    • 6 Schuss Magazin 1 Schuss Mode<br>
+    • 40 Schaden pro Treffer<br>
+    • Stark gegen Arcs<br>
+    • Gewicht: 5.0<br>
+    • Verkaufspreis: 5.000<br>
+    • Module: Mündung, Tech Mod
+  </p>
+    </div>
+    <div class="card uncommon">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Arpeggio.png" alt="Arpeggio Burst Rifle">
+      <h3>Arpeggio</h3>
+      <p>
+    • Munition: Mittlere<br>
+    • 24 Schuss Magazin 3 Schuss Mode<br>
+    • 9,5 Schaden pro Treffer<br>
+    • Mäßig gegen Arcs<br>
+    • Gewicht: 7.0<br>
+    • Verkaufspreis: 5.500<br>
+    • Module: Mündung, Griff, Magazin, Schaft
+  </p>
+    </div>
+    <div class="card uncommon">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Burletta.png" alt="Burletta Pistol">
+      <h3>Burletta</h3>
+      <p>
+    • Munition: Leichte<br>
+    • 12 Schuss Magazin Halbautomatisch<br>
+    • 10 Schaden pro Treffer<br>
+    • Sehr schwach gegen Arcs<br>
+    • Gewicht: 4.0<br>
+    • Verkaufspreis: 2.900<br>
+    • Module: Mündung, Magazin
+  </p>
+    </div>
+
+    <!-- Gewöhnlich -->
+    <div class="card common">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Ferro.png" alt="Ferro Battle Rifle">
+      <h3>Ferro</h3>
+      <p>
+    • Munition: Schwere<br>
+    • 1 Schuss Magazin<br>
+    • 40 Schaden pro Treffer<br>
+    • Stark gegen Arcs<br>
+    • Gewicht: 8.0<br>
+    • Verkaufspreis: 475<br>
+    • Module: Mündung, Griff, Schaft
+  </p>
+    </div>
+    <div class="card common">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Rattler.png" alt="Rattler Assault Rifle">
+      <h3>Rattler</h3>
+      <p>
+    • Munition: Mittlere<br>
+    • 12 Schuss Magazin Vollautomatisch<br>
+    • 9 Schaden pro Treffer<br>
+    • Mäßig gegen Arcs<br>
+    • Gewicht: 6.0<br>
+    • Verkaufspreis: 1.750<br>
+    • Module: Mündung, Griff, Schaft
+  </p>
+    </div>
+    <div class="card common">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Stitcher.png" alt="Stitcher SMG">
+      <h3>Stitcher</h3>
+      <p>
+    • Munition: Leichte<br>
+    • 20 Schuss Magazin Vollautomatisch<br>
+    • 7 Schaden pro Treffer<br>
+    • Sehr schwach gegen Arcs<br>
+    • Gewicht: 5.0<br>
+    • Verkaufspreis: 800<br>
+    • Module: Mündung, Griff, Magazin, Schaft
+  </p>
+    </div>
+    <div class="card common">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Kettle.png" alt="Kettle Assault/SMG">
+      <h3>Kettle</h3>
+      <p>
+    • Munition: Leichte<br>
+    • 10 Schuss Magazin Halbautomatisch<br>
+    • 10 Schaden pro Treffer<br>
+    • Sehr schwach gegen Arcs<br>
+    • Gewicht: X<br>
+    • Verkaufspreis: X<br>
+    • Module: Mündung, Griff, Magazin, Schaft
+  </p>
+    </div>
+    <div class="card common">
+      <img class="img" src="https://raw.githubusercontent.com/Toffie15/arc-raiders-assets/refs/heads/main/images/Hairpin.png" alt="Hairpin Pistol">
+      <h3>Hairpin</h3>
+      <p>
+    • Munition: Leichte<br>
+    • 8 Schuss Magazin <br>
+    • 20 Schaden pro Treffer<br>
+    • Sehr schwach gegen Arcs<br>
+    • Gewicht: 3.0<br>
+    • Verkaufspreis: 450<br>
+    • Module: Magazin
+  </p>
+    </div>
+
+  </div>
+</section>
+
+<section id="items">
+  <h2>Items & Ausrüstung</h2>
+  <div class="grid">
+    <div class="card grey"><h3>Medkits</h3><p>Heilung und Überleben.</p></div>
+    <div class="card grey"><h3>Rüstungsteile</h3><p>Schutz vor direktem Schaden.</p></div>
+    <div class="card grey"><h3>Munition</h3><p>Limitierter Faktor in längeren Einsätzen.</p></div>
+    <div class="card grey"><h3>Utility‑Gadgets</h3><p>Situative Vorteile wie Ablenkung oder Kontrolle.</p></div>
+  </div>
+</section>
+
+<section id="loadouts">
+  <h2>Loadout‑Vorschläge</h2>
+  <div class="grid">
+    <div class="card grey"><h3>Solo‑Erkundung</h3><p>Sturmgewehr, leichte Rüstung, Medkits.</p></div>
+    <div class="card blue"><h3>ARC‑Jäger</h3><p>Präzisionsgewehr, Explosivoption, schwere Rüstung.</p></div>
+    <div class="card green"><h3>Support</h3><p>Allround‑Waffe, Utility‑Items, Fokus auf Teamhilfe.</p></div>
+  </div>
+</section>
+
+<section id="gegner">
+  <h2>Bots / Gegner</h2>
+  <div class="grid">
+    <div class="card leicht"><h3>Wasp</h3><p>Kleiner, schneller Gegner.</p></div>
+    <div class="card green"><h3>Hornet</h3><p>Aggressiver Schwarm‑ARC.</p></div>
+    <div class="card blue"><h3>Snitch</h3><p>Alarmiert andere Einheiten.</p></div>
+    <div class="card pink"><h3>Fireball</h3><p>Explosiver Fernangriff.</p></div>
+    <div class="card grey"><h3>Pop</h3><p>Instabiler Kurzstrecken‑ARC.</p></div>
+    <div class="card grey"><h3>Tick</h3><p>Kleiner Selbstzerstörer.</p></div>
+    <div class="card grey"><h3>Turret</h3><p>Stationäre Verteidigung.</p></div>
+    <div class="card yellow"><h3>Sentinel</h3><p>Schwere Bewachungseinheit.</p></div>
+    <div class="card green"><h3>Surveyor</h3><p>Aufklärungs‑ARC.</p></div>
+    <div class="card blue"><h3>Leaper</h3><p>Sprungangriffe.</p></div>
+    <div class="card pink"><h3>Rocketeer</h3><p>Raketenbasierter Schaden.</p></div>
+    <div class="card red"><h3>Bastion</h3><p>Extrem widerstandsfähig.</p></div>
+    <div class="card pink"><h3>Bombardier</h3><p>Flächenbombardement.</p></div>
+    <div class="card Boss"><h3>Queen</h3><p>Boss‑Einheit mit Unterstützern.</p></div>
+  </div>
+</section>
+
+<footer>
+  <p>Fan‑Projekt. Keine offiziellen Daten. Platzhalter‑Bilder können durch echte Assets ersetzt werden.</p>
+</footer>
+
+</body>
+</html>
