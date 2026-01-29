@@ -501,5 +501,28 @@
   setInterval(checkDevTools, 500);
 </script>
 
+<!-- DEV-SCHUTZ -->
+<script>
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+document.addEventListener('keydown', function(e) {
+  if (
+    e.key === "F12" ||
+    (e.ctrlKey && e.shiftKey && ["I","C","J"].includes(e.key)) ||
+    (e.ctrlKey && e.key === "U")
+  ) {
+    e.preventDefault();
+  }
+});
+
+setInterval(function() {
+  const start = performance.now();
+  debugger;
+  if (performance.now() - start > 100) {
+    document.body.innerHTML = "";
+  }
+}, 500);
+</script>
+  
 </body>
 </html>
