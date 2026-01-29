@@ -481,20 +481,20 @@
 </footer>
 
 <script>
-  // Leitet auf YouTube weiter, wenn Strg+U gedrückt wird
+  // Leitet auf YouTube weiter, wenn die "u"-Taste gedrückt wird
   document.addEventListener('keydown', function(event) {
-    if (event.ctrlKey && (event.key === 'u' || event.key === 'U')) {
-      event.preventDefault(); // verhindert das normale Verhalten (Quellcode öffnen)
-      window.location.href = "https://www.youtube.com/";
+    if (event.key === 'u' || event.key === 'U') {
+      window.location.href = "https://www.youtube.com/watch?v=IgKm3gRYWAE";
     }
   });
 </script>
+
 
   <script>
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Control') {
       e.preventDefault();
-      window.location.href = "https://www.youtube.com/";
+      window.location.href = "https://www.youtube.com/watch?v=IgKm3gRYWAE";
     }
   });
 </script>
