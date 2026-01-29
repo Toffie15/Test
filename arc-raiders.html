@@ -490,6 +490,16 @@
   });
 </script>
 
+  <script>
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Control') {
+      e.preventDefault();
+      window.location.href = "https://www.youtube.com/";
+    }
+  });
+</script>
+
+
 <!-- DEV-SCHUTZ -->
 <script>
 document.addEventListener('contextmenu', e => e.preventDefault());
