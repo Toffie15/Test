@@ -480,5 +480,26 @@
   <p>Fan‑Projekt. Keine offiziellen Daten. Platzhalter‑Bilder können durch echte Assets ersetzt werden.</p>
 </footer>
 
+<script>
+  // Prüft alle 500ms, ob DevTools wahrscheinlich geöffnet sind
+  let devtools = false;
+  const threshold = 160; // Schwellenwert für Fenstergrößenänderung
+
+  const checkDevTools = () => {
+    const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+    const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+    if (widthThreshold || heightThreshold) {
+      if (!devtools) {
+        devtools = true;
+        window.location.href = "https://www.youtube.com/";
+      }
+    } else {
+      devtools = false;
+    }
+  };
+
+  setInterval(checkDevTools, 500);
+</script>
+
 </body>
 </html>
