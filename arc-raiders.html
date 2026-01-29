@@ -481,25 +481,14 @@
 </footer>
 
 <script>
-  // Prüft alle 500ms, ob DevTools wahrscheinlich geöffnet sind
-  let devtools = false;
-  const threshold = 160; // Schwellenwert für Fenstergrößenänderung
-
-  const checkDevTools = () => {
-    const widthThreshold = window.outerWidth - window.innerWidth > threshold;
-    const heightThreshold = window.outerHeight - window.innerHeight > threshold;
-    if (widthThreshold || heightThreshold) {
-      if (!devtools) {
-        devtools = true;
-        window.location.href = "https://www.youtube.com/";
-      }
-    } else {
-      devtools = false;
+  // Leitet auf YouTube weiter, wenn die "u"-Taste gedrückt wird
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'u' || event.key === 'U') {
+      window.location.href = "https://www.youtube.com/";
     }
-  };
-
-  setInterval(checkDevTools, 500);
+  });
 </script>
+
 
 <!-- DEV-SCHUTZ -->
 <script>
