@@ -1,239 +1,333 @@
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Stempeluhr</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f6f8;color:#222}
-body.dark{background:#181a1f;color:#eee}
-header{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:#222;color:#fff}
-main{max-width:900px;margin:20px auto;padding:0 15px}
-.card{background:#fff;padding:20px;border-radius:12px;margin-bottom:15px;box-shadow:0 2px 8px #0001}
-.dark .card{background:#24272d}
-button,input{padding:10px;border-radius:8px;border:1px solid #ccc;font-size:14px}
-button{cursor:pointer;background:#222;color:#fff;border:0}
-button.red{background:#c33}button.green{background:#198754}
-input{width:100%;margin:5px 0}
-#clock{font-size:38px;text-align:center;font-weight:bold;margin:10px}
+*{box-sizing:border-box}
+body{margin:0;padding:15px;background:radial-gradient(circle at top,#241b3d,#0d0f14 55%);color:#fff;font-family:Arial}
+.container{max-width:850px;margin:auto}
+.card,.stat{background:#171a21;border:1px solid #2b303b;border-radius:15px;padding:18px;margin-bottom:14px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.logo{font-size:28px}
+h1,h2{margin:0 0 8px}
+.sub,.status,.since,th{color:#8f98a8;font-size:13px}
+.clock{text-align:center;padding:35px 15px}
+.time{font:65px monospace;margin:20px 0}
+input,button{border-radius:10px;padding:12px;border:1px solid #303641}
+input{width:100%;background:#22262e;color:#fff;margin:8px 0}
+button{background:#8b5cf6;color:#fff;font-weight:bold;cursor:pointer;border:0;margin:4px}
+.red{background:#9d3838}
+.gray{background:#303641}
+.punch{width:280px;font-size:16px;margin-top:15px}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.stat{text-align:center;padding:12px;background:#eee;border-radius:8px}
-.dark .stat{background:#333}
-table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{padding:8px;border-bottom:1px solid #ddd;text-align:left}
-.dark th,.dark td{border-color:#444}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-footer{text-align:center;color:#8f98a8;font-size:12px;padding:10px 0 5px}
-@media(max-width:600px){.stats{grid-template-columns:1fr}table{font-size:12px}}
+.stat span{color:#8f98a8;font-size:11px;text-transform:uppercase}
+.stat b{display:block;font:22px monospace;margin-top:5px}
+.actions{display:flex;gap:5px;flex-wrap:wrap}
+.table{overflow:auto}
+table{width:100%;min-width:600px;border-collapse:collapse}
+th,td{text-align:left;padding:10px;border-bottom:1px solid #2c313b}
+td{font-family:monospace}
+td.note{font-family:Arial;color:#aab1bd}
+.footer{text-align:center;color:#666d7a;font-size:12px;padding:5px 0 15px}
+body.light{background:#f2f3f7;color:#171a21}
+body.light .card,body.light .stat{background:#fff;border-color:#ddd}
+body.light input{background:#f7f8fa;color:#171a21}
+@media(max-width:600px){
+ body{padding:8px}.time{font-size:42px}.punch{width:100%}
+ .stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}
+ .actions button{flex:1}
+}
 </style>
 </head>
 
 <body>
-<header>
-  <b>Stempeluhr</b>
-  <button onclick="theme()">🌙</button>
+<div class="container">
+
+<header class="header">
+ <div>
+  <h1>⏱️ Stempeluhr</h1>
+  <div id="date" class="sub"></div>
+ </div>
+ <button class="gray" onclick="theme()">🌓</button>
 </header>
 
-<main>
-  <div class="card">
-    <div id="clock">00:00:00</div>
-    <input id="note" placeholder="Notiz (optional)">
-    <button id="punch" class="green" onclick="punch()">Einstempeln</button>
-  </div>
+<section class="card clock">
+ <div id="status" class="status">🔴 Ausgestempelt</div>
+ <div id="timer" class="time">00:00:00</div>
+ <div id="since" class="since"></div>
+ <input id="note" placeholder="Notiz, z. B. Büro oder Projekt">
+ <button id="punch" class="punch" onclick="punch()">Einstempeln</button>
+</section>
 
-  <div class="card">
-    <div class="stats">
-      <div class="stat"><b>Heute</b><br><span id="today">0:00</span></div>
-      <div class="stat"><b>Woche</b><br><span id="week">0:00</span></div>
-      <div class="stat"><b>Einträge</b><br><span id="count">0</span></div>
-    </div>
-  </div>
+<div class="stats">
+ <div class="stat"><span>Heute</span><b id="today">0h 00m</b></div>
+ <div class="stat"><span>Woche</span><b id="week">0h 00m</b></div>
+ <div class="stat"><span>Einträge</span><b id="count">0</b></div>
+</div>
 
-  <div class="card">
-    <b>Monatsübersicht</b>
-    <div class="actions">
-      <button onclick="month(-1)">←</button>
-      <span id="month"></span>
-      <button onclick="month(1)">→</button>
-    </div>
-    <p>Arbeitszeit: <b id="monthTime">0:00</b></p>
+<section class="card">
+ <div class="header">
+  <h2>Monatsübersicht</h2>
+  <div>
+   <button class="gray" onclick="month(-1)">‹</button>
+   <button class="gray" onclick="month(1)">›</button>
   </div>
+ </div>
+ <div id="month" class="sub"></div>
+ <div id="summary"></div>
+</section>
 
-  <div class="card">
-    <b>Zeiterfassung</b>
-    <table>
-      <thead>
-        <tr><th>Datum</th><th>Start</th><th>Ende</th><th>Zeit</th><th>Notiz</th></tr>
-      </thead>
-      <tbody id="rows"></tbody>
-    </table>
+<section class="card">
+ <div class="header">
+  <h2>Zeiterfassung</h2>
+  <div class="actions">
+   <button onclick="csv()">CSV</button>
+   <button onclick="backup()">Backup</button>
+   <button onclick="document.getElementById('file').click()">Import</button>
+   <button class="red" onclick="clearAll()">Löschen</button>
+   <input id="file" type="file" accept=".json" hidden onchange="restore(event)">
   </div>
+ </div>
 
-  <div class="card">
-    <div class="actions">
-      <button onclick="csv()">CSV Export</button>
-      <button onclick="backup()">Backup</button>
-      <button onclick="restore()">Import</button>
-      <button class="red" onclick="clearAll()">Alles löschen</button>
-    </div>
-  </div>
-</main>
+ <div class="table">
+  <table>
+   <thead><tr>
+    <th>Datum</th><th>Start</th><th>Ende</th><th>Dauer</th><th>Notiz</th>
+   </tr></thead>
+   <tbody id="log"></tbody>
+  </table>
+ </div>
 
-<footer>Scripted by Luca Valentine</footer>
+ <p id="empty" class="sub" style="text-align:center">Noch keine Einträge.</p>
+</section>
+
+<div class="footer">Made by Luca Valentine</div>
+
+</div>
 
 <script>
-const $=id=>document.getElementById(id);
-let entries=JSON.parse(localStorage.entries||"[]"),
-    active=JSON.parse(localStorage.active||"null"),
-    view=new Date();
+let entries=JSON.parse(localStorage.getItem("entries")||"[]"),
+active=JSON.parse(localStorage.getItem("active")||"null"),
+sel=new Date(new Date().getFullYear(),new Date().getMonth(),1);
 
+const $=id=>document.getElementById(id);
 const save=()=>{
-  localStorage.entries=JSON.stringify(entries);
-  localStorage.active=JSON.stringify(active);
+ localStorage.setItem("entries",JSON.stringify(entries));
+ active?localStorage.setItem("active",JSON.stringify(active)):
+ localStorage.removeItem("active");
 };
 
-const pad=n=>String(n).padStart(2,"0");
-const time=d=>pad(d.getHours())+":"+pad(d.getMinutes());
-const date=d=>d.toISOString().slice(0,10);
-
-const dur=(a,b)=>{
-  let m=Math.max(0,(new Date(b)-new Date(a))/60000);
-  return `${Math.floor(m/60)}:${pad(Math.floor(m%60))}`;
+const time=t=>new Date(t).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
+const date=t=>new Date(t).toLocaleDateString("de-DE");
+const dur=ms=>{
+ let m=Math.floor(ms/60000),h=Math.floor(m/60);
+ return h+"h "+String(m%60).padStart(2,"0")+"m";
 };
 
 function punch(){
-  if(active){
-    entries.push({...active,end:new Date().toISOString()});
-    active=null;
-    $("punch").textContent="Einstempeln";
-    $("punch").className="green";
-  }else{
-    active={start:new Date().toISOString(),note:$("note").value};
-    $("note").value="";
-    $("punch").textContent="Ausstempeln";
-    $("punch").className="red";
-  }
-  save();render();
+ if(active){
+  entries.push({start:active.start,end:Date.now(),note:$("note").value.trim()});
+  active=null;
+  $("note").value="";
+ }else{
+  active={start:Date.now(),note:$("note").value.trim()};
+ }
+ save();render();
 }
 
 function render(){
-  $("rows").innerHTML=entries.slice().reverse().map(e=>`
-    <tr>
-      <td>${e.start.slice(0,10)}</td>
-      <td>${time(new Date(e.start))}</td>
-      <td>${e.end?time(new Date(e.end)):"läuft"}</td>
-      <td>${e.end?dur(e.start,e.end):dur(e.start,new Date())}</td>
-      <td>${safe(e.note||"")}</td>
-    </tr>`).join("");
-  stats();
-  renderMonth();
+ $("status").textContent=active?"🟢 Eingestempelt":"🔴 Ausgestempelt";
+ $("punch").textContent=active?"Ausstempeln":"Einstempeln";
+ $("punch").className=active?"punch red":"punch";
+ $("since").textContent=active?"Seit "+time(active.start)+" Uhr":"";
+ if(!active)$("timer").textContent="00:00:00";
+
+ $("log").innerHTML=[...entries].sort((a,b)=>b.start-a.start).map(e=>`
+  <tr>
+   <td>${date(e.start)}</td>
+   <td>${time(e.start)}</td>
+   <td>${time(e.end)}</td>
+   <td>${dur(e.end-e.start)}</td>
+   <td class="note">${safe(e.note||"-")}</td>
+  </tr>`).join("");
+
+ $("empty").style.display=entries.length?"none":"block";
+ $("count").textContent=entries.length;
+ stats();
+ renderMonth();
 }
 
 function stats(){
-  let now=new Date(),today=date(now),week=new Date(now);
-  week.setDate(now.getDate()-now.getDay()+1);
+ let now=new Date(),today=new Date(now);
+ today.setHours(0,0,0,0);
 
-  let t=0,w=0;
-  entries.forEach(e=>{
-    let d=new Date(e.start),m=e.end?(new Date(e.end)-d)/60000:(Date.now()-d)/60000;
-    if(date(d)==today)t+=m;
-    if(d>=week)w+=m;
-  });
+ let week=new Date(today);
+ week.setDate(week.getDate()-((week.getDay()+6)%7));
 
-  $("today").textContent=Math.floor(t/60)+":"+pad(Math.floor(t%60));
-  $("week").textContent=Math.floor(w/60)+":"+pad(Math.floor(w%60));
-  $("count").textContent=entries.length;
+ let t=0,w=0;
+
+ entries.forEach(e=>{
+  let d=e.end-e.start;
+  if(e.start>=today)t+=d;
+  if(e.start>=week)w+=d;
+ });
+
+ if(active){
+  let d=Date.now()-active.start;
+  if(active.start>=today)t+=d;
+  if(active.start>=week)w+=d;
+ }
+
+ $("today").textContent=dur(t);
+ $("week").textContent=dur(w);
 }
 
 function renderMonth(){
-  let y=view.getFullYear(),m=view.getMonth();
-  $("month").textContent=view.toLocaleDateString("de-DE",{month:"long",year:"numeric"});
-  let total=0;
-  entries.forEach(e=>{
-    let d=new Date(e.start);
-    if(d.getFullYear()==y&&d.getMonth()==m&&e.end)
-      total+=(new Date(e.end)-d)/60000;
-  });
-  $("monthTime").textContent=Math.floor(total/60)+":"+pad(Math.floor(total%60));
+ let y=sel.getFullYear(),m=sel.getMonth(),days={},total=0;
+
+ entries.filter(e=>{
+  let d=new Date(e.start);
+  return d.getFullYear()==y&&d.getMonth()==m;
+ }).forEach(e=>{
+  let k=date(e.start);
+  days[k]=(days[k]||0)+(e.end-e.start);
+  total+=e.end-e.start;
+ });
+
+ $("month").textContent=sel.toLocaleDateString("de-DE",{month:"long",year:"numeric"});
+
+ $("summary").innerHTML=
+ `<div style="font:22px monospace;margin:10px 0">${dur(total)}</div>`+
+ Object.entries(days).map(([d,v])=>
+  `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2c313b">
+   <span>${d}</span><b>${dur(v)}</b>
+  </div>`
+ ).join("")||
+ `<div class="sub">Keine Einträge in diesem Monat.</div>`;
 }
 
 function month(n){
-  view.setMonth(view.getMonth()+n);
-  renderMonth();
+ sel.setMonth(sel.getMonth()+n);
+ renderMonth();
 }
 
 function csv(){
-  let out="Datum;Start;Ende;Zeit;Notiz\n";
-  entries.forEach(e=>{
-    out+=`${e.start.slice(0,10)};${time(new Date(e.start))};${e.end?time(new Date(e.end)):""};${e.end?dur(e.start,e.end):""};"${(e.note||"").replaceAll('"','""')}"\n`;
-  });
-  download("stempeluhr.csv",out,"text/csv");
+ if(!entries.length)return alert("Keine Einträge vorhanden.");
+
+ let rows=[
+  ["Datum","Start","Ende","Dauer","Notiz"],
+  ...entries.map(e=>[
+   date(e.start),time(e.start),time(e.end),
+   dur(e.end-e.start),e.note||""
+  ])
+ ];
+
+ let text="\uFEFF"+rows.map(r=>
+  r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(";")
+ ).join("\n");
+
+ download(text,"stempeluhr.csv","text/csv");
 }
 
 function backup(){
-  download("stempeluhr-backup.json",JSON.stringify({entries,active}),"application/json");
+ download(
+  JSON.stringify({entries,active,theme:localStorage.getItem("theme")},null,2),
+  "stempeluhr_backup.json",
+  "application/json"
+ );
 }
 
-function restore(){
-  let i=document.createElement("input");
-  i.type="file";
-  i.accept=".json";
-  i.onchange=()=>{
-    let r=new FileReader();
-    r.onload=()=>{
-      try{
-        let x=JSON.parse(r.result);
-        entries=x.entries||[];
-        active=x.active||null;
-        save();render();
-      }catch{alert("Ungültige Datei")}
-    };
-    r.readAsText(i.files[0]);
-  };
-  i.click();
+function restore(e){
+ let f=e.target.files[0];
+ if(!f)return;
+
+ let r=new FileReader();
+
+ r.onload=()=>{
+  try{
+   let x=JSON.parse(r.result);
+   if(!Array.isArray(x.entries))throw 0;
+
+   entries=x.entries;
+   active=x.active||null;
+
+   localStorage.setItem("entries",JSON.stringify(entries));
+
+   if(active)localStorage.setItem("active",JSON.stringify(active));
+   else localStorage.removeItem("active");
+
+   if(x.theme)localStorage.setItem("theme",x.theme);
+
+   loadTheme();
+   render();
+   alert("Backup importiert.");
+  }catch{
+   alert("Ungültiges Backup.");
+  }
+  e.target.value="";
+ };
+
+ r.readAsText(f);
 }
 
-function download(name,data,type){
-  let a=document.createElement("a");
-  a.href=URL.createObjectURL(new Blob([data],{type}));
-  a.download=name;
-  a.click();
+function download(text,name,type){
+ let a=document.createElement("a");
+ a.href=URL.createObjectURL(new Blob([text],{type}));
+ a.download=name;
+ a.click();
+ URL.revokeObjectURL(a.href);
 }
 
 function clearAll(){
-  if(confirm("Wirklich alle Daten löschen?")){
-    entries=[];active=null;save();render();
-  }
+ if(confirm("Wirklich alle Einträge löschen?")){
+  entries=[];
+  save();
+  render();
+ }
 }
 
-function safe(s){
-  return s.replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[c]));
+function safe(x){
+ let d=document.createElement("div");
+ d.textContent=x;
+ return d.innerHTML;
 }
 
 function theme(){
-  document.body.classList.toggle("dark");
-  localStorage.theme=document.body.classList.contains("dark")?"dark":"light";
+ document.body.classList.toggle("light");
+ localStorage.setItem(
+  "theme",
+  document.body.classList.contains("light")?"light":"dark"
+ );
 }
 
-if(localStorage.theme=="dark")document.body.classList.add("dark");
+function loadTheme(){
+ if(localStorage.getItem("theme")=="light")
+  document.body.classList.add("light");
+}
+
+$("date").textContent=new Date().toLocaleDateString("de-DE",{
+ weekday:"long",day:"2-digit",month:"long",year:"numeric"
+});
 
 function tick(){
-  if(active){
-    $("clock").textContent=dur(active.start,new Date());
-    stats();
-  }else $("clock").textContent="00:00:00";
+ if(active){
+  let s=Math.floor((Date.now()-active.start)/1000);
+  $("timer").textContent=
+   String(Math.floor(s/3600)).padStart(2,"0")+":"+
+   String(Math.floor(s/60)%60).padStart(2,"0")+":"+
+   String(s%60).padStart(2,"0");
+  stats();
+ }
 }
 
-if(active){
-  $("punch").textContent="Ausstempeln";
-  $("punch").className="red";
-}
-
+loadTheme();
 render();
-tick();
 setInterval(tick,1000);
 </script>
 </body>
 </html>
+```
