@@ -2,366 +2,389 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#111318">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d0f14">
 <title>Stempeluhr</title>
 
 <style>
-*{box-sizing:border-box}
-
-body{
-margin:0;
-padding:20px;
-min-height:100vh;
-background:#0e1014;
-color:#f5f7fa;
-font-family:Arial,sans-serif
+*{
+    box-sizing:border-box;
 }
 
-main{
-max-width:900px;
-margin:auto
+body{
+    margin:0;
+    padding:20px;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at top,#241b3d 0,#0d0f14 45%);
+    color:#f5f5f7;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
 }
 
 .hidden{
-display:none!important
+    display:none!important;
 }
 
 .card{
-background:#181b21;
-border:1px solid #2b3039;
-border-radius:16px;
-padding:20px;
-margin-bottom:15px;
-box-shadow:0 10px 35px #0006
+    background:#171a21;
+    border:1px solid #2b303b;
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:16px;
+    box-shadow:0 12px 35px rgba(0,0,0,.35);
 }
 
 .logo{
-width:44px;
-height:44px;
-display:grid;
-place-items:center;
-border-radius:13px;
-background:linear-gradient(135deg,#8b5cf6,#5b21b6);
-font-size:22px;
-margin-bottom:15px
+    width:48px;
+    height:48px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#8b5cf6,#5b21b6);
+    font-size:24px;
+    margin-bottom:15px;
 }
 
 h1{
-margin:0 0 5px;
-font-size:24px
+    margin:0;
+    font-size:24px;
 }
 
 h2{
-font-size:16px;
-margin-top:0
+    margin:0 0 15px;
+    font-size:17px;
 }
 
-.sub,
-small{
-color:#8d96a5
+.sub{
+    color:#8f98a8;
+    font-size:13px;
 }
 
 input{
-width:100%;
-padding:13px;
-margin:6px 0;
-border-radius:10px;
-border:1px solid #303641;
-background:#22262e;
-color:white;
-font-size:15px;
-outline:none
+    width:100%;
+    padding:13px;
+    margin:6px 0;
+    border-radius:11px;
+    border:1px solid #303641;
+    background:#22262e;
+    color:white;
+    font-size:15px;
+    outline:none;
 }
 
 input:focus{
-border-color:#8b5cf6
+    border-color:#8b5cf6;
 }
 
 button{
-border:0;
-border-radius:10px;
-padding:12px 16px;
-margin:5px 0;
-background:#8b5cf6;
-color:white;
-font-weight:bold;
-cursor:pointer
+    border:0;
+    border-radius:11px;
+    padding:12px 16px;
+    margin:5px 0;
+    background:#8b5cf6;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
 }
 
 button:hover{
-filter:brightness(1.1)
-}
-
-button.red{
-background:#a83e3e
+    filter:brightness(1.1);
 }
 
 button.gray{
-background:#303641
+    background:#303641;
+}
+
+button.red{
+    background:#9d3838;
 }
 
 .login{
-max-width:420px;
-margin:70px auto
+    max-width:420px;
+    margin:70px auto;
 }
 
 .login .logo{
-margin-left:auto;
-margin-right:auto
+    margin-left:auto;
+    margin-right:auto;
 }
 
 .login h1,
 .login .sub{
-text-align:center
+    text-align:center;
 }
 
 .error{
-color:#ef6666;
-min-height:20px
+    color:#ef6666;
+    min-height:20px;
+    font-size:13px;
+}
+
+.test{
+    margin-top:15px;
+    padding:12px;
+    border-radius:10px;
+    background:#20242c;
+    color:#9da5b2;
 }
 
 .header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:15px;
-margin-bottom:18px
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:18px;
 }
 
 .user{
-color:#9da5b2;
-margin-right:8px
+    color:#9da5b2;
+    margin-right:7px;
 }
 
 .clock{
-text-align:center;
-padding:35px 20px
+    text-align:center;
+    padding:35px 20px;
 }
 
 .status{
-color:#9da5b2;
-margin-bottom:15px
+    color:#9da5b2;
+    margin-bottom:12px;
 }
 
 .time{
-font-size:70px;
-font-family:monospace;
-margin:15px 0
+    font-size:70px;
+    font-family:monospace;
+    letter-spacing:-3px;
+    margin:20px 0 10px;
 }
 
 .since{
-min-height:20px;
-margin-bottom:12px
+    min-height:20px;
+    color:#8f98a8;
 }
 
 .punch{
-width:280px;
-font-size:16px;
-padding:15px
+    width:280px;
+    padding:16px;
+    font-size:16px;
+    margin-top:18px;
 }
 
 .stats{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:12px;
-margin-bottom:15px
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:16px;
 }
 
 .stat{
-background:#20242b;
-border:1px solid #303641;
-border-radius:12px;
-padding:16px
+    background:#171a21;
+    border:1px solid #2b303b;
+    border-radius:14px;
+    padding:17px;
 }
 
 .stat span{
-font-size:11px;
-color:#8d96a5;
-text-transform:uppercase
+    color:#8f98a8;
+    font-size:11px;
+    text-transform:uppercase;
 }
 
 .stat b{
-display:block;
-font-size:23px;
-font-family:monospace;
-margin-top:7px
+    display:block;
+    font-size:23px;
+    font-family:monospace;
+    margin-top:7px;
 }
 
 .row{
-display:flex;
-gap:10px
+    display:flex;
+    gap:10px;
 }
 
 .row>*{
-flex:1
+    flex:1;
 }
 
 .actions{
-display:flex;
-gap:7px;
-flex-wrap:wrap
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
 }
 
 .table{
-overflow-x:auto
+    overflow-x:auto;
 }
 
 table{
-width:100%;
-min-width:650px;
-border-collapse:collapse
+    width:100%;
+    min-width:650px;
+    border-collapse:collapse;
 }
 
 th,
 td{
-padding:11px;
-border-bottom:1px solid #303641;
-text-align:left
+    padding:12px 10px;
+    text-align:left;
+    border-bottom:1px solid #2c313b;
 }
 
 th{
-font-size:11px;
-color:#8d96a5;
-text-transform:uppercase
+    color:#8f98a8;
+    font-size:11px;
+    text-transform:uppercase;
 }
 
 td{
-font-family:monospace
+    font-family:monospace;
 }
 
-.note{
-font-family:Arial,sans-serif;
-color:#aab1bd
+td.note{
+    font-family:Arial,sans-serif;
+    color:#aab1bd;
 }
 
 .admin-user{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:10px 0;
-border-bottom:1px solid #303641
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid #2c313b;
 }
 
 hr{
-border:0;
-border-top:1px solid #303641;
-margin:18px 0
+    border:0;
+    border-top:1px solid #2c313b;
+    margin:18px 0;
 }
 
 @media(max-width:650px){
 
-body{
-padding:10px
-}
+    body{
+        padding:10px;
+    }
 
-.card{
-padding:16px;
-border-radius:13px
-}
+    .card{
+        padding:16px;
+        border-radius:14px;
+    }
 
-.login{
-margin:30px auto
-}
+    .login{
+        margin:30px auto;
+    }
 
-.header{
-align-items:flex-start
-}
+    .header{
+        align-items:flex-start;
+    }
 
-.user{
-display:block;
-margin-bottom:5px
-}
+    .header .user{
+        display:block;
+        margin-bottom:5px;
+    }
 
-.time{
-font-size:43px
-}
+    .time{
+        font-size:43px;
+        letter-spacing:-2px;
+    }
 
-.punch{
-width:100%
-}
+    .punch{
+        width:100%;
+    }
 
-.stats{
-grid-template-columns:1fr 1fr
-}
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
 
-.stats .stat:last-child{
-grid-column:1/-1
-}
+    .stats .stat:last-child{
+        grid-column:1/-1;
+    }
 
-.row{
-flex-direction:column
-}
+    .row{
+        flex-direction:column;
+    }
 
-.actions button{
-flex:1
-}
+    .actions button{
+        flex:1;
+    }
 
-table{
-font-size:13px
-}
-
+    table{
+        font-size:13px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<main>
+<div class="container">
 
 
 <!-- ================= LOGIN ================= -->
 
-<section id="login" class="card login">
+<section id="loginPage" class="card login">
 
 <div class="logo">
-⏱
+⏱️
 </div>
 
 <h1>Stempeluhr</h1>
 
-<div class="sub">
-Arbeitszeit einfach erfassen
-</div>
+<p class="sub">
+Arbeitszeit einfach und übersichtlich erfassen
+</p>
 
 <br>
 
 <input
-id="username"
-type="text"
-placeholder="Benutzername"
-autocomplete="username">
+    id="username"
+    type="text"
+    placeholder="Benutzername"
+    autocomplete="username"
+>
 
 <input
-id="password"
-type="password"
-placeholder="Passwort"
-autocomplete="current-password">
+    id="password"
+    type="password"
+    placeholder="Passwort"
+    autocomplete="current-password"
+>
 
 <button
-onclick="login()"
-style="width:100%">
-
+    onclick="login()"
+    style="width:100%;"
+>
 Einloggen
-
 </button>
 
-<p id="error" class="error"></p>
+<div
+    id="loginError"
+    class="error"
+></div>
 
-<hr>
+<div class="test">
 
-<small>
 <b>Test-Account</b><br><br>
-Benutzername: <b>test</b><br>
-Passwort: <b>test1234</b>
-</small>
+
+Benutzername:
+<b>test</b><br>
+
+Passwort:
+<b>test1234</b>
+
+</div>
 
 </section>
 
 
 <!-- ================= APP ================= -->
 
-<section id="app" class="hidden">
+<section id="appPage" class="hidden">
 
 
 <!-- HEADER -->
@@ -370,11 +393,12 @@ Passwort: <b>test1234</b>
 
 <div>
 
-<h1>⏱ Stempeluhr</h1>
+<h1>⏱️ Stempeluhr</h1>
 
 <div
-id="date"
-class="sub">
+    id="currentDate"
+    class="sub"
+>
 </div>
 
 </div>
@@ -382,16 +406,16 @@ class="sub">
 <div>
 
 <span
-id="userDisplay"
-class="user">
+    id="currentUser"
+    class="user"
+>
 </span>
 
 <button
-class="gray"
-onclick="logout()">
-
+    class="gray"
+    onclick="logout()"
+>
 Abmelden
-
 </button>
 
 </div>
@@ -402,8 +426,9 @@ Abmelden
 <!-- ================= ADMIN ================= -->
 
 <section
-id="admin"
-class="card hidden">
+    id="adminPanel"
+    class="card hidden"
+>
 
 <h2>
 Benutzerverwaltung
@@ -412,15 +437,19 @@ Benutzerverwaltung
 <div class="row">
 
 <input
-id="newUser"
-placeholder="Neuer Benutzer">
+    id="newUsername"
+    placeholder="Neuer Benutzer"
+>
 
 <input
-id="newPassword"
-type="password"
-placeholder="Passwort">
+    id="newPassword"
+    type="password"
+    placeholder="Passwort"
+>
 
-<button onclick="createUser()">
+<button
+    onclick="createUser()"
+>
 Erstellen
 </button>
 
@@ -434,41 +463,41 @@ Erstellen
 <!-- ================= CLOCK ================= -->
 
 <section
-id="clockCard"
-class="card clock">
+    id="clockCard"
+    class="card clock"
+>
 
 <div
-id="status"
-class="status">
-
+    id="status"
+    class="status"
+>
 🔴 Ausgestempelt
-
 </div>
 
 <div
-id="timer"
-class="time">
-
+    id="timer"
+    class="time"
+>
 00:00:00
-
 </div>
 
 <div
-id="since"
-class="since sub">
+    id="since"
+    class="since"
+>
 </div>
 
 <input
-id="note"
-placeholder="Notiz, z. B. Büro oder Projekt">
+    id="note"
+    placeholder="Notiz, z. B. Büro oder Projekt"
+>
 
 <button
-id="punchButton"
-class="punch"
-onclick="punch()">
-
+    id="punchButton"
+    class="punch"
+    onclick="punch()"
+>
 Einstempeln
-
 </button>
 
 </section>
@@ -510,7 +539,7 @@ Diese Woche
 Einträge
 </span>
 
-<b id="count">
+<b id="entryCount">
 0
 </b>
 
@@ -519,7 +548,7 @@ Einträge
 </div>
 
 
-<!-- ================= LOG ================= -->
+<!-- ================= ZEITERFASSUNG ================= -->
 
 <section class="card">
 
@@ -532,18 +561,16 @@ Zeiterfassung
 <div class="actions">
 
 <button
-onclick="exportCSV()">
-
+    onclick="exportCSV()"
+>
 CSV Export
-
 </button>
 
 <button
-class="red"
-onclick="deleteAll()">
-
+    class="red"
+    onclick="deleteAll()"
+>
 Löschen
-
 </button>
 
 </div>
@@ -592,1136 +619,1154 @@ Notiz
 
 
 <p
-id="empty"
-class="sub"
-style="text-align:center">
-
+    id="empty"
+    class="sub"
+    style="text-align:center;"
+>
 Noch keine Einträge.
-
 </p>
 
 </section>
 
+
 </section>
 
-</main>
+</div>
 
 
 <script>
 
-/* ==================================================
-   GRUNDVARIABLEN
-================================================== */
+/* =====================================================
+   TEST-ACCOUNT
+===================================================== */
+
+const TEST_USER = "test";
+const TEST_PASSWORD = "test1234";
+
+
+/* =====================================================
+   VARIABLEN
+===================================================== */
 
 let currentUser = null;
 let active = null;
 let entries = [];
 
-const $ = id => document.getElementById(id);
 
+/* =====================================================
+   ELEMENT HELPER
+===================================================== */
 
-/* ==================================================
-   BENUTZER
-================================================== */
-
-function setup(){
-
-/*
-   Test-Account wird automatisch erstellt.
-*/
-
-if(!localStorage.getItem("user:test")){
-
-localStorage.setItem(
-
-"user:test",
-
-JSON.stringify({
-
-password:"test1234",
-
-admin:true
-
-})
-
-);
-
-}
-
+function $(id){
+    return document.getElementById(id);
 }
 
 
-/* ==================================================
+/* =====================================================
+   BENUTZER INITIALISIEREN
+===================================================== */
+
+function setupUsers(){
+
+    /*
+       Test-Account wird bei jedem Start geprüft.
+       Falls er fehlt, wird er automatisch erstellt.
+    */
+
+    const key = "user:" + TEST_USER;
+
+    if(!localStorage.getItem(key)){
+
+        localStorage.setItem(
+            key,
+            JSON.stringify({
+                password:TEST_PASSWORD,
+                admin:true
+            })
+        );
+
+    }
+
+}
+
+
+/* =====================================================
    LOGIN
-================================================== */
+===================================================== */
 
 function login(){
 
-const username =
-$("username")
-.value
-.trim()
-.toLowerCase();
+    const username =
+        $("username")
+        .value
+        .trim()
+        .toLowerCase();
 
-const password =
-$("password")
-.value;
-
-$("error").textContent = "";
+    const password =
+        $("password")
+        .value;
 
 
-/*
-   Eingabe prüfen
-*/
-
-if(!username || !password){
-
-$("error").textContent =
-"Bitte Benutzername und Passwort eingeben.";
-
-return;
-
-}
+    $("loginError").textContent = "";
 
 
-/*
-   Benutzer suchen
-*/
+    if(username === ""){
 
-const stored =
-localStorage.getItem(
-"user:"+username
-);
+        $("loginError").textContent =
+            "Bitte Benutzernamen eingeben.";
 
-if(!stored){
+        return;
 
-$("error").textContent =
-"Benutzername oder Passwort falsch.";
-
-return;
-
-}
+    }
 
 
-/*
-   Benutzerdaten lesen
-*/
+    if(password === ""){
 
-let account;
+        $("loginError").textContent =
+            "Bitte Passwort eingeben.";
 
-try{
+        return;
 
-account = JSON.parse(stored);
-
-}catch{
-
-$("error").textContent =
-"Fehler beim Benutzerkonto.";
-
-return;
-
-}
+    }
 
 
-/*
-   Passwort prüfen
-*/
-
-if(account.password !== password){
-
-$("error").textContent =
-"Benutzername oder Passwort falsch.";
-
-return;
-
-}
+    const stored =
+        localStorage.getItem(
+            "user:" + username
+        );
 
 
-/*
-   Login erfolgreich
-*/
+    if(!stored){
 
-currentUser = username;
+        $("loginError").textContent =
+            "Benutzername oder Passwort falsch.";
 
-$("login")
-.classList
-.add("hidden");
+        return;
 
-$("app")
-.classList
-.remove("hidden");
+    }
 
 
-/*
-   Benutzer anzeigen
-*/
+    let account;
 
-$("userDisplay").textContent =
-"@"+
-username+
-(account.admin ? " • ADMIN" : "");
+    try{
 
+        account =
+            JSON.parse(stored);
 
-/*
-   Datum
-*/
+    }catch(error){
 
-$("date").textContent =
-new Date()
-.toLocaleDateString(
-"de-DE",
-{
-weekday:"long",
-day:"2-digit",
-month:"long",
-year:"numeric"
-}
-);
+        $("loginError").textContent =
+            "Benutzerkonto konnte nicht gelesen werden.";
+
+        return;
+
+    }
 
 
-/*
-   Admin anzeigen
-*/
+    if(account.password !== password){
 
-if(account.admin){
+        $("loginError").textContent =
+            "Benutzername oder Passwort falsch.";
 
-$("admin")
-.classList
-.remove("hidden");
+        return;
 
-showUsers();
+    }
+
+
+    /* LOGIN ERFOLGREICH */
+
+    currentUser = username;
+
+
+    $("loginPage")
+        .classList
+        .add("hidden");
+
+
+    $("appPage")
+        .classList
+        .remove("hidden");
+
+
+    $("currentUser").textContent =
+        "@" +
+        username +
+        (account.admin ? " • ADMIN" : "");
+
+
+    $("currentDate").textContent =
+        new Date()
+        .toLocaleDateString(
+            "de-DE",
+            {
+                weekday:"long",
+                day:"2-digit",
+                month:"long",
+                year:"numeric"
+            }
+        );
+
+
+    if(account.admin){
+
+        $("adminPanel")
+            .classList
+            .remove("hidden");
+
+        showUsers();
+
+    }
+
+
+    loadData();
 
 }
 
 
-/*
-   Daten laden
-*/
-
-load();
-
-}
-
-
-/* ==================================================
+/* =====================================================
    DATEN LADEN
-================================================== */
+===================================================== */
 
-function load(){
+function loadData(){
 
-entries =
-JSON.parse(
-
-localStorage.getItem(
-"entries:"+currentUser
-)||"[]"
-
-);
+    const savedEntries =
+        localStorage.getItem(
+            "entries:" + currentUser
+        );
 
 
-active =
-JSON.parse(
-
-localStorage.getItem(
-"active:"+currentUser
-)||"null"
-
-);
+    const savedActive =
+        localStorage.getItem(
+            "active:" + currentUser
+        );
 
 
-render();
+    try{
+
+        entries =
+            savedEntries
+            ? JSON.parse(savedEntries)
+            : [];
+
+    }catch{
+
+        entries = [];
+
+    }
+
+
+    try{
+
+        active =
+            savedActive
+            ? JSON.parse(savedActive)
+            : null;
+
+    }catch{
+
+        active = null;
+
+    }
+
+
+    render();
 
 }
 
 
-/* ==================================================
+/* =====================================================
    DATEN SPEICHERN
-================================================== */
+===================================================== */
 
-function save(){
+function saveData(){
 
-localStorage.setItem(
+    localStorage.setItem(
 
-"entries:"+currentUser,
+        "entries:" + currentUser,
 
-JSON.stringify(entries)
+        JSON.stringify(entries)
 
-);
+    );
 
 
-if(active){
+    if(active){
 
-localStorage.setItem(
+        localStorage.setItem(
 
-"active:"+currentUser,
+            "active:" + currentUser,
 
-JSON.stringify(active)
+            JSON.stringify(active)
 
-);
+        );
 
-}else{
+    }else{
 
-localStorage.removeItem(
+        localStorage.removeItem(
 
-"active:"+currentUser
+            "active:" + currentUser
 
-);
+        );
+
+    }
 
 }
 
-}
 
-
-/* ==================================================
+/* =====================================================
    EINSTEMPELN / AUSSTEMPELN
-================================================== */
+===================================================== */
 
 function punch(){
 
-/*
-   Wenn bereits eingestempelt:
-   Arbeitszeit beenden.
-*/
+    if(active){
 
-if(active){
+        /*
+           AUSSTEMPELN
+        */
 
-entries.push({
+        entries.push({
 
-start:active.start,
+            start:active.start,
 
-end:Date.now(),
+            end:Date.now(),
 
-note:$("note")
-.value
-.trim()
+            note:$("note")
+                .value
+                .trim()
 
-});
-
-active = null;
+        });
 
 
-/*
-   Wenn ausgestempelt:
-   neue Arbeitszeit starten.
-*/
-
-}else{
-
-active = {
-
-start:Date.now(),
-
-note:$("note")
-.value
-.trim()
-
-};
-
-}
+        active = null;
 
 
-/*
-   Speichern
-*/
+        $("note").value = "";
 
-save();
 
-render();
+    }else{
+
+        /*
+           EINSTEMPELN
+        */
+
+        active = {
+
+            start:Date.now(),
+
+            note:$("note")
+                .value
+                .trim()
+
+        };
+
+    }
+
+
+    saveData();
+
+    render();
 
 }
 
 
-/* ==================================================
-   HAUPTANZEIGE
-================================================== */
+/* =====================================================
+   ANZEIGE AKTUALISIEREN
+===================================================== */
 
 function render(){
 
-/*
-   Eingestempelt
-*/
+    if(active){
 
-if(active){
-
-$("status").textContent =
-"🟢 Eingestempelt";
-
-$("punchButton").textContent =
-"Ausstempeln";
-
-$("punchButton")
-.className =
-"punch red";
-
-$("since").textContent =
-"Seit "+
-formatTime(active.start)+
-" Uhr";
-
-}else{
+        $("status").textContent =
+            "🟢 Eingestempelt";
 
 
-/*
-   Ausgestempelt
-*/
-
-$("status").textContent =
-"🔴 Ausgestempelt";
-
-$("punchButton").textContent =
-"Einstempeln";
-
-$("punchButton")
-.className =
-"punch";
-
-$("timer").textContent =
-"00:00:00";
-
-$("since").textContent = "";
-
-}
+        $("punchButton").textContent =
+            "Ausstempeln";
 
 
-/*
-   Tabelle leeren
-*/
-
-$("log").innerHTML = "";
+        $("punchButton")
+            .className =
+            "punch red";
 
 
-/*
-   Einträge sortieren
-*/
-
-const sorted =
-[...entries]
-.sort(
-(a,b)=>b.start-a.start
-);
+        $("since").textContent =
+            "Seit " +
+            formatTime(active.start) +
+            " Uhr";
 
 
-/*
-   Tabelle erstellen
-*/
-
-sorted.forEach(entry=>{
-
-const row =
-document.createElement("tr");
+        updateTimer();
 
 
-row.innerHTML = `
+    }else{
 
-<td>
-${formatDate(entry.start)}
-</td>
-
-<td>
-${formatTime(entry.start)}
-</td>
-
-<td>
-${formatTime(entry.end)}
-</td>
-
-<td>
-${duration(
-entry.end-entry.start
-)}
-</td>
-
-<td class="note">
-${escapeHTML(
-entry.note || "-"
-)}
-</td>
-
-`;
+        $("status").textContent =
+            "🔴 Ausgestempelt";
 
 
-$("log")
-.appendChild(row);
-
-});
+        $("punchButton").textContent =
+            "Einstempeln";
 
 
-/*
-   Leer-Meldung
-*/
-
-$("empty").style.display =
-entries.length
-? "none"
-: "block";
+        $("punchButton")
+            .className =
+            "punch";
 
 
-/*
-   Anzahl
-*/
-
-$("count").textContent =
-entries.length;
+        $("timer").textContent =
+            "00:00:00";
 
 
-/*
-   Statistik
-*/
+        $("since").textContent =
+            "";
 
-updateStats();
+    }
+
+
+    renderTable();
+
+    updateStats();
 
 }
 
 
-/* ==================================================
-   ZEIT FORMATIEREN
-================================================== */
+/* =====================================================
+   TABELLE
+===================================================== */
 
-function formatTime(time){
+function renderTable(){
 
-return new Date(time)
-.toLocaleTimeString(
-"de-DE",
-{
-hour:"2-digit",
-minute:"2-digit"
+    $("log").innerHTML = "";
+
+
+    const sorted =
+        [...entries]
+        .sort(
+            (a,b) =>
+                b.start - a.start
+        );
+
+
+    sorted.forEach(entry=>{
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+
+        <td>
+            ${formatDate(entry.start)}
+        </td>
+
+        <td>
+            ${formatTime(entry.start)}
+        </td>
+
+        <td>
+            ${formatTime(entry.end)}
+        </td>
+
+        <td>
+            ${duration(
+                entry.end -
+                entry.start
+            )}
+        </td>
+
+        <td class="note">
+            ${escapeHTML(
+                entry.note || "-"
+            )}
+        </td>
+
+        `;
+
+
+        $("log")
+            .appendChild(row);
+
+    });
+
+
+    $("empty").style.display =
+        entries.length === 0
+        ? "block"
+        : "none";
+
+
+    $("entryCount").textContent =
+        entries.length;
+
 }
-);
+
+
+/* =====================================================
+   LIVE TIMER
+===================================================== */
+
+function updateTimer(){
+
+    if(!active)
+        return;
+
+
+    const ms =
+        Date.now() -
+        active.start;
+
+
+    const totalSeconds =
+        Math.floor(
+            ms / 1000
+        );
+
+
+    const hours =
+        Math.floor(
+            totalSeconds / 3600
+        );
+
+
+    const minutes =
+        Math.floor(
+            (totalSeconds % 3600) / 60
+        );
+
+
+    const seconds =
+        totalSeconds % 60;
+
+
+    $("timer").textContent =
+
+        String(hours)
+        .padStart(2,"0")
+
+        + ":"
+
+        + String(minutes)
+        .padStart(2,"0")
+
+        + ":"
+
+        + String(seconds)
+        .padStart(2,"0");
 
 }
 
 
-/* ==================================================
-   DATUM FORMATIEREN
-================================================== */
-
-function formatDate(time){
-
-return new Date(time)
-.toLocaleDateString(
-"de-DE"
-);
-
-}
-
-
-/* ==================================================
-   DAUER
-================================================== */
-
-function duration(ms){
-
-let minutes =
-Math.floor(
-ms/60000
-);
-
-let hours =
-Math.floor(
-minutes/60
-);
-
-minutes =
-minutes%60;
-
-
-return hours+
-"h "+
-String(minutes)
-.padStart(2,"0")+
-"m";
-
-}
-
-
-/* ==================================================
+/* =====================================================
    STATISTIK
-================================================== */
+===================================================== */
 
 function updateStats(){
 
-let today = 0;
-let week = 0;
+    let today = 0;
+    let week = 0;
 
 
-const now =
-new Date();
+    const now =
+        new Date();
 
 
-/*
-   Heute 00:00
-*/
+    const startToday =
+        new Date(now);
 
-const startToday =
-new Date(now);
-
-startToday.setHours(
-0,0,0,0
-);
+    startToday.setHours(
+        0,0,0,0
+    );
 
 
-/*
-   Montag dieser Woche
-*/
-
-const monday =
-new Date(startToday);
-
-const day =
-(monday.getDay()+6)%7;
-
-monday.setDate(
-monday.getDate()-day
-);
+    const startWeek =
+        new Date(startToday);
 
 
-/*
-   Einträge berechnen
-*/
-
-entries.forEach(entry=>{
-
-const time =
-entry.end-entry.start;
+    const day =
+        (startWeek.getDay()+6)%7;
 
 
-if(entry.start>=startToday){
-
-today += time;
-
-}
+    startWeek.setDate(
+        startWeek.getDate() - day
+    );
 
 
-if(entry.start>=monday){
+    entries.forEach(entry=>{
 
-week += time;
-
-}
-
-});
+        const time =
+            entry.end -
+            entry.start;
 
 
-/*
-   Aktive Arbeitszeit
-*/
+        if(entry.start >= startToday){
 
-if(active){
+            today += time;
 
-const time =
-Date.now()-active.start;
+        }
 
 
-if(active.start>=startToday){
+        if(entry.start >= startWeek){
 
-today += time;
+            week += time;
 
-}
+        }
+
+    });
 
 
-if(active.start>=monday){
+    if(active){
 
-week += time;
+        const time =
+            Date.now() -
+            active.start;
 
-}
+
+        if(active.start >= startToday){
+
+            today += time;
+
+        }
+
+
+        if(active.start >= startWeek){
+
+            week += time;
+
+        }
+
+    }
+
+
+    $("today").textContent =
+        duration(today);
+
+
+    $("week").textContent =
+        duration(week);
 
 }
 
 
-/*
-   Anzeigen
-*/
+/* =====================================================
+   ZEIT FORMAT
+===================================================== */
 
-$("today").textContent =
-duration(today);
+function formatTime(timestamp){
 
-$("week").textContent =
-duration(week);
+    return new Date(timestamp)
+        .toLocaleTimeString(
+            "de-DE",
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        );
 
 }
 
 
-/* ==================================================
-   LIVE TIMER
-================================================== */
+/* =====================================================
+   DATUM FORMAT
+===================================================== */
 
-setInterval(()=>{
+function formatDate(timestamp){
 
-if(!active)
-return;
+    return new Date(timestamp)
+        .toLocaleDateString(
+            "de-DE"
+        );
 
-
-const ms =
-Date.now()-active.start;
-
-
-const seconds =
-Math.floor(ms/1000);
+}
 
 
-const hours =
-Math.floor(
-seconds/3600
-);
+/* =====================================================
+   DAUER FORMAT
+===================================================== */
+
+function duration(ms){
+
+    const minutes =
+        Math.floor(
+            ms / 60000
+        );
 
 
-const minutes =
-Math.floor(
-(seconds%3600)/60
-);
+    const hours =
+        Math.floor(
+            minutes / 60
+        );
 
 
-const secs =
-seconds%60;
+    const mins =
+        minutes % 60;
 
 
-$("timer").textContent =
+    return (
+        hours +
+        "h " +
+        String(mins)
+            .padStart(2,"0") +
+        "m"
+    );
 
-String(hours)
-.padStart(2,"0")
-
-+
-
-":"
-
-+
-
-String(minutes)
-.padStart(2,"0")
-
-+
-
-":"
-
-+
-
-String(secs)
-.padStart(2,"0");
+}
 
 
-updateStats();
-
-},1000);
-
-
-/* ==================================================
+/* =====================================================
    CSV EXPORT
-================================================== */
+===================================================== */
 
 function exportCSV(){
 
-if(!entries.length){
+    if(entries.length === 0){
 
-alert(
-"Keine Zeiteinträge vorhanden."
-);
+        alert(
+            "Keine Zeiteinträge vorhanden."
+        );
 
-return;
+        return;
 
-}
-
-
-/*
-   CSV Kopfzeile
-*/
-
-const rows = [
-
-[
-"Datum",
-"Start",
-"Ende",
-"Dauer",
-"Notiz"
-]
-
-];
+    }
 
 
-/*
-   Einträge sortieren
-*/
+    const rows = [
 
-const sorted =
-[...entries]
-.sort(
-(a,b)=>a.start-b.start
-);
+        [
+            "Datum",
+            "Start",
+            "Ende",
+            "Dauer",
+            "Notiz"
+        ]
 
-
-/*
-   CSV Daten
-*/
-
-sorted.forEach(entry=>{
-
-rows.push([
-
-formatDate(
-entry.start
-),
-
-formatTime(
-entry.start
-),
-
-formatTime(
-entry.end
-),
-
-duration(
-entry.end-entry.start
-),
-
-entry.note || ""
-
-]);
-
-});
+    ];
 
 
-/*
-   CSV erzeugen
-*/
-
-const csv =
-
-"\uFEFF"+
-
-rows
-.map(row=>
-
-row
-.map(value=>
-
-'"'+
-String(value)
-.replace(/"/g,'""')+
-'"'
-
-)
-.join(";")
-
-)
-.join("\n");
+    const sorted =
+        [...entries]
+        .sort(
+            (a,b) =>
+                a.start - b.start
+        );
 
 
-/*
-   Datei erstellen
-*/
+    sorted.forEach(entry=>{
 
-const blob =
-new Blob(
-[csv],
-{
-type:
-"text/csv;charset=utf-8"
-}
-);
+        rows.push([
 
+            formatDate(
+                entry.start
+            ),
 
-const url =
-URL.createObjectURL(blob);
+            formatTime(
+                entry.start
+            ),
 
+            formatTime(
+                entry.end
+            ),
 
-const link =
-document.createElement("a");
+            duration(
+                entry.end -
+                entry.start
+            ),
 
+            entry.note || ""
 
-link.href = url;
+        ]);
 
-link.download =
-"stempeluhr_"+
-currentUser+
-".csv";
+    });
 
 
-document.body
-.appendChild(link);
+    const csv =
 
-link.click();
+        "\uFEFF" +
 
-link.remove();
+        rows
+        .map(row=>
 
-URL.revokeObjectURL(url);
+            row
+            .map(value=>
+
+                '"' +
+                String(value)
+                .replace(
+                    /"/g,
+                    '""'
+                ) +
+                '"'
+
+            )
+            .join(";")
+
+        )
+        .join("\n");
+
+
+    const blob =
+        new Blob(
+            [csv],
+            {
+                type:
+                "text/csv;charset=utf-8"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const link =
+        document.createElement("a");
+
+
+    link.href = url;
+
+
+    link.download =
+        "stempeluhr_" +
+        currentUser +
+        "_" +
+        new Date()
+        .toISOString()
+        .slice(0,10) +
+        ".csv";
+
+
+    document.body
+        .appendChild(link);
+
+
+    link.click();
+
+
+    link.remove();
+
+
+    URL.revokeObjectURL(url);
 
 }
 
 
-/* ==================================================
-   BENUTZER ERSTELLEN
-================================================== */
-
-function createUser(){
-
-const username =
-$("newUser")
-.value
-.trim()
-.toLowerCase();
-
-
-const password =
-$("newPassword")
-.value;
-
-
-if(!username){
-
-alert(
-"Bitte Benutzernamen eingeben."
-);
-
-return;
-
-}
-
-
-if(password.length<6){
-
-alert(
-"Das Passwort muss mindestens 6 Zeichen haben."
-);
-
-return;
-
-}
-
-
-if(
-localStorage.getItem(
-"user:"+username
-)
-){
-
-alert(
-"Dieser Benutzer existiert bereits."
-);
-
-return;
-
-}
-
-
-/*
-   Benutzer speichern
-*/
-
-localStorage.setItem(
-
-"user:"+username,
-
-JSON.stringify({
-
-password:password,
-
-admin:false
-
-})
-
-);
-
-
-/*
-   Felder leeren
-*/
-
-$("newUser").value = "";
-
-$("newPassword").value = "";
-
-
-/*
-   Liste aktualisieren
-*/
-
-showUsers();
-
-}
-
-
-/* ==================================================
-   BENUTZERLISTE
-================================================== */
-
-function showUsers(){
-
-$("userList").innerHTML = "";
-
-
-Object.keys(localStorage)
-
-.filter(
-key =>
-key.startsWith("user:")
-)
-
-.forEach(key=>{
-
-const username =
-key.substring(5);
-
-
-const account =
-JSON.parse(
-localStorage.getItem(key)
-);
-
-
-const div =
-document.createElement("div");
-
-
-div.className =
-"admin-user";
-
-
-const name =
-document.createElement("span");
-
-
-name.textContent =
-"@"+
-username+
-(account.admin
-? " • ADMIN"
-: "");
-
-
-div.appendChild(name);
-
-
-/*
-   Test-Account / aktuellen Account
-   nicht löschen
-*/
-
-if(username!==currentUser){
-
-const button =
-document.createElement("button");
-
-button.className =
-"red";
-
-button.textContent =
-"Löschen";
-
-
-button.onclick = ()=>{
-
-if(!confirm(
-"Benutzer "+
-username+
-" wirklich löschen?"
-))return;
-
-
-localStorage.removeItem(
-"user:"+username
-);
-
-localStorage.removeItem(
-"entries:"+username
-);
-
-localStorage.removeItem(
-"active:"+username
-);
-
-
-showUsers();
-
-};
-
-
-div.appendChild(button);
-
-}
-
-
-$("userList")
-.appendChild(div);
-
-});
-
-}
-
-
-/* ==================================================
+/* =====================================================
    ALLE EINTRÄGE LÖSCHEN
-================================================== */
+===================================================== */
 
 function deleteAll(){
 
-if(!confirm(
-"Alle Zeiteinträge löschen?"
-))
-return;
+    if(!confirm(
+        "Wirklich alle Zeiteinträge löschen?"
+    )){
+
+        return;
+
+    }
 
 
-entries = [];
+    entries = [];
 
 
-save();
+    saveData();
 
-render();
+    render();
 
 }
 
 
-/* ==================================================
+/* =====================================================
+   BENUTZER ERSTELLEN
+===================================================== */
+
+function createUser(){
+
+    const username =
+        $("newUsername")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    const password =
+        $("newPassword")
+        .value;
+
+
+    if(!username){
+
+        alert(
+            "Bitte Benutzernamen eingeben."
+        );
+
+        return;
+
+    }
+
+
+    if(password.length < 6){
+
+        alert(
+            "Das Passwort muss mindestens 6 Zeichen haben."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        localStorage.getItem(
+            "user:" + username
+        )
+    ){
+
+        alert(
+            "Dieser Benutzer existiert bereits."
+        );
+
+        return;
+
+    }
+
+
+    localStorage.setItem(
+
+        "user:" + username,
+
+        JSON.stringify({
+
+            password:password,
+
+            admin:false
+
+        })
+
+    );
+
+
+    $("newUsername").value = "";
+
+    $("newPassword").value = "";
+
+
+    showUsers();
+
+}
+
+
+/* =====================================================
+   BENUTZER ANZEIGEN
+===================================================== */
+
+function showUsers(){
+
+    $("userList").innerHTML = "";
+
+
+    Object.keys(localStorage)
+
+    .filter(
+        key =>
+        key.startsWith("user:")
+    )
+
+    .forEach(key=>{
+
+        const username =
+            key.substring(5);
+
+
+        let account;
+
+
+        try{
+
+            account =
+                JSON.parse(
+                    localStorage
+                    .getItem(key)
+                );
+
+        }catch{
+
+            return;
+
+        }
+
+
+        const div =
+            document.createElement("div");
+
+
+        div.className =
+            "admin-user";
+
+
+        const name =
+            document.createElement("span");
+
+
+        name.textContent =
+            "@" +
+            username +
+            (
+                account.admin
+                ? " • ADMIN"
+                : ""
+            );
+
+
+        div.appendChild(name);
+
+
+        /*
+           Aktuellen Benutzer
+           nicht löschen.
+        */
+
+        if(username !== currentUser){
+
+            const button =
+                document.createElement("button");
+
+
+            button.className =
+                "red";
+
+
+            button.textContent =
+                "Löschen";
+
+
+            button.onclick = function(){
+
+                if(!confirm(
+                    "Benutzer " +
+                    username +
+                    " wirklich löschen?"
+                )){
+
+                    return;
+
+                }
+
+
+                localStorage.removeItem(
+                    "user:" +
+                    username
+                );
+
+
+                localStorage.removeItem(
+                    "entries:" +
+                    username
+                );
+
+
+                localStorage.removeItem(
+                    "active:" +
+                    username
+                );
+
+
+                showUsers();
+
+            };
+
+
+            div.appendChild(button);
+
+        }
+
+
+        $("userList")
+            .appendChild(div);
+
+    });
+
+}
+
+
+/* =====================================================
    LOGOUT
-================================================== */
+===================================================== */
 
 function logout(){
 
-currentUser = null;
+    currentUser = null;
 
-active = null;
+    active = null;
 
-entries = [];
-
-
-$("app")
-.classList
-.add("hidden");
+    entries = [];
 
 
-$("login")
-.classList
-.remove("hidden");
+    $("appPage")
+        .classList
+        .add("hidden");
 
 
-$("username").value = "";
+    $("loginPage")
+        .classList
+        .remove("hidden");
 
-$("password").value = "";
 
-$("error").textContent = "";
+    $("username").value = "";
+
+    $("password").value = "";
+
+    $("loginError").textContent = "";
 
 }
 
 
-/* ==================================================
+/* =====================================================
    HTML SICHER MACHEN
-================================================== */
+===================================================== */
 
 function escapeHTML(text){
 
-const div =
-document.createElement("div");
+    const div =
+        document.createElement("div");
 
-div.textContent = text;
 
-return div.innerHTML;
+    div.textContent =
+        text;
+
+
+    return div.innerHTML;
 
 }
 
 
-/* ==================================================
-   START
-================================================== */
+/* =====================================================
+   TIMER AKTUALISIEREN
+===================================================== */
 
-setup();
+setInterval(
+
+    function(){
+
+        if(active){
+
+            updateTimer();
+
+            updateStats();
+
+        }
+
+    },
+
+    1000
+
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+setupUsers();
 
 </script>
 
