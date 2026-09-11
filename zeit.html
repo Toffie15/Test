@@ -10,7 +10,7 @@
 *{box-sizing:border-box}
 body{
  margin:0;background:#1b1d21;color:#f0ede6;
- font-family:Arial,sans-serif;padding:20px;
+ font-family:Arial,sans-serif;padding:20px
 }
 main{max-width:650px;margin:auto}
 .card{
@@ -24,18 +24,37 @@ input,button{
  font-size:15px
 }
 input{background:#2b2f33;color:white}
-button{background:#cf9a3f;color:#1b1d21;border:0;font-weight:bold;cursor:pointer}
-button.red{background:#c1685f}
+button{
+ background:#cf9a3f;color:#1b1d21;
+ border:0;font-weight:bold;cursor:pointer
+}
+button.red{background:#c1685f;color:white}
 button.gray{background:#383c40;color:white}
 .hidden{display:none}
-.time{text-align:center;font-size:52px;font-family:monospace;margin:20px 0}
-.status{text-align:center;color:#9a9d9f;margin-bottom:10px}
+.time{
+ text-align:center;font-size:52px;
+ font-family:monospace;margin:20px 0
+}
+.status{
+ text-align:center;color:#9a9d9f;
+ margin-bottom:10px
+}
 .stats{display:flex;gap:10px}
-.stat{flex:1;background:#2b2f33;padding:15px;border-radius:5px}
+.stat{
+ flex:1;background:#2b2f33;
+ padding:15px;border-radius:5px
+}
 .stat small{color:#9a9d9f}
-table{width:100%;border-collapse:collapse;margin-top:10px}
-td,th{padding:9px;border-bottom:1px solid #383c40;text-align:left}
+table{
+ width:100%;border-collapse:collapse;margin-top:10px
+}
+td,th{
+ padding:9px;
+ border-bottom:1px solid #383c40;
+ text-align:left
+}
 th{color:#9a9d9f;font-size:12px}
+
 @media(max-width:600px){
  body{padding:10px}
  .card{padding:16px}
@@ -53,24 +72,43 @@ th{color:#9a9d9f;font-size:12px}
 <!-- LOGIN -->
 <section id="login" class="card">
 <h1>Stempeluhr</h1>
+
 <p>Anmelden</p>
+
 <input id="user" placeholder="Benutzername">
 <input id="pass" type="password" placeholder="Passwort">
+
 <button onclick="login()">Einloggen</button>
+
 <p id="error"></p>
+
+<hr>
+
+<small style="color:#9a9d9f">
+Test-Account:<br>
+Benutzername: <b>test</b><br>
+Passwort: <b>test1234</b>
+</small>
 </section>
+
 
 <!-- APP -->
 <section id="app" class="hidden">
 
 <div class="card">
 <h1>Stempeluhr</h1>
+
 <div id="who"></div>
-<button class="gray" onclick="logout()">Abmelden</button>
+
+<button class="gray" onclick="logout()">
+Abmelden
+</button>
 </div>
+
 
 <!-- ADMIN -->
 <div id="admin" class="card hidden">
+
 <h2>Verwaltung</h2>
 
 <input id="newUser" placeholder="Benutzername">
@@ -78,39 +116,58 @@ th{color:#9a9d9f;font-size:12px}
 
 <label>
 <input id="newAdmin" type="checkbox" style="width:auto">
- Admin-Rechte
+Admin-Rechte
 </label>
 
-<button onclick="createUser()">Konto erstellen</button>
+<button onclick="createUser()">
+Konto erstellen
+</button>
+
 <div id="users"></div>
 </div>
 
-<!-- CLOCK -->
-<div class="card">
-<div class="status" id="status">Ausgestempelt</div>
 
-<div class="time" id="time">00:00:00</div>
+<!-- STEMPهل -->
+<div class="card">
+
+<div class="status" id="status">
+🔴 Ausgestempelt
+</div>
+
+<div class="time" id="time">
+00:00:00
+</div>
 
 <input id="note" placeholder="Notiz (optional)">
 
-<button id="punch" onclick="punch()">Einstempeln</button>
+<button id="punch" onclick="punch()">
+Einstempeln
+</button>
+
 </div>
 
-<!-- STATS -->
+
+<!-- ZEIT -->
 <div class="stats">
+
 <div class="stat">
 <small>HEUTE</small>
-<br><b id="today">0h 00m</b>
+<br>
+<b id="today">0h 00m</b>
 </div>
 
 <div class="stat">
 <small>DIESE WOCHE</small>
-<br><b id="week">0h 00m</b>
+<br>
+<b id="week">0h 00m</b>
 </div>
+
 </div>
+
 
 <!-- LOG -->
 <div class="card">
+
 <h2>Zeiterfassung</h2>
 
 <table>
@@ -126,59 +183,88 @@ th{color:#9a9d9f;font-size:12px}
 <tbody id="log"></tbody>
 </table>
 
-<button class="red" onclick="clearAll()">Alle Einträge löschen</button>
+<button class="red" onclick="clearAll()">
+Alle Einträge löschen
+</button>
+
 </div>
 
 </section>
 </main>
 
+
 <script>
+
 let current=null;
 let active=null;
 let entries=[];
 
 const $=id=>document.getElementById(id);
 
+
+/* PASSWORT HASH */
 async function hash(p){
  const b=await crypto.subtle.digest(
   "SHA-256",
   new TextEncoder().encode(p)
  );
+
  return [...new Uint8Array(b)]
-  .map(x=>x.toString(16).padStart(2,"0")).join("");
+  .map(x=>x.toString(16).padStart(2,"0"))
+  .join("");
 }
 
-function key(x){
- return x+":"+current;
+
+/* TEST ACCOUNT */
+async function setup(){
+
+ if(localStorage.getItem("user:test")) return;
+
+ localStorage.setItem(
+  "user:test",
+  JSON.stringify({
+   hash:await hash("test1234"),
+   admin:false
+  })
+ );
 }
 
+
+/* LOGIN */
 async function login(){
+
  const u=$("user").value.trim().toLowerCase();
  const p=$("pass").value;
 
  if(!u||!p){
-  $("error").textContent="Bitte Daten eingeben.";
+  $("error").textContent=
+   "Bitte Benutzername und Passwort eingeben.";
   return;
  }
 
  const data=localStorage.getItem("user:"+u);
 
  if(!data){
-  $("error").textContent="Benutzername oder Passwort falsch.";
+  $("error").textContent=
+   "Benutzername oder Passwort falsch.";
   return;
  }
 
  const d=JSON.parse(data);
 
  if(await hash(p)!==d.hash){
-  $("error").textContent="Benutzername oder Passwort falsch.";
+  $("error").textContent=
+   "Benutzername oder Passwort falsch.";
   return;
  }
 
  current=u;
+
  $("login").classList.add("hidden");
  $("app").classList.remove("hidden");
- $("who").textContent="@"+u+(d.admin?" • ADMIN":"");
+
+ $("who").textContent=
+  "@"+u+(d.admin?" • ADMIN":"");
 
  if(d.admin){
   $("admin").classList.remove("hidden");
@@ -188,31 +274,19 @@ async function login(){
  load();
 }
 
-async function setup(){
- if(localStorage.getItem("system"))return;
 
- const u=prompt("Admin-Benutzername:");
- const p=prompt("Admin-Passwort:");
-
- if(!u||!p)return;
-
- localStorage.setItem(
-  "user:"+u.toLowerCase(),
-  JSON.stringify({
-   hash:await hash(p),
-   admin:true
-  })
- );
-
- localStorage.setItem("system",u.toLowerCase());
-}
-
+/* BENUTZER ERSTELLEN */
 async function createUser(){
- const u=$("newUser").value.trim().toLowerCase();
+
+ const u=$("newUser")
+  .value.trim().toLowerCase();
+
  const p=$("newPass").value;
 
  if(!u||p.length<6){
-  alert("Benutzername eingeben und Passwort mindestens 6 Zeichen.");
+  alert(
+   "Benutzername eingeben und Passwort mindestens 6 Zeichen."
+  );
   return;
  }
 
@@ -236,29 +310,45 @@ async function createUser(){
  showUsers();
 }
 
+
+/* BENUTZER ANZEIGEN */
 function showUsers(){
+
  $("users").innerHTML="";
 
  Object.keys(localStorage)
  .filter(x=>x.startsWith("user:"))
  .forEach(k=>{
+
   const u=k.substring(5);
-  const d=JSON.parse(localStorage.getItem(k));
+  const d=JSON.parse(
+   localStorage.getItem(k)
+  );
 
   const div=document.createElement("div");
+
   div.style.marginTop="10px";
 
   div.innerHTML=
-   "@"+u+(d.admin?" • ADMIN":"")+
+   "@"+u+
+   (d.admin?" • ADMIN":"")+
    (u!==current?
-    ` <button class="red" onclick="deleteUser('${u}')">Löschen</button>`:"");
+    ` <button class="red"
+    onclick="deleteUser('${u}')">
+    Löschen
+    </button>`:"");
 
   $("users").appendChild(div);
  });
 }
 
+
+/* BENUTZER LÖSCHEN */
 function deleteUser(u){
- if(!confirm("Benutzer wirklich löschen?"))return;
+
+ if(!confirm(
+  "Benutzer wirklich löschen?"
+ )) return;
 
  localStorage.removeItem("user:"+u);
  localStorage.removeItem("entries:"+u);
@@ -267,29 +357,55 @@ function deleteUser(u){
  showUsers();
 }
 
+
+/* DATEN LADEN */
 function load(){
+
  entries=JSON.parse(
-  localStorage.getItem(key("entries"))||"[]"
+  localStorage.getItem(
+   "entries:"+current
+  )||"[]"
  );
 
  active=JSON.parse(
-  localStorage.getItem(key("active"))||"null"
+  localStorage.getItem(
+   "active:"+current
+  )||"null"
  );
 
  render();
 }
 
-function save(){
- localStorage.setItem(key("entries"),JSON.stringify(entries));
 
- if(active)
-  localStorage.setItem(key("active"),JSON.stringify(active));
- else
-  localStorage.removeItem(key("active"));
+/* DATEN SPEICHERN */
+function save(){
+
+ localStorage.setItem(
+  "entries:"+current,
+  JSON.stringify(entries)
+ );
+
+ if(active){
+
+  localStorage.setItem(
+   "active:"+current,
+   JSON.stringify(active)
+  );
+
+ }else{
+
+  localStorage.removeItem(
+   "active:"+current
+  );
+ }
 }
 
+
+/* EIN-/AUSSTEMPELN */
 function punch(){
+
  if(active){
+
   entries.push({
    start:active.start,
    end:Date.now(),
@@ -297,7 +413,9 @@ function punch(){
   });
 
   active=null;
+
  }else{
+
   active={
    start:Date.now(),
    note:$("note").value
@@ -308,22 +426,42 @@ function punch(){
  render();
 }
 
+
+/* ANZEIGE */
 function render(){
+
  if(active){
-  $("status").textContent="🟢 Eingestempelt";
-  $("punch").textContent="Ausstempeln";
+
+  $("status").textContent=
+   "🟢 Eingestempelt";
+
+  $("punch").textContent=
+   "Ausstempeln";
+
   $("punch").className="red";
-  $("note").value=active.note||"";
+
+  $("note").value=
+   active.note||"";
+
  }else{
-  $("status").textContent="🔴 Ausgestempelt";
-  $("punch").textContent="Einstempeln";
+
+  $("status").textContent=
+   "🔴 Ausgestempelt";
+
+  $("punch").textContent=
+   "Einstempeln";
+
   $("punch").className="";
-  $("time").textContent="00:00:00";
+
+  $("time").textContent=
+   "00:00:00";
  }
+
 
  $("log").innerHTML="";
 
- [...entries].reverse().forEach((e,i)=>{
+ [...entries].reverse().forEach(e=>{
+
   const tr=document.createElement("tr");
 
   tr.innerHTML=`
@@ -339,83 +477,132 @@ function render(){
  updateStats();
 }
 
+
+/* UHRZEIT */
 function time(t){
- return new Date(t).toLocaleTimeString("de-DE",{
-  hour:"2-digit",
-  minute:"2-digit"
- });
+
+ return new Date(t).toLocaleTimeString(
+  "de-DE",
+  {
+   hour:"2-digit",
+   minute:"2-digit"
+  }
+ );
 }
 
+
+/* DAUER */
 function duration(ms){
+
  const m=Math.floor(ms/60000);
- return Math.floor(m/60)+"h "+String(m%60).padStart(2,"0")+"m";
+
+ return Math.floor(m/60)+
+  "h "+
+  String(m%60).padStart(2,"0")+
+  "m";
 }
 
+
+/* HEUTE / WOCHE */
 function updateStats(){
+
  let today=0;
  let week=0;
 
  const now=new Date();
+
  const start=new Date(now);
  start.setHours(0,0,0,0);
 
  const monday=new Date(start);
- const day=(monday.getDay()+6)%7;
- monday.setDate(monday.getDate()-day);
+
+ const day=
+  (monday.getDay()+6)%7;
+
+ monday.setDate(
+  monday.getDate()-day
+ );
 
  entries.forEach(e=>{
+
   const d=e.end-e.start;
 
-  if(e.start>=start)today+=d;
-  if(e.start>=monday)week+=d;
+  if(e.start>=start)
+   today+=d;
+
+  if(e.start>=monday)
+   week+=d;
  });
 
- if(active){
-  const d=Date.now()-active.start;
 
-  if(active.start>=start)today+=d;
-  if(active.start>=monday)week+=d;
+ if(active){
+
+  const d=
+   Date.now()-active.start;
+
+  if(active.start>=start)
+   today+=d;
+
+  if(active.start>=monday)
+   week+=d;
  }
 
- $("today").textContent=duration(today);
- $("week").textContent=duration(week);
+ $("today").textContent=
+  duration(today);
+
+ $("week").textContent=
+  duration(week);
 }
 
+
+/* LIVE UHR */
+setInterval(()=>{
+
+ if(active){
+
+  $("time").textContent=
+   new Date(
+    Date.now()-active.start
+   ).toISOString().substr(11,8);
+
+  updateStats();
+ }
+
+},1000);
+
+
+/* ALLES LÖSCHEN */
+function clearAll(){
+
+ if(!confirm(
+  "Alle Einträge löschen?"
+ )) return;
+
+ entries=[];
+
+ save();
+ render();
+}
+
+
+/* LOGOUT */
 function logout(){
+
  current=null;
  active=null;
  entries=[];
 
  $("app").classList.add("hidden");
  $("login").classList.remove("hidden");
+
  $("user").value="";
  $("pass").value="";
 }
 
-function clearAll(){
- if(!confirm("Alle Einträge löschen?"))return;
 
- entries=[];
- save();
- render();
-}
+/* START */
+setup();
 
-setInterval(()=>{
- if(active){
-  $("time").textContent=
-   new Date(Date.now()-active.start)
-   .toISOString().substr(11,8);
-
-  updateStats();
- }
-},1000);
-
-(async()=>{
- await setup();
-
- if(localStorage.getItem("system"))
-  $("error").textContent="Admin-Konto vorhanden. Bitte anmelden.";
-})();
 </script>
 
 </body>
