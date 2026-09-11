@@ -3,604 +3,1166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#1b1d21">
+<meta name="theme-color" content="#111318">
 <title>Stempeluhr</title>
 
 <style>
 *{box-sizing:border-box}
+
 body{
- margin:0;background:#1b1d21;color:#f0ede6;
- font-family:Arial,sans-serif;padding:20px
+margin:0;
+padding:20px;
+min-height:100vh;
+background:#0e1014;
+color:#f5f7fa;
+font-family:Arial,sans-serif
 }
-main{max-width:650px;margin:auto}
+
+main{
+max-width:850px;
+margin:auto
+}
+
 .card{
- background:#232629;border:1px solid #383c40;
- border-radius:8px;padding:22px;margin-bottom:15px
+background:#181b21;
+border:1px solid #2b3039;
+border-radius:16px;
+padding:20px;
+margin-bottom:15px;
+box-shadow:0 10px 35px #0006
 }
-h1,h2{margin-top:0}
-input,button{
- width:100%;padding:12px;margin:6px 0;
- border-radius:5px;border:1px solid #383c40;
- font-size:15px
-}
-input{background:#2b2f33;color:white}
-button{
- background:#cf9a3f;color:#1b1d21;
- border:0;font-weight:bold;cursor:pointer
-}
-button.red{background:#c1685f;color:white}
-button.gray{background:#383c40;color:white}
+
 .hidden{display:none}
-.time{
- text-align:center;font-size:52px;
- font-family:monospace;margin:20px 0
+
+h1{margin:0 0 5px;font-size:23px}
+h2{font-size:16px}
+
+.sub,small{
+color:#8d96a5
 }
+
+.logo{
+width:42px;
+height:42px;
+display:grid;
+place-items:center;
+border-radius:12px;
+background:linear-gradient(135deg,#8b5cf6,#5b21b6);
+font-size:21px;
+margin-bottom:15px
+}
+
+input{
+width:100%;
+padding:13px;
+margin:6px 0;
+border-radius:10px;
+border:1px solid #303641;
+background:#22262e;
+color:white;
+font-size:15px
+}
+
+button{
+border:0;
+border-radius:10px;
+padding:12px 16px;
+margin:5px 0;
+background:#8b5cf6;
+color:white;
+font-weight:bold;
+cursor:pointer
+}
+
+button:hover{
+filter:brightness(1.1)
+}
+
+.red{
+background:#a83e3e
+}
+
+.gray{
+background:#303641
+}
+
+.login{
+max-width:420px;
+margin:70px auto
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+margin-bottom:18px
+}
+
+.user{
+color:#9da5b2
+}
+
+.clock{
+text-align:center;
+padding:35px 20px
+}
+
 .status{
- text-align:center;color:#9a9d9f;
- margin-bottom:10px
+color:#9da5b2;
+margin-bottom:15px
 }
-.stats{display:flex;gap:10px}
+
+.time{
+font-size:70px;
+font-family:monospace;
+margin:15px 0
+}
+
+.punch{
+width:260px;
+font-size:16px;
+padding:15px
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+margin-bottom:15px
+}
+
 .stat{
- flex:1;background:#2b2f33;
- padding:15px;border-radius:5px
+background:#20242b;
+border:1px solid #303641;
+border-radius:12px;
+padding:16px
 }
-.stat small{color:#9a9d9f}
+
+.stat b{
+display:block;
+font-size:22px;
+font-family:monospace;
+margin-top:7px
+}
+
+.row{
+display:flex;
+gap:10px
+}
+
+.row>*{
+flex:1
+}
+
+.table{
+overflow-x:auto
+}
+
 table{
- width:100%;border-collapse:collapse;margin-top:10px
+width:100%;
+min-width:600px;
+border-collapse:collapse
 }
-td,th{
- padding:9px;
- border-bottom:1px solid #383c40;
- text-align:left
+
+th,td{
+padding:11px;
+border-bottom:1px solid #303641;
+text-align:left
 }
-th{color:#9a9d9f;font-size:12px}
+
+th{
+font-size:11px;
+color:#8d96a5
+}
+
+td{
+font-family:monospace
+}
+
+.note{
+font-family:Arial
+}
+
+.actions{
+display:flex;
+gap:7px;
+flex-wrap:wrap
+}
+
+.admin-user{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:10px 0;
+border-bottom:1px solid #303641
+}
+
+.error{
+color:#ef6666;
+min-height:18px
+}
 
 @media(max-width:600px){
- body{padding:10px}
- .card{padding:16px}
- .time{font-size:42px}
- .stats{gap:6px}
- .stat{padding:10px;font-size:14px}
- table{font-size:13px}
+
+body{
+padding:10px
+}
+
+.card{
+padding:16px;
+border-radius:13px
+}
+
+.login{
+margin:30px auto
+}
+
+.header{
+align-items:flex-start
+}
+
+.header button{
+width:auto
+}
+
+.time{
+font-size:43px
+}
+
+.punch{
+width:100%
+}
+
+.stats{
+grid-template-columns:1fr 1fr
+}
+
+.stats .stat:last-child{
+grid-column:1/-1
+}
+
+.row{
+flex-direction:column
+}
+
+table{
+font-size:13px
+}
+
 }
 </style>
 </head>
 
 <body>
+
 <main>
 
 <!-- LOGIN -->
-<section id="login" class="card">
+
+<section id="login" class="card login">
+
+<div class="logo">⏱</div>
+
 <h1>Stempeluhr</h1>
 
-<p>Anmelden</p>
+<p class="sub">
+Arbeitszeit einfach erfassen
+</p>
 
-<input id="user" placeholder="Benutzername">
-<input id="pass" type="password" placeholder="Passwort">
+<input
+id="username"
+placeholder="Benutzername"
+autocomplete="username">
 
-<button onclick="login()">Einloggen</button>
+<input
+id="password"
+type="password"
+placeholder="Passwort"
+autocomplete="current-password">
 
-<p id="error"></p>
+<button onclick="login()" style="width:100%">
+Einloggen
+</button>
+
+<p id="error" class="error"></p>
 
 <hr>
 
-<small style="color:#9a9d9f">
+<small>
 Test-Account:<br>
 Benutzername: <b>test</b><br>
 Passwort: <b>test1234</b>
 </small>
+
 </section>
 
 
 <!-- APP -->
+
 <section id="app" class="hidden">
 
-<div class="card">
-<h1>Stempeluhr</h1>
+<div class="header">
 
-<div id="who"></div>
+<div>
+<h1>⏱ Stempeluhr</h1>
+<div id="date" class="sub"></div>
+</div>
 
+<div>
+<span id="userDisplay" class="user"></span>
 <button class="gray" onclick="logout()">
 Abmelden
 </button>
 </div>
 
-
-<!-- ADMIN -->
-<div id="admin" class="card hidden">
-
-<h2>Verwaltung</h2>
-
-<input id="newUser" placeholder="Benutzername">
-<input id="newPass" type="password" placeholder="Passwort">
-
-<label>
-<input id="newAdmin" type="checkbox" style="width:auto">
-Admin-Rechte
-</label>
-
-<button onclick="createUser()">
-Konto erstellen
-</button>
-
-<div id="users"></div>
 </div>
 
 
-<!-- STEMPهل -->
-<div class="card">
+<!-- ADMIN -->
 
-<div class="status" id="status">
+<section id="admin" class="card hidden">
+
+<h2>Benutzerverwaltung</h2>
+
+<div class="row">
+
+<input
+id="newUser"
+placeholder="Neuer Benutzer">
+
+<input
+id="newPassword"
+type="password"
+placeholder="Passwort">
+
+<button onclick="createUser()">
+Erstellen
+</button>
+
+</div>
+
+<div id="userList"></div>
+
+</section>
+
+
+<!-- CLOCK -->
+
+<section class="card clock">
+
+<div id="status" class="status">
 🔴 Ausgestempelt
 </div>
 
-<div class="time" id="time">
+<div id="timer" class="time">
 00:00:00
 </div>
 
-<input id="note" placeholder="Notiz (optional)">
+<div id="since" class="sub"></div>
 
-<button id="punch" onclick="punch()">
+<input
+id="note"
+placeholder="Notiz, z. B. Büro oder Projekt">
+
+<button
+id="punchButton"
+class="punch"
+onclick="punch()">
+
 Einstempeln
+
 </button>
 
-</div>
+</section>
 
 
-<!-- ZEIT -->
+<!-- STATS -->
+
 <div class="stats">
 
 <div class="stat">
 <small>HEUTE</small>
-<br>
 <b id="today">0h 00m</b>
 </div>
 
 <div class="stat">
 <small>DIESE WOCHE</small>
-<br>
 <b id="week">0h 00m</b>
+</div>
+
+<div class="stat">
+<small>EINTRÄGE</small>
+<b id="count">0</b>
 </div>
 
 </div>
 
 
 <!-- LOG -->
-<div class="card">
+
+<section class="card">
+
+<div class="header">
 
 <h2>Zeiterfassung</h2>
 
+<div class="actions">
+
+<button onclick="exportCSV()">
+CSV Export
+</button>
+
+<button class="red" onclick="deleteAll()">
+Löschen
+</button>
+
+</div>
+
+</div>
+
+<div class="table">
+
 <table>
+
 <thead>
+
 <tr>
+<th>Datum</th>
 <th>Start</th>
 <th>Ende</th>
 <th>Dauer</th>
 <th>Notiz</th>
 </tr>
+
 </thead>
 
 <tbody id="log"></tbody>
-</table>
 
-<button class="red" onclick="clearAll()">
-Alle Einträge löschen
-</button>
+</table>
 
 </div>
 
+<p id="empty" class="sub" style="text-align:center">
+Noch keine Einträge.
+</p>
+
 </section>
+
+</section>
+
 </main>
 
 
 <script>
 
-let current=null;
+let currentUser=null;
 let active=null;
 let entries=[];
 
 const $=id=>document.getElementById(id);
 
 
-/* PASSWORT HASH */
-async function hash(p){
- const b=await crypto.subtle.digest(
-  "SHA-256",
-  new TextEncoder().encode(p)
- );
-
- return [...new Uint8Array(b)]
-  .map(x=>x.toString(16).padStart(2,"0"))
-  .join("");
-}
-
-
 /* TEST ACCOUNT */
+
 async function setup(){
 
- if(localStorage.getItem("user:test")) return;
+if(!localStorage.getItem("user:test")){
 
- localStorage.setItem(
-  "user:test",
-  JSON.stringify({
-   hash:await hash("test1234"),
-   admin:false
-  })
- );
+localStorage.setItem(
+"user:test",
+JSON.stringify({
+password:"test1234",
+admin:false
+})
+);
+
+}
+
 }
 
 
 /* LOGIN */
-async function login(){
 
- const u=$("user").value.trim().toLowerCase();
- const p=$("pass").value;
+function login(){
 
- if(!u||!p){
-  $("error").textContent=
-   "Bitte Benutzername und Passwort eingeben.";
-  return;
- }
+let user=$("username").value
+.trim()
+.toLowerCase();
 
- const data=localStorage.getItem("user:"+u);
+let pass=$("password").value;
 
- if(!data){
-  $("error").textContent=
-   "Benutzername oder Passwort falsch.";
-  return;
- }
+let data=localStorage.getItem("user:"+user);
 
- const d=JSON.parse(data);
+if(!data){
 
- if(await hash(p)!==d.hash){
-  $("error").textContent=
-   "Benutzername oder Passwort falsch.";
-  return;
- }
+$("error").textContent=
+"Benutzername oder Passwort falsch.";
 
- current=u;
+return;
 
- $("login").classList.add("hidden");
- $("app").classList.remove("hidden");
-
- $("who").textContent=
-  "@"+u+(d.admin?" • ADMIN":"");
-
- if(d.admin){
-  $("admin").classList.remove("hidden");
-  showUsers();
- }
-
- load();
 }
 
+let account=JSON.parse(data);
 
-/* BENUTZER ERSTELLEN */
-async function createUser(){
+if(account.password!==pass){
 
- const u=$("newUser")
-  .value.trim().toLowerCase();
+$("error").textContent=
+"Benutzername oder Passwort falsch.";
 
- const p=$("newPass").value;
+return;
 
- if(!u||p.length<6){
-  alert(
-   "Benutzername eingeben und Passwort mindestens 6 Zeichen."
-  );
-  return;
- }
-
- if(localStorage.getItem("user:"+u)){
-  alert("Benutzer existiert bereits.");
-  return;
- }
-
- localStorage.setItem(
-  "user:"+u,
-  JSON.stringify({
-   hash:await hash(p),
-   admin:$("newAdmin").checked
-  })
- );
-
- $("newUser").value="";
- $("newPass").value="";
- $("newAdmin").checked=false;
-
- showUsers();
 }
 
+currentUser=user;
 
-/* BENUTZER ANZEIGEN */
-function showUsers(){
+$("login").classList.add("hidden");
+$("app").classList.remove("hidden");
 
- $("users").innerHTML="";
+$("userDisplay").textContent=
+"@"+user+
+(account.admin?" • ADMIN":"");
 
- Object.keys(localStorage)
- .filter(x=>x.startsWith("user:"))
- .forEach(k=>{
+$("date").textContent=
+new Date().toLocaleDateString(
+"de-DE",
+{
+weekday:"long",
+day:"2-digit",
+month:"long",
+year:"numeric"
+}
+);
 
-  const u=k.substring(5);
-  const d=JSON.parse(
-   localStorage.getItem(k)
-  );
+if(account.admin){
 
-  const div=document.createElement("div");
+$("admin").classList.remove("hidden");
 
-  div.style.marginTop="10px";
+showUsers();
 
-  div.innerHTML=
-   "@"+u+
-   (d.admin?" • ADMIN":"")+
-   (u!==current?
-    ` <button class="red"
-    onclick="deleteUser('${u}')">
-    Löschen
-    </button>`:"");
-
-  $("users").appendChild(div);
- });
 }
 
+load();
 
-/* BENUTZER LÖSCHEN */
-function deleteUser(u){
-
- if(!confirm(
-  "Benutzer wirklich löschen?"
- )) return;
-
- localStorage.removeItem("user:"+u);
- localStorage.removeItem("entries:"+u);
- localStorage.removeItem("active:"+u);
-
- showUsers();
 }
 
 
 /* DATEN LADEN */
+
 function load(){
 
- entries=JSON.parse(
-  localStorage.getItem(
-   "entries:"+current
-  )||"[]"
- );
+entries=JSON.parse(
+localStorage.getItem(
+"entries:"+currentUser
+)||"[]"
+);
 
- active=JSON.parse(
-  localStorage.getItem(
-   "active:"+current
-  )||"null"
- );
+active=JSON.parse(
+localStorage.getItem(
+"active:"+currentUser
+)||"null"
+);
 
- render();
+render();
+
 }
 
 
-/* DATEN SPEICHERN */
+/* SPEICHERN */
+
 function save(){
 
- localStorage.setItem(
-  "entries:"+current,
-  JSON.stringify(entries)
- );
+localStorage.setItem(
+"entries:"+currentUser,
+JSON.stringify(entries)
+);
 
- if(active){
+if(active){
 
-  localStorage.setItem(
-   "active:"+current,
-   JSON.stringify(active)
-  );
+localStorage.setItem(
+"active:"+currentUser,
+JSON.stringify(active)
+);
 
- }else{
+}else{
 
-  localStorage.removeItem(
-   "active:"+current
-  );
- }
+localStorage.removeItem(
+"active:"+currentUser
+);
+
+}
+
 }
 
 
-/* EIN-/AUSSTEMPELN */
+/* EINSTEMPELN */
+
 function punch(){
 
- if(active){
+if(active){
 
-  entries.push({
-   start:active.start,
-   end:Date.now(),
-   note:$("note").value
-  });
+entries.push({
 
-  active=null;
+start:active.start,
 
- }else{
+end:Date.now(),
 
-  active={
-   start:Date.now(),
-   note:$("note").value
-  };
- }
+note:$("note").value.trim()
 
- save();
- render();
+});
+
+active=null;
+
+}else{
+
+active={
+
+start:Date.now(),
+
+note:$("note").value.trim()
+
+};
+
+}
+
+save();
+
+render();
+
 }
 
 
 /* ANZEIGE */
+
 function render(){
 
- if(active){
+if(active){
 
-  $("status").textContent=
-   "🟢 Eingestempelt";
+$("status").textContent=
+"🟢 Eingestempelt";
 
-  $("punch").textContent=
-   "Ausstempeln";
+$("punchButton").textContent=
+"Ausstempeln";
 
-  $("punch").className="red";
+$("punchButton").className=
+"punch red";
 
-  $("note").value=
-   active.note||"";
+$("since").textContent=
+"Seit "+
+formatTime(active.start);
 
- }else{
+}else{
 
-  $("status").textContent=
-   "🔴 Ausgestempelt";
+$("status").textContent=
+"🔴 Ausgestempelt";
 
-  $("punch").textContent=
-   "Einstempeln";
+$("punchButton").textContent=
+"Einstempeln";
 
-  $("punch").className="";
+$("punchButton").className=
+"punch";
 
-  $("time").textContent=
-   "00:00:00";
- }
+$("timer").textContent=
+"00:00:00";
 
+$("since").textContent="";
 
- $("log").innerHTML="";
+}
 
- [...entries].reverse().forEach(e=>{
+$("log").innerHTML="";
 
-  const tr=document.createElement("tr");
+let sorted=[
+...entries
+].sort((a,b)=>b.start-a.start);
 
-  tr.innerHTML=`
-   <td>${time(e.start)}</td>
-   <td>${time(e.end)}</td>
-   <td>${duration(e.end-e.start)}</td>
-   <td>${e.note||"-"}</td>
-  `;
+sorted.forEach(entry=>{
 
-  $("log").appendChild(tr);
- });
+let row=document.createElement("tr");
 
- updateStats();
+row.innerHTML=`
+
+<td>
+${formatDate(entry.start)}
+</td>
+
+<td>
+${formatTime(entry.start)}
+</td>
+
+<td>
+${formatTime(entry.end)}
+</td>
+
+<td>
+${duration(entry.end-entry.start)}
+</td>
+
+<td class="note">
+${escapeHTML(entry.note||"-")}
+</td>
+
+`;
+
+$("log").appendChild(row);
+
+});
+
+$("empty").style.display=
+entries.length?"none":"block";
+
+$("count").textContent=
+entries.length;
+
+updateStats();
+
 }
 
 
-/* UHRZEIT */
-function time(t){
+/* ZEIT */
 
- return new Date(t).toLocaleTimeString(
-  "de-DE",
-  {
-   hour:"2-digit",
-   minute:"2-digit"
-  }
- );
+function formatTime(time){
+
+return new Date(time)
+.toLocaleTimeString(
+"de-DE",
+{
+hour:"2-digit",
+minute:"2-digit"
+}
+);
+
+}
+
+
+/* DATUM */
+
+function formatDate(time){
+
+return new Date(time)
+.toLocaleDateString(
+"de-DE"
+);
+
 }
 
 
 /* DAUER */
+
 function duration(ms){
 
- const m=Math.floor(ms/60000);
+let minutes=
+Math.floor(ms/60000);
 
- return Math.floor(m/60)+
-  "h "+
-  String(m%60).padStart(2,"0")+
-  "m";
+let hours=
+Math.floor(minutes/60);
+
+minutes=
+minutes%60;
+
+return hours+
+"h "+
+String(minutes)
+.padStart(2,"0")+
+"m";
+
 }
 
 
-/* HEUTE / WOCHE */
+/* STATISTIK */
+
 function updateStats(){
 
- let today=0;
- let week=0;
+let today=0;
+let week=0;
 
- const now=new Date();
+let now=new Date();
 
- const start=new Date(now);
- start.setHours(0,0,0,0);
+let startToday=new Date(now);
 
- const monday=new Date(start);
+startToday.setHours(
+0,0,0,0
+);
 
- const day=
-  (monday.getDay()+6)%7;
+let monday=new Date(
+startToday
+);
 
- monday.setDate(
-  monday.getDate()-day
- );
+let day=
+(monday.getDay()+6)%7;
 
- entries.forEach(e=>{
+monday.setDate(
+monday.getDate()-day
+);
 
-  const d=e.end-e.start;
+entries.forEach(entry=>{
 
-  if(e.start>=start)
-   today+=d;
+let d=
+entry.end-entry.start;
 
-  if(e.start>=monday)
-   week+=d;
- });
+if(entry.start>=startToday)
+today+=d;
+
+if(entry.start>=monday)
+week+=d;
+
+});
 
 
- if(active){
+if(active){
 
-  const d=
-   Date.now()-active.start;
+let d=
+Date.now()-active.start;
 
-  if(active.start>=start)
-   today+=d;
+if(active.start>=startToday)
+today+=d;
 
-  if(active.start>=monday)
-   week+=d;
- }
+if(active.start>=monday)
+week+=d;
 
- $("today").textContent=
-  duration(today);
+}
 
- $("week").textContent=
-  duration(week);
+$("today").textContent=
+duration(today);
+
+$("week").textContent=
+duration(week);
+
 }
 
 
-/* LIVE UHR */
+/* LIVE TIMER */
+
 setInterval(()=>{
 
- if(active){
+if(active){
 
-  $("time").textContent=
-   new Date(
-    Date.now()-active.start
-   ).toISOString().substr(11,8);
+let ms=
+Date.now()-active.start;
 
-  updateStats();
- }
+let seconds=
+Math.floor(ms/1000);
+
+let h=
+Math.floor(seconds/3600);
+
+let m=
+Math.floor(
+(seconds%3600)/60
+);
+
+let s=
+seconds%60;
+
+$("timer").textContent=
+
+String(h).padStart(2,"0")+
+":"+
+String(m).padStart(2,"0")+
+":"+
+String(s).padStart(2,"0");
+
+updateStats();
+
+}
 
 },1000);
 
 
-/* ALLES LÖSCHEN */
-function clearAll(){
+/* CSV EXPORT */
 
- if(!confirm(
-  "Alle Einträge löschen?"
- )) return;
+function exportCSV(){
 
- entries=[];
+if(!entries.length){
 
- save();
- render();
+alert(
+"Keine Zeiteinträge vorhanden."
+);
+
+return;
+
+}
+
+let rows=[
+
+[
+"Datum",
+"Start",
+"Ende",
+"Dauer",
+"Notiz"
+]
+
+];
+
+let sorted=[
+...entries
+].sort((a,b)=>a.start-b.start);
+
+sorted.forEach(entry=>{
+
+rows.push([
+
+formatDate(entry.start),
+
+formatTime(entry.start),
+
+formatTime(entry.end),
+
+duration(
+entry.end-entry.start
+),
+
+entry.note||""
+
+]);
+
+});
+
+
+let csv=
+"\uFEFF"+
+rows.map(row=>
+row.map(value=>
+'"'+
+String(value)
+.replace(/"/g,'""')+
+'"'
+).join(";")
+).join("\n");
+
+
+let blob=
+new Blob(
+[csv],
+{
+type:
+"text/csv;charset=utf-8"
+}
+);
+
+let url=
+URL.createObjectURL(blob);
+
+let link=
+document.createElement("a");
+
+link.href=url;
+
+link.download=
+"stempeluhr_"+
+currentUser+
+".csv";
+
+link.click();
+
+URL.revokeObjectURL(url);
+
+}
+
+
+/* ALLE EINTRÄGE LÖSCHEN */
+
+function deleteAll(){
+
+if(!confirm(
+"Alle Zeiteinträge löschen?"
+))return;
+
+entries=[];
+
+save();
+
+render();
+
+}
+
+
+/* BENUTZER ERSTELLEN */
+
+function createUser(){
+
+let user=
+$("newUser").value
+.trim()
+.toLowerCase();
+
+let password=
+$("newPassword").value;
+
+if(!user){
+
+alert(
+"Bitte Benutzernamen eingeben."
+);
+
+return;
+
+}
+
+if(password.length<6){
+
+alert(
+"Das Passwort muss mindestens 6 Zeichen haben."
+);
+
+return;
+
+}
+
+if(
+localStorage.getItem(
+"user:"+user
+)
+){
+
+alert(
+"Dieser Benutzer existiert bereits."
+);
+
+return;
+
+}
+
+localStorage.setItem(
+
+"user:"+user,
+
+JSON.stringify({
+
+password:password,
+
+admin:false
+
+})
+
+);
+
+$("newUser").value="";
+$("newPassword").value="";
+
+showUsers();
+
+}
+
+
+/* BENUTZERLISTE */
+
+function showUsers(){
+
+$("userList").innerHTML="";
+
+Object.keys(localStorage)
+.filter(key=>
+key.startsWith("user:")
+)
+.forEach(key=>{
+
+let user=
+key.substring(5);
+
+let data=
+JSON.parse(
+localStorage.getItem(key)
+);
+
+let div=
+document.createElement("div");
+
+div.className=
+"admin-user";
+
+div.innerHTML=
+
+"<span>@"+
+escapeHTML(user)+
+(data.admin?
+" • ADMIN":
+"")+
+"</span>";
+
+if(user!==currentUser){
+
+let button=
+document.createElement("button");
+
+button.className="red";
+
+button.textContent=
+"Löschen";
+
+button.onclick=()=>{
+
+if(confirm(
+"Benutzer "+user+
+" wirklich löschen?"
+)){
+
+localStorage.removeItem(
+"user:"+user
+);
+
+localStorage.removeItem(
+"entries:"+user
+);
+
+localStorage.removeItem(
+"active:"+user
+);
+
+showUsers();
+
+}
+
+};
+
+div.appendChild(button);
+
+}
+
+$("userList").appendChild(div);
+
+});
+
+}
+
+
+/* SICHERER TEXT */
+
+function escapeHTML(text){
+
+let div=
+document.createElement("div");
+
+div.textContent=text;
+
+return div.innerHTML;
+
 }
 
 
 /* LOGOUT */
+
 function logout(){
 
- current=null;
- active=null;
- entries=[];
+currentUser=null;
 
- $("app").classList.add("hidden");
- $("login").classList.remove("hidden");
+active=null;
 
- $("user").value="";
- $("pass").value="";
+entries=[];
+
+$("app").classList.add("hidden");
+
+$("login").classList.remove("hidden");
+
+$("username").value="";
+$("password").value="";
+$("error").textContent="";
+
 }
 
 
 /* START */
+
 setup();
 
 </script>
