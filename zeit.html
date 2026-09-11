@@ -19,8 +19,12 @@ font-family:Arial,sans-serif
 }
 
 main{
-max-width:850px;
+max-width:900px;
 margin:auto
+}
+
+.hidden{
+display:none!important
 }
 
 .card{
@@ -32,24 +36,30 @@ margin-bottom:15px;
 box-shadow:0 10px 35px #0006
 }
 
-.hidden{display:none}
-
-h1{margin:0 0 5px;font-size:23px}
-h2{font-size:16px}
-
-.sub,small{
-color:#8d96a5
-}
-
 .logo{
-width:42px;
-height:42px;
+width:44px;
+height:44px;
 display:grid;
 place-items:center;
-border-radius:12px;
+border-radius:13px;
 background:linear-gradient(135deg,#8b5cf6,#5b21b6);
-font-size:21px;
+font-size:22px;
 margin-bottom:15px
+}
+
+h1{
+margin:0 0 5px;
+font-size:24px
+}
+
+h2{
+font-size:16px;
+margin-top:0
+}
+
+.sub,
+small{
+color:#8d96a5
 }
 
 input{
@@ -60,7 +70,12 @@ border-radius:10px;
 border:1px solid #303641;
 background:#22262e;
 color:white;
-font-size:15px
+font-size:15px;
+outline:none
+}
+
+input:focus{
+border-color:#8b5cf6
 }
 
 button{
@@ -78,11 +93,11 @@ button:hover{
 filter:brightness(1.1)
 }
 
-.red{
+button.red{
 background:#a83e3e
 }
 
-.gray{
+button.gray{
 background:#303641
 }
 
@@ -91,16 +106,32 @@ max-width:420px;
 margin:70px auto
 }
 
+.login .logo{
+margin-left:auto;
+margin-right:auto
+}
+
+.login h1,
+.login .sub{
+text-align:center
+}
+
+.error{
+color:#ef6666;
+min-height:20px
+}
+
 .header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-gap:10px;
+gap:15px;
 margin-bottom:18px
 }
 
 .user{
-color:#9da5b2
+color:#9da5b2;
+margin-right:8px
 }
 
 .clock{
@@ -119,8 +150,13 @@ font-family:monospace;
 margin:15px 0
 }
 
+.since{
+min-height:20px;
+margin-bottom:12px
+}
+
 .punch{
-width:260px;
+width:280px;
 font-size:16px;
 padding:15px
 }
@@ -139,9 +175,15 @@ border-radius:12px;
 padding:16px
 }
 
+.stat span{
+font-size:11px;
+color:#8d96a5;
+text-transform:uppercase
+}
+
 .stat b{
 display:block;
-font-size:22px;
+font-size:23px;
 font-family:monospace;
 margin-top:7px
 }
@@ -155,17 +197,24 @@ gap:10px
 flex:1
 }
 
+.actions{
+display:flex;
+gap:7px;
+flex-wrap:wrap
+}
+
 .table{
 overflow-x:auto
 }
 
 table{
 width:100%;
-min-width:600px;
+min-width:650px;
 border-collapse:collapse
 }
 
-th,td{
+th,
+td{
 padding:11px;
 border-bottom:1px solid #303641;
 text-align:left
@@ -173,7 +222,8 @@ text-align:left
 
 th{
 font-size:11px;
-color:#8d96a5
+color:#8d96a5;
+text-transform:uppercase
 }
 
 td{
@@ -181,13 +231,8 @@ font-family:monospace
 }
 
 .note{
-font-family:Arial
-}
-
-.actions{
-display:flex;
-gap:7px;
-flex-wrap:wrap
+font-family:Arial,sans-serif;
+color:#aab1bd
 }
 
 .admin-user{
@@ -198,12 +243,13 @@ padding:10px 0;
 border-bottom:1px solid #303641
 }
 
-.error{
-color:#ef6666;
-min-height:18px
+hr{
+border:0;
+border-top:1px solid #303641;
+margin:18px 0
 }
 
-@media(max-width:600px){
+@media(max-width:650px){
 
 body{
 padding:10px
@@ -222,8 +268,9 @@ margin:30px auto
 align-items:flex-start
 }
 
-.header button{
-width:auto
+.user{
+display:block;
+margin-bottom:5px
 }
 
 .time{
@@ -246,6 +293,10 @@ grid-column:1/-1
 flex-direction:column
 }
 
+.actions button{
+flex:1
+}
+
 table{
 font-size:13px
 }
@@ -258,20 +309,26 @@ font-size:13px
 
 <main>
 
-<!-- LOGIN -->
+
+<!-- ================= LOGIN ================= -->
 
 <section id="login" class="card login">
 
-<div class="logo">⏱</div>
+<div class="logo">
+⏱
+</div>
 
 <h1>Stempeluhr</h1>
 
-<p class="sub">
+<div class="sub">
 Arbeitszeit einfach erfassen
-</p>
+</div>
+
+<br>
 
 <input
 id="username"
+type="text"
 placeholder="Benutzername"
 autocomplete="username">
 
@@ -281,8 +338,12 @@ type="password"
 placeholder="Passwort"
 autocomplete="current-password">
 
-<button onclick="login()" style="width:100%">
+<button
+onclick="login()"
+style="width:100%">
+
 Einloggen
+
 </button>
 
 <p id="error" class="error"></p>
@@ -290,7 +351,7 @@ Einloggen
 <hr>
 
 <small>
-Test-Account:<br>
+<b>Test-Account</b><br><br>
 Benutzername: <b>test</b><br>
 Passwort: <b>test1234</b>
 </small>
@@ -298,32 +359,55 @@ Passwort: <b>test1234</b>
 </section>
 
 
-<!-- APP -->
+<!-- ================= APP ================= -->
 
 <section id="app" class="hidden">
+
+
+<!-- HEADER -->
 
 <div class="header">
 
 <div>
+
 <h1>⏱ Stempeluhr</h1>
-<div id="date" class="sub"></div>
+
+<div
+id="date"
+class="sub">
+</div>
+
 </div>
 
 <div>
-<span id="userDisplay" class="user"></span>
-<button class="gray" onclick="logout()">
+
+<span
+id="userDisplay"
+class="user">
+</span>
+
+<button
+class="gray"
+onclick="logout()">
+
 Abmelden
+
 </button>
-</div>
 
 </div>
 
+</div>
 
-<!-- ADMIN -->
 
-<section id="admin" class="card hidden">
+<!-- ================= ADMIN ================= -->
 
-<h2>Benutzerverwaltung</h2>
+<section
+id="admin"
+class="card hidden">
+
+<h2>
+Benutzerverwaltung
+</h2>
 
 <div class="row">
 
@@ -347,19 +431,32 @@ Erstellen
 </section>
 
 
-<!-- CLOCK -->
+<!-- ================= CLOCK ================= -->
 
-<section class="card clock">
+<section
+id="clockCard"
+class="card clock">
 
-<div id="status" class="status">
+<div
+id="status"
+class="status">
+
 🔴 Ausgestempelt
+
 </div>
 
-<div id="timer" class="time">
+<div
+id="timer"
+class="time">
+
 00:00:00
+
 </div>
 
-<div id="since" class="sub"></div>
+<div
+id="since"
+class="since sub">
+</div>
 
 <input
 id="note"
@@ -377,49 +474,82 @@ Einstempeln
 </section>
 
 
-<!-- STATS -->
+<!-- ================= STATS ================= -->
 
 <div class="stats">
 
 <div class="stat">
-<small>HEUTE</small>
-<b id="today">0h 00m</b>
+
+<span>
+Heute
+</span>
+
+<b id="today">
+0h 00m
+</b>
+
 </div>
+
 
 <div class="stat">
-<small>DIESE WOCHE</small>
-<b id="week">0h 00m</b>
+
+<span>
+Diese Woche
+</span>
+
+<b id="week">
+0h 00m
+</b>
+
 </div>
+
 
 <div class="stat">
-<small>EINTRÄGE</small>
-<b id="count">0</b>
-</div>
+
+<span>
+Einträge
+</span>
+
+<b id="count">
+0
+</b>
 
 </div>
 
+</div>
 
-<!-- LOG -->
+
+<!-- ================= LOG ================= -->
 
 <section class="card">
 
 <div class="header">
 
-<h2>Zeiterfassung</h2>
+<h2>
+Zeiterfassung
+</h2>
 
 <div class="actions">
 
-<button onclick="exportCSV()">
+<button
+onclick="exportCSV()">
+
 CSV Export
+
 </button>
 
-<button class="red" onclick="deleteAll()">
+<button
+class="red"
+onclick="deleteAll()">
+
 Löschen
+
 </button>
 
 </div>
 
 </div>
+
 
 <div class="table">
 
@@ -428,23 +558,46 @@ Löschen
 <thead>
 
 <tr>
-<th>Datum</th>
-<th>Start</th>
-<th>Ende</th>
-<th>Dauer</th>
-<th>Notiz</th>
+
+<th>
+Datum
+</th>
+
+<th>
+Start
+</th>
+
+<th>
+Ende
+</th>
+
+<th>
+Dauer
+</th>
+
+<th>
+Notiz
+</th>
+
 </tr>
 
 </thead>
 
-<tbody id="log"></tbody>
+<tbody id="log">
+</tbody>
 
 </table>
 
 </div>
 
-<p id="empty" class="sub" style="text-align:center">
+
+<p
+id="empty"
+class="sub"
+style="text-align:center">
+
 Noch keine Einträge.
+
 </p>
 
 </section>
@@ -456,25 +609,41 @@ Noch keine Einträge.
 
 <script>
 
-let currentUser=null;
-let active=null;
-let entries=[];
+/* ==================================================
+   GRUNDVARIABLEN
+================================================== */
 
-const $=id=>document.getElementById(id);
+let currentUser = null;
+let active = null;
+let entries = [];
+
+const $ = id => document.getElementById(id);
 
 
-/* TEST ACCOUNT */
+/* ==================================================
+   BENUTZER
+================================================== */
 
-async function setup(){
+function setup(){
+
+/*
+   Test-Account wird automatisch erstellt.
+*/
 
 if(!localStorage.getItem("user:test")){
 
 localStorage.setItem(
+
 "user:test",
+
 JSON.stringify({
+
 password:"test1234",
-admin:false
+
+admin:true
+
 })
+
 );
 
 }
@@ -482,49 +651,124 @@ admin:false
 }
 
 
-/* LOGIN */
+/* ==================================================
+   LOGIN
+================================================== */
 
 function login(){
 
-let user=$("username").value
+const username =
+$("username")
+.value
 .trim()
 .toLowerCase();
 
-let pass=$("password").value;
+const password =
+$("password")
+.value;
 
-let data=localStorage.getItem("user:"+user);
+$("error").textContent = "";
 
-if(!data){
 
-$("error").textContent=
+/*
+   Eingabe prüfen
+*/
+
+if(!username || !password){
+
+$("error").textContent =
+"Bitte Benutzername und Passwort eingeben.";
+
+return;
+
+}
+
+
+/*
+   Benutzer suchen
+*/
+
+const stored =
+localStorage.getItem(
+"user:"+username
+);
+
+if(!stored){
+
+$("error").textContent =
 "Benutzername oder Passwort falsch.";
 
 return;
 
 }
 
-let account=JSON.parse(data);
 
-if(account.password!==pass){
+/*
+   Benutzerdaten lesen
+*/
 
-$("error").textContent=
+let account;
+
+try{
+
+account = JSON.parse(stored);
+
+}catch{
+
+$("error").textContent =
+"Fehler beim Benutzerkonto.";
+
+return;
+
+}
+
+
+/*
+   Passwort prüfen
+*/
+
+if(account.password !== password){
+
+$("error").textContent =
 "Benutzername oder Passwort falsch.";
 
 return;
 
 }
 
-currentUser=user;
 
-$("login").classList.add("hidden");
-$("app").classList.remove("hidden");
+/*
+   Login erfolgreich
+*/
 
-$("userDisplay").textContent=
-"@"+user+
-(account.admin?" • ADMIN":"");
+currentUser = username;
 
-$("date").textContent=
-new Date().toLocaleDateString(
+$("login")
+.classList
+.add("hidden");
+
+$("app")
+.classList
+.remove("hidden");
+
+
+/*
+   Benutzer anzeigen
+*/
+
+$("userDisplay").textContent =
+"@"+
+username+
+(account.admin ? " • ADMIN" : "");
+
+
+/*
+   Datum
+*/
+
+$("date").textContent =
+new Date()
+.toLocaleDateString(
 "de-DE",
 {
 weekday:"long",
@@ -534,60 +778,93 @@ year:"numeric"
 }
 );
 
+
+/*
+   Admin anzeigen
+*/
+
 if(account.admin){
 
-$("admin").classList.remove("hidden");
+$("admin")
+.classList
+.remove("hidden");
 
 showUsers();
 
 }
+
+
+/*
+   Daten laden
+*/
 
 load();
 
 }
 
 
-/* DATEN LADEN */
+/* ==================================================
+   DATEN LADEN
+================================================== */
 
 function load(){
 
-entries=JSON.parse(
+entries =
+JSON.parse(
+
 localStorage.getItem(
 "entries:"+currentUser
 )||"[]"
+
 );
 
-active=JSON.parse(
+
+active =
+JSON.parse(
+
 localStorage.getItem(
 "active:"+currentUser
 )||"null"
+
 );
+
 
 render();
 
 }
 
 
-/* SPEICHERN */
+/* ==================================================
+   DATEN SPEICHERN
+================================================== */
 
 function save(){
 
 localStorage.setItem(
+
 "entries:"+currentUser,
+
 JSON.stringify(entries)
+
 );
+
 
 if(active){
 
 localStorage.setItem(
+
 "active:"+currentUser,
+
 JSON.stringify(active)
+
 );
 
 }else{
 
 localStorage.removeItem(
+
 "active:"+currentUser
+
 );
 
 }
@@ -595,9 +872,16 @@ localStorage.removeItem(
 }
 
 
-/* EINSTEMPELN */
+/* ==================================================
+   EINSTEMPELN / AUSSTEMPELN
+================================================== */
 
 function punch(){
+
+/*
+   Wenn bereits eingestempelt:
+   Arbeitszeit beenden.
+*/
 
 if(active){
 
@@ -607,23 +891,38 @@ start:active.start,
 
 end:Date.now(),
 
-note:$("note").value.trim()
+note:$("note")
+.value
+.trim()
 
 });
 
-active=null;
+active = null;
+
+
+/*
+   Wenn ausgestempelt:
+   neue Arbeitszeit starten.
+*/
 
 }else{
 
-active={
+active = {
 
 start:Date.now(),
 
-note:$("note").value.trim()
+note:$("note")
+.value
+.trim()
 
 };
 
 }
+
+
+/*
+   Speichern
+*/
 
 save();
 
@@ -632,54 +931,87 @@ render();
 }
 
 
-/* ANZEIGE */
+/* ==================================================
+   HAUPTANZEIGE
+================================================== */
 
 function render(){
 
+/*
+   Eingestempelt
+*/
+
 if(active){
 
-$("status").textContent=
+$("status").textContent =
 "🟢 Eingestempelt";
 
-$("punchButton").textContent=
+$("punchButton").textContent =
 "Ausstempeln";
 
-$("punchButton").className=
+$("punchButton")
+.className =
 "punch red";
 
-$("since").textContent=
+$("since").textContent =
 "Seit "+
-formatTime(active.start);
+formatTime(active.start)+
+" Uhr";
 
 }else{
 
-$("status").textContent=
+
+/*
+   Ausgestempelt
+*/
+
+$("status").textContent =
 "🔴 Ausgestempelt";
 
-$("punchButton").textContent=
+$("punchButton").textContent =
 "Einstempeln";
 
-$("punchButton").className=
+$("punchButton")
+.className =
 "punch";
 
-$("timer").textContent=
+$("timer").textContent =
 "00:00:00";
 
-$("since").textContent="";
+$("since").textContent = "";
 
 }
 
-$("log").innerHTML="";
 
-let sorted=[
-...entries
-].sort((a,b)=>b.start-a.start);
+/*
+   Tabelle leeren
+*/
+
+$("log").innerHTML = "";
+
+
+/*
+   Einträge sortieren
+*/
+
+const sorted =
+[...entries]
+.sort(
+(a,b)=>b.start-a.start
+);
+
+
+/*
+   Tabelle erstellen
+*/
 
 sorted.forEach(entry=>{
 
-let row=document.createElement("tr");
+const row =
+document.createElement("tr");
 
-row.innerHTML=`
+
+row.innerHTML = `
 
 <td>
 ${formatDate(entry.start)}
@@ -694,31 +1026,56 @@ ${formatTime(entry.end)}
 </td>
 
 <td>
-${duration(entry.end-entry.start)}
+${duration(
+entry.end-entry.start
+)}
 </td>
 
 <td class="note">
-${escapeHTML(entry.note||"-")}
+${escapeHTML(
+entry.note || "-"
+)}
 </td>
 
 `;
 
-$("log").appendChild(row);
+
+$("log")
+.appendChild(row);
 
 });
 
-$("empty").style.display=
-entries.length?"none":"block";
 
-$("count").textContent=
+/*
+   Leer-Meldung
+*/
+
+$("empty").style.display =
+entries.length
+? "none"
+: "block";
+
+
+/*
+   Anzahl
+*/
+
+$("count").textContent =
 entries.length;
+
+
+/*
+   Statistik
+*/
 
 updateStats();
 
 }
 
 
-/* ZEIT */
+/* ==================================================
+   ZEIT FORMATIEREN
+================================================== */
 
 function formatTime(time){
 
@@ -734,7 +1091,9 @@ minute:"2-digit"
 }
 
 
-/* DATUM */
+/* ==================================================
+   DATUM FORMATIEREN
+================================================== */
 
 function formatDate(time){
 
@@ -746,18 +1105,25 @@ return new Date(time)
 }
 
 
-/* DAUER */
+/* ==================================================
+   DAUER
+================================================== */
 
 function duration(ms){
 
-let minutes=
-Math.floor(ms/60000);
+let minutes =
+Math.floor(
+ms/60000
+);
 
-let hours=
-Math.floor(minutes/60);
+let hours =
+Math.floor(
+minutes/60
+);
 
-minutes=
+minutes =
 minutes%60;
+
 
 return hours+
 "h "+
@@ -768,107 +1134,178 @@ String(minutes)
 }
 
 
-/* STATISTIK */
+/* ==================================================
+   STATISTIK
+================================================== */
 
 function updateStats(){
 
-let today=0;
-let week=0;
+let today = 0;
+let week = 0;
 
-let now=new Date();
 
-let startToday=new Date(now);
+const now =
+new Date();
+
+
+/*
+   Heute 00:00
+*/
+
+const startToday =
+new Date(now);
 
 startToday.setHours(
 0,0,0,0
 );
 
-let monday=new Date(
-startToday
-);
 
-let day=
+/*
+   Montag dieser Woche
+*/
+
+const monday =
+new Date(startToday);
+
+const day =
 (monday.getDay()+6)%7;
 
 monday.setDate(
 monday.getDate()-day
 );
 
+
+/*
+   Einträge berechnen
+*/
+
 entries.forEach(entry=>{
 
-let d=
+const time =
 entry.end-entry.start;
 
-if(entry.start>=startToday)
-today+=d;
 
-if(entry.start>=monday)
-week+=d;
+if(entry.start>=startToday){
+
+today += time;
+
+}
+
+
+if(entry.start>=monday){
+
+week += time;
+
+}
 
 });
 
 
+/*
+   Aktive Arbeitszeit
+*/
+
 if(active){
 
-let d=
+const time =
 Date.now()-active.start;
 
-if(active.start>=startToday)
-today+=d;
 
-if(active.start>=monday)
-week+=d;
+if(active.start>=startToday){
+
+today += time;
 
 }
 
-$("today").textContent=
+
+if(active.start>=monday){
+
+week += time;
+
+}
+
+}
+
+
+/*
+   Anzeigen
+*/
+
+$("today").textContent =
 duration(today);
 
-$("week").textContent=
+$("week").textContent =
 duration(week);
 
 }
 
 
-/* LIVE TIMER */
+/* ==================================================
+   LIVE TIMER
+================================================== */
 
 setInterval(()=>{
 
-if(active){
+if(!active)
+return;
 
-let ms=
+
+const ms =
 Date.now()-active.start;
 
-let seconds=
+
+const seconds =
 Math.floor(ms/1000);
 
-let h=
-Math.floor(seconds/3600);
 
-let m=
+const hours =
+Math.floor(
+seconds/3600
+);
+
+
+const minutes =
 Math.floor(
 (seconds%3600)/60
 );
 
-let s=
+
+const secs =
 seconds%60;
 
-$("timer").textContent=
 
-String(h).padStart(2,"0")+
-":"+
-String(m).padStart(2,"0")+
-":"+
-String(s).padStart(2,"0");
+$("timer").textContent =
+
+String(hours)
+.padStart(2,"0")
+
++
+
+":"
+
++
+
+String(minutes)
+.padStart(2,"0")
+
++
+
+":"
+
++
+
+String(secs)
+.padStart(2,"0");
+
 
 updateStats();
-
-}
 
 },1000);
 
 
-/* CSV EXPORT */
+/* ==================================================
+   CSV EXPORT
+================================================== */
 
 function exportCSV(){
 
@@ -882,7 +1319,12 @@ return;
 
 }
 
-let rows=[
+
+/*
+   CSV Kopfzeile
+*/
+
+const rows = [
 
 [
 "Datum",
@@ -894,44 +1336,80 @@ let rows=[
 
 ];
 
-let sorted=[
-...entries
-].sort((a,b)=>a.start-b.start);
+
+/*
+   Einträge sortieren
+*/
+
+const sorted =
+[...entries]
+.sort(
+(a,b)=>a.start-b.start
+);
+
+
+/*
+   CSV Daten
+*/
 
 sorted.forEach(entry=>{
 
 rows.push([
 
-formatDate(entry.start),
+formatDate(
+entry.start
+),
 
-formatTime(entry.start),
+formatTime(
+entry.start
+),
 
-formatTime(entry.end),
+formatTime(
+entry.end
+),
 
 duration(
 entry.end-entry.start
 ),
 
-entry.note||""
+entry.note || ""
 
 ]);
 
 });
 
 
-let csv=
+/*
+   CSV erzeugen
+*/
+
+const csv =
+
 "\uFEFF"+
-rows.map(row=>
-row.map(value=>
+
+rows
+.map(row=>
+
+row
+.map(value=>
+
 '"'+
 String(value)
 .replace(/"/g,'""')+
 '"'
-).join(";")
-).join("\n");
+
+)
+.join(";")
+
+)
+.join("\n");
 
 
-let blob=
+/*
+   Datei erstellen
+*/
+
+const blob =
 new Blob(
 [csv],
 {
@@ -940,56 +1418,54 @@ type:
 }
 );
 
-let url=
+
+const url =
 URL.createObjectURL(blob);
 
-let link=
+
+const link =
 document.createElement("a");
 
-link.href=url;
 
-link.download=
+link.href = url;
+
+link.download =
 "stempeluhr_"+
 currentUser+
 ".csv";
 
+
+document.body
+.appendChild(link);
+
 link.click();
+
+link.remove();
 
 URL.revokeObjectURL(url);
 
 }
 
 
-/* ALLE EINTRÄGE LÖSCHEN */
-
-function deleteAll(){
-
-if(!confirm(
-"Alle Zeiteinträge löschen?"
-))return;
-
-entries=[];
-
-save();
-
-render();
-
-}
-
-
-/* BENUTZER ERSTELLEN */
+/* ==================================================
+   BENUTZER ERSTELLEN
+================================================== */
 
 function createUser(){
 
-let user=
-$("newUser").value
+const username =
+$("newUser")
+.value
 .trim()
 .toLowerCase();
 
-let password=
-$("newPassword").value;
 
-if(!user){
+const password =
+$("newPassword")
+.value;
+
+
+if(!username){
 
 alert(
 "Bitte Benutzernamen eingeben."
@@ -998,6 +1474,7 @@ alert(
 return;
 
 }
+
 
 if(password.length<6){
 
@@ -1009,9 +1486,10 @@ return;
 
 }
 
+
 if(
 localStorage.getItem(
-"user:"+user
+"user:"+username
 )
 ){
 
@@ -1023,9 +1501,14 @@ return;
 
 }
 
+
+/*
+   Benutzer speichern
+*/
+
 localStorage.setItem(
 
-"user:"+user,
+"user:"+username,
 
 JSON.stringify({
 
@@ -1037,131 +1520,206 @@ admin:false
 
 );
 
-$("newUser").value="";
-$("newPassword").value="";
+
+/*
+   Felder leeren
+*/
+
+$("newUser").value = "";
+
+$("newPassword").value = "";
+
+
+/*
+   Liste aktualisieren
+*/
 
 showUsers();
 
 }
 
 
-/* BENUTZERLISTE */
+/* ==================================================
+   BENUTZERLISTE
+================================================== */
 
 function showUsers(){
 
-$("userList").innerHTML="";
+$("userList").innerHTML = "";
+
 
 Object.keys(localStorage)
-.filter(key=>
+
+.filter(
+key =>
 key.startsWith("user:")
 )
+
 .forEach(key=>{
 
-let user=
+const username =
 key.substring(5);
 
-let data=
+
+const account =
 JSON.parse(
 localStorage.getItem(key)
 );
 
-let div=
+
+const div =
 document.createElement("div");
 
-div.className=
+
+div.className =
 "admin-user";
 
-div.innerHTML=
 
-"<span>@"+
-escapeHTML(user)+
-(data.admin?
-" • ADMIN":
-"")+
-"</span>";
+const name =
+document.createElement("span");
 
-if(user!==currentUser){
 
-let button=
+name.textContent =
+"@"+
+username+
+(account.admin
+? " • ADMIN"
+: "");
+
+
+div.appendChild(name);
+
+
+/*
+   Test-Account / aktuellen Account
+   nicht löschen
+*/
+
+if(username!==currentUser){
+
+const button =
 document.createElement("button");
 
-button.className="red";
+button.className =
+"red";
 
-button.textContent=
+button.textContent =
 "Löschen";
 
-button.onclick=()=>{
 
-if(confirm(
-"Benutzer "+user+
+button.onclick = ()=>{
+
+if(!confirm(
+"Benutzer "+
+username+
 " wirklich löschen?"
-)){
+))return;
+
 
 localStorage.removeItem(
-"user:"+user
+"user:"+username
 );
 
 localStorage.removeItem(
-"entries:"+user
+"entries:"+username
 );
 
 localStorage.removeItem(
-"active:"+user
+"active:"+username
 );
+
 
 showUsers();
 
-}
-
 };
+
 
 div.appendChild(button);
 
 }
 
-$("userList").appendChild(div);
+
+$("userList")
+.appendChild(div);
 
 });
 
 }
 
 
-/* SICHERER TEXT */
+/* ==================================================
+   ALLE EINTRÄGE LÖSCHEN
+================================================== */
+
+function deleteAll(){
+
+if(!confirm(
+"Alle Zeiteinträge löschen?"
+))
+return;
+
+
+entries = [];
+
+
+save();
+
+render();
+
+}
+
+
+/* ==================================================
+   LOGOUT
+================================================== */
+
+function logout(){
+
+currentUser = null;
+
+active = null;
+
+entries = [];
+
+
+$("app")
+.classList
+.add("hidden");
+
+
+$("login")
+.classList
+.remove("hidden");
+
+
+$("username").value = "";
+
+$("password").value = "";
+
+$("error").textContent = "";
+
+}
+
+
+/* ==================================================
+   HTML SICHER MACHEN
+================================================== */
 
 function escapeHTML(text){
 
-let div=
+const div =
 document.createElement("div");
 
-div.textContent=text;
+div.textContent = text;
 
 return div.innerHTML;
 
 }
 
 
-/* LOGOUT */
-
-function logout(){
-
-currentUser=null;
-
-active=null;
-
-entries=[];
-
-$("app").classList.add("hidden");
-
-$("login").classList.remove("hidden");
-
-$("username").value="";
-$("password").value="";
-$("error").textContent="";
-
-}
-
-
-/* START */
+/* ==================================================
+   START
+================================================== */
 
 setup();
 
