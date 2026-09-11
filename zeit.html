@@ -4,9 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0d0f14">
+
 <title>Stempeluhr</title>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
@@ -15,10 +17,20 @@ body{
     margin:0;
     padding:20px;
     min-height:100vh;
+
     background:
-        radial-gradient(circle at top,#241b3d 0,#0d0f14 45%);
+        radial-gradient(
+            circle at top,
+            #241b3d 0,
+            #0d0f14 48%
+        );
+
     color:#f5f5f7;
-    font-family:Arial,Helvetica,sans-serif;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 }
 
 .container{
@@ -26,55 +38,126 @@ body{
     margin:auto;
 }
 
-.hidden{
-    display:none!important;
-}
-
 .card{
     background:#171a21;
+
     border:1px solid #2b303b;
+
     border-radius:18px;
+
     padding:22px;
+
     margin-bottom:16px;
-    box-shadow:0 12px 35px rgba(0,0,0,.35);
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.35);
+}
+
+
+/* HEADER */
+
+.header{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:18px;
 }
 
 .logo{
     width:48px;
     height:48px;
-    border-radius:14px;
+
     display:flex;
+
     align-items:center;
     justify-content:center;
-    background:linear-gradient(135deg,#8b5cf6,#5b21b6);
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #8b5cf6,
+            #5b21b6
+        );
+
     font-size:24px;
-    margin-bottom:15px;
 }
 
 h1{
     margin:0;
-    font-size:24px;
+
+    font-size:25px;
 }
 
 h2{
     margin:0 0 15px;
+
     font-size:17px;
 }
 
 .sub{
     color:#8f98a8;
+
     font-size:13px;
 }
 
+
+/* CLOCK */
+
+.clock{
+    text-align:center;
+
+    padding:40px 20px;
+}
+
+.status{
+    color:#8f98a8;
+
+    margin-bottom:10px;
+}
+
+.time{
+    font-size:70px;
+
+    font-family:monospace;
+
+    letter-spacing:-3px;
+
+    margin:20px 0 8px;
+}
+
+.since{
+    min-height:20px;
+
+    color:#8f98a8;
+}
+
+
+/* INPUT */
+
 input{
     width:100%;
+
     padding:13px;
-    margin:6px 0;
+
+    margin:8px 0;
+
     border-radius:11px;
+
     border:1px solid #303641;
+
     background:#22262e;
+
     color:white;
+
     font-size:15px;
+
     outline:none;
 }
 
@@ -82,14 +165,24 @@ input:focus{
     border-color:#8b5cf6;
 }
 
+
+/* BUTTONS */
+
 button{
     border:0;
+
     border-radius:11px;
-    padding:12px 16px;
+
+    padding:12px 17px;
+
     margin:5px 0;
+
     background:#8b5cf6;
+
     color:white;
+
     font-weight:bold;
+
     cursor:pointer;
 }
 
@@ -97,124 +190,74 @@ button:hover{
     filter:brightness(1.1);
 }
 
-button.gray{
-    background:#303641;
-}
-
 button.red{
     background:#9d3838;
 }
 
-.login{
-    max-width:420px;
-    margin:70px auto;
-}
-
-.login .logo{
-    margin-left:auto;
-    margin-right:auto;
-}
-
-.login h1,
-.login .sub{
-    text-align:center;
-}
-
-.error{
-    color:#ef6666;
-    min-height:20px;
-    font-size:13px;
-}
-
-.test{
-    margin-top:15px;
-    padding:12px;
-    border-radius:10px;
-    background:#20242c;
-    color:#9da5b2;
-}
-
-.header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    margin-bottom:18px;
-}
-
-.user{
-    color:#9da5b2;
-    margin-right:7px;
-}
-
-.clock{
-    text-align:center;
-    padding:35px 20px;
-}
-
-.status{
-    color:#9da5b2;
-    margin-bottom:12px;
-}
-
-.time{
-    font-size:70px;
-    font-family:monospace;
-    letter-spacing:-3px;
-    margin:20px 0 10px;
-}
-
-.since{
-    min-height:20px;
-    color:#8f98a8;
+button.gray{
+    background:#303641;
 }
 
 .punch{
     width:280px;
+
     padding:16px;
+
     font-size:16px;
+
     margin-top:18px;
 }
 
+
+/* STATISTIK */
+
 .stats{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:
+        repeat(3,1fr);
+
     gap:12px;
+
     margin-bottom:16px;
 }
 
 .stat{
     background:#171a21;
+
     border:1px solid #2b303b;
+
     border-radius:14px;
+
     padding:17px;
 }
 
 .stat span{
     color:#8f98a8;
+
     font-size:11px;
+
     text-transform:uppercase;
 }
 
 .stat b{
     display:block;
+
     font-size:23px;
+
     font-family:monospace;
+
     margin-top:7px;
 }
 
-.row{
-    display:flex;
-    gap:10px;
-}
 
-.row>*{
-    flex:1;
-}
+/* TABELLE */
 
 .actions{
     display:flex;
+
     gap:7px;
+
     flex-wrap:wrap;
 }
 
@@ -224,20 +267,27 @@ button.red{
 
 table{
     width:100%;
+
     min-width:650px;
+
     border-collapse:collapse;
 }
 
 th,
 td{
     padding:12px 10px;
+
     text-align:left;
-    border-bottom:1px solid #2c313b;
+
+    border-bottom:
+        1px solid #2c313b;
 }
 
 th{
     color:#8f98a8;
+
     font-size:11px;
+
     text-transform:uppercase;
 }
 
@@ -247,22 +297,12 @@ td{
 
 td.note{
     font-family:Arial,sans-serif;
+
     color:#aab1bd;
 }
 
-.admin-user{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:10px 0;
-    border-bottom:1px solid #2c313b;
-}
 
-hr{
-    border:0;
-    border-top:1px solid #2c313b;
-    margin:18px 0;
-}
+/* MOBILE */
 
 @media(max-width:650px){
 
@@ -272,24 +312,17 @@ hr{
 
     .card{
         padding:16px;
-        border-radius:14px;
-    }
 
-    .login{
-        margin:30px auto;
+        border-radius:14px;
     }
 
     .header{
         align-items:flex-start;
     }
 
-    .header .user{
-        display:block;
-        margin-bottom:5px;
-    }
-
     .time{
         font-size:43px;
+
         letter-spacing:-2px;
     }
 
@@ -298,15 +331,17 @@ hr{
     }
 
     .stats{
-        grid-template-columns:1fr 1fr;
+        grid-template-columns:
+            1fr 1fr;
     }
 
     .stats .stat:last-child{
-        grid-column:1/-1;
+        grid-column:
+            1 / -1;
     }
 
-    .row{
-        flex-direction:column;
+    .actions{
+        width:100%;
     }
 
     .actions button{
@@ -316,196 +351,99 @@ hr{
     table{
         font-size:13px;
     }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
-
-
-<!-- ================= LOGIN ================= -->
-
-<section id="loginPage" class="card login">
-
-<div class="logo">
-⏱️
-</div>
-
-<h1>Stempeluhr</h1>
-
-<p class="sub">
-Arbeitszeit einfach und übersichtlich erfassen
-</p>
-
-<br>
-
-<input
-    id="username"
-    type="text"
-    placeholder="Benutzername"
-    autocomplete="username"
->
-
-<input
-    id="password"
-    type="password"
-    placeholder="Passwort"
-    autocomplete="current-password"
->
-
-<button
-    onclick="login()"
-    style="width:100%;"
->
-Einloggen
-</button>
-
-<div
-    id="loginError"
-    class="error"
-></div>
-
-<div class="test">
-
-<b>Test-Account</b><br><br>
-
-Benutzername:
-<b>test</b><br>
-
-Passwort:
-<b>test1234</b>
-
-</div>
-
-</section>
-
-
-<!-- ================= APP ================= -->
-
-<section id="appPage" class="hidden">
 
 
 <!-- HEADER -->
 
 <div class="header">
 
-<div>
+<div style="display:flex;gap:12px;align-items:center;">
 
-<h1>⏱️ Stempeluhr</h1>
-
-<div
-    id="currentDate"
-    class="sub"
->
-</div>
-
+<div class="logo">
+⏱️
 </div>
 
 <div>
 
-<span
-    id="currentUser"
-    class="user"
->
-</span>
-
-<button
-    class="gray"
-    onclick="logout()"
->
-Abmelden
-</button>
-
-</div>
-
-</div>
-
-
-<!-- ================= ADMIN ================= -->
-
-<section
-    id="adminPanel"
-    class="card hidden"
->
-
-<h2>
-Benutzerverwaltung
-</h2>
-
-<div class="row">
-
-<input
-    id="newUsername"
-    placeholder="Neuer Benutzer"
->
-
-<input
-    id="newPassword"
-    type="password"
-    placeholder="Passwort"
->
-
-<button
-    onclick="createUser()"
->
-Erstellen
-</button>
-
-</div>
-
-<div id="userList"></div>
-
-</section>
-
-
-<!-- ================= CLOCK ================= -->
-
-<section
-    id="clockCard"
-    class="card clock"
->
+<h1>Stempeluhr</h1>
 
 <div
-    id="status"
-    class="status"
->
+id="currentDate"
+class="sub">
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- UHR -->
+
+<section class="card clock">
+
+
+<div
+id="status"
+class="status">
+
 🔴 Ausgestempelt
+
 </div>
 
+
 <div
-    id="timer"
-    class="time"
->
+id="timer"
+class="time">
+
 00:00:00
+
 </div>
 
+
 <div
-    id="since"
-    class="since"
->
+id="since"
+class="since">
+
 </div>
+
 
 <input
-    id="note"
-    placeholder="Notiz, z. B. Büro oder Projekt"
+id="note"
+placeholder="Notiz, z. B. Büro oder Projekt"
 >
 
+
 <button
-    id="punchButton"
-    class="punch"
-    onclick="punch()"
->
+id="punchButton"
+class="punch"
+onclick="punch()">
+
 Einstempeln
+
 </button>
+
 
 </section>
 
 
-<!-- ================= STATS ================= -->
+<!-- STATISTIK -->
 
 <div class="stats">
+
 
 <div class="stat">
 
@@ -545,12 +483,14 @@ Einträge
 
 </div>
 
+
 </div>
 
 
-<!-- ================= ZEITERFASSUNG ================= -->
+<!-- ZEITERFASSUNG -->
 
 <section class="card">
+
 
 <div class="header">
 
@@ -558,19 +498,23 @@ Einträge
 Zeiterfassung
 </h2>
 
+
 <div class="actions">
 
 <button
-    onclick="exportCSV()"
->
+onclick="exportCSV()">
+
 CSV Export
+
 </button>
 
+
 <button
-    class="red"
-    onclick="deleteAll()"
->
-Löschen
+class="red"
+onclick="deleteAll()">
+
+Alles löschen
+
 </button>
 
 </div>
@@ -579,6 +523,7 @@ Löschen
 
 
 <div class="table">
+
 
 <table>
 
@@ -610,243 +555,59 @@ Notiz
 
 </thead>
 
+
 <tbody id="log">
 </tbody>
 
+
 </table>
+
 
 </div>
 
 
 <p
-    id="empty"
-    class="sub"
-    style="text-align:center;"
->
+id="empty"
+class="sub"
+style="text-align:center;">
+
 Noch keine Einträge.
+
 </p>
 
-</section>
-
 
 </section>
+
 
 </div>
 
 
 <script>
 
-/* =====================================================
-   TEST-ACCOUNT
-===================================================== */
 
-const TEST_USER = "test";
-const TEST_PASSWORD = "test1234";
+/* =========================================
+   DATEN
+========================================= */
 
-
-/* =====================================================
-   VARIABLEN
-===================================================== */
-
-let currentUser = null;
 let active = null;
+
 let entries = [];
 
 
-/* =====================================================
-   ELEMENT HELPER
-===================================================== */
-
-function $(id){
-    return document.getElementById(id);
-}
-
-
-/* =====================================================
-   BENUTZER INITIALISIEREN
-===================================================== */
-
-function setupUsers(){
-
-    /*
-       Test-Account wird bei jedem Start geprüft.
-       Falls er fehlt, wird er automatisch erstellt.
-    */
-
-    const key = "user:" + TEST_USER;
-
-    if(!localStorage.getItem(key)){
-
-        localStorage.setItem(
-            key,
-            JSON.stringify({
-                password:TEST_PASSWORD,
-                admin:true
-            })
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-function login(){
-
-    const username =
-        $("username")
-        .value
-        .trim()
-        .toLowerCase();
-
-    const password =
-        $("password")
-        .value;
-
-
-    $("loginError").textContent = "";
-
-
-    if(username === ""){
-
-        $("loginError").textContent =
-            "Bitte Benutzernamen eingeben.";
-
-        return;
-
-    }
-
-
-    if(password === ""){
-
-        $("loginError").textContent =
-            "Bitte Passwort eingeben.";
-
-        return;
-
-    }
-
-
-    const stored =
-        localStorage.getItem(
-            "user:" + username
-        );
-
-
-    if(!stored){
-
-        $("loginError").textContent =
-            "Benutzername oder Passwort falsch.";
-
-        return;
-
-    }
-
-
-    let account;
-
-    try{
-
-        account =
-            JSON.parse(stored);
-
-    }catch(error){
-
-        $("loginError").textContent =
-            "Benutzerkonto konnte nicht gelesen werden.";
-
-        return;
-
-    }
-
-
-    if(account.password !== password){
-
-        $("loginError").textContent =
-            "Benutzername oder Passwort falsch.";
-
-        return;
-
-    }
-
-
-    /* LOGIN ERFOLGREICH */
-
-    currentUser = username;
-
-
-    $("loginPage")
-        .classList
-        .add("hidden");
-
-
-    $("appPage")
-        .classList
-        .remove("hidden");
-
-
-    $("currentUser").textContent =
-        "@" +
-        username +
-        (account.admin ? " • ADMIN" : "");
-
-
-    $("currentDate").textContent =
-        new Date()
-        .toLocaleDateString(
-            "de-DE",
-            {
-                weekday:"long",
-                day:"2-digit",
-                month:"long",
-                year:"numeric"
-            }
-        );
-
-
-    if(account.admin){
-
-        $("adminPanel")
-            .classList
-            .remove("hidden");
-
-        showUsers();
-
-    }
-
-
-    loadData();
-
-}
-
-
-/* =====================================================
+/* =========================================
    DATEN LADEN
-===================================================== */
+========================================= */
 
 function loadData(){
-
-    const savedEntries =
-        localStorage.getItem(
-            "entries:" + currentUser
-        );
-
-
-    const savedActive =
-        localStorage.getItem(
-            "active:" + currentUser
-        );
-
 
     try{
 
         entries =
-            savedEntries
-            ? JSON.parse(savedEntries)
-            : [];
+            JSON.parse(
+                localStorage.getItem(
+                    "stempeluhr_entries"
+                ) || "[]"
+            );
 
     }catch{
 
@@ -858,9 +619,11 @@ function loadData(){
     try{
 
         active =
-            savedActive
-            ? JSON.parse(savedActive)
-            : null;
+            JSON.parse(
+                localStorage.getItem(
+                    "stempeluhr_active"
+                ) || "null"
+            );
 
     }catch{
 
@@ -874,37 +637,29 @@ function loadData(){
 }
 
 
-/* =====================================================
+/* =========================================
    DATEN SPEICHERN
-===================================================== */
+========================================= */
 
 function saveData(){
 
     localStorage.setItem(
-
-        "entries:" + currentUser,
-
+        "stempeluhr_entries",
         JSON.stringify(entries)
-
     );
 
 
     if(active){
 
         localStorage.setItem(
-
-            "active:" + currentUser,
-
+            "stempeluhr_active",
             JSON.stringify(active)
-
         );
 
     }else{
 
         localStorage.removeItem(
-
-            "active:" + currentUser
-
+            "stempeluhr_active"
         );
 
     }
@@ -912,17 +667,16 @@ function saveData(){
 }
 
 
-/* =====================================================
-   EINSTEMPELN / AUSSTEMPELN
-===================================================== */
+/* =========================================
+   EINSTEMPELN
+========================================= */
 
 function punch(){
 
+
     if(active){
 
-        /*
-           AUSSTEMPELN
-        */
+        /* AUSSTEMPELN */
 
         entries.push({
 
@@ -930,7 +684,9 @@ function punch(){
 
             end:Date.now(),
 
-            note:$("note")
+            note:
+                document
+                .getElementById("note")
                 .value
                 .trim()
 
@@ -940,20 +696,23 @@ function punch(){
         active = null;
 
 
-        $("note").value = "";
+        document
+            .getElementById("note")
+            .value = "";
 
 
     }else{
 
-        /*
-           EINSTEMPELN
-        */
+
+        /* EINSTEMPELN */
 
         active = {
 
             start:Date.now(),
 
-            note:$("note")
+            note:
+                document
+                .getElementById("note")
                 .value
                 .trim()
 
@@ -969,28 +728,47 @@ function punch(){
 }
 
 
-/* =====================================================
-   ANZEIGE AKTUALISIEREN
-===================================================== */
+/* =========================================
+   ANZEIGE
+========================================= */
 
 function render(){
 
+
+    const status =
+        document.getElementById(
+            "status"
+        );
+
+
+    const button =
+        document.getElementById(
+            "punchButton"
+        );
+
+
+    const since =
+        document.getElementById(
+            "since"
+        );
+
+
     if(active){
 
-        $("status").textContent =
+
+        status.textContent =
             "🟢 Eingestempelt";
 
 
-        $("punchButton").textContent =
+        button.textContent =
             "Ausstempeln";
 
 
-        $("punchButton")
-            .className =
+        button.className =
             "punch red";
 
 
-        $("since").textContent =
+        since.textContent =
             "Seit " +
             formatTime(active.start) +
             " Uhr";
@@ -1001,25 +779,26 @@ function render(){
 
     }else{
 
-        $("status").textContent =
+
+        status.textContent =
             "🔴 Ausgestempelt";
 
 
-        $("punchButton").textContent =
+        button.textContent =
             "Einstempeln";
 
 
-        $("punchButton")
-            .className =
+        button.className =
             "punch";
 
 
-        $("timer").textContent =
+        document
+            .getElementById("timer")
+            .textContent =
             "00:00:00";
 
 
-        $("since").textContent =
-            "";
+        since.textContent = "";
 
     }
 
@@ -1031,13 +810,20 @@ function render(){
 }
 
 
-/* =====================================================
+/* =========================================
    TABELLE
-===================================================== */
+========================================= */
 
 function renderTable(){
 
-    $("log").innerHTML = "";
+
+    const log =
+        document.getElementById(
+            "log"
+        );
+
+
+    log.innerHTML = "";
 
 
     const sorted =
@@ -1050,8 +836,11 @@ function renderTable(){
 
     sorted.forEach(entry=>{
 
+
         const row =
-            document.createElement("tr");
+            document.createElement(
+                "tr"
+            );
 
 
         row.innerHTML = `
@@ -1084,29 +873,33 @@ function renderTable(){
         `;
 
 
-        $("log")
-            .appendChild(row);
+        log.appendChild(row);
 
     });
 
 
-    $("empty").style.display =
-        entries.length === 0
-        ? "block"
-        : "none";
+    document
+        .getElementById("empty")
+        .style.display =
+        entries.length
+        ? "none"
+        : "block";
 
 
-    $("entryCount").textContent =
+    document
+        .getElementById("entryCount")
+        .textContent =
         entries.length;
 
 }
 
 
-/* =====================================================
+/* =========================================
    LIVE TIMER
-===================================================== */
+========================================= */
 
 function updateTimer(){
+
 
     if(!active)
         return;
@@ -1139,7 +932,9 @@ function updateTimer(){
         totalSeconds % 60;
 
 
-    $("timer").textContent =
+    document
+        .getElementById("timer")
+        .textContent =
 
         String(hours)
         .padStart(2,"0")
@@ -1157,13 +952,15 @@ function updateTimer(){
 }
 
 
-/* =====================================================
+/* =========================================
    STATISTIK
-===================================================== */
+========================================= */
 
 function updateStats(){
 
+
     let today = 0;
+
     let week = 0;
 
 
@@ -1174,8 +971,12 @@ function updateStats(){
     const startToday =
         new Date(now);
 
+
     startToday.setHours(
-        0,0,0,0
+        0,
+        0,
+        0,
+        0
     );
 
 
@@ -1188,25 +989,33 @@ function updateStats(){
 
 
     startWeek.setDate(
-        startWeek.getDate() - day
+        startWeek.getDate() -
+        day
     );
 
 
     entries.forEach(entry=>{
+
 
         const time =
             entry.end -
             entry.start;
 
 
-        if(entry.start >= startToday){
+        if(
+            entry.start >=
+            startToday
+        ){
 
             today += time;
 
         }
 
 
-        if(entry.start >= startWeek){
+        if(
+            entry.start >=
+            startWeek
+        ){
 
             week += time;
 
@@ -1217,19 +1026,26 @@ function updateStats(){
 
     if(active){
 
+
         const time =
             Date.now() -
             active.start;
 
 
-        if(active.start >= startToday){
+        if(
+            active.start >=
+            startToday
+        ){
 
             today += time;
 
         }
 
 
-        if(active.start >= startWeek){
+        if(
+            active.start >=
+            startWeek
+        ){
 
             week += time;
 
@@ -1238,19 +1054,23 @@ function updateStats(){
     }
 
 
-    $("today").textContent =
+    document
+        .getElementById("today")
+        .textContent =
         duration(today);
 
 
-    $("week").textContent =
+    document
+        .getElementById("week")
+        .textContent =
         duration(week);
 
 }
 
 
-/* =====================================================
-   ZEIT FORMAT
-===================================================== */
+/* =========================================
+   ZEIT FORMATIEREN
+========================================= */
 
 function formatTime(timestamp){
 
@@ -1266,9 +1086,9 @@ function formatTime(timestamp){
 }
 
 
-/* =====================================================
-   DATUM FORMAT
-===================================================== */
+/* =========================================
+   DATUM FORMATIEREN
+========================================= */
 
 function formatDate(timestamp){
 
@@ -1280,11 +1100,12 @@ function formatDate(timestamp){
 }
 
 
-/* =====================================================
-   DAUER FORMAT
-===================================================== */
+/* =========================================
+   DAUER
+========================================= */
 
 function duration(ms){
+
 
     const minutes =
         Math.floor(
@@ -1306,20 +1127,21 @@ function duration(ms){
         hours +
         "h " +
         String(mins)
-            .padStart(2,"0") +
+        .padStart(2,"0") +
         "m"
     );
 
 }
 
 
-/* =====================================================
+/* =========================================
    CSV EXPORT
-===================================================== */
+========================================= */
 
 function exportCSV(){
 
-    if(entries.length === 0){
+
+    if(!entries.length){
 
         alert(
             "Keine Zeiteinträge vorhanden."
@@ -1352,6 +1174,7 @@ function exportCSV(){
 
 
     sorted.forEach(entry=>{
+
 
         rows.push([
 
@@ -1427,15 +1250,14 @@ function exportCSV(){
 
     link.download =
         "stempeluhr_" +
-        currentUser +
-        "_" +
         new Date()
         .toISOString()
         .slice(0,10) +
         ".csv";
 
 
-    document.body
+    document
+        .body
         .appendChild(link);
 
 
@@ -1450,15 +1272,18 @@ function exportCSV(){
 }
 
 
-/* =====================================================
-   ALLE EINTRÄGE LÖSCHEN
-===================================================== */
+/* =========================================
+   ALLES LÖSCHEN
+========================================= */
 
 function deleteAll(){
 
-    if(!confirm(
-        "Wirklich alle Zeiteinträge löschen?"
-    )){
+
+    if(
+        !confirm(
+            "Wirklich alle Zeiteinträge löschen?"
+        )
+    ){
 
         return;
 
@@ -1475,263 +1300,19 @@ function deleteAll(){
 }
 
 
-/* =====================================================
-   BENUTZER ERSTELLEN
-===================================================== */
-
-function createUser(){
-
-    const username =
-        $("newUsername")
-        .value
-        .trim()
-        .toLowerCase();
-
-
-    const password =
-        $("newPassword")
-        .value;
-
-
-    if(!username){
-
-        alert(
-            "Bitte Benutzernamen eingeben."
-        );
-
-        return;
-
-    }
-
-
-    if(password.length < 6){
-
-        alert(
-            "Das Passwort muss mindestens 6 Zeichen haben."
-        );
-
-        return;
-
-    }
-
-
-    if(
-        localStorage.getItem(
-            "user:" + username
-        )
-    ){
-
-        alert(
-            "Dieser Benutzer existiert bereits."
-        );
-
-        return;
-
-    }
-
-
-    localStorage.setItem(
-
-        "user:" + username,
-
-        JSON.stringify({
-
-            password:password,
-
-            admin:false
-
-        })
-
-    );
-
-
-    $("newUsername").value = "";
-
-    $("newPassword").value = "";
-
-
-    showUsers();
-
-}
-
-
-/* =====================================================
-   BENUTZER ANZEIGEN
-===================================================== */
-
-function showUsers(){
-
-    $("userList").innerHTML = "";
-
-
-    Object.keys(localStorage)
-
-    .filter(
-        key =>
-        key.startsWith("user:")
-    )
-
-    .forEach(key=>{
-
-        const username =
-            key.substring(5);
-
-
-        let account;
-
-
-        try{
-
-            account =
-                JSON.parse(
-                    localStorage
-                    .getItem(key)
-                );
-
-        }catch{
-
-            return;
-
-        }
-
-
-        const div =
-            document.createElement("div");
-
-
-        div.className =
-            "admin-user";
-
-
-        const name =
-            document.createElement("span");
-
-
-        name.textContent =
-            "@" +
-            username +
-            (
-                account.admin
-                ? " • ADMIN"
-                : ""
-            );
-
-
-        div.appendChild(name);
-
-
-        /*
-           Aktuellen Benutzer
-           nicht löschen.
-        */
-
-        if(username !== currentUser){
-
-            const button =
-                document.createElement("button");
-
-
-            button.className =
-                "red";
-
-
-            button.textContent =
-                "Löschen";
-
-
-            button.onclick = function(){
-
-                if(!confirm(
-                    "Benutzer " +
-                    username +
-                    " wirklich löschen?"
-                )){
-
-                    return;
-
-                }
-
-
-                localStorage.removeItem(
-                    "user:" +
-                    username
-                );
-
-
-                localStorage.removeItem(
-                    "entries:" +
-                    username
-                );
-
-
-                localStorage.removeItem(
-                    "active:" +
-                    username
-                );
-
-
-                showUsers();
-
-            };
-
-
-            div.appendChild(button);
-
-        }
-
-
-        $("userList")
-            .appendChild(div);
-
-    });
-
-}
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-function logout(){
-
-    currentUser = null;
-
-    active = null;
-
-    entries = [];
-
-
-    $("appPage")
-        .classList
-        .add("hidden");
-
-
-    $("loginPage")
-        .classList
-        .remove("hidden");
-
-
-    $("username").value = "";
-
-    $("password").value = "";
-
-    $("loginError").textContent = "";
-
-}
-
-
-/* =====================================================
+/* =========================================
    HTML SICHER MACHEN
-===================================================== */
+========================================= */
 
 function escapeHTML(text){
 
     const div =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
-    div.textContent =
-        text;
+    div.textContent = text;
 
 
     return div.innerHTML;
@@ -1739,34 +1320,50 @@ function escapeHTML(text){
 }
 
 
-/* =====================================================
-   TIMER AKTUALISIEREN
-===================================================== */
+/* =========================================
+   DATUM IM HEADER
+========================================= */
 
-setInterval(
+document
+    .getElementById(
+        "currentDate"
+    )
+    .textContent =
 
-    function(){
-
-        if(active){
-
-            updateTimer();
-
-            updateStats();
-
+    new Date()
+    .toLocaleDateString(
+        "de-DE",
+        {
+            weekday:"long",
+            day:"2-digit",
+            month:"long",
+            year:"numeric"
         }
-
-    },
-
-    1000
-
-);
+    );
 
 
-/* =====================================================
+/* =========================================
+   JEDE SEKUNDE AKTUALISIEREN
+========================================= */
+
+setInterval(()=>{
+
+    if(active){
+
+        updateTimer();
+
+        updateStats();
+
+    }
+
+},1000);
+
+
+/* =========================================
    START
-===================================================== */
+========================================= */
 
-setupUsers();
+loadData();
 
 </script>
 
