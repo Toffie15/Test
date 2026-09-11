@@ -190,6 +190,37 @@ button:hover{
     filter:brightness(1.1);
 }
 
+body.light{
+    background:#f2f3f7;
+    color:#171a21;
+}
+
+body.light .card,
+body.light .stat{
+    background:#ffffff;
+    border-color:#d9dde5;
+}
+
+body.light input{
+    background:#f7f8fa;
+    color:#171a21;
+    border-color:#cfd4de;
+}
+
+body.light .sub,
+body.light .status,
+body.light .since,
+body.light .stat span,
+body.light th,
+body.light td.note{
+    color:#687080;
+}
+
+body.light th,
+body.light td{
+    border-bottom-color:#e1e4ea;
+}
+
 button.red{
     background:#9d3838;
 }
@@ -356,10 +387,63 @@ td.note{
 
 </style>
 
+
+<style>
+#loginScreen{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:radial-gradient(circle at top,#241b3d 0,#0d0f14 55%);
+}
+.login-box{
+    width:min(420px,100%);
+    background:#171a21;
+    border:1px solid #2b303b;
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 20px 60px rgba(0,0,0,.45);
+}
+.login-box h2{margin-bottom:8px}
+.login-box input{margin:8px 0}
+.login-error{color:#ff7777;min-height:20px;font-size:13px;margin-top:6px}
+#app{display:none}
+body.authenticated #loginScreen{display:none}
+body.authenticated #app{display:block}
+.admin-panel{
+    margin-top:16px;
+    padding-top:16px;
+    border-top:1px solid #2b303b;
+}
+.user-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:8px 0;
+    border-bottom:1px solid #2c313b;
+}
+.small-btn{padding:8px 11px;font-size:12px}
+</style>
+
 </head>
 
 
 <body>
+<div id="loginScreen">
+    <div class="login-box">
+        <h2>🔐 Stempeluhr Login</h2>
+        <div class="sub">Nur der Administrator kann Benutzer anlegen.</div>
+        <input id="loginUser" autocomplete="username" placeholder="Benutzername">
+        <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Passwort">
+        <button style="width:100%" onclick="login()">Anmelden</button>
+        <div id="loginError" class="login-error"></div>
+    </div>
+</div>
+<div id="app">
 
 
 <div class="container">
@@ -390,6 +474,25 @@ class="sub">
 
 </div>
 
+
+<div class="actions" style="margin-bottom:10px;">
+    <button class="gray small-btn" onclick="logout()">Abmelden</button>
+    <button class="gray small-btn" onclick="showAdmin()" id="adminButton" style="display:none">👤 Benutzer</button>
+</div>
+
+
+<section class="card" id="adminPanel" style="display:none;">
+    <div class="header">
+        <h2>Benutzerverwaltung</h2>
+        <button class="gray small-btn" onclick="hideAdmin()">Schließen</button>
+    </div>
+    <div class="sub">Nur das Admin-Konto kann weitere Benutzer erstellen.</div>
+    <input id="newUsername" placeholder="Neuer Benutzername">
+    <input id="newPassword" type="password" placeholder="Neues Passwort">
+    <button onclick="createUser()">Benutzer erstellen</button>
+    <div id="adminError" class="login-error"></div>
+    <div id="userList" style="margin-top:12px;"></div>
+</section>
 
 <!-- UHR -->
 
@@ -485,6 +588,18 @@ Einträge
 
 
 </div>
+
+<section class="card">
+    <div class="header">
+        <h2>Monatsübersicht</h2>
+        <div class="actions">
+            <button class="gray" onclick="changeMonth(-1)">‹</button>
+            <button class="gray" onclick="changeMonth(1)">›</button>
+        </div>
+    </div>
+    <div id="monthLabel" class="sub" style="margin-bottom:12px;"></div>
+    <div id="monthSummary"></div>
+</section>
 
 
 <!-- ZEITERFASSUNG -->
@@ -583,6 +698,190 @@ Noch keine Einträge.
 
 
 <script>
+
+
+
+/* =========================================
+   LOGIN / BENUTZERVERWALTUNG
+========================================= */
+
+const AUTH_KEY = "stempeluhr_users";
+const SESSION_KEY = "stempeluhr_session";
+
+function hashPassword(password){
+    // Lightweight local-app hashing. For real server security use a backend.
+    let h = 2166136261;
+    for(let i=0;i<password.length;i++){
+        h ^= password.charCodeAt(i);
+        h = Math.imul(h,16777619);
+    }
+    return (h >>> 0).toString(16);
+}
+
+function getUsers(){
+    try{
+        return JSON.parse(localStorage.getItem(AUTH_KEY) || "[]");
+    }catch{
+        return [];
+    }
+}
+
+function saveUsers(users){
+    localStorage.setItem(AUTH_KEY, JSON.stringify(users));
+}
+
+function ensureAdmin(){
+    const users = getUsers();
+    if(!users.length){
+        const username = prompt("Admin-Benutzername festlegen:");
+        if(!username) return;
+        const password = prompt("Admin-Passwort festlegen:");
+        if(!password) return;
+
+        saveUsers([{
+            username: username.trim(),
+            password: hashPassword(password),
+            admin: true
+        }]);
+    }
+}
+
+function login(){
+    const username = document.getElementById("loginUser").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    const user = getUsers().find(u =>
+        u.username === username &&
+        u.password === hashPassword(password)
+    );
+
+    if(!user){
+        document.getElementById("loginError").textContent =
+            "Benutzername oder Passwort falsch.";
+        return;
+    }
+
+    localStorage.setItem(SESSION_KEY, JSON.stringify({
+        username:user.username,
+        admin:!!user.admin
+    }));
+
+    document.body.classList.add("authenticated");
+    document.getElementById("loginError").textContent = "";
+
+    const adminButton = document.getElementById("adminButton");
+    if(adminButton) adminButton.style.display = user.admin ? "inline-block" : "none";
+
+    loadData();
+    renderMonth();
+}
+
+function logout(){
+    localStorage.removeItem(SESSION_KEY);
+    document.body.classList.remove("authenticated");
+    document.getElementById("loginPassword").value = "";
+    document.getElementById("adminPanel").style.display = "none";
+}
+
+function currentUser(){
+    try{
+        return JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
+    }catch{
+        return null;
+    }
+}
+
+function showAdmin(){
+    const user = currentUser();
+    if(!user || !user.admin) return;
+
+    document.getElementById("adminPanel").style.display = "block";
+    renderUsers();
+}
+
+function hideAdmin(){
+    document.getElementById("adminPanel").style.display = "none";
+}
+
+function createUser(){
+    const admin = currentUser();
+    if(!admin || !admin.admin) return;
+
+    const username = document.getElementById("newUsername").value.trim();
+    const password = document.getElementById("newPassword").value;
+
+    if(!username || !password){
+        document.getElementById("adminError").textContent =
+            "Benutzername und Passwort eingeben.";
+        return;
+    }
+
+    const users = getUsers();
+
+    if(users.some(u => u.username.toLowerCase() === username.toLowerCase())){
+        document.getElementById("adminError").textContent =
+            "Benutzer existiert bereits.";
+        return;
+    }
+
+    users.push({
+        username,
+        password:hashPassword(password),
+        admin:false
+    });
+
+    saveUsers(users);
+
+    document.getElementById("newUsername").value = "";
+    document.getElementById("newPassword").value = "";
+    document.getElementById("adminError").textContent = "";
+
+    renderUsers();
+}
+
+function deleteUser(username){
+    const admin = currentUser();
+    if(!admin || !admin.admin || username === admin.username) return;
+
+    const users = getUsers().filter(u => u.username !== username);
+    saveUsers(users);
+    renderUsers();
+}
+
+function renderUsers(){
+    const list = document.getElementById("userList");
+    if(!list) return;
+
+    list.innerHTML = getUsers().map(u => `
+        <div class="user-row">
+            <span>${escapeHTML(u.username)} ${u.admin ? "👑" : ""}</span>
+            ${u.admin ? "" :
+                `<button class="red small-btn" onclick="deleteUser('${escapeHTML(u.username)}')">Löschen</button>`
+            }
+        </div>
+    `).join("");
+}
+
+function restoreSession(){
+    ensureAdmin();
+
+    const user = currentUser();
+    if(!user) return;
+
+    const valid = getUsers().some(u =>
+        u.username === user.username && !!u.admin === !!user.admin
+    );
+
+    if(!valid){
+        localStorage.removeItem(SESSION_KEY);
+        return;
+    }
+
+    document.body.classList.add("authenticated");
+
+    const adminButton = document.getElementById("adminButton");
+    if(adminButton) adminButton.style.display = user.admin ? "inline-block" : "none";
+}
 
 
 /* =========================================
@@ -1359,13 +1658,176 @@ setInterval(()=>{
 },1000);
 
 
+
+/* =========================================
+   MONATSÜBERSICHT
+========================================= */
+
+let selectedMonth = new Date();
+selectedMonth.setDate(1);
+
+function changeMonth(delta){
+    selectedMonth.setMonth(selectedMonth.getMonth() + delta);
+    renderMonth();
+}
+
+function renderMonth(){
+    const label = document.getElementById("monthLabel");
+    const summary = document.getElementById("monthSummary");
+    if(!label || !summary) return;
+
+    label.textContent = selectedMonth.toLocaleDateString("de-DE", {
+        month:"long",
+        year:"numeric"
+    });
+
+    const year = selectedMonth.getFullYear();
+    const month = selectedMonth.getMonth();
+
+    const monthly = entries.filter(entry => {
+        const d = new Date(entry.start);
+        return d.getFullYear() === year && d.getMonth() === month;
+    });
+
+    const total = monthly.reduce((sum, e) => sum + (e.end - e.start), 0);
+
+    const days = {};
+    monthly.forEach(e => {
+        const key = formatDate(e.start);
+        days[key] = (days[key] || 0) + (e.end - e.start);
+    });
+
+    const rows = Object.entries(days)
+        .sort((a,b) => {
+            const [da,ma,ya] = a[0].split(".");
+            const [db,mb,yb] = b[0].split(".");
+            return new Date(`${ya}-${ma}-${da}`) - new Date(`${yb}-${mb}-${db}`);
+        })
+        .map(([day,time]) =>
+            `<div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #2c313b;">
+                <span>${day}</span><b>${duration(time)}</b>
+            </div>`
+        ).join("");
+
+    summary.innerHTML =
+        `<div style="font-size:23px;font-family:monospace;margin-bottom:10px;">
+            ${duration(total)}
+        </div>` +
+        (rows || `<div class="sub">Keine Einträge in diesem Monat.</div>`);
+}
+
+/* =========================================
+   DESIGN
+========================================= */
+
+function toggleTheme(){
+    document.body.classList.toggle("light");
+    localStorage.setItem(
+        "stempeluhr_theme",
+        document.body.classList.contains("light") ? "light" : "dark"
+    );
+}
+
+function loadTheme(){
+    if(localStorage.getItem("stempeluhr_theme") === "light"){
+        document.body.classList.add("light");
+    }
+}
+
+/* =========================================
+   BACKUP / IMPORT
+========================================= */
+
+function exportBackup(){
+    const backup = {
+        entries,
+        active,
+        theme: localStorage.getItem("stempeluhr_theme") || "dark",
+        exportedAt: new Date().toISOString()
+    };
+
+    const blob = new Blob(
+        [JSON.stringify(backup, null, 2)],
+        {type:"application/json"}
+    );
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download =
+        "stempeluhr_backup_" +
+        new Date().toISOString().slice(0,10) +
+        ".json";
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+}
+
+function importBackup(event){
+    const file = event.target.files[0];
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(){
+        try{
+            const backup = JSON.parse(reader.result);
+
+            if(!Array.isArray(backup.entries)){
+                throw new Error("Ungültiges Backup");
+            }
+
+            entries = backup.entries;
+            active = backup.active || null;
+
+            localStorage.setItem(
+                "stempeluhr_entries",
+                JSON.stringify(entries)
+            );
+
+            if(active){
+                localStorage.setItem(
+                    "stempeluhr_active",
+                    JSON.stringify(active)
+                );
+            }else{
+                localStorage.removeItem("stempeluhr_active");
+            }
+
+            if(backup.theme === "light"){
+                localStorage.setItem("stempeluhr_theme", "light");
+            }else{
+                localStorage.setItem("stempeluhr_theme", "dark");
+            }
+
+            loadTheme();
+            render();
+            renderMonth();
+
+            alert("Backup erfolgreich importiert.");
+        }catch{
+            alert("Das Backup ist ungültig.");
+        }
+
+        event.target.value = "";
+    };
+
+    reader.readAsText(file);
+}
+
 /* =========================================
    START
 ========================================= */
 
-loadData();
+loadTheme();
+restoreSession();
+if(currentUser()) loadData();
+renderMonth();
 
 </script>
 
+</div>
 </body>
 </html>
