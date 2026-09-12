@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -23,21 +22,44 @@ button{background:#8b5cf6;color:#fff;font-weight:bold;cursor:pointer;border:0;ma
 .red{background:#9d3838}
 .gray{background:#303641}
 .punch{width:280px;font-size:16px;margin-top:15px}
+.pausebtn{width:280px;font-size:14px;margin-top:0}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .stat span{color:#8f98a8;font-size:11px;text-transform:uppercase}
 .stat b{display:block;font:22px monospace;margin-top:5px}
 .actions{display:flex;gap:5px;flex-wrap:wrap}
 .table{overflow:auto}
-table{width:100%;min-width:600px;border-collapse:collapse}
+table{width:100%;min-width:680px;border-collapse:collapse}
 th,td{text-align:left;padding:10px;border-bottom:1px solid #2c313b}
 td{font-family:monospace}
 td.note{font-family:Arial;color:#aab1bd}
+td.actions-cell{font-family:Arial;white-space:nowrap}
+td.actions-cell button{padding:6px 10px;font-size:12px;margin:0 2px}
 .footer{text-align:center;color:#666d7a;font-size:12px;padding:5px 0 15px}
+.hint{color:#8f98a8;font-size:12px;margin-top:-4px}
+.reminder{background:#2a2410;border:1px solid #5a4a1a;color:#e8c96a;border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.reminder button{background:#5a4a1a;padding:6px 10px;font-size:12px;margin:0}
 body.light{background:#f2f3f7;color:#171a21}
 body.light .card,body.light .stat{background:#fff;border-color:#ddd}
 body.light input{background:#f7f8fa;color:#171a21}
+body.light .reminder{background:#fff6df;border-color:#e8d9a8;color:#7a5f10}
+
+#loader{position:fixed;inset:0;background:#0d0f14;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px}
+#loader .logo2{font-size:40px}
+.barwrap{width:220px;height:8px;background:#22262e;border-radius:6px;overflow:hidden}
+.bar{height:100%;width:0%;background:#8b5cf6;border-radius:6px;transition:width .1s linear}
+#loader .msg{color:#8f98a8;font-size:13px}
+
+/* modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:500;padding:15px}
+.modal-bg.show{display:flex}
+.modal{background:#171a21;border:1px solid #2b303b;border-radius:15px;padding:20px;max-width:380px;width:100%}
+body.light .modal{background:#fff;border-color:#ddd}
+.modal h3{margin:0 0 12px}
+.modal label{display:block;font-size:12px;color:#8f98a8;margin:10px 0 4px}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+
 @media(max-width:600px){
- body{padding:8px}.time{font-size:42px}.punch{width:100%}
+ body{padding:8px}.time{font-size:42px}.punch,.pausebtn{width:100%}
  .stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}
  .actions button{flex:1}
 }
@@ -45,6 +67,13 @@ body.light input{background:#f7f8fa;color:#171a21}
 </head>
 
 <body>
+
+<div id="loader">
+ <div class="logo2">⏱️</div>
+ <div class="barwrap"><div class="bar" id="loadbar"></div></div>
+ <div class="msg" id="loadmsg">Lade Stempeluhr…</div>
+</div>
+
 <div class="container">
 
 <header class="header">
@@ -52,15 +81,25 @@ body.light input{background:#f7f8fa;color:#171a21}
   <h1>⏱️ Stempeluhr</h1>
   <div id="date" class="sub"></div>
  </div>
- <button class="gray" onclick="theme()">🌓</button>
+ <button class="gray" onclick="theme()" aria-label="Design umschalten">🌓</button>
 </header>
+
+<div id="backupReminder" class="reminder" style="display:none">
+ <span id="reminderText"></span>
+ <button onclick="backup(); dismissReminder(true)">Jetzt sichern</button>
+</div>
 
 <section class="card clock">
  <div id="status" class="status">🔴 Ausgestempelt</div>
  <div id="timer" class="time">00:00:00</div>
  <div id="since" class="since"></div>
  <input id="note" placeholder="Notiz, z. B. Büro oder Projekt">
+ <div class="hint" id="noteHint" style="display:none">Notiz wird beim Ausstempeln für diesen Eintrag gespeichert.</div>
  <button id="punch" class="punch" onclick="punch()">Einstempeln</button>
+ <div id="pauseWrap" style="display:none">
+  <button id="pauseBtn" class="pausebtn gray" onclick="togglePause()">Pause starten</button>
+  <div class="hint" id="pauseInfo"></div>
+ </div>
 </section>
 
 <div class="stats">
@@ -73,8 +112,8 @@ body.light input{background:#f7f8fa;color:#171a21}
  <div class="header">
   <h2>Monatsübersicht</h2>
   <div>
-   <button class="gray" onclick="month(-1)">‹</button>
-   <button class="gray" onclick="month(1)">›</button>
+   <button class="gray" onclick="month(-1)" aria-label="Vorheriger Monat">‹</button>
+   <button class="gray" onclick="month(1)" aria-label="Nächster Monat">›</button>
   </div>
  </div>
  <div id="month" class="sub"></div>
@@ -96,7 +135,7 @@ body.light input{background:#f7f8fa;color:#171a21}
  <div class="table">
   <table>
    <thead><tr>
-    <th>Datum</th><th>Start</th><th>Ende</th><th>Dauer</th><th>Notiz</th>
+    <th>Datum</th><th>Start</th><th>Ende</th><th>Dauer</th><th>Pause</th><th>Notiz</th><th></th>
    </tr></thead>
    <tbody id="log"></tbody>
   </table>
@@ -109,10 +148,32 @@ body.light input{background:#f7f8fa;color:#171a21}
 
 </div>
 
+<!-- Edit modal -->
+<div class="modal-bg" id="editModal">
+ <div class="modal">
+  <h3>Eintrag bearbeiten</h3>
+  <label>Datum</label>
+  <input id="editDate" type="date">
+  <label>Start</label>
+  <input id="editStart" type="time">
+  <label>Ende</label>
+  <input id="editEnd" type="time">
+  <label>Pause (Minuten)</label>
+  <input id="editPause" type="number" min="0" step="1">
+  <label>Notiz</label>
+  <input id="editNote">
+  <div class="row">
+   <button class="gray" onclick="closeEdit()">Abbrechen</button>
+   <button onclick="saveEdit()">Speichern</button>
+  </div>
+ </div>
+</div>
+
 <script>
 let entries=JSON.parse(localStorage.getItem("entries")||"[]"),
 active=JSON.parse(localStorage.getItem("active")||"null"),
-sel=new Date(new Date().getFullYear(),new Date().getMonth(),1);
+sel=new Date(new Date().getFullYear(),new Date().getMonth(),1),
+editId=null;
 
 const $=id=>document.getElementById(id);
 const save=()=>{
@@ -124,26 +185,57 @@ const save=()=>{
 const time=t=>new Date(t).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
 const date=t=>new Date(t).toLocaleDateString("de-DE");
 const dur=ms=>{
- let m=Math.floor(ms/60000),h=Math.floor(m/60);
+ let m=Math.round(ms/60000),h=Math.floor(m/60);
  return h+"h "+String(m%60).padStart(2,"0")+"m";
 };
 
+/* ---------- Ein-/Ausstempeln + Pause ---------- */
+
 function punch(){
  if(active){
-  entries.push({start:active.start,end:Date.now(),note:$("note").value.trim()});
+  if(active.pauseStart){
+   active.pauseMs=(active.pauseMs||0)+(Date.now()-active.pauseStart);
+   active.pauseStart=null;
+  }
+  entries.push({
+   id:Date.now()+"_"+Math.random().toString(36).slice(2,7),
+   start:active.start,
+   end:Date.now(),
+   pauseMs:active.pauseMs||0,
+   note:$("note").value.trim()
+  });
   active=null;
   $("note").value="";
  }else{
-  active={start:Date.now(),note:$("note").value.trim()};
+  active={start:Date.now(),note:$("note").value.trim(),pauseMs:0,pauseStart:null};
+ }
+ save();render();maybeShowReminder();
+}
+
+function togglePause(){
+ if(!active)return;
+ if(active.pauseStart){
+  active.pauseMs=(active.pauseMs||0)+(Date.now()-active.pauseStart);
+  active.pauseStart=null;
+ }else{
+  active.pauseStart=Date.now();
  }
  save();render();
 }
 
+/* ---------- Rendern ---------- */
+
 function render(){
- $("status").textContent=active?"🟢 Eingestempelt":"🔴 Ausgestempelt";
+ $("status").textContent=active?(active.pauseStart?"⏸️ Pause":"🟢 Eingestempelt"):"🔴 Ausgestempelt";
  $("punch").textContent=active?"Ausstempeln":"Einstempeln";
  $("punch").className=active?"punch red":"punch";
  $("since").textContent=active?"Seit "+time(active.start)+" Uhr":"";
+ $("noteHint").style.display=active?"block":"none";
+ $("pauseWrap").style.display=active?"block":"none";
+ if(active){
+  $("pauseBtn").textContent=active.pauseStart?"Pause beenden":"Pause starten";
+  $("pauseBtn").className=active.pauseStart?"pausebtn red":"pausebtn gray";
+ }
  if(!active)$("timer").textContent="00:00:00";
 
  $("log").innerHTML=[...entries].sort((a,b)=>b.start-a.start).map(e=>`
@@ -151,8 +243,13 @@ function render(){
    <td>${date(e.start)}</td>
    <td>${time(e.start)}</td>
    <td>${time(e.end)}</td>
-   <td>${dur(e.end-e.start)}</td>
+   <td>${dur(e.end-e.start-(e.pauseMs||0))}</td>
+   <td>${e.pauseMs?dur(e.pauseMs):"–"}</td>
    <td class="note">${safe(e.note||"-")}</td>
+   <td class="actions-cell">
+    <button class="gray" onclick="openEdit('${e.id}')">✏️</button>
+    <button class="red" onclick="deleteEntry('${e.id}')">🗑️</button>
+   </td>
   </tr>`).join("");
 
  $("empty").style.display=entries.length?"none":"block";
@@ -171,19 +268,21 @@ function stats(){
  let t=0,w=0;
 
  entries.forEach(e=>{
-  let d=e.end-e.start;
+  let d=e.end-e.start-(e.pauseMs||0);
   if(e.start>=today)t+=d;
   if(e.start>=week)w+=d;
  });
 
  if(active){
-  let d=Date.now()-active.start;
+  let pause=active.pauseMs||0;
+  if(active.pauseStart)pause+=Date.now()-active.pauseStart;
+  let d=Date.now()-active.start-pause;
   if(active.start>=today)t+=d;
   if(active.start>=week)w+=d;
  }
 
- $("today").textContent=dur(t);
- $("week").textContent=dur(w);
+ $("today").textContent=dur(Math.max(t,0));
+ $("week").textContent=dur(Math.max(w,0));
 }
 
 function renderMonth(){
@@ -194,8 +293,9 @@ function renderMonth(){
   return d.getFullYear()==y&&d.getMonth()==m;
  }).forEach(e=>{
   let k=date(e.start);
-  days[k]=(days[k]||0)+(e.end-e.start);
-  total+=e.end-e.start;
+  let net=e.end-e.start-(e.pauseMs||0);
+  days[k]=(days[k]||0)+net;
+  total+=net;
  });
 
  $("month").textContent=sel.toLocaleDateString("de-DE",{month:"long",year:"numeric"});
@@ -215,14 +315,81 @@ function month(n){
  renderMonth();
 }
 
+/* ---------- Einzelne Einträge bearbeiten / löschen ---------- */
+
+function openEdit(id){
+ let e=entries.find(x=>x.id===id);
+ if(!e)return;
+ editId=id;
+
+ let s=new Date(e.start), en=new Date(e.end);
+ let pad=n=>String(n).padStart(2,"0");
+
+ $("editDate").value=`${s.getFullYear()}-${pad(s.getMonth()+1)}-${pad(s.getDate())}`;
+ $("editStart").value=`${pad(s.getHours())}:${pad(s.getMinutes())}`;
+ $("editEnd").value=`${pad(en.getHours())}:${pad(en.getMinutes())}`;
+ $("editPause").value=Math.round((e.pauseMs||0)/60000);
+ $("editNote").value=e.note||"";
+
+ $("editModal").classList.add("show");
+}
+
+function closeEdit(){
+ $("editModal").classList.remove("show");
+ editId=null;
+}
+
+function saveEdit(){
+ let e=entries.find(x=>x.id===editId);
+ if(!e)return;
+
+ let dateVal=$("editDate").value;
+ let [sh,sm]=$("editStart").value.split(":").map(Number);
+ let [eh,em]=$("editEnd").value.split(":").map(Number);
+ let pauseMin=parseInt($("editPause").value)||0;
+
+ if(!dateVal||isNaN(sh)||isNaN(eh)){
+  alert("Bitte Datum, Start und Ende ausfüllen.");
+  return;
+ }
+
+ let [y,mo,d]=dateVal.split("-").map(Number);
+ let start=new Date(y,mo-1,d,sh,sm||0).getTime();
+ let end=new Date(y,mo-1,d,eh,em||0).getTime();
+
+ if(end<=start){
+  alert("Ende muss nach Start liegen.");
+  return;
+ }
+
+ e.start=start;
+ e.end=end;
+ e.pauseMs=Math.max(0,pauseMin)*60000;
+ e.note=$("editNote").value.trim();
+
+ save();render();closeEdit();
+}
+
+function deleteEntry(id){
+ if(!confirm("Diesen Eintrag wirklich löschen?"))return;
+ entries=entries.filter(e=>e.id!==id);
+ save();render();
+}
+
+/* ---------- CSV / Backup / Import ---------- */
+
 function csv(){
  if(!entries.length)return alert("Keine Einträge vorhanden.");
 
+ let sorted=[...entries].sort((a,b)=>b.start-a.start);
+
  let rows=[
-  ["Datum","Start","Ende","Dauer","Notiz"],
-  ...entries.map(e=>[
+  ["Datum","Start","Ende","Dauer","Pause","Notiz"],
+  ...sorted.map(e=>[
    date(e.start),time(e.start),time(e.end),
-   dur(e.end-e.start),e.note||""
+   dur(e.end-e.start-(e.pauseMs||0)),
+   e.pauseMs?dur(e.pauseMs):"0h 00m",
+   e.note||""
   ])
  ];
 
@@ -239,6 +406,23 @@ function backup(){
   "stempeluhr_backup.json",
   "application/json"
  );
+ localStorage.setItem("lastBackup",Date.now().toString());
+ dismissReminder(false);
+}
+
+function validEntries(arr){
+ if(!Array.isArray(arr))return false;
+ return arr.every(e=>
+  e && typeof e==="object" &&
+  typeof e.start==="number" && !isNaN(e.start) &&
+  typeof e.end==="number" && !isNaN(e.end) &&
+  e.end>=e.start
+ );
+}
+
+function validActive(a){
+ if(a===null||a===undefined)return true;
+ return typeof a==="object" && typeof a.start==="number" && !isNaN(a.start);
 }
 
 function restore(e){
@@ -250,10 +434,27 @@ function restore(e){
  r.onload=()=>{
   try{
    let x=JSON.parse(r.result);
-   if(!Array.isArray(x.entries))throw 0;
 
-   entries=x.entries;
+   if(!validEntries(x.entries)||!validActive(x.active))throw 0;
+
+   let warn="";
+   if(active){
+    warn="Du bist aktuell eingestempelt seit "+time(active.start)+" Uhr. Diese laufende Sitzung geht beim Import verloren, falls das Backup keine eigene aktive Sitzung enthält. ";
+   }
+   if(entries.length){
+    warn+=`Aktuell vorhanden: ${entries.length} Einträge. Diese werden durch ${x.entries.length} Einträge aus dem Backup ERSETZT.`;
+   }
+   if(warn && !confirm(warn+"\n\nWirklich fortfahren?")){
+    e.target.value="";
+    return;
+   }
+
+   entries=x.entries.map(en=>({
+    id:en.id||(Date.now()+"_"+Math.random().toString(36).slice(2,7)),
+    start:en.start,end:en.end,pauseMs:en.pauseMs||0,note:en.note||""
+   }));
    active=x.active||null;
+   if(active && active.pauseMs===undefined)active.pauseMs=0;
 
    localStorage.setItem("entries",JSON.stringify(entries));
 
@@ -266,7 +467,7 @@ function restore(e){
    render();
    alert("Backup importiert.");
   }catch{
-   alert("Ungültiges Backup.");
+   alert("Ungültiges Backup: Die Datei enthält keine gültigen Zeiteinträge (start/ende fehlen oder sind fehlerhaft).");
   }
   e.target.value="";
  };
@@ -296,6 +497,35 @@ function safe(x){
  return d.innerHTML;
 }
 
+/* ---------- Backup-Reminder ---------- */
+
+function maybeShowReminder(){
+ if(!entries.length){$("backupReminder").style.display="none";return;}
+
+ let last=parseInt(localStorage.getItem("lastBackup")||"0");
+ let dismissedUntil=parseInt(localStorage.getItem("reminderDismiss")||"0");
+ let now=Date.now();
+ let sevenDays=7*24*60*60*1000;
+
+ if(now-last>sevenDays && now>dismissedUntil){
+  $("reminderText").textContent = last
+   ? "Dein letztes Backup ist über 7 Tage her. Alle Daten liegen nur lokal in diesem Browser."
+   : "Du hast noch nie ein Backup erstellt. Alle Daten liegen nur lokal in diesem Browser.";
+  $("backupReminder").style.display="flex";
+ }else{
+  $("backupReminder").style.display="none";
+ }
+}
+
+function dismissReminder(saved){
+ if(!saved){
+  localStorage.setItem("reminderDismiss",(Date.now()+3*24*60*60*1000).toString());
+ }
+ $("backupReminder").style.display="none";
+}
+
+/* ---------- Theme ---------- */
+
 function theme(){
  document.body.classList.toggle("light");
  localStorage.setItem(
@@ -315,7 +545,10 @@ $("date").textContent=new Date().toLocaleDateString("de-DE",{
 
 function tick(){
  if(active){
-  let s=Math.floor((Date.now()-active.start)/1000);
+  let pause=active.pauseMs||0;
+  if(active.pauseStart)pause+=Date.now()-active.pauseStart;
+  let s=Math.floor((Date.now()-active.start-pause)/1000);
+  s=Math.max(s,0);
   $("timer").textContent=
    String(Math.floor(s/3600)).padStart(2,"0")+":"+
    String(Math.floor(s/60)%60).padStart(2,"0")+":"+
@@ -324,10 +557,43 @@ function tick(){
  }
 }
 
+/* ---------- Ladebalken ---------- */
+
+function runLoader(){
+ let bar=$("loadbar"),msg=$("loadmsg"),loader=$("loader");
+ let steps=[
+  [0,"Lade Einträge…"],
+  [35,"Prüfe aktive Sitzung…"],
+  [70,"Baue Monatsübersicht…"],
+  [95,"Fast fertig…"]
+ ];
+ let start=Date.now(),duration=1200;
+
+ function frame(){
+  let elapsed=Date.now()-start;
+  let pct=Math.min(100,(elapsed/duration)*100);
+  bar.style.width=pct+"%";
+
+  let cur=steps[0][1];
+  for(const[p,m] of steps) if(pct>=p) cur=m;
+  msg.textContent=cur;
+
+  if(elapsed<duration){
+   requestAnimationFrame(frame);
+  }else{
+   loader.style.opacity="0";
+   loader.style.transition="opacity .4s";
+   setTimeout(()=>loader.remove(),400);
+  }
+ }
+ requestAnimationFrame(frame);
+}
+
 loadTheme();
 render();
+maybeShowReminder();
 setInterval(tick,1000);
+runLoader();
 </script>
 </body>
 </html>
-```
