@@ -59,9 +59,66 @@ body.light .modal{background:#fff;border-color:#ddd}
 .modal .row{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
 
 @media(max-width:600px){
- body{padding:8px}.time{font-size:42px}.punch,.pausebtn{width:100%}
- .stats{grid-template-columns:1fr 1fr}
- .actions button{flex:1}
+  body{padding:8px}
+  .container{max-width:100%;width:100%}
+  .header{align-items:flex-start}
+  .time{font-size:42px;margin:14px 0}
+  .punch,.pausebtn{width:100%;min-height:48px}
+  .stats{grid-template-columns:1fr 1fr;gap:7px}
+  .stat{padding:12px 10px}
+  .stat b{font-size:18px}
+  .actions{width:100%}
+  .actions button{flex:1;min-height:42px}
+  input{font-size:16px;min-height:44px}
+
+  /* Einträge auf dem Handy als kompakte Karten */
+  .table{overflow:visible}
+  table{min-width:0;width:100%}
+  table thead{display:none}
+  table tbody{display:block}
+  table tr{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:5px 12px;
+    padding:12px 0;
+    border-bottom:1px solid #2c313b;
+  }
+  table td{
+    display:block;
+    padding:2px 0;
+    border:0;
+    font-size:13px;
+    min-width:0;
+  }
+  table td:nth-child(1)::before{content:"Datum: ";color:#8f98a8;font-family:Arial}
+  table td:nth-child(2)::before{content:"Start: ";color:#8f98a8;font-family:Arial}
+  table td:nth-child(3)::before{content:"Ende: ";color:#8f98a8;font-family:Arial}
+  table td:nth-child(4)::before{content:"Dauer: ";color:#8f98a8;font-family:Arial}
+  table td:nth-child(5)::before{content:"Pause: ";color:#8f98a8;font-family:Arial}
+  table td:nth-child(6){
+    grid-column:1 / -1;
+    font-family:Arial;
+    overflow-wrap:anywhere;
+  }
+  table td:nth-child(6)::before{content:"Notiz: ";color:#8f98a8}
+  table td.actions-cell{
+    grid-column:1 / -1;
+    display:flex;
+    gap:8px;
+    padding-top:7px;
+  }
+  table td.actions-cell button{
+    flex:1;
+    min-height:44px;
+    font-size:16px;
+    margin:0;
+  }
+
+  .modal-bg{padding:8px;align-items:flex-end}
+  .modal{max-width:none;width:100%;padding:16px;border-radius:15px 15px 0 0}
+  .modal input{font-size:16px}
+  .modal .row{display:grid;grid-template-columns:1fr 1fr}
+  .modal .row button{min-height:46px;margin:0}
 }
 
 /* ---------- PDF / Print ---------- */
@@ -195,7 +252,7 @@ body.light .togglebox{color:#4a5163}
    <input id="file" type="file" accept=".json" hidden onchange="restore(event)">
   </div>
  </div>
- <div class="hint">CSV & PDF exportieren den Monat, der oben in der Monatsübersicht ausgewählt ist.</div>
+ <div class="hint">Auf dem Handy kannst du jeden Eintrag direkt über ✏️ bearbeiten oder 🗑️ löschen.</div>
 
  <div class="table">
   <table>
