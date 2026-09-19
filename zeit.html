@@ -1,6 +1,956 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stempeluhr</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:15px;background:radial-gradient(circle at top,#241b3d,#0d0f14 55%);color:#fff;font-family:Arial}
+.container{max-width:850px;margin:auto}
+.card,.stat{background:#171a21;border:1px solid #2b303b;border-radius:15px;padding:18px;margin-bottom:14px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.logo{font-size:28px}
+h1,h2{margin:0 0 8px}
+.sub,.status,.since,th{color:#8f98a8;font-size:13px}
+.clock{text-align:center;padding:35px 15px}
+.time{font:65px monospace;margin:20px 0}
+input,button{border-radius:10px;padding:12px;border:1px solid #303641}
+input{width:100%;background:#22262e;color:#fff;margin:8px 0}
+button{background:#8b5cf6;color:#fff;font-weight:bold;cursor:pointer;border:0;margin:4px}
+.red{background:#9d3838}
+.gray{background:#303641}
+.punch{width:280px;font-size:16px;margin-top:15px}
+.pausebtn{width:280px;font-size:14px;margin-top:0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat span{color:#8f98a8;font-size:11px;text-transform:uppercase}
+.stat b{display:block;font:22px monospace;margin-top:5px}
+.actions{display:flex;gap:5px;flex-wrap:wrap}
+.table{overflow:auto}
+table{width:100%;min-width:680px;border-collapse:collapse}
+th,td{text-align:left;padding:10px;border-bottom:1px solid #2c313b}
+td{font-family:monospace}
+td.note{font-family:Arial;color:#aab1bd}
+td.actions-cell{font-family:Arial;white-space:nowrap}
+td.actions-cell button{padding:6px 10px;font-size:12px;margin:0 2px}
+.footer{text-align:center;color:#666d7a;font-size:12px;padding:5px 0 15px}
+.hint{color:#8f98a8;font-size:12px;margin-top:-4px}
+.reminder{background:#2a2410;border:1px solid #5a4a1a;color:#e8c96a;border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.reminder button{background:#5a4a1a;padding:6px 10px;font-size:12px;margin:0}
+body.light{background:#f2f3f7;color:#171a21}
+body.light .card,body.light .stat{background:#fff;border-color:#ddd}
+body.light input{background:#f7f8fa;color:#171a21}
+body.light .reminder{background:#fff6df;border-color:#e8d9a8;color:#7a5f10}
+
+#loader{position:fixed;inset:0;background:#0d0f14;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px}
+#loader .logo2{font-size:40px}
+.barwrap{width:220px;height:8px;background:#22262e;border-radius:6px;overflow:hidden}
+.bar{height:100%;width:0%;background:#8b5cf6;border-radius:6px;transition:width .1s linear}
+#loader .msg{color:#8f98a8;font-size:13px}
+
+/* modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:500;padding:15px}
+.modal-bg.show{display:flex}
+.modal{background:#171a21;border:1px solid #2b303b;border-radius:15px;padding:20px;max-width:380px;width:100%}
+body.light .modal{background:#fff;border-color:#ddd}
+.modal h3{margin:0 0 12px}
+.modal label{display:block;font-size:12px;color:#8f98a8;margin:10px 0 4px}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+
+@media(max-width:600px){
+  body{padding:8px}
+  .container{max-width:100%;width:100%}
+  .header{align-items:flex-start}
+  .time{font-size:42px;margin:14px 0}
+  .punch,.pausebtn{width:100%;min-height:48px}
+  .stats{grid-template-columns:1fr 1fr;gap:7px}
+  .stat{padding:12px 10px}
+  .stat b{font-size:18px}
+  .actions{width:100%}
+  .actions button{flex:1;min-height:42px}
+  input{font-size:16px;min-height:44px}
+
+  /* Einträge auf dem Handy als kompakte Karten */
+  .table{overflow:visible}
+  table{min-width:0;width:100%}
+  table thead{display:none}
+  table tbody{display:block}
+  table tr{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:5px 12px;
+    padding:12px 0;
+    border-bottom:1px solid #2c313b;
+  }
+  table td{
+    display:block;
+    padding:2px 0;
+    border:0;
+    font-size:13px;
+    min-width:0;
+  }
+  table td:nth-child(1)::before{content:"Datum: ";color:#8f98a8;font-family:Arial}
+  table td:nth-child(2)::before{content:"Start: ";color:#8f98a8;font-family:Arial}
+  table td:nth-child(3)::before{content:"Ende: ";color:#8f98a8;font-family:Arial}
+  table td:nth-child(4)::before{content:"Dauer: ";color:#8f98a8;font-family:Arial}
+  table td:nth-child(5)::before{content:"Pause: ";color:#8f98a8;font-family:Arial}
+  table td:nth-child(6){
+    grid-column:1 / -1;
+    font-family:Arial;
+    overflow-wrap:anywhere;
+  }
+  table td:nth-child(6)::before{content:"Notiz: ";color:#8f98a8}
+  table td.actions-cell{
+    grid-column:1 / -1;
+    display:flex;
+    gap:8px;
+    padding-top:7px;
+  }
+  table td.actions-cell button{
+    flex:1;
+    min-height:44px;
+    font-size:16px;
+    margin:0;
+  }
+
+  .modal-bg{padding:8px;align-items:flex-end}
+  .modal{max-width:none;width:100%;padding:16px;border-radius:15px 15px 0 0}
+  .modal input{font-size:16px}
+  .modal .row{display:grid;grid-template-columns:1fr 1fr}
+  .modal .row button{min-height:46px;margin:0}
+}
+
+/* ---------- PDF / Print ---------- */
+.print-view{display:none}
+
+@media print{
+ body *{visibility:hidden}
+ #printView,#printView *{visibility:visible}
+ #printView{position:absolute;top:0;left:0;width:100%;display:block !important}
+ @page{margin:0}
+}
+
+.print-page{
+ min-height:100vh;padding:50px 45px;
+ background:radial-gradient(circle at top left,#3a2a63,#161320 65%);
+ color:#fff;font-family:Arial;
+ -webkit-print-color-adjust:exact;print-color-adjust:exact;
+}
+.print-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #8b5cf6;padding-bottom:18px;margin-bottom:24px}
+.print-head h1{margin:0;font-size:26px}
+.print-head .sub{color:#c9b8ec;font-size:13px;margin-top:4px}
+.print-head .month{font-size:20px;font-weight:bold;color:#c9a9ff;text-align:right}
+.print-table{width:100%;border-collapse:collapse;margin-top:10px}
+.print-table th{text-align:left;font-size:11px;text-transform:uppercase;color:#c9b8ec;padding:8px 6px;border-bottom:1px solid rgba(255,255,255,.25)}
+.print-table td{font-size:13px;padding:9px 6px;border-bottom:1px solid rgba(255,255,255,.1)}
+.print-total{margin-top:26px;text-align:right;padding-top:16px;border-top:2px solid #8b5cf6}
+.print-total .lbl{color:#c9b8ec;font-size:12px;text-transform:uppercase;margin-right:10px}
+.print-total .val{font-size:26px;font-weight:bold;color:#fff;font-family:monospace}
+.print-foot{margin-top:40px;text-align:center;color:#8f7fb8;font-size:11px}
+
+/* ---------- Toast ---------- */
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);
+ background:#22262e;border:1px solid #3a4150;color:#fff;border-radius:12px;
+ padding:12px 14px;display:flex;align-items:center;gap:14px;font-size:14px;
+ box-shadow:0 8px 24px rgba(0,0,0,.4);opacity:0;pointer-events:none;
+ transition:opacity .25s,transform .25s;z-index:600;max-width:90vw}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+#toast button{background:#8b5cf6;padding:6px 12px;font-size:13px;margin:0}
+body.light #toast{background:#fff;border-color:#ddd;color:#171a21}
+
+/* ---------- Cloud Sync ---------- */
+.syncrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.syncrow input{flex:1;min-width:160px;margin:0}
+.togglebox{display:flex;align-items:center;gap:8px;font-size:13px;color:#c5cad4;margin-top:10px}
+body.light .togglebox{color:#4a5163}
+#syncStatus{font-size:12px;color:#8f98a8;margin-top:8px}
+
+</style>
+</head>
+
+<body>
+
+<div id="loader">
+ <div class="logo2">⏱️</div>
+ <div class="barwrap"><div class="bar" id="loadbar"></div></div>
+ <div class="msg" id="loadmsg">Lade Stempeluhr…</div>
+</div>
+
+<div class="container">
+
+<header class="header">
+ <div>
+  <h1>⏱️ Stempeluhr</h1>
+  <div id="date" class="sub"></div>
+ </div>
+ <button class="gray" onclick="theme()" aria-label="Design umschalten">🌓</button>
+</header>
+
+<div id="backupReminder" class="reminder" style="display:none">
+ <span id="reminderText"></span>
+ <button onclick="backup(); dismissReminder(true)">Jetzt sichern</button>
+</div>
+
+<section class="card clock">
+ <div id="status" class="status">🔴 Ausgestempelt</div>
+ <div id="timer" class="time">00:00:00</div>
+ <div id="since" class="since"></div>
+ <input id="note" placeholder="Notiz, z. B. Büro oder Projekt">
+ <div class="hint" id="noteHint" style="display:none">Notiz wird beim Ausstempeln für diesen Eintrag gespeichert.</div>
+ <button id="punch" class="punch" onclick="punch()">Einstempeln</button>
+ <div id="pauseWrap" style="display:none">
+  <button id="pauseBtn" class="pausebtn gray" onclick="togglePause()">Pause starten</button>
+  <div class="hint" id="pauseInfo"></div>
+ </div>
+</section>
+
+<div class="stats">
+ <div class="stat"><span>Heute</span><b id="today">0h 00m</b></div>
+ <div class="stat"><span>Woche</span><b id="week">0h 00m</b></div>
+ <div class="stat"><span>Monat</span><b id="monthStat">0h 00m</b></div>
+ <div class="stat"><span>Einträge</span><b id="count">0</b></div>
+</div>
+
+<section class="card">
+ <div class="header">
+  <h2>Monatsübersicht</h2>
+  <div>
+   <button class="gray" onclick="month(-1)" aria-label="Vorheriger Monat">‹</button>
+   <button class="gray" onclick="month(1)" aria-label="Nächster Monat">›</button>
+  </div>
+ </div>
+ <div id="month" class="sub"></div>
+ <div id="summary"></div>
+</section>
+
+<section class="card">
+ <h2>☁️ Cloud-Sync</h2>
+ <div class="hint" style="margin-bottom:8px">Dein Backup wird automatisch gespeichert – trag einmal deinen Namen ein. Bei fragen oder problemen bei Luca melden.</div>
+
+ <label class="sub" style="display:block;margin-top:6px">Dein Name</label>
+ <input id="employeeName" placeholder="z. B. Luca">
+
+ <div class="actions">
+  <button onclick="saveSyncSettings()">Speichern</button>
+  <button class="gray" onclick="syncNow(true)">Jetzt senden</button>
+ </div>
+ <div id="syncStatus" class="hint" style="margin-top:8px"></div>
+</section>
+
+
+<section class="card">
+
+ <div class="header">
+  <h2>Zeiterfassung</h2>
+  <div class="actions">
+   <button onclick="csv()">CSV</button>
+   <button onclick="pdfExport()">PDF</button>
+   <button onclick="backup()">Backup</button>
+   <button onclick="document.getElementById('file').click()">Import</button>
+   <button class="red" onclick="clearAll()">Löschen</button>
+   <input id="file" type="file" accept=".json" hidden onchange="restore(event)">
+  </div>
+ </div>
+ <div class="hint">Auf dem Handy kannst du jeden Eintrag direkt über ✏️ bearbeiten oder 🗑️ löschen.</div>
+
+ <div class="table">
+  <table>
+   <thead><tr>
+    <th>Datum</th><th>Start</th><th>Ende</th><th>Dauer</th><th>Pause</th><th>Notiz</th><th></th>
+   </tr></thead>
+   <tbody id="log"></tbody>
+  </table>
+ </div>
+
+ <p id="empty" class="sub" style="text-align:center">Noch keine Einträge.</p>
+</section>
+
+<div class="footer">Made by Luca Valentine</div>
+
+</div>
+
+<div id="printView" class="print-view"></div>
+
+<div id="toast">
+ <span id="toastMsg"></span>
+ <button onclick="undoDelete()">Rückgängig</button>
+</div>
+
+<!-- Edit modal -->
+<div class="modal-bg" id="editModal">
+ <div class="modal">
+  <h3>Eintrag bearbeiten</h3>
+  <label>Datum</label>
+  <input id="editDate" type="date">
+  <label>Start</label>
+  <input id="editStart" type="time">
+  <label>Ende</label>
+  <input id="editEnd" type="time">
+  <label>Pause (Minuten)</label>
+  <input id="editPause" type="number" min="0" step="1">
+  <label>Notiz</label>
+  <input id="editNote">
+  <div class="row">
+   <button class="gray" onclick="closeEdit()">Abbrechen</button>
+   <button onclick="saveEdit()">Speichern</button>
+  </div>
+ </div>
+</div>
+
+<script>
+/**
+ * ADMIN-EINRICHTUNG (einmalig, bevor die Datei an Mitarbeiter verteilt wird):
+ * Hier die Web-App-URL (und optional den Zugriffscode) aus dem Google Apps
+ * Script eintragen. Ist "url" ausgefüllt, sehen Mitarbeiter nur noch das
+ * Namensfeld – Sync läuft automatisch bei Änderungen im Hintergrund.
+ * Beim Ausstempeln und nach dem Speichern einer Bearbeitung wird sofort synchronisiert.
+ * Bleibt "url" leer, erscheinen die Einrichtungsfelder direkt im Tool.
+ */
+const SYNC_CONFIG={
+ url:"https://script.google.com/macros/s/AKfycbwDTAAvu_Xj49qPKDAHnWftnw_vNYL7fQEEndK1RLYO6vejdOaE5AON5Svta2X0feg8/exec",   // z. B. "https://script.google.com/macros/s/AKfycb.../exec"
+ token:"2007"  // gleicher Wert wie SECRET im Apps Script (optional)
+};
+
+let entries=JSON.parse(localStorage.getItem("entries")||"[]"),
+active=JSON.parse(localStorage.getItem("active")||"null"),
+sel=new Date(new Date().getFullYear(),new Date().getMonth(),1),
+editId=null;
+
+/* Migration: ältere Einträge (vor dem Update) hatten keine id/pauseMs */
+let migrated=false;
+entries.forEach(e=>{
+ if(!e.id){e.id=Date.now()+"_"+Math.random().toString(36).slice(2,7);migrated=true;}
+ if(e.pauseMs===undefined){e.pauseMs=0;migrated=true;}
+});
+if(active && active.pauseMs===undefined){active.pauseMs=0;migrated=true;}
+if(migrated)localStorage.setItem("entries",JSON.stringify(entries));
+
+const $=id=>document.getElementById(id);
+
+let autoSyncTimer=null;
+function maybeAutoSync(){
+ if(!SYNC_CONFIG.url)return;
+ clearTimeout(autoSyncTimer);
+ autoSyncTimer=setTimeout(()=>syncNow(false),1500);
+}
+
+const save=(immediate=false)=>{
+ localStorage.setItem("entries",JSON.stringify(entries));
+ active?localStorage.setItem("active",JSON.stringify(active)):
+ localStorage.removeItem("active");
+ if(immediate){
+  clearTimeout(autoSyncTimer);
+  syncNow(false);
+ }else{
+  maybeAutoSync();
+ }
+};
+
+const time=t=>new Date(t).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
+const date=t=>new Date(t).toLocaleDateString("de-DE");
+const dur=ms=>{
+ let m=Math.round(ms/60000),h=Math.floor(m/60);
+ return h+"h "+String(m%60).padStart(2,"0")+"m";
+};
+
+/* ---------- Ein-/Ausstempeln + Pause ---------- */
+
+function punch(){
+ if(active){
+  if(active.pauseStart){
+   active.pauseMs=(active.pauseMs||0)+(Date.now()-active.pauseStart);
+   active.pauseStart=null;
+  }
+  entries.push({
+   id:Date.now()+"_"+Math.random().toString(36).slice(2,7),
+   start:active.start,
+   end:Date.now(),
+   pauseMs:active.pauseMs||0,
+   note:$("note").value.trim()
+  });
+  active=null;
+  $("note").value="";
+  save(true);render();maybeShowReminder();
+ }else{
+  active={start:Date.now(),note:$("note").value.trim(),pauseMs:0,pauseStart:null};
+  save();render();maybeShowReminder();
+ }
+}
+
+function togglePause(){
+ if(!active)return;
+ if(active.pauseStart){
+  active.pauseMs=(active.pauseMs||0)+(Date.now()-active.pauseStart);
+  active.pauseStart=null;
+ }else{
+  active.pauseStart=Date.now();
+ }
+ save();render();
+}
+
+/* ---------- Rendern ---------- */
+
+function render(){
+ $("status").textContent=active?(active.pauseStart?"⏸️ Pause":"🟢 Eingestempelt"):"🔴 Ausgestempelt";
+ $("punch").textContent=active?"Ausstempeln":"Einstempeln";
+ $("punch").className=active?"punch red":"punch";
+ $("since").textContent=active?"Seit "+time(active.start)+" Uhr":"";
+ $("noteHint").style.display=active?"block":"none";
+ $("pauseWrap").style.display=active?"block":"none";
+ if(active){
+  $("pauseBtn").textContent=active.pauseStart?"Pause beenden":"Pause starten";
+  $("pauseBtn").className=active.pauseStart?"pausebtn red":"pausebtn gray";
+ }
+ if(!active)$("timer").textContent="00:00:00";
+
+ $("log").innerHTML=[...entries].sort((a,b)=>b.start-a.start).map(e=>`
+  <tr>
+   <td>${date(e.start)}</td>
+   <td>${time(e.start)}</td>
+   <td>${time(e.end)}</td>
+   <td>${dur(e.end-e.start-(e.pauseMs||0))}</td>
+   <td>${e.pauseMs?dur(e.pauseMs):"–"}</td>
+   <td class="note">${safe(e.note||"-")}</td>
+   <td class="actions-cell">
+    <button class="gray" onclick="openEdit('${e.id}')">✏️</button>
+    <button class="red" onclick="deleteEntry('${e.id}')">🗑️</button>
+   </td>
+  </tr>`).join("");
+
+ $("empty").style.display=entries.length?"none":"block";
+ $("count").textContent=entries.length;
+ stats();
+ renderMonth();
+}
+
+function stats(){
+ let now=new Date(),today=new Date(now);
+ today.setHours(0,0,0,0);
+
+ let week=new Date(today);
+ week.setDate(week.getDate()-((week.getDay()+6)%7));
+
+ let t=0,w=0;
+
+ entries.forEach(e=>{
+  let d=e.end-e.start-(e.pauseMs||0);
+  if(e.start>=today)t+=d;
+  if(e.start>=week)w+=d;
+ });
+
+ if(active){
+  let pause=active.pauseMs||0;
+  if(active.pauseStart)pause+=Date.now()-active.pauseStart;
+  let d=Date.now()-active.start-pause;
+  if(active.start>=today)t+=d;
+  if(active.start>=week)w+=d;
+ }
+
+ $("today").textContent=dur(Math.max(t,0));
+ $("week").textContent=dur(Math.max(w,0));
+}
+
+function renderMonth(){
+ let y=sel.getFullYear(),m=sel.getMonth(),days={},total=0;
+
+ entries.filter(e=>{
+  let d=new Date(e.start);
+  return d.getFullYear()==y&&d.getMonth()==m;
+ }).forEach(e=>{
+  let k=date(e.start);
+  let net=e.end-e.start-(e.pauseMs||0);
+  days[k]=(days[k]||0)+net;
+  total+=net;
+ });
+
+ let liveTotal=total;
+ if(active){
+  let ad=new Date(active.start);
+  if(ad.getFullYear()==y&&ad.getMonth()==m){
+   let pause=active.pauseMs||0;
+   if(active.pauseStart)pause+=Date.now()-active.pauseStart;
+   liveTotal+=Math.max(Date.now()-active.start-pause,0);
+  }
+ }
+ $("monthStat").textContent=dur(liveTotal);
+
+ $("month").textContent=sel.toLocaleDateString("de-DE",{month:"long",year:"numeric"});
+
+ $("summary").innerHTML=
+ `<div style="font:22px monospace;margin:10px 0">${dur(total)}</div>`+
+ Object.entries(days).map(([d,v])=>
+  `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2c313b">
+   <span>${d}</span><b>${dur(v)}</b>
+  </div>`
+ ).join("")||
+ `<div class="sub">Keine Einträge in diesem Monat.</div>`;
+}
+
+function month(n){
+ sel.setMonth(sel.getMonth()+n);
+ renderMonth();
+}
+
+/* ---------- Einzelne Einträge bearbeiten / löschen ---------- */
+
+function openEdit(id){
+ let e=entries.find(x=>x.id===id);
+ if(!e)return;
+ editId=id;
+
+ let s=new Date(e.start), en=new Date(e.end);
+ let pad=n=>String(n).padStart(2,"0");
+
+ $("editDate").value=`${s.getFullYear()}-${pad(s.getMonth()+1)}-${pad(s.getDate())}`;
+ $("editStart").value=`${pad(s.getHours())}:${pad(s.getMinutes())}`;
+ $("editEnd").value=`${pad(en.getHours())}:${pad(en.getMinutes())}`;
+ $("editPause").value=Math.round((e.pauseMs||0)/60000);
+ $("editNote").value=e.note||"";
+
+ $("editModal").classList.add("show");
+}
+
+function closeEdit(){
+ $("editModal").classList.remove("show");
+ editId=null;
+}
+
+function saveEdit(){
+ let e=entries.find(x=>x.id===editId);
+ if(!e)return;
+
+ let dateVal=$("editDate").value;
+ let [sh,sm]=$("editStart").value.split(":").map(Number);
+ let [eh,em]=$("editEnd").value.split(":").map(Number);
+ let pauseMin=parseInt($("editPause").value)||0;
+
+ if(!dateVal||isNaN(sh)||isNaN(eh)){
+  alert("Bitte Datum, Start und Ende ausfüllen.");
+  return;
+ }
+
+ let [y,mo,d]=dateVal.split("-").map(Number);
+ let start=new Date(y,mo-1,d,sh,sm||0).getTime();
+ let end=new Date(y,mo-1,d,eh,em||0).getTime();
+
+ if(end<=start){
+  alert("Ende muss nach Start liegen.");
+  return;
+ }
+
+ e.start=start;
+ e.end=end;
+ e.pauseMs=Math.max(0,pauseMin)*60000;
+ e.note=$("editNote").value.trim();
+
+ save(true);render();closeEdit();
+}
+
+let lastDeleted=null,lastDeletedTimer=null;
+
+function deleteEntry(id){
+ let idx=entries.findIndex(e=>e.id===id);
+ if(idx===-1)return;
+
+ lastDeleted={entry:entries[idx],index:idx};
+ entries.splice(idx,1);
+ save();render();
+
+ showToast("Eintrag gelöscht.");
+}
+
+function undoDelete(){
+ if(!lastDeleted)return;
+ entries.splice(lastDeleted.index,0,lastDeleted.entry);
+ lastDeleted=null;
+ save();render();
+ hideToast();
+}
+
+function showToast(msg){
+ clearTimeout(lastDeletedTimer);
+ $("toastMsg").textContent=msg;
+ $("toast").classList.add("show");
+ lastDeletedTimer=setTimeout(()=>{
+  lastDeleted=null;
+  hideToast();
+ },6000);
+}
+
+function hideToast(){
+ $("toast").classList.remove("show");
+}
+
+/* ---------- CSV / Backup / Import ---------- */
+
+function monthEntries(){
+ let y=sel.getFullYear(),m=sel.getMonth();
+ return entries.filter(e=>{
+  let d=new Date(e.start);
+  return d.getFullYear()==y&&d.getMonth()==m;
+ }).sort((a,b)=>b.start-a.start);
+}
+
+function csv(){
+ let list=monthEntries();
+ if(!list.length)return alert("Keine Einträge in "+sel.toLocaleDateString("de-DE",{month:"long",year:"numeric"})+".");
+
+ let total=list.reduce((s,e)=>s+(e.end-e.start-(e.pauseMs||0)),0);
+
+ let rows=[
+  ["Datum","Start","Ende","Dauer","Pause","Notiz"],
+  ...list.map(e=>[
+   date(e.start),time(e.start),time(e.end),
+   dur(e.end-e.start-(e.pauseMs||0)),
+   e.pauseMs?dur(e.pauseMs):"0h 00m",
+   e.note||""
+  ]),
+  [],
+  ["","","","GESAMT MONAT",dur(total),""]
+ ];
+
+ let text="\uFEFF"+rows.map(r=>
+  r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(";")
+ ).join("\n");
+
+ let mname=sel.toLocaleDateString("de-DE",{month:"long",year:"numeric"}).replace(/\s+/g,"_").toLowerCase();
+ download(text,`stempeluhr_${mname}.csv`,"text/csv");
+}
+
+function pdfExport(){
+ let list=monthEntries();
+ if(!list.length)return alert("Keine Einträge in "+sel.toLocaleDateString("de-DE",{month:"long",year:"numeric"})+".");
+
+ let total=list.reduce((s,e)=>s+(e.end-e.start-(e.pauseMs||0)),0);
+ let monthLabel=sel.toLocaleDateString("de-DE",{month:"long",year:"numeric"});
+
+ let rows=list.map(e=>`
+  <tr>
+   <td>${date(e.start)}</td>
+   <td>${time(e.start)}</td>
+   <td>${time(e.end)}</td>
+   <td>${dur(e.end-e.start-(e.pauseMs||0))}</td>
+   <td>${e.pauseMs?dur(e.pauseMs):"–"}</td>
+   <td>${safe(e.note||"-")}</td>
+  </tr>`).join("");
+
+ $("printView").innerHTML=`
+  <div class="print-page">
+   <div class="print-head">
+    <div>
+     <h1>⏱️ Stempeluhr</h1>
+     <div class="sub">Monatsbericht · erstellt am ${new Date().toLocaleDateString("de-DE")}</div>
+    </div>
+    <div class="month">${monthLabel}</div>
+   </div>
+   <table class="print-table">
+    <thead><tr>
+     <th>Datum</th><th>Start</th><th>Ende</th><th>Dauer</th><th>Pause</th><th>Notiz</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+   </table>
+   <div class="print-total">
+    <span class="lbl">Gesamtstunden ${monthLabel}</span>
+    <span class="val">${dur(total)}</span>
+   </div>
+   <div class="print-foot">Made by Luca Valentine</div>
+  </div>`;
+
+ window.print();
+}
+
+window.addEventListener("afterprint",()=>{$("printView").innerHTML="";});
+
+function backup(){
+ download(
+  JSON.stringify({entries,active,theme:localStorage.getItem("theme")},null,2),
+  "stempeluhr_backup.json",
+  "application/json"
+ );
+ localStorage.setItem("lastBackup",Date.now().toString());
+ dismissReminder(false);
+}
+
+function validEntries(arr){
+ if(!Array.isArray(arr))return false;
+ return arr.every(e=>
+  e && typeof e==="object" &&
+  typeof e.start==="number" && !isNaN(e.start) &&
+  typeof e.end==="number" && !isNaN(e.end) &&
+  e.end>=e.start
+ );
+}
+
+function validActive(a){
+ if(a===null||a===undefined)return true;
+ return typeof a==="object" && typeof a.start==="number" && !isNaN(a.start);
+}
+
+function restore(e){
+ let f=e.target.files[0];
+ if(!f)return;
+
+ let r=new FileReader();
+
+ r.onload=()=>{
+  try{
+   let x=JSON.parse(r.result);
+
+   if(!validEntries(x.entries)||!validActive(x.active))throw 0;
+
+   let warn="";
+   if(active){
+    warn="Du bist aktuell eingestempelt seit "+time(active.start)+" Uhr. Diese laufende Sitzung geht beim Import verloren, falls das Backup keine eigene aktive Sitzung enthält. ";
+   }
+   if(entries.length){
+    warn+=`Aktuell vorhanden: ${entries.length} Einträge. Diese werden durch ${x.entries.length} Einträge aus dem Backup ERSETZT.`;
+   }
+   if(warn && !confirm(warn+"\n\nWirklich fortfahren?")){
+    e.target.value="";
+    return;
+   }
+
+   entries=x.entries.map(en=>({
+    id:en.id||(Date.now()+"_"+Math.random().toString(36).slice(2,7)),
+    start:en.start,end:en.end,pauseMs:en.pauseMs||0,note:en.note||""
+   }));
+   active=x.active||null;
+   if(active && active.pauseMs===undefined)active.pauseMs=0;
+
+   localStorage.setItem("entries",JSON.stringify(entries));
+
+   if(active)localStorage.setItem("active",JSON.stringify(active));
+   else localStorage.removeItem("active");
+
+   if(x.theme)localStorage.setItem("theme",x.theme);
+
+   loadTheme();
+   render();
+   alert("Backup importiert.");
+  }catch{
+   alert("Ungültiges Backup: Die Datei enthält keine gültigen Zeiteinträge (start/ende fehlen oder sind fehlerhaft).");
+  }
+  e.target.value="";
+ };
+
+ r.readAsText(f);
+}
+
+function download(text,name,type){
+ let a=document.createElement("a");
+ a.href=URL.createObjectURL(new Blob([text],{type}));
+ a.download=name;
+ a.click();
+ URL.revokeObjectURL(a.href);
+}
+
+function clearAll(){
+ if(confirm("Wirklich alle Einträge löschen?")){
+  entries=[];
+  save();
+  render();
+ }
+}
+
+function safe(x){
+ let d=document.createElement("div");
+ d.textContent=x;
+ return d.innerHTML;
+}
+
+/* ---------- Backup-Reminder ---------- */
+
+function maybeShowReminder(){
+ if(!entries.length){$("backupReminder").style.display="none";return;}
+
+ let last=parseInt(localStorage.getItem("lastBackup")||"0");
+ let dismissedUntil=parseInt(localStorage.getItem("reminderDismiss")||"0");
+ let now=Date.now();
+ let sevenDays=7*24*60*60*1000;
+
+ if(now-last>sevenDays && now>dismissedUntil){
+  $("reminderText").textContent = last
+   ? "Dein letztes Backup ist über 7 Tage her. Alle Daten liegen nur lokal in diesem Browser."
+   : "Du hast noch nie ein Backup erstellt. Alle Daten liegen nur lokal in diesem Browser.";
+  $("backupReminder").style.display="flex";
+ }else{
+  $("backupReminder").style.display="none";
+ }
+}
+
+function dismissReminder(saved){
+ if(!saved){
+  localStorage.setItem("reminderDismiss",(Date.now()+3*24*60*60*1000).toString());
+ }
+ $("backupReminder").style.display="none";
+}
+
+/* ---------- Cloud-Sync ---------- */
+
+function loadSyncSettings(){
+ $("employeeName").value=localStorage.getItem("employeeName")||"";
+ updateSyncStatus();
+}
+
+function saveSyncSettings(){
+ localStorage.setItem("employeeName",$("employeeName").value.trim());
+ $("syncStatus").textContent="Gespeichert.";
+ maybeAutoSync();
+}
+
+function updateSyncStatus(){
+ let last=parseInt(localStorage.getItem("lastSyncTime")||"0");
+ if(last){
+  $("syncStatus").textContent="Zuletzt gesendet: "+new Date(last).toLocaleString("de-DE");
+ }
+}
+
+function syncNow(manual){
+ let url=SYNC_CONFIG.url;
+ let token=SYNC_CONFIG.token||"";
+ let name=localStorage.getItem("employeeName")||$("employeeName").value.trim();
+
+ if(!url){
+  if(manual)alert("Cloud-Sync ist noch nicht eingerichtet. Bitte Admin kontaktieren.");
+  return;
+ }
+ if(!name){
+  if(manual)alert("Bitte zuerst deinen Namen eintragen und speichern.");
+  return;
+ }
+
+ let payload={
+  employee:name,
+  token:token,
+  timestamp:Date.now(),
+  backup:{entries,active,theme:localStorage.getItem("theme")}
+ };
+
+ // Erst normal versuchen (damit wir die echte Antwort von Google lesen können)
+ fetch(url,{
+  method:"POST",
+  headers:{"Content-Type":"text/plain;charset=utf-8"},
+  body:JSON.stringify(payload),
+  keepalive:true
+ }).then(res=>res.json()).then(data=>{
+  localStorage.setItem("lastSyncTime",Date.now().toString());
+  updateSyncStatus();
+  if(manual){
+   if(data && data.status==="ok"){
+    $("syncStatus").textContent="✅ Erfolgreich synchronisiert ("+data.rows+" Einträge). Zuletzt: "+new Date().toLocaleString("de-DE");
+   }else{
+    $("syncStatus").textContent="⚠️ Google meldet ein Problem: "+(data&&data.message?data.message:"Unbekannter Fehler");
+   }
+  }
+ }).catch(()=>{
+  // Manche Browser/Konfigurationen blockieren das Lesen der Antwort (CORS).
+  // Dann als "fire-and-forget" senden – die Daten kommen trotzdem an.
+  fetch(url,{
+   method:"POST",
+   mode:"no-cors",
+   headers:{"Content-Type":"text/plain;charset=utf-8"},
+   body:JSON.stringify(payload),
+   keepalive:true
+  }).then(()=>{
+   localStorage.setItem("lastSyncTime",Date.now().toString());
+   updateSyncStatus();
+   if(manual)$("syncStatus").textContent="Gesendet. Prüfe Zelle H1 in deinem Tab in der Google-Tabelle, um den Erfolg zu bestätigen. Zuletzt: "+new Date().toLocaleString("de-DE");
+  }).catch(()=>{
+   if(manual)$("syncStatus").textContent="❌ Senden fehlgeschlagen. URL prüfen und erneut versuchen.";
+  });
+ });
+}
+
+/* ---------- Theme ---------- */
+
+function theme(){
+ document.body.classList.toggle("light");
+ localStorage.setItem(
+  "theme",
+  document.body.classList.contains("light")?"light":"dark"
+ );
+}
+
+function loadTheme(){
+ if(localStorage.getItem("theme")=="light")
+  document.body.classList.add("light");
+}
+
+$("date").textContent=new Date().toLocaleDateString("de-DE",{
+ weekday:"long",day:"2-digit",month:"long",year:"numeric"
+});
+
+function tick(){
+ if(active){
+  let pause=active.pauseMs||0;
+  if(active.pauseStart)pause+=Date.now()-active.pauseStart;
+  let s=Math.floor((Date.now()-active.start-pause)/1000);
+  s=Math.max(s,0);
+  $("timer").textContent=
+   String(Math.floor(s/3600)).padStart(2,"0")+":"+
+   String(Math.floor(s/60)%60).padStart(2,"0")+":"+
+   String(s%60).padStart(2,"0");
+  stats();
+  $("monthStat").textContent=(()=>{
+   let y=sel.getFullYear(),m=sel.getMonth(),ad=new Date(active.start);
+   if(ad.getFullYear()!=y||ad.getMonth()!=m)return $("monthStat").textContent;
+   let total=0;
+   entries.filter(e=>{let d=new Date(e.start);return d.getFullYear()==y&&d.getMonth()==m;})
+    .forEach(e=>total+=e.end-e.start-(e.pauseMs||0));
+   let pause=active.pauseMs||0;
+   if(active.pauseStart)pause+=Date.now()-active.pauseStart;
+   total+=Math.max(Date.now()-active.start-pause,0);
+   return dur(total);
+  })();
+ }
+}
+
+/* ---------- Ladebalken ---------- */
+
+function runLoader(){
+ let bar=$("loadbar"),msg=$("loadmsg"),loader=$("loader");
+ let steps=[
+  [0,"Lade Einträge…"],
+  [35,"Prüfe aktive Sitzung…"],
+  [70,"Baue Monatsübersicht…"],
+  [95,"Fast fertig…"]
+ ];
+ let start=Date.now(),duration=1200;
+
+ function frame(){
+  let elapsed=Date.now()-start;
+  let pct=Math.min(100,(elapsed/duration)*100);
+  bar.style.width=pct+"%";
+
+  let cur=steps[0][1];
+  for(const[p,m] of steps) if(pct>=p) cur=m;
+  msg.textContent=cur;
+
+  if(elapsed<duration){
+   requestAnimationFrame(frame);
+  }else{
+   loader.style.opacity="0";
+   loader.style.transition="opacity .4s";
+   setTimeout(()=>loader.remove(),400);
+  }
+ }
+ requestAnimationFrame(frame);
+}
+
+loadTheme();
+loadSyncSettings();
+render();
+maybeShowReminder();
+setInterval(tick,1000);
+runLoader();
+</script>
+</body>
+</html>
+
 <!-- Support Button -->
 <a
-  href="https://DEINE-SUPPORT-WEBSITE.de"
+  href="https://forms.gle/D8BGiwNmEJe1ronx9"
   target="_blank"
   rel="noopener noreferrer"
   class="support-btn"
