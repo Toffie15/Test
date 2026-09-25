@@ -585,11 +585,7 @@ body.light textarea{
 
 </header>
 
-<div
-    id="backupReminder"
-    class="reminder"
-    style="display:none"
->
+<div id="backupReminder" class="reminder" style="display:none">
 
     <span id="reminderText">
         Zeit für ein Backup.
@@ -671,13 +667,8 @@ body.light textarea{
         <h2>Monatsübersicht</h2>
 
         <div>
-            <button class="gray" onclick="month(-1)">
-                ‹
-            </button>
-
-            <button class="gray" onclick="month(1)">
-                ›
-            </button>
+            <button class="gray" onclick="month(-1)">‹</button>
+            <button class="gray" onclick="month(1)">›</button>
         </div>
 
     </div>
@@ -700,6 +691,7 @@ body.light textarea{
     <input
         id="employeeName"
         placeholder="z. B. Luca"
+        autocomplete="name"
     >
 
     <div class="actions">
@@ -708,26 +700,17 @@ body.light textarea{
             Speichern
         </button>
 
-        <button
-            class="gray"
-            onclick="syncNow(true)"
-        >
+        <button class="gray" onclick="syncNow(true)">
             Jetzt senden
         </button>
 
-        <button
-            class="gray"
-            onclick="restoreFromCloud()"
-        >
+        <button class="gray" onclick="restoreFromCloud()">
             Von Cloud laden
         </button>
 
     </div>
 
-    <div
-        id="syncStatus"
-        class="hint"
-    ></div>
+    <div id="syncStatus" class="hint"></div>
 
 </section>
 
@@ -739,26 +722,15 @@ body.light textarea{
 
         <div class="actions">
 
-            <button onclick="csv()">
-                CSV
-            </button>
+            <button onclick="csv()">CSV</button>
 
-            <button onclick="pdfExport()">
-                PDF
-            </button>
+            <button onclick="pdfExport()">PDF</button>
 
-            <button onclick="backup()">
-                Backup
-            </button>
+            <button onclick="backup()">Backup</button>
 
-            <button onclick="$('file').click()">
-                Import
-            </button>
+            <button onclick="$('file').click()">Import</button>
 
-            <button
-                class="red"
-                onclick="clearAll()"
-            >
+            <button class="red" onclick="clearAll()">
                 Löschen
             </button>
 
@@ -803,11 +775,7 @@ body.light textarea{
 
     </div>
 
-    <p
-        id="empty"
-        class="sub"
-        style="text-align:center"
-    >
+    <p id="empty" class="sub" style="text-align:center">
         Noch keine Einträge.
     </p>
 
@@ -819,10 +787,7 @@ body.light textarea{
 
 </div>
 
-<div
-    id="printView"
-    class="print-view"
-></div>
+<div id="printView" class="print-view"></div>
 
 <div id="toast">
 
@@ -834,56 +799,30 @@ body.light textarea{
 
 </div>
 
-<div
-    class="modal-bg"
-    id="editModal"
->
+<div class="modal-bg" id="editModal">
 
     <div class="modal">
 
-        <h3>
-            Eintrag bearbeiten
-        </h3>
+        <h3>Eintrag bearbeiten</h3>
 
         <label>Datum</label>
-
-        <input
-            id="editDate"
-            type="date"
-        >
+        <input id="editDate" type="date">
 
         <label>Start</label>
-
-        <input
-            id="editStart"
-            type="time"
-        >
+        <input id="editStart" type="time">
 
         <label>Ende</label>
-
-        <input
-            id="editEnd"
-            type="time"
-        >
+        <input id="editEnd" type="time">
 
         <label>Pause (Minuten)</label>
-
-        <input
-            id="editPause"
-            type="number"
-            min="0"
-        >
+        <input id="editPause" type="number" min="0">
 
         <label>Notiz</label>
-
         <input id="editNote">
 
         <div class="row">
 
-            <button
-                class="gray"
-                onclick="closeEdit()"
-            >
+            <button class="gray" onclick="closeEdit()">
                 Abbrechen
             </button>
 
@@ -902,15 +841,16 @@ body.light textarea{
 const SYNC_CONFIG = {
 
     url:
-        "https://script.google.com/macros/s/AKfycbwgCgkI7JeUT-YR57zYXB5NIS8DAj-iWbqvf-XmSD14QNnD9xq9tNNf72HZdKXzYdMV/exec",
+        "https://script.google.com/macros/s/AKfycbwgCgkI7JeUT-Y57zYXB5NIS8DAj-iWbqvf-XmSD14QNnD9xq9tNNf72HZdKXzYdMV/exec",
 
     token:
         "Luca_Valentine."
 
 };
 
-const $ = id =>
-    document.getElementById(id);
+
+const $ = id => document.getElementById(id);
+
 
 let entries =
     read("entries", []);
@@ -935,19 +875,21 @@ let lastDeleted = null;
 let syncTimer = null;
 
 
-/* =========================
+/* ==================================================
    LOCAL STORAGE
-========================= */
+================================================== */
 
 function read(key, fallback){
 
     try{
 
-        return JSON.parse(
-            localStorage.getItem(key)
-            ||
-            JSON.stringify(fallback)
-        );
+        const value =
+            localStorage.getItem(key);
+
+        if(value === null)
+            return fallback;
+
+        return JSON.parse(value);
 
     }catch{
 
@@ -961,10 +903,8 @@ function read(key, fallback){
 function makeId(){
 
     return (
-        Date.now()
-        +
-        "_"
-        +
+        Date.now() +
+        "_" +
         Math.random()
             .toString(36)
             .slice(2,8)
@@ -978,8 +918,11 @@ function ensureEntry(entry){
     if(!entry.id)
         entry.id = makeId();
 
-    if(!Number.isFinite(entry.pauseMs))
+    if(!Number.isFinite(Number(entry.pauseMs)))
         entry.pauseMs = 0;
+
+    entry.start = Number(entry.start);
+    entry.end = Number(entry.end);
 
     return entry;
 
@@ -1000,9 +943,9 @@ if(active)
     ensureEntry(active);
 
 
-/* =========================
+/* ==================================================
    TIME
-========================= */
+================================================== */
 
 function formatTime(timestamp){
 
@@ -1021,9 +964,7 @@ function formatTime(timestamp){
 function formatDate(timestamp){
 
     return new Date(timestamp)
-        .toLocaleDateString(
-            "de-DE"
-        );
+        .toLocaleDateString("de-DE");
 
 }
 
@@ -1056,9 +997,9 @@ function netDuration(entry){
 
     return Math.max(
         0,
-        entry.end -
-        entry.start -
-        (entry.pauseMs || 0)
+        Number(entry.end) -
+        Number(entry.start) -
+        (Number(entry.pauseMs) || 0)
     );
 
 }
@@ -1070,26 +1011,75 @@ function activeDuration(){
         return 0;
 
     let pause =
-        active.pauseMs || 0;
+        Number(active.pauseMs) || 0;
 
-    if(active.pauseStart)
+    if(active.pauseStart){
+
         pause +=
             Date.now() -
-            active.pauseStart;
+            Number(active.pauseStart);
+
+    }
 
     return Math.max(
         0,
         Date.now() -
-        active.start -
+        Number(active.start) -
         pause
     );
 
 }
 
 
-/* =========================
+/* ==================================================
+   NAME
+   WICHTIG: EINHEITLICHE NAMENSFUNKTION
+================================================== */
+
+function getEmployeeName(){
+
+    const input =
+        $("employeeName");
+
+    const inputName =
+        input
+            ?
+            String(input.value || "").trim()
+            :
+            "";
+
+    const storedName =
+        String(
+            localStorage.getItem("employeeName") || ""
+        ).trim();
+
+    /*
+     * Das aktuelle Eingabefeld hat Vorrang.
+     * Dadurch kann ein geänderter Name nicht durch
+     * einen alten localStorage-Wert überschrieben werden.
+     */
+
+    const name =
+        inputName ||
+        storedName;
+
+    if(name){
+
+        localStorage.setItem(
+            "employeeName",
+            name
+        );
+
+    }
+
+    return name;
+
+}
+
+
+/* ==================================================
    SAVE
-========================= */
+================================================== */
 
 function save(immediate=false){
 
@@ -1135,9 +1125,9 @@ function save(immediate=false){
 }
 
 
-/* =========================
+/* ==================================================
    STEMPELN
-========================= */
+================================================== */
 
 function punch(){
 
@@ -1225,9 +1215,9 @@ function togglePause(){
 }
 
 
-/* =========================
+/* ==================================================
    RENDER
-========================= */
+================================================== */
 
 function render(){
 
@@ -1389,20 +1379,16 @@ function updateStats(){
     let today =
         new Date(now);
 
-    today.setHours(
-        0,0,0,0
-    );
+    today.setHours(0,0,0,0);
 
 
     let week =
         new Date(today);
 
     week.setDate(
-        week.getDate()
-        -
+        week.getDate() -
         (
-            (week.getDay()+6)
-            %7
+            (week.getDay()+6) % 7
         )
     );
 
@@ -1417,10 +1403,10 @@ function updateStats(){
         let value =
             netDuration(entry);
 
-        if(entry.start >= today)
+        if(entry.start >= today.getTime())
             todayMs += value;
 
-        if(entry.start >= week)
+        if(entry.start >= week.getTime())
             weekMs += value;
 
     });
@@ -1431,10 +1417,10 @@ function updateStats(){
         let value =
             activeDuration();
 
-        if(active.start >= today)
+        if(active.start >= today.getTime())
             todayMs += value;
 
-        if(active.start >= week)
+        if(active.start >= week.getTime())
             weekMs += value;
 
     }
@@ -1449,9 +1435,9 @@ function updateStats(){
 }
 
 
-/* =========================
+/* ==================================================
    MONAT
-========================= */
+================================================== */
 
 function renderMonth(){
 
@@ -1488,8 +1474,7 @@ function renderMonth(){
                 netDuration(entry);
 
             days[key] =
-                (days[key] || 0)
-                +
+                (days[key] || 0) +
                 value;
 
             total += value;
@@ -1562,13 +1547,9 @@ function renderMonth(){
                             "
                         >
 
-                            <span>
-                                ${day}
-                            </span>
+                            <span>${day}</span>
 
-                            <b>
-                                ${duration(value)}
-                            </b>
+                            <b>${duration(value)}</b>
 
                         </div>
 
@@ -1585,8 +1566,7 @@ function renderMonth(){
 function month(change){
 
     selectedMonth.setMonth(
-        selectedMonth.getMonth()
-        +
+        selectedMonth.getMonth() +
         change
     );
 
@@ -1595,9 +1575,9 @@ function month(change){
 }
 
 
-/* =========================
+/* ==================================================
    EDIT
-========================= */
+================================================== */
 
 function openEdit(id){
 
@@ -1622,43 +1602,32 @@ function openEdit(id){
 
     const pad =
         n =>
-            String(n)
-                .padStart(2,"0");
+            String(n).padStart(2,"0");
 
 
     $("editDate").value =
-        start.getFullYear()
-        +
-        "-"
-        +
-        pad(start.getMonth()+1)
-        +
-        "-"
-        +
+        start.getFullYear() +
+        "-" +
+        pad(start.getMonth()+1) +
+        "-" +
         pad(start.getDate());
 
 
     $("editStart").value =
-        pad(start.getHours())
-        +
-        ":"
-        +
+        pad(start.getHours()) +
+        ":" +
         pad(start.getMinutes());
 
 
     $("editEnd").value =
-        pad(end.getHours())
-        +
-        ":"
-        +
+        pad(end.getHours()) +
+        ":" +
         pad(end.getMinutes());
 
 
     $("editPause").value =
         Math.round(
-            (entry.pauseMs || 0)
-            /
-            60000
+            (entry.pauseMs || 0) / 60000
         );
 
 
@@ -1722,7 +1691,7 @@ function saveEdit(){
 
     let [
         year,
-        month,
+        monthValue,
         day
     ] =
         dateValue
@@ -1751,7 +1720,7 @@ function saveEdit(){
     let start =
         new Date(
             year,
-            month-1,
+            monthValue-1,
             day,
             startHour,
             startMinute
@@ -1761,7 +1730,7 @@ function saveEdit(){
     let end =
         new Date(
             year,
-            month-1,
+            monthValue-1,
             day,
             endHour,
             endMinute
@@ -1826,9 +1795,9 @@ function saveEdit(){
 }
 
 
-/* =========================
+/* ==================================================
    DELETE
-========================= */
+================================================== */
 
 function deleteEntry(id){
 
@@ -1845,8 +1814,7 @@ function deleteEntry(id){
     if(
         !confirm(
             "Eintrag löschen?\n\n" +
-            "Der Eintrag bleibt in Google Sheets " +
-            "als GELÖSCHT erhalten."
+            "Der Eintrag bleibt in Google Sheets als GELÖSCHT erhalten."
         )
     )
         return;
@@ -1857,11 +1825,8 @@ function deleteEntry(id){
 
 
     lastDeleted = {
-
         entry,
-
         index
-
     };
 
 
@@ -1950,9 +1915,9 @@ function undoDelete(){
 }
 
 
-/* =========================
+/* ==================================================
    EXPORT
-========================= */
+================================================== */
 
 function getMonthEntries(){
 
@@ -1963,12 +1928,10 @@ function getMonthEntries(){
                 new Date(entry.start);
 
             return (
-                d.getFullYear()
-                ===
+                d.getFullYear() ===
                 selectedMonth.getFullYear()
                 &&
-                d.getMonth()
-                ===
+                d.getMonth() ===
                 selectedMonth.getMonth()
             );
 
@@ -2040,8 +2003,7 @@ function csv(){
 
 
     let text =
-        "\uFEFF"
-        +
+        "\uFEFF" +
         rows
             .map(
                 row =>
@@ -2095,9 +2057,7 @@ function pdfExport(){
 
         <div class="print-page">
 
-            <h1>
-                ⏱️ Stempeluhr
-            </h1>
+            <h1>⏱️ Stempeluhr</h1>
 
             <p>
                 Monatsbericht ·
@@ -2132,17 +2092,11 @@ function pdfExport(){
 
                                 <tr>
 
-                                    <td>
-                                        ${formatDate(entry.start)}
-                                    </td>
+                                    <td>${formatDate(entry.start)}</td>
 
-                                    <td>
-                                        ${formatTime(entry.start)}
-                                    </td>
+                                    <td>${formatTime(entry.start)}</td>
 
-                                    <td>
-                                        ${formatTime(entry.end)}
-                                    </td>
+                                    <td>${formatTime(entry.end)}</td>
 
                                     <td>
                                         ${duration(
@@ -2174,10 +2128,7 @@ function pdfExport(){
             </table>
 
             <div class="print-total">
-
-                Gesamt:
-                ${duration(total)}
-
+                Gesamt: ${duration(total)}
             </div>
 
             <div class="print-foot">
@@ -2200,9 +2151,9 @@ function pdfExport(){
 }
 
 
-/* =========================
+/* ==================================================
    BACKUP
-========================= */
+================================================== */
 
 function backup(){
 
@@ -2215,7 +2166,10 @@ function backup(){
         active,
 
         theme:
-            localStorage.getItem("theme")
+            localStorage.getItem("theme"),
+
+        employeeName:
+            getEmployeeName()
 
     };
 
@@ -2263,9 +2217,7 @@ function restore(event){
                 );
 
 
-            if(
-                !Array.isArray(data.entries)
-            )
+            if(!Array.isArray(data.entries))
                 throw Error();
 
 
@@ -2300,6 +2252,18 @@ function restore(event){
                     null;
 
 
+            if(data.employeeName){
+
+                localStorage.setItem(
+                    "employeeName",
+                    String(
+                        data.employeeName
+                    ).trim()
+                );
+
+            }
+
+
             localStorage.setItem(
                 "entries",
                 JSON.stringify(entries)
@@ -2328,14 +2292,19 @@ function restore(event){
             }
 
 
-            if(data.theme)
+            if(data.theme){
+
                 localStorage.setItem(
                     "theme",
                     data.theme
                 );
 
+            }
+
 
             loadTheme();
+
+            loadSyncSettings();
 
             save(true);
 
@@ -2408,9 +2377,9 @@ function clearAll(){
 }
 
 
-/* =========================
+/* ==================================================
    DOWNLOAD
-========================= */
+================================================== */
 
 function download(
     content,
@@ -2455,26 +2424,30 @@ function download(
 }
 
 
-/* =========================
-   CLOUD
-========================= */
+/* ==================================================
+   CLOUD SETTINGS
+================================================== */
 
 function loadSyncSettings(){
 
+    const stored =
+        String(
+            localStorage.getItem("employeeName") || ""
+        ).trim();
+
+
     $("employeeName").value =
-        localStorage.getItem(
-            "employeeName"
-        ) || "";
+        stored;
 
 }
 
 
 function saveSyncSettings(){
 
-    let name =
-        $("employeeName")
-            .value
-            .trim();
+    const name =
+        String(
+            $("employeeName").value || ""
+        ).trim();
 
 
     if(!name){
@@ -2482,6 +2455,8 @@ function saveSyncSettings(){
         alert(
             "Bitte deinen Namen eintragen."
         );
+
+        $("employeeName").focus();
 
         return;
 
@@ -2503,25 +2478,57 @@ function saveSyncSettings(){
 }
 
 
-function syncNow(manual=false){
+/*
+ * Wenn der Name im Feld geändert wird,
+ * direkt lokal speichern.
+ */
 
-    let employee =
-        localStorage.getItem(
-            "employeeName"
-        )
-        ||
-        $("employeeName")
-            .value
-            .trim();
+$("employeeName")
+    .addEventListener(
+        "input",
+        () => {
+
+            const name =
+                String(
+                    $("employeeName").value || ""
+                ).trim();
+
+
+            if(name){
+
+                localStorage.setItem(
+                    "employeeName",
+                    name
+                );
+
+            }
+
+        }
+    );
+
+
+/* ==================================================
+   CLOUD SYNC
+================================================== */
+
+async function syncNow(manual=false){
+
+    const employee =
+        getEmployeeName();
 
 
     if(!employee){
 
+        $("syncStatus").textContent =
+            "❌ Kein Mitarbeitername angegeben.";
+
         if(manual){
 
             alert(
-                "Bitte zuerst deinen Namen speichern."
+                "Bitte zuerst deinen Namen eintragen."
             );
+
+            $("employeeName").focus();
 
         }
 
@@ -2530,9 +2537,24 @@ function syncNow(manual=false){
     }
 
 
-    let payload = {
+    const payload = {
 
-        employee,
+        action:
+            "sync",
+
+        employee:
+            employee,
+
+        /*
+         * Diese beiden zusätzlichen Felder machen
+         * die Übertragung abwärtskompatibel.
+         */
+
+        employeeName:
+            employee,
+
+        name:
+            employee,
 
         token:
             SYNC_CONFIG.token,
@@ -2542,6 +2564,12 @@ function syncNow(manual=false){
 
         backup: {
 
+            employee:
+                employee,
+
+            employeeName:
+                employee,
+
             entries,
 
             deletedEntries,
@@ -2549,49 +2577,59 @@ function syncNow(manual=false){
             active,
 
             theme:
-                localStorage.getItem(
-                    "theme"
-                )
+                localStorage.getItem("theme")
 
         }
 
     };
 
 
-    fetch(
-        SYNC_CONFIG.url,
-        {
-            method:"POST",
+    $("syncStatus").textContent =
+        "☁️ Synchronisierung läuft…";
 
-            headers:{
-                "Content-Type":
-                    "text/plain;charset=utf-8"
-            },
 
-            body:
-                JSON.stringify(payload)
+    try{
 
-        }
-    )
+        const response =
+            await fetch(
+                SYNC_CONFIG.url,
+                {
+                    method:"POST",
 
-    .then(response => {
+                    headers:{
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+                    },
 
-        if(!response.ok)
-            throw Error(
-                "Serverfehler "+response.status
+                    body:
+                        JSON.stringify(payload)
+
+                }
             );
 
-        return response.json();
 
-    })
+        if(!response.ok){
 
-    .then(data => {
+            throw new Error(
+                "Serverfehler " +
+                response.status
+            );
 
-        if(data.status !== "ok")
-            throw Error(
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if(data.status !== "ok"){
+
+            throw new Error(
                 data.message ||
                 "Synchronisierung fehlgeschlagen."
             );
+
+        }
 
 
         localStorage.setItem(
@@ -2601,42 +2639,38 @@ function syncNow(manual=false){
 
 
         $("syncStatus").textContent =
-            "✅ Synchronisiert: "
-            +
+            "✅ Synchronisiert: " +
             new Date()
                 .toLocaleString("de-DE");
 
-    })
-
-    .catch(error => {
+    }catch(error){
 
         $("syncStatus").textContent =
-            "❌ Sync: "
-            +
+            "❌ Sync: " +
             error.message;
 
-    });
+    }
 
 }
 
 
+/* ==================================================
+   RESTORE CLOUD
+================================================== */
+
 async function restoreFromCloud(){
 
-    let employee =
-        localStorage.getItem(
-            "employeeName"
-        )
-        ||
-        $("employeeName")
-            .value
-            .trim();
+    const employee =
+        getEmployeeName();
 
 
     if(!employee){
 
         alert(
-            "Bitte zuerst deinen Namen speichern."
+            "Bitte zuerst deinen Namen eintragen."
         );
+
+        $("employeeName").focus();
 
         return;
 
@@ -2655,17 +2689,16 @@ async function restoreFromCloud(){
         "☁️ Cloud-Daten werden geladen…";
 
 
-    let url =
-        SYNC_CONFIG.url
-        +
-        "?action=restore"
-        +
-        "&employee="
-        +
-        encodeURIComponent(employee)
-        +
-        "&token="
-        +
+    const url =
+        SYNC_CONFIG.url +
+        "?action=restore" +
+        "&employee=" +
+        encodeURIComponent(employee) +
+        "&employeeName=" +
+        encodeURIComponent(employee) +
+        "&name=" +
+        encodeURIComponent(employee) +
+        "&token=" +
         encodeURIComponent(
             SYNC_CONFIG.token
         );
@@ -2673,45 +2706,52 @@ async function restoreFromCloud(){
 
     try{
 
-        let response =
+        const response =
             await fetch(url);
 
 
-        if(!response.ok)
-            throw Error(
-                "Serverfehler "+response.status
+        if(!response.ok){
+
+            throw new Error(
+                "Serverfehler " +
+                response.status
             );
 
+        }
 
-        let data =
+
+        const data =
             await response.json();
 
 
-        if(data.status !== "ok")
-            throw Error(
+        if(data.status !== "ok"){
+
+            throw new Error(
                 data.message ||
                 "Cloud-Backup nicht gefunden."
             );
 
+        }
 
-        let backup =
-            data.backup;
+
+        const cloudBackup =
+            data.backup || {};
 
 
         entries =
             normalizeEntries(
-                backup.entries
+                cloudBackup.entries || []
             );
 
 
         deletedEntries =
             normalizeEntries(
-                backup.deletedEntries
+                cloudBackup.deletedEntries || []
             );
 
 
         active =
-            backup.active || null;
+            cloudBackup.active || null;
 
 
         localStorage.setItem(
@@ -2742,11 +2782,11 @@ async function restoreFromCloud(){
         }
 
 
-        if(backup.theme){
+        if(cloudBackup.theme){
 
             localStorage.setItem(
                 "theme",
-                backup.theme
+                cloudBackup.theme
             );
 
             loadTheme();
@@ -2763,8 +2803,7 @@ async function restoreFromCloud(){
     }catch(error){
 
         $("syncStatus").textContent =
-            "❌ Cloud: "
-            +
+            "❌ Cloud: " +
             error.message;
 
     }
@@ -2772,9 +2811,9 @@ async function restoreFromCloud(){
 }
 
 
-/* =========================
+/* ==================================================
    SUPPORT
-========================= */
+================================================== */
 
 function openSupport(){
 
@@ -2784,16 +2823,14 @@ function openSupport(){
 
 
     $("supportName").value =
-        localStorage.getItem(
-            "supportName"
-        )
+        localStorage.getItem("supportName")
         ||
-        localStorage.getItem(
-            "employeeName"
-        )
+        getEmployeeName()
         ||
         "";
 
+
+    $("supportStatus").textContent = "";
 
     $("supportName").focus();
 
@@ -2828,25 +2865,25 @@ $("supportForm")
             event.preventDefault();
 
 
-            let button =
+            const button =
                 $("supportSend");
 
-            let status =
+            const status =
                 $("supportStatus");
 
 
-            let name =
+            const name =
                 $("supportName")
                     .value
                     .trim();
 
 
-            let topic =
+            const topic =
                 $("supportTopic")
                     .value;
 
 
-            let message =
+            const message =
                 $("supportMessage")
                     .value
                     .trim();
@@ -2886,7 +2923,7 @@ $("supportForm")
 
             try{
 
-                let response =
+                const response =
                     await fetch(
                         SYNC_CONFIG.url,
                         {
@@ -2928,21 +2965,28 @@ $("supportForm")
                     );
 
 
-                if(!response.ok)
-                    throw Error(
-                        "Serverfehler "+response.status
+                if(!response.ok){
+
+                    throw new Error(
+                        "Serverfehler " +
+                        response.status
                     );
 
+                }
 
-                let data =
+
+                const data =
                     await response.json();
 
 
-                if(data.status !== "ok")
-                    throw Error(
+                if(data.status !== "ok"){
+
+                    throw new Error(
                         data.message ||
                         "Senden fehlgeschlagen."
                     );
+
+                }
 
 
                 status.className =
@@ -2968,8 +3012,7 @@ $("supportForm")
 
 
                 status.textContent =
-                    "✕ "
-                    +
+                    "✕ " +
                     error.message;
 
             }finally{
@@ -2982,9 +3025,9 @@ $("supportForm")
     );
 
 
-/* =========================
+/* ==================================================
    THEME
-========================= */
+================================================== */
 
 function theme(){
 
@@ -2995,9 +3038,7 @@ function theme(){
 
     localStorage.setItem(
         "theme",
-        document.body.classList.contains(
-            "light"
-        )
+        document.body.classList.contains("light")
             ?
             "light"
             :
@@ -3013,32 +3054,28 @@ function loadTheme(){
         .classList
         .toggle(
             "light",
-            localStorage.getItem(
-                "theme"
-            ) === "light"
+            localStorage.getItem("theme") === "light"
         );
 
 }
 
 
-/* =========================
+/* ==================================================
    BACKUP REMINDER
-========================= */
+================================================== */
 
 function checkBackupReminder(){
 
     let last =
         Number(
-            localStorage.getItem(
-                "lastBackup"
-            )
+            localStorage.getItem("lastBackup")
         ) || 0;
 
 
     if(
         entries.length &&
-        Date.now()-last >
-        7*24*60*60*1000
+        Date.now() - last >
+        7 * 24 * 60 * 60 * 1000
     ){
 
         $("backupReminder")
@@ -3056,9 +3093,9 @@ function checkBackupReminder(){
 }
 
 
-/* =========================
+/* ==================================================
    HELPERS
-========================= */
+================================================== */
 
 function normalizeEntries(array){
 
@@ -3076,12 +3113,32 @@ function normalizeEntries(array){
                 Number.isFinite(
                     Number(entry.end)
                 ) &&
-                Number(entry.end)
-                >=
+                Number(entry.end) >=
                 Number(entry.start)
         )
         .map(
-            ensureEntry
+            entry => {
+
+                const result =
+                    ensureEntry({
+                        ...entry
+                    });
+
+                result.start =
+                    Number(result.start);
+
+                result.end =
+                    Number(result.end);
+
+                result.pauseMs =
+                    Math.max(
+                        0,
+                        Number(result.pauseMs) || 0
+                    );
+
+                return result;
+
+            }
         );
 
 }
@@ -3090,9 +3147,7 @@ function normalizeEntries(array){
 function escapeHtml(value){
 
     let div =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
 
     div.textContent =
@@ -3116,9 +3171,9 @@ function escapeAttr(value){
 }
 
 
-/* =========================
+/* ==================================================
    TIMER
-========================= */
+================================================== */
 
 function tick(){
 
@@ -3134,24 +3189,16 @@ function tick(){
 
     let seconds =
         Math.floor(
-            activeDuration()
-            /
-            1000
+            activeDuration() / 1000
         );
 
 
     let hours =
-        Math.floor(
-            seconds/3600
-        );
+        Math.floor(seconds / 3600);
 
 
     let minutes =
-        Math.floor(
-            seconds/60
-        )
-        %
-        60;
+        Math.floor(seconds / 60) % 60;
 
 
     let secs =
@@ -3169,8 +3216,7 @@ function tick(){
     ]
         .map(
             value =>
-                String(value)
-                    .padStart(2,"0")
+                String(value).padStart(2,"0")
         )
         .join(":");
 
@@ -3182,9 +3228,9 @@ function tick(){
 }
 
 
-/* =========================
+/* ==================================================
    START
-========================= */
+================================================== */
 
 $("date").textContent =
     new Date()
@@ -3222,24 +3268,21 @@ let loaderStart =
         Math.min(
             100,
             (
-                (Date.now()-loaderStart)
-                /
+                (Date.now()-loaderStart) /
                 900
-            )*100
+            ) * 100
         );
 
 
     $("loadbar")
         .style
         .width =
-        percent+"%";
+        percent + "%";
 
 
     if(percent < 100){
 
-        requestAnimationFrame(
-            loader
-        );
+        requestAnimationFrame(loader);
 
     }else{
 
