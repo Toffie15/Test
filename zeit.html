@@ -1,3781 +1,1344 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width,initial-scale=1,maximum-scale=1"
->
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Stempeluhr</title>
 
 <style>
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
-}
-
-body {
-  background:
-    radial-gradient(
-      circle at top,
-      #241b3d,
-      #0d0f14 55%
-    );
-
-  color: #fff;
-
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-
-  padding: 18px;
-}
-
-body.light {
-  background:
-    #f1f3f7;
-
-  color: #17181c;
-}
-
-button,
-input,
-textarea,
-select {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-.container {
-  width: 100%;
-  max-width: 1100px;
-  margin: auto;
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 18px;
-}
-
-.title {
-  font-size: 28px;
-  font-weight: 800;
-}
-
-.subtitle {
-  color: #aaa;
-  font-size: 13px;
-  margin-top: 4px;
-}
-
-body.light .subtitle {
-  color: #666;
-}
-
-.header-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.icon-btn {
-  width: 42px;
-  height: 42px;
-
-  border: 0;
-  border-radius: 12px;
-
-  background: #211d2d;
-  color: #fff;
-}
-
-body.light .icon-btn {
-  background: #fff;
-  color: #222;
-  box-shadow: 0 2px 10px #0001;
-}
-
-
-/* =========================================================
-   CARD
-========================================================= */
-
-.card {
-  background:
-    rgba(22, 20, 30, .94);
-
-  border: 1px solid #ffffff10;
-
-  border-radius: 18px;
-
-  padding: 18px;
-
-  margin-bottom: 15px;
-
-  box-shadow:
-    0 12px 35px #0004;
-}
-
-body.light .card {
-  background: #fff;
-  border-color: #0000000c;
-  box-shadow: 0 8px 25px #0001;
-}
-
-
-/* =========================================================
-   CLOCK
-========================================================= */
-
-.clock-card {
-  text-align: center;
-}
-
-.clock {
-  font-size: 48px;
-  font-weight: 800;
-  letter-spacing: 2px;
-}
-
-.date {
-  color: #aaa;
-  margin-top: 4px;
-}
-
-body.light .date {
-  color: #666;
-}
-
-.status {
-  margin: 18px auto;
-
-  display: inline-flex;
-
-  align-items: center;
-  gap: 8px;
-
-  padding: 8px 13px;
-
-  border-radius: 999px;
-
-  background: #ffffff0a;
-
-  font-size: 13px;
-}
-
-.status-dot {
-  width: 9px;
-  height: 9px;
-
-  border-radius: 50%;
-
-  background: #777;
-}
-
-.status.active .status-dot {
-  background: #54e37c;
-  box-shadow: 0 0 10px #54e37c;
-}
-
-
-/* =========================================================
-   TIMER
-========================================================= */
-
-.timer {
-  font-size: 26px;
-  font-weight: 700;
-
-  margin: 5px 0 15px;
-}
-
-.pause-info {
-  color: #f0b35a;
-  font-size: 13px;
-  min-height: 18px;
-}
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.actions {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.btn {
-  border: 0;
-
-  border-radius: 12px;
-
-  padding: 12px 18px;
-
-  color: #fff;
-
-  background: #30293d;
-
-  transition:
-    transform .15s,
-    opacity .15s;
-}
-
-.btn:hover {
-  transform: translateY(-1px);
-}
-
-.btn:disabled {
-  opacity: .45;
-  cursor: not-allowed;
-}
-
-.btn-primary {
-  background: #7045d8;
-}
-
-.btn-success {
-  background: #287c48;
-}
-
-.btn-danger {
-  background: #a53a3a;
-}
-
-.btn-warning {
-  background: #9a691f;
-}
-
-.btn-small {
-  padding: 7px 10px;
-  font-size: 12px;
-}
-
-
-/* =========================================================
-   INPUTS
-========================================================= */
-
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.input-group label {
-  font-size: 12px;
-  color: #aaa;
-}
-
-body.light .input-group label {
-  color: #666;
-}
-
-input,
-textarea,
-select {
-  width: 100%;
-
-  border: 1px solid #ffffff12;
-
-  background: #0e0d14;
-
-  color: #fff;
-
-  border-radius: 10px;
-
-  padding: 11px 12px;
-
-  outline: none;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: #7045d8;
-}
-
-body.light input,
-body.light textarea,
-body.light select {
-  background: #f5f6f8;
-  color: #222;
-  border-color: #00000012;
-}
-
-textarea {
-  resize: vertical;
-  min-height: 75px;
-}
-
-
-/* =========================================================
-   GRID
-========================================================= */
-
-.grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, 1fr);
-
-  gap: 12px;
-}
-
-.grid-2 {
-  display: grid;
-
-  grid-template-columns:
-    repeat(2, 1fr);
-
-  gap: 12px;
-}
-
-
-/* =========================================================
-   STAT
-========================================================= */
-
-.stat {
-  background: #ffffff08;
-
-  border-radius: 13px;
-
-  padding: 15px;
-}
-
-body.light .stat {
-  background: #f5f6f8;
-}
-
-.stat-title {
-  color: #aaa;
-  font-size: 12px;
-}
-
-body.light .stat-title {
-  color: #666;
-}
-
-.stat-value {
-  margin-top: 6px;
-
-  font-size: 22px;
-  font-weight: 800;
-}
-
-
-/* =========================================================
-   SECTION
-========================================================= */
-
-.section-title {
-  font-size: 17px;
-  font-weight: 800;
-
-  margin-bottom: 13px;
-}
-
-.section-head {
-  display: flex;
-
-  justify-content: space-between;
-  align-items: center;
-
-  gap: 10px;
-
-  margin-bottom: 13px;
-}
-
-
-/* =========================================================
-   TABLE
-========================================================= */
-
-.table-wrap {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-
-  min-width: 760px;
-}
-
-th,
-td {
-  padding: 11px 9px;
-
-  border-bottom:
-    1px solid #ffffff0c;
-
-  text-align: left;
-
-  font-size: 13px;
-}
-
-body.light th,
-body.light td {
-  border-bottom-color: #0000000d;
-}
-
-th {
-  color: #aaa;
-  font-size: 11px;
-  text-transform: uppercase;
-}
-
-body.light th {
-  color: #666;
-}
-
-.row-deleted {
-  opacity: .55;
-}
-
-.row-deleted td {
-  text-decoration: line-through;
-}
-
-.actions-cell {
-  white-space: nowrap;
-}
-
-
-/* =========================================================
-   MONTH NAV
-========================================================= */
-
-.month-nav {
-  display: flex;
-
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 10px;
-
-  margin-bottom: 12px;
-}
-
-.month-name {
-  font-size: 18px;
-  font-weight: 800;
-}
-
-.month-total {
-  font-size: 28px;
-  font-weight: 800;
-}
-
-
-/* =========================================================
-   SYNC
-========================================================= */
-
-.sync-status {
-  margin-top: 10px;
-
-  padding: 10px;
-
-  border-radius: 10px;
-
-  background: #ffffff07;
-
-  font-size: 13px;
-}
-
-.sync-ok {
-  color: #63df83;
-}
-
-.sync-error {
-  color: #ff7676;
-}
-
-.sync-wait {
-  color: #f1bd62;
-}
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-.toast-container {
-  position: fixed;
-
-  right: 18px;
-  bottom: 18px;
-
-  z-index: 9999;
-
-  display: flex;
-  flex-direction: column;
-
-  gap: 8px;
-
-  max-width: 350px;
-}
-
-.toast {
-  background: #211e2b;
-
-  color: #fff;
-
-  border: 1px solid #ffffff10;
-
-  border-radius: 12px;
-
-  padding: 12px 14px;
-
-  box-shadow: 0 10px 30px #0005;
-
-  font-size: 13px;
-}
-
-body.light .toast {
-  background: #fff;
-  color: #222;
-}
-
-
-/* =========================================================
-   LOADER
-========================================================= */
-
-.loader {
-  position: fixed;
-
-  inset: 0;
-
-  background: #0d0f14ee;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  z-index: 10000;
-}
-
-.loader.hidden {
-  display: none;
-}
-
-.loader-box {
-  background: #211e2b;
-
-  padding: 25px;
-
-  border-radius: 16px;
-
-  text-align: center;
-}
-
-
-/* =========================================================
-   MODAL
-========================================================= */
-
-.modal {
-  position: fixed;
-
-  inset: 0;
-
-  background: #0009;
-
-  z-index: 9000;
-
-  display: none;
-
-  align-items: center;
-  justify-content: center;
-
-  padding: 15px;
-}
-
-.modal.open {
-  display: flex;
-}
-
-.modal-box {
-  width: 100%;
-  max-width: 520px;
-
-  background: #191721;
-
-  border-radius: 18px;
-
-  padding: 18px;
-
-  max-height: 90vh;
-
-  overflow-y: auto;
-}
-
-body.light .modal-box {
-  background: #fff;
-}
-
-.modal-head {
-  display: flex;
-
-  justify-content: space-between;
-
-  align-items: center;
-
-  margin-bottom: 15px;
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 800px) {
-
-  body {
-    padding: 10px;
+*{box-sizing:border-box}
+body{margin:0;padding:15px;background:radial-gradient(circle at top,#241b3d,#0d0f14 55%);color:#fff;font-family:Arial}
+.container{max-width:850px;margin:auto}
+.card,.stat{background:#171a21;border:1px solid #2b303b;border-radius:15px;padding:18px;margin-bottom:14px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.logo{font-size:28px}
+h1,h2{margin:0 0 8px}
+.sub,.status,.since,th{color:#8f98a8;font-size:13px}
+.clock{text-align:center;padding:35px 15px}
+.time{font:65px monospace;margin:20px 0}
+input,button{border-radius:10px;padding:12px;border:1px solid #303641}
+input{width:100%;background:#22262e;color:#fff;margin:8px 0}
+button{background:#8b5cf6;color:#fff;font-weight:bold;cursor:pointer;border:0;margin:4px}
+.red{background:#9d3838}
+.gray{background:#303641}
+.punch{width:280px;font-size:16px;margin-top:15px}
+.pausebtn{width:280px;font-size:14px;margin-top:0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat span{color:#8f98a8;font-size:11px;text-transform:uppercase}
+.stat b{display:block;font:22px monospace;margin-top:5px}
+.actions{display:flex;gap:5px;flex-wrap:wrap}
+.table{overflow:auto}
+table{width:100%;min-width:680px;border-collapse:collapse}
+th,td{text-align:left;padding:10px;border-bottom:1px solid #2c313b}
+td{font-family:monospace}
+td.note{font-family:Arial;color:#aab1bd}
+td.actions-cell{font-family:Arial;white-space:nowrap}
+td.actions-cell button{padding:6px 10px;font-size:12px;margin:0 2px}
+.footer{text-align:center;color:#666d7a;font-size:12px;padding:5px 0 15px}
+.hint{color:#8f98a8;font-size:12px;margin-top:-4px}
+.reminder{background:#2a2410;border:1px solid #5a4a1a;color:#e8c96a;border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.reminder button{background:#5a4a1a;padding:6px 10px;font-size:12px;margin:0}
+body.light{background:#f2f3f7;color:#171a21}
+body.light .card,body.light .stat{background:#fff;border-color:#ddd}
+body.light input{background:#f7f8fa;color:#171a21}
+body.light .reminder{background:#fff6df;border-color:#e8d9a8;color:#7a5f10}
+
+#loader{position:fixed;inset:0;background:#0d0f14;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px}
+#loader .logo2{font-size:40px}
+.barwrap{width:220px;height:8px;background:#22262e;border-radius:6px;overflow:hidden}
+.bar{height:100%;width:0%;background:#8b5cf6;border-radius:6px;transition:width .1s linear}
+#loader .msg{color:#8f98a8;font-size:13px}
+
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:500;padding:15px}
+.modal-bg.show{display:flex}
+.modal{background:#171a21;border:1px solid #2b303b;border-radius:15px;padding:20px;max-width:380px;width:100%}
+body.light .modal{background:#fff;border-color:#ddd}
+.modal h3{margin:0 0 12px}
+.modal label{display:block;font-size:12px;color:#8f98a8;margin:10px 0 4px}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+
+@media(max-width:600px){
+  body{padding:8px}
+  .container{max-width:100%;width:100%}
+  .header{align-items:flex-start}
+  .time{font-size:42px;margin:14px 0}
+  .punch,.pausebtn{width:100%;min-height:48px}
+  .stats{grid-template-columns:1fr 1fr;gap:7px}
+  .stat{padding:12px 10px}
+  .stat b{font-size:18px}
+  .actions{width:100%}
+  .actions button{flex:1;min-height:42px}
+  input{font-size:16px;min-height:44px}
+
+  .table{overflow:visible}
+  table{min-width:0;width:100%}
+  table thead{display:none}
+  table tbody{display:block}
+  table tr{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:5px 12px;
+    padding:12px 0;
+    border-bottom:1px solid #2c313b;
+  }
+  table td{
+    display:block;
+    padding:2px 0;
+    border:0;
+    font-size:13px;
+    min-width:0;
+  }
+  table td:nth-child(1)::before{content:"Datum: ";color:#8f98a8;font-family:Arial}
+  table td:nth-child(2)::before{content:"Start: ";color:#8f98a8;font-family:Arial}
+  table td:nth-child(3)::before{content:"Ende: ";color:#8f98a8;font-family:Arial}
+  table td:nth-child(4)::before{content:"Dauer: ";color:#8f98a8;font-family:Arial}
+  table td:nth-child(5)::before{content:"Pause: ";color:#8f98a8;font-family:Arial}
+  table td:nth-child(6){
+    grid-column:1 / -1;
+    font-family:Arial;
+    overflow-wrap:anywhere;
+  }
+  table td:nth-child(6)::before{content:"Notiz: ";color:#8f98a8}
+  table td.actions-cell{
+    grid-column:1 / -1;
+    display:flex;
+    gap:8px;
+    padding-top:7px;
+  }
+  table td.actions-cell button{
+    flex:1;
+    min-height:44px;
+    font-size:16px;
+    margin:0;
   }
 
-  .grid {
-    grid-template-columns:
-      repeat(2, 1fr);
-  }
-
-  .clock {
-    font-size: 38px;
-  }
-
-  .header {
-    align-items: flex-start;
-  }
-
-  .title {
-    font-size: 23px;
-  }
+  .modal-bg{padding:8px;align-items:flex-end}
+  .modal{max-width:none;width:100%;padding:16px;border-radius:15px 15px 0 0}
+  .modal input{font-size:16px}
+  .modal .row{display:grid;grid-template-columns:1fr 1fr}
+  .modal .row button{min-height:46px;margin:0}
 }
 
-@media (max-width: 520px) {
+.print-view{display:none}
 
-  .grid,
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
-
-  .actions .btn {
-    width: 100%;
-  }
-
-  .header-actions {
-    flex-shrink: 0;
-  }
-
-  .clock {
-    font-size: 32px;
-  }
-
-  .card {
-    padding: 14px;
-  }
+@media print{
+ body *{visibility:hidden}
+ #printView,#printView *{visibility:visible}
+ #printView{position:absolute;top:0;left:0;width:100%;display:block !important}
+ @page{margin:0}
 }
 
-.hidden {
-  display: none !important;
+.print-page{
+ min-height:100vh;padding:50px 45px;
+ background:radial-gradient(circle at top left,#3a2a63,#161320 65%);
+ color:#fff;font-family:Arial;
+ -webkit-print-color-adjust:exact;print-color-adjust:exact;
+}
+.print-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #8b5cf6;padding-bottom:18px;margin-bottom:24px}
+.print-head h1{margin:0;font-size:26px}
+.print-head .sub{color:#c9b8ec;font-size:13px;margin-top:4px}
+.print-head .month{font-size:20px;font-weight:bold;color:#c9a9ff;text-align:right}
+.print-table{width:100%;border-collapse:collapse;margin-top:10px}
+.print-table th{text-align:left;font-size:11px;text-transform:uppercase;color:#c9b8ec;padding:8px 6px;border-bottom:1px solid rgba(255,255,255,.25)}
+.print-table td{font-size:13px;padding:9px 6px;border-bottom:1px solid rgba(255,255,255,.1)}
+.print-total{margin-top:26px;text-align:right;padding-top:16px;border-top:2px solid #8b5cf6}
+.print-total .lbl{color:#c9b8ec;font-size:12px;text-transform:uppercase;margin-right:10px}
+.print-total .val{font-size:26px;font-weight:bold;color:#fff;font-family:monospace}
+.print-foot{margin-top:40px;text-align:center;color:#8f7fb8;font-size:11px}
+
+#toast{
+ position:fixed;
+ left:50%;
+ bottom:24px;
+ transform:translateX(-50%) translateY(20px);
+ background:#22262e;
+ border:1px solid #3a4150;
+ color:#fff;
+ border-radius:12px;
+ padding:12px 14px;
+ display:flex;
+ align-items:center;
+ gap:14px;
+ font-size:14px;
+ box-shadow:0 8px 24px rgba(0,0,0,.4);
+ opacity:0;
+ pointer-events:none;
+ transition:opacity .25s,transform .25s;
+ z-index:600;
+ max-width:90vw
+}
+#toast.show{
+ opacity:1;
+ transform:translateX(-50%) translateY(0);
+ pointer-events:auto
+}
+#toast button{
+ background:#8b5cf6;
+ padding:6px 12px;
+ font-size:13px;
+ margin:0
+}
+body.light #toast{
+ background:#fff;
+ border-color:#ddd;
+ color:#171a21
 }
 
+.syncrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.syncrow input{flex:1;min-width:160px;margin:0}
+.togglebox{display:flex;align-items:center;gap:8px;font-size:13px;color:#c5cad4;margin-top:10px}
+body.light .togglebox{color:#4a5163}
+#syncStatus{font-size:12px;color:#8f98a8;margin-top:8px}
 </style>
-
 </head>
 
 <body>
 
-<div class="loader" id="loader">
-
-  <div class="loader-box">
-    <div style="font-size:24px">⏱️</div>
-    <div style="margin-top:8px">
-      Stempeluhr wird geladen...
-    </div>
-  </div>
-
+<div id="loader">
+ <div class="logo2">⏱️</div>
+ <div class="barwrap"><div class="bar" id="loadbar"></div></div>
+ <div class="msg" id="loadmsg">Lade Stempeluhr…</div>
 </div>
-
 
 <div class="container">
 
-  <!-- HEADER -->
-
-  <header class="header">
-
-    <div>
-      <div class="title">
-        Stempeluhr
-      </div>
-
-      <div class="subtitle">
-        Arbeitszeit einfach erfassen
-      </div>
-    </div>
-
-    <div class="header-actions">
-
-      <button
-        class="icon-btn"
-        onclick="toggleTheme()"
-        title="Theme"
-      >
-        🌓
-      </button>
-
-    </div>
-
-  </header>
-
-
-  <!-- CLOCK -->
-
-  <section class="card clock-card">
-
-    <div
-      class="clock"
-      id="clock"
-    >
-      00:00:00
-    </div>
-
-    <div
-      class="date"
-      id="date"
-    >
-      -
-    </div>
-
-    <div
-      class="status"
-      id="status"
-    >
-
-      <span class="status-dot"></span>
-
-      <span id="statusText">
-        Nicht eingestempelt
-      </span>
-
-    </div>
-
-    <div
-      class="timer"
-      id="activeTimer"
-    >
-      00:00:00
-    </div>
-
-    <div
-      class="pause-info"
-      id="pauseInfo"
-    ></div>
-
-    <div class="actions">
-
-      <button
-        class="btn btn-primary"
-        id="punchBtn"
-        onclick="punch()"
-      >
-        Einstempeln
-      </button>
-
-      <button
-        class="btn btn-warning"
-        id="pauseBtn"
-        onclick="togglePause()"
-        disabled
-      >
-        Pause
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- NOTE -->
-
-  <section class="card">
-
-    <div class="section-title">
-      Aktuelle Notiz
-    </div>
-
-    <textarea
-      id="note"
-      placeholder="z. B. Büro, Berufsschule, Termin..."
-    ></textarea>
-
-  </section>
-
-
-  <!-- STATS -->
-
-  <section class="card">
-
-    <div class="section-title">
-      Übersicht
-    </div>
-
-    <div class="grid">
-
-      <div class="stat">
-        <div class="stat-title">
-          Heute
-        </div>
-
-        <div
-          class="stat-value"
-          id="statToday"
-        >
-          0,00 h
-        </div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-title">
-          Diese Woche
-        </div>
-
-        <div
-          class="stat-value"
-          id="statWeek"
-        >
-          0,00 h
-        </div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-title">
-          Dieser Monat
-        </div>
-
-        <div
-          class="stat-value"
-          id="statMonth"
-        >
-          0,00 h
-        </div>
-      </div>
-
-      <div class="stat">
-        <div class="stat-title">
-          Einträge
-        </div>
-
-        <div
-          class="stat-value"
-          id="statCount"
-        >
-          0
-        </div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- MONTH -->
-
-  <section class="card">
-
-    <div class="section-title">
-      Monatsübersicht
-    </div>
-
-    <div class="month-nav">
-
-      <button
-        class="btn btn-small"
-        onclick="changeMonth(-1)"
-      >
-        ◀
-      </button>
-
-      <div
-        class="month-name"
-        id="monthName"
-      >
-        -
-      </div>
-
-      <button
-        class="btn btn-small"
-        onclick="changeMonth(1)"
-      >
-        ▶
-      </button>
-
-    </div>
-
-    <div
-      class="month-total"
-      id="monthTotal"
-    >
-      0,00 h
-    </div>
-
-  </section>
-
-
-  <!-- ENTRIES -->
-
-  <section class="card">
-
-    <div class="section-head">
-
-      <div class="section-title">
-        Einträge
-      </div>
-
-      <button
-        class="btn btn-danger btn-small"
-        onclick="clearAll()"
-      >
-        Alle löschen
-      </button>
-
-    </div>
-
-    <div class="table-wrap">
-
-      <table>
-
-        <thead>
-
-          <tr>
-            <th>Datum</th>
-            <th>Start</th>
-            <th>Ende</th>
-            <th>Dauer</th>
-            <th>Pause</th>
-            <th>Notiz</th>
-            <th>Status</th>
-            <th>Aktion</th>
-          </tr>
-
-        </thead>
-
-        <tbody id="entriesBody"></tbody>
-
-      </table>
-
-    </div>
-
-  </section>
-
-
-  <!-- CLOUD -->
-
-  <section class="card">
-
-    <div class="section-title">
-      ☁️ Cloud-Synchronisierung
-    </div>
-
-    <div class="grid-2">
-
-      <div class="input-group">
-
-        <label>
-          Mitarbeitername
-        </label>
-
-        <input
-          id="employeeName"
-          placeholder="Vorname Nachname"
-        >
-
-      </div>
-
-      <div
-        style="
-          display:flex;
-          align-items:end;
-          gap:8px;
-        "
-      >
-
-        <button
-          class="btn btn-success"
-          onclick="syncNow(true)"
-          style="width:100%"
-        >
-          Jetzt synchronisieren
-        </button>
-
-      </div>
-
-    </div>
-
-    <div
-      class="sync-status"
-      id="syncStatus"
-    >
-      Noch nicht synchronisiert.
-    </div>
-
-  </section>
-
-
-  <!-- TOOLS -->
-
-  <section class="card">
-
-    <div class="section-title">
-      Daten & Backup
-    </div>
-
-    <div class="actions">
-
-      <button
-        class="btn"
-        onclick="exportCSV()"
-      >
-        CSV
-      </button>
-
-      <button
-        class="btn"
-        onclick="exportPDF()"
-      >
-        PDF
-      </button>
-
-      <button
-        class="btn"
-        onclick="backup()"
-      >
-        Backup
-      </button>
-
-      <button
-        class="btn"
-        onclick="document.getElementById('restoreInput').click()"
-      >
-        Import
-      </button>
-
-      <input
-        id="restoreInput"
-        type="file"
-        accept=".json,application/json"
-        class="hidden"
-        onchange="restore(event)"
-      >
-
-    </div>
-
-  </section>
-
+<header class="header">
+ <div>
+  <h1>⏱️ Stempeluhr</h1>
+  <div id="date" class="sub"></div>
+ </div>
+ <button class="gray" onclick="theme()" aria-label="Design umschalten">🌓</button>
+</header>
+
+<div id="backupReminder" class="reminder" style="display:none">
+ <span id="reminderText"></span>
+ <button onclick="backup(); dismissReminder(true)">Jetzt sichern</button>
 </div>
 
+<section class="card clock">
+ <div id="status" class="status">🔴 Ausgestempelt</div>
+ <div id="timer" class="time">00:00:00</div>
+ <div id="since" class="since"></div>
+ <input id="note" placeholder="Notiz, z. B. Büro oder Projekt">
+ <div class="hint" id="noteHint" style="display:none">Notiz wird beim Ausstempeln für diesen Eintrag gespeichert.</div>
+ <button id="punch" class="punch" onclick="punch()">Einstempeln</button>
+ <div id="pauseWrap" style="display:none">
+  <button id="pauseBtn" class="pausebtn gray" onclick="togglePause()">Pause starten</button>
+  <div class="hint" id="pauseInfo"></div>
+ </div>
+</section>
 
-<!-- EDIT MODAL -->
+<div class="stats">
+ <div class="stat"><span>Heute</span><b id="today">0h 00m</b></div>
+ <div class="stat"><span>Woche</span><b id="week">0h 00m</b></div>
+ <div class="stat"><span>Monat</span><b id="monthStat">0h 00m</b></div>
+ <div class="stat"><span>Einträge</span><b id="count">0</b></div>
+</div>
 
-<div
-  class="modal"
-  id="editModal"
->
-
-  <div class="modal-box">
-
-    <div class="modal-head">
-
-      <div class="section-title">
-        Eintrag bearbeiten
-      </div>
-
-      <button
-        class="icon-btn"
-        onclick="closeEdit()"
-      >
-        ✕
-      </button>
-
-    </div>
-
-    <input
-      type="hidden"
-      id="editId"
-    >
-
-    <div
-      class="grid-2"
-      style="margin-bottom:12px"
-    >
-
-      <div class="input-group">
-
-        <label>
-          Datum
-        </label>
-
-        <input
-          type="date"
-          id="editDate"
-        >
-
-      </div>
-
-      <div class="input-group">
-
-        <label>
-          Pause in Minuten
-        </label>
-
-        <input
-          type="number"
-          id="editPause"
-          min="0"
-          step="1"
-        >
-
-      </div>
-
-    </div>
-
-
-    <div
-      class="grid-2"
-      style="margin-bottom:12px"
-    >
-
-      <div class="input-group">
-
-        <label>
-          Start
-        </label>
-
-        <input
-          type="time"
-          id="editStart"
-        >
-
-      </div>
-
-      <div class="input-group">
-
-        <label>
-          Ende
-        </label>
-
-        <input
-          type="time"
-          id="editEnd"
-        >
-
-      </div>
-
-    </div>
-
-
-    <div
-      class="input-group"
-      style="margin-bottom:15px"
-    >
-
-      <label>
-        Notiz
-      </label>
-
-      <textarea
-        id="editNote"
-      ></textarea>
-
-    </div>
-
-
-    <div class="actions">
-
-      <button
-        class="btn"
-        onclick="closeEdit()"
-      >
-        Abbrechen
-      </button>
-
-      <button
-        class="btn btn-primary"
-        onclick="saveEdit()"
-      >
-        Speichern
-      </button>
-
-    </div>
-
+<section class="card">
+ <div class="header">
+  <h2>Monatsübersicht</h2>
+  <div>
+   <button class="gray" onclick="month(-1)" aria-label="Vorheriger Monat">‹</button>
+   <button class="gray" onclick="month(1)" aria-label="Nächster Monat">›</button>
   </div>
+ </div>
+ <div id="month" class="sub"></div>
+ <div id="summary"></div>
+</section>
+
+<section class="card">
+ <h2>☁️ Cloud-Sync</h2>
+ <div class="hint" style="margin-bottom:8px">Dein Backup wird automatisch gespeichert – trag einmal deinen Namen ein. Bei Fragen oder Problemen bei Luca melden.</div>
+
+ <label class="sub" style="display:block;margin-top:6px">Dein Name</label>
+ <input id="employeeName" placeholder="z. B. Luca">
+
+ <div class="actions">
+  <button onclick="saveSyncSettings()">Speichern</button>
+  <button class="gray" onclick="syncNow(true)">Jetzt senden</button>
+  <button class="gray" onclick="restoreFromCloud()">Von Cloud laden</button>
+ </div>
+ <div class="hint" style="margin-top:6px">„Von Cloud laden" holt den letzten gesicherten Stand für diesen Namen zurück – nützlich nach einem Browserwechsel oder Datenverlust. Ersetzt die lokalen Daten auf diesem Gerät.</div>
+ <div id="syncStatus" class="hint" style="margin-top:8px"></div>
+</section>
+
+<section class="card">
+
+ <div class="header">
+  <h2>Zeiterfassung</h2>
+  <div class="actions">
+   <button onclick="csv()">CSV</button>
+   <button onclick="pdfExport()">PDF</button>
+   <button onclick="backup()">Backup</button>
+   <button onclick="document.getElementById('file').click()">Import</button>
+   <button class="red" onclick="clearAll()">Löschen</button>
+   <input id="file" type="file" accept=".json" hidden onchange="restore(event)">
+  </div>
+ </div>
+
+ <div class="hint">Auf dem Handy kannst du jeden Eintrag direkt über ✏️ bearbeiten oder 🗑️ löschen.</div>
+
+ <div class="table">
+  <table>
+   <thead>
+    <tr>
+     <th>Datum</th>
+     <th>Start</th>
+     <th>Ende</th>
+     <th>Dauer</th>
+     <th>Pause</th>
+     <th>Notiz</th>
+     <th></th>
+    </tr>
+   </thead>
+
+   <tbody id="log"></tbody>
+  </table>
+ </div>
+
+ <p id="empty" class="sub" style="text-align:center">Noch keine Einträge.</p>
+
+</section>
+
+<div class="footer">Made by Luca Valentine</div>
 
 </div>
 
+<div id="printView" class="print-view"></div>
 
-<div
-  class="toast-container"
-  id="toastContainer"
-></div>
+<div id="toast">
+ <span id="toastMsg"></span>
+ <button onclick="undoDelete()">Rückgängig</button>
+</div>
 
+<div class="modal-bg" id="editModal">
+ <div class="modal">
+  <h3>Eintrag bearbeiten</h3>
+
+  <label>Datum</label>
+  <input id="editDate" type="date">
+
+  <label>Start</label>
+  <input id="editStart" type="time">
+
+  <label>Ende</label>
+  <input id="editEnd" type="time">
+
+  <label>Pause (Minuten)</label>
+  <input id="editPause" type="number" min="0" step="1">
+
+  <label>Notiz</label>
+  <input id="editNote">
+
+  <div class="row">
+   <button class="gray" onclick="closeEdit()">Abbrechen</button>
+   <button onclick="saveEdit()">Speichern</button>
+  </div>
+ </div>
+</div>
 
 <script>
 
-/* =========================================================
-   KONFIGURATION
-========================================================= */
+/* ============================================================
+   GOOGLE SHEETS SYNC – Konfiguration
+   Trag hier die Web-App-URL deines Apps-Script-Deployments
+   und dasselbe Token ein, das in Code.gs unter SECRET steht.
+   ============================================================ */
 
 const SYNC_CONFIG = {
-
-  url:
-    "https://script.google.com/macros/s/AKfycbwDTAAvu_Xj49qPKDAHnWftnw_vNYL7fQEEndK1RLYO6vejdOaE5AON5Svta2X0feg8/exec",
-
-  token:
-    "2007"
+ url: "https://script.google.com/macros/s/DEIN_DEPLOYMENT_ID/exec",
+ token: "BITTE-EIGENES-TOKEN-EINTRAGEN"
 };
 
 
-/* =========================================================
-   STATE
-========================================================= */
+/* ============================================================
+   DATEN
+   ============================================================ */
 
-let entries =
-  loadJSON(
-    "entries",
-    []
-  );
-
-let deletedEntries =
-  loadJSON(
-    "deletedEntries",
-    []
-  );
-
-let active =
-  loadJSON(
-    "active",
-    null
-  );
-
-let currentMonth =
-  new Date().getMonth();
-
-let currentYear =
-  new Date().getFullYear();
-
-let syncTimer = null;
+let entries = JSON.parse(localStorage.getItem("entries") || "[]");
+let deletedEntries = JSON.parse(localStorage.getItem("deletedEntries") || "[]");
+let active = JSON.parse(localStorage.getItem("active") || "null");
+let sel = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+let editId = null;
 
 
-/* =========================================================
-   STORAGE
-========================================================= */
+/* ============================================================
+   MIGRATION (alte lokale Daten ohne id/pauseMs ergänzen)
+   ============================================================ */
 
-function loadJSON(key, fallback) {
+let migrated = false;
 
-  try {
-
-    const value =
-      localStorage.getItem(key);
-
-    if (!value) {
-      return fallback;
-    }
-
-    return JSON.parse(value);
-
-  } catch (err) {
-
-    console.error(
-      "Storage Fehler:",
-      err
-    );
-
-    return fallback;
-  }
+function ensureFields(e) {
+ if (!e.id) {
+  e.id = Date.now() + "_" + Math.random().toString(36).slice(2, 7);
+  migrated = true;
+ }
+ if (e.pauseMs === undefined) {
+  e.pauseMs = 0;
+  migrated = true;
+ }
 }
 
+entries.forEach(ensureFields);
+deletedEntries.forEach(ensureFields);
+
+if (active && active.pauseMs === undefined) {
+ active.pauseMs = 0;
+ migrated = true;
+}
+
+if (migrated) {
+ localStorage.setItem("entries", JSON.stringify(entries));
+ localStorage.setItem("deletedEntries", JSON.stringify(deletedEntries));
+}
+
+
+/* ============================================================
+   HELPER
+   ============================================================ */
+
+const $ = id => document.getElementById(id);
+
+let autoSyncTimer = null;
+
+function maybeAutoSync() {
+ if (!SYNC_CONFIG.url) return;
+ clearTimeout(autoSyncTimer);
+ autoSyncTimer = setTimeout(() => syncNow(false), 1500);
+}
+
+
+/* ============================================================
+   SPEICHERN
+   ============================================================ */
 
 function save(immediate = false) {
+ localStorage.setItem("entries", JSON.stringify(entries));
+ localStorage.setItem("deletedEntries", JSON.stringify(deletedEntries));
 
-  localStorage.setItem(
-    "entries",
-    JSON.stringify(entries)
-  );
+ if (active) {
+  localStorage.setItem("active", JSON.stringify(active));
+ } else {
+  localStorage.removeItem("active");
+ }
 
-  localStorage.setItem(
-    "deletedEntries",
-    JSON.stringify(deletedEntries)
-  );
-
-  localStorage.setItem(
-    "active",
-    JSON.stringify(active)
-  );
-
-  localStorage.setItem(
-    "employeeName",
-    document.getElementById(
-      "employeeName"
-    ).value.trim()
-  );
-
-  if (syncTimer) {
-    clearTimeout(syncTimer);
-  }
-
-  if (
-    immediate &&
-    SYNC_CONFIG.url
-  ) {
-
-    syncNow(false);
-
-  } else if (
-    SYNC_CONFIG.url
-  ) {
-
-    syncTimer =
-      setTimeout(
-        () => syncNow(false),
-        1500
-      );
-  }
+ if (immediate) {
+  clearTimeout(autoSyncTimer);
+  syncNow(false);
+ } else {
+  maybeAutoSync();
+ }
 }
 
 
-/* =========================================================
-   ID
-========================================================= */
+/* ============================================================
+   ZEIT
+   ============================================================ */
 
-function generateId() {
+const time = t => new Date(t).toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
+const date = t => new Date(t).toLocaleDateString("de-DE");
 
-  return (
-    Date.now().toString(36) +
-    "_" +
-    Math.random()
-      .toString(36)
-      .substring(2, 10)
-  );
-}
+const dur = ms => {
+ let m = Math.round(ms / 60000);
+ let h = Math.floor(m / 60);
+ return h + "h " + String(m % 60).padStart(2, "0") + "m";
+};
 
 
-/* =========================================================
-   MIGRATION
-========================================================= */
-
-function migrate() {
-
-  entries =
-    entries
-      .filter(Boolean)
-      .map(entry => {
-
-        if (!entry.id) {
-          entry.id =
-            generateId();
-        }
-
-        if (
-          typeof entry.pauseMs !==
-          "number"
-        ) {
-          entry.pauseMs = 0;
-        }
-
-        return entry;
-      });
-
-  deletedEntries =
-    deletedEntries
-      .filter(Boolean)
-      .map(entry => {
-
-        if (!entry.id) {
-          entry.id =
-            generateId();
-        }
-
-        if (
-          typeof entry.pauseMs !==
-          "number"
-        ) {
-          entry.pauseMs = 0;
-        }
-
-        return entry;
-      });
-
-  if (
-    active &&
-    typeof active.start !==
-    "number"
-  ) {
-    active = null;
-  }
-
-  save(false);
-}
-
-
-/* =========================================================
-   PUNCH
-========================================================= */
+/* ============================================================
+   EINSTEMPELN / AUSSTEMPELN
+   ============================================================ */
 
 function punch() {
-
-  if (active) {
-
-    if (active.pauseStart) {
-
-      active.pauseMs +=
-        Date.now() -
-        active.pauseStart;
-
-      active.pauseStart = null;
-    }
-
-    const end =
-      Date.now();
-
-    if (
-      end <= active.start
-    ) {
-      return;
-    }
-
-    const entry = {
-
-      id:
-        generateId(),
-
-      start:
-        active.start,
-
-      end:
-        end,
-
-      pauseMs:
-        Math.max(
-          0,
-          active.pauseMs || 0
-        ),
-
-      note:
-        document
-          .getElementById("note")
-          .value
-          .trim()
-    };
-
-    entries.push(entry);
-
-    active = null;
-
-    document.getElementById(
-      "note"
-    ).value = "";
-
-    save(true);
-
-    toast(
-      "Erfolgreich ausgestempelt."
-    );
-
-  } else {
-
-    active = {
-
-      start:
-        Date.now(),
-
-      note:
-        document
-          .getElementById("note")
-          .value
-          .trim(),
-
-      pauseMs:
-        0,
-
-      pauseStart:
-        null
-    };
-
-    save(false);
-
-    toast(
-      "Eingestempelt."
-    );
+ if (active) {
+  if (active.pauseStart) {
+   active.pauseMs = (active.pauseMs || 0) + (Date.now() - active.pauseStart);
+   active.pauseStart = null;
   }
 
+  entries.push({
+   id: Date.now() + "_" + Math.random().toString(36).slice(2, 7),
+   start: active.start,
+   end: Date.now(),
+   pauseMs: active.pauseMs || 0,
+   note: $("note").value.trim()
+  });
+
+  active = null;
+  $("note").value = "";
+  save(true);
   render();
+  maybeShowReminder();
+
+ } else {
+  active = {
+   start: Date.now(),
+   note: $("note").value.trim(),
+   pauseMs: 0,
+   pauseStart: null
+  };
+
+  save();
+  render();
+  maybeShowReminder();
+ }
 }
 
 
-/* =========================================================
+/* ============================================================
    PAUSE
-========================================================= */
+   ============================================================ */
 
 function togglePause() {
+ if (!active) return;
 
-  if (!active) {
-    return;
-  }
+ if (active.pauseStart) {
+  active.pauseMs = (active.pauseMs || 0) + (Date.now() - active.pauseStart);
+  active.pauseStart = null;
+ } else {
+  active.pauseStart = Date.now();
+ }
 
-  if (active.pauseStart) {
-
-    active.pauseMs +=
-      Date.now() -
-      active.pauseStart;
-
-    active.pauseStart = null;
-
-    toast(
-      "Pause beendet."
-    );
-
-  } else {
-
-    active.pauseStart =
-      Date.now();
-
-    toast(
-      "Pause gestartet."
-    );
-  }
-
-  save(false);
-  render();
+ save();
+ render();
 }
 
 
-/* =========================================================
-   DURATION
-========================================================= */
-
-function getEntryDuration(entry) {
-
-  if (!entry) {
-    return 0;
-  }
-
-  const pause =
-    Number(
-      entry.pauseMs || 0
-    );
-
-  return Math.max(
-    0,
-    entry.end -
-    entry.start -
-    pause
-  );
-}
-
-
-function getActiveDuration() {
-
-  if (!active) {
-    return 0;
-  }
-
-  let pause =
-    Number(
-      active.pauseMs || 0
-    );
-
-  if (active.pauseStart) {
-
-    pause +=
-      Date.now() -
-      active.pauseStart;
-  }
-
-  return Math.max(
-    0,
-    Date.now() -
-    active.start -
-    pause
-  );
-}
-
-
-function formatDuration(ms) {
-
-  ms =
-    Math.max(
-      0,
-      ms || 0
-    );
-
-  const totalSeconds =
-    Math.floor(
-      ms / 1000
-    );
-
-  const hours =
-    Math.floor(
-      totalSeconds / 3600
-    );
-
-  const minutes =
-    Math.floor(
-      (totalSeconds % 3600) / 60
-    );
-
-  const seconds =
-    totalSeconds % 60;
-
-  return (
-    String(hours).padStart(2, "0") +
-    ":" +
-    String(minutes).padStart(2, "0") +
-    ":" +
-    String(seconds).padStart(2, "0")
-  );
-}
-
-
-function hoursText(ms) {
-
-  return (
-    (ms / 3600000)
-      .toFixed(2)
-      .replace(".", ",") +
-    " h"
-  );
-}
-
-
-/* =========================================================
-   FORMAT
-========================================================= */
-
-function dateText(timestamp) {
-
-  return new Date(timestamp)
-    .toLocaleDateString(
-      "de-DE"
-    );
-}
-
-
-function timeText(timestamp) {
-
-  return new Date(timestamp)
-    .toLocaleTimeString(
-      "de-DE",
-      {
-        hour: "2-digit",
-        minute: "2-digit"
-      }
-    );
-}
-
-
-function dateInputValue(timestamp) {
-
-  const d =
-    new Date(timestamp);
-
-  const year =
-    d.getFullYear();
-
-  const month =
-    String(
-      d.getMonth() + 1
-    ).padStart(2, "0");
-
-  const day =
-    String(
-      d.getDate()
-    ).padStart(2, "0");
-
-  return (
-    `${year}-${month}-${day}`
-  );
-}
-
-
-/* =========================================================
+/* ============================================================
    RENDER
-========================================================= */
+   ============================================================ */
 
 function render() {
+ $("status").textContent = active
+  ? (active.pauseStart ? "⏸️ Pause" : "🟢 Eingestempelt")
+  : "🔴 Ausgestempelt";
 
-  const now =
-    new Date();
+ $("punch").textContent = active ? "Ausstempeln" : "Einstempeln";
+ $("punch").className = active ? "punch red" : "punch";
+ $("since").textContent = active ? "Seit " + time(active.start) + " Uhr" : "";
+ $("noteHint").style.display = active ? "block" : "none";
+ $("pauseWrap").style.display = active ? "block" : "none";
 
-  document.getElementById(
-    "clock"
-  ).textContent =
-    now.toLocaleTimeString(
-      "de-DE"
-    );
+ if (active) {
+  $("pauseBtn").textContent = active.pauseStart ? "Pause beenden" : "Pause starten";
+  $("pauseBtn").className = active.pauseStart ? "pausebtn red" : "pausebtn gray";
+ }
 
-  document.getElementById(
-    "date"
-  ).textContent =
-    now.toLocaleDateString(
-      "de-DE",
-      {
-        weekday: "long",
-        day: "2-digit",
-        month: "long",
-        year: "numeric"
-      }
-    );
+ if (!active) {
+  $("timer").textContent = "00:00:00";
+ }
 
+ $("log").innerHTML = [...entries]
+  .sort((a, b) => b.start - a.start)
+  .map(e => `
+   <tr>
+    <td>${date(e.start)}</td>
+    <td>${time(e.start)}</td>
+    <td>${time(e.end)}</td>
+    <td>${dur(e.end - e.start - (e.pauseMs || 0))}</td>
+    <td>${e.pauseMs ? dur(e.pauseMs) : "–"}</td>
+    <td class="note">${safe(e.note || "-")}</td>
+    <td class="actions-cell">
+     <button class="gray" onclick="openEdit('${e.id}')">✏️</button>
+     <button class="red" onclick="deleteEntry('${e.id}')">🗑️</button>
+    </td>
+   </tr>
+  `).join("");
 
-  const status =
-    document.getElementById(
-      "status"
-    );
+ $("empty").style.display = entries.length ? "none" : "block";
+ $("count").textContent = entries.length;
 
-  const statusText =
-    document.getElementById(
-      "statusText"
-    );
-
-  const punchBtn =
-    document.getElementById(
-      "punchBtn"
-    );
-
-  const pauseBtn =
-    document.getElementById(
-      "pauseBtn"
-    );
-
-
-  if (active) {
-
-    status.classList.add(
-      "active"
-    );
-
-    statusText.textContent =
-      active.pauseStart
-        ? "In Pause"
-        : "Eingestempelt";
-
-    punchBtn.textContent =
-      "Ausstempeln";
-
-    punchBtn.classList.remove(
-      "btn-primary"
-    );
-
-    punchBtn.classList.add(
-      "btn-danger"
-    );
-
-    pauseBtn.disabled = false;
-
-    pauseBtn.textContent =
-      active.pauseStart
-        ? "Pause beenden"
-        : "Pause";
-
-  } else {
-
-    status.classList.remove(
-      "active"
-    );
-
-    statusText.textContent =
-      "Nicht eingestempelt";
-
-    punchBtn.textContent =
-      "Einstempeln";
-
-    punchBtn.classList.remove(
-      "btn-danger"
-    );
-
-    punchBtn.classList.add(
-      "btn-primary"
-    );
-
-    pauseBtn.disabled = true;
-
-    pauseBtn.textContent =
-      "Pause";
-  }
-
-
-  document.getElementById(
-    "activeTimer"
-  ).textContent =
-    active
-      ? formatDuration(
-          getActiveDuration()
-        )
-      : "00:00:00";
-
-
-  document.getElementById(
-    "pauseInfo"
-  ).textContent =
-    active
-      ? (
-          "Pause: " +
-          formatDuration(
-            (active.pauseMs || 0) +
-            (
-              active.pauseStart
-                ? Date.now() -
-                  active.pauseStart
-                : 0
-            )
-          )
-        )
-      : "";
-
-
-  renderEntries();
-  renderStats();
-  renderMonth();
+ stats();
+ renderMonth();
 }
 
 
-/* =========================================================
-   ENTRIES
-========================================================= */
+/* ============================================================
+   STATISTIK
+   ============================================================ */
 
-function renderEntries() {
+function stats() {
+ let now = new Date();
+ let today = new Date(now);
+ today.setHours(0, 0, 0, 0);
 
-  const body =
-    document.getElementById(
-      "entriesBody"
-    );
+ let week = new Date(today);
+ week.setDate(week.getDate() - ((week.getDay() + 6) % 7));
 
-  const all = [
+ let t = 0;
+ let w = 0;
 
-    ...entries.map(
-      entry => ({
-        ...entry,
-        deleted: false
-      })
-    ),
+ entries.forEach(e => {
+  let d = e.end - e.start - (e.pauseMs || 0);
+  if (e.start >= today) t += d;
+  if (e.start >= week) w += d;
+ });
 
-    ...deletedEntries.map(
-      entry => ({
-        ...entry,
-        deleted: true
-      })
-    )
+ if (active) {
+  let pause = active.pauseMs || 0;
+  if (active.pauseStart) pause += Date.now() - active.pauseStart;
 
-  ];
+  let d = Date.now() - active.start - pause;
+  if (active.start >= today) t += d;
+  if (active.start >= week) w += d;
+ }
 
-  all.sort(
-    (a, b) =>
-      b.start -
-      a.start
-  );
-
-  body.innerHTML = "";
-
-  if (!all.length) {
-
-    body.innerHTML = `
-      <tr>
-        <td colspan="8"
-            style="
-              text-align:center;
-              color:#888;
-              padding:25px;
-            ">
-          Noch keine Einträge vorhanden.
-        </td>
-      </tr>
-    `;
-
-    return;
-  }
-
-
-  all.forEach(entry => {
-
-    const tr =
-      document.createElement(
-        "tr"
-      );
-
-    if (entry.deleted) {
-      tr.classList.add(
-        "row-deleted"
-      );
-    }
-
-    const duration =
-      getEntryDuration(
-        entry
-      );
-
-    const pauseMinutes =
-      (
-        Number(
-          entry.pauseMs || 0
-        ) / 60000
-      )
-      .toFixed(0);
-
-    const note =
-      escapeHTML(
-        entry.note || ""
-      );
-
-    tr.innerHTML = `
-
-      <td>
-        ${dateText(entry.start)}
-      </td>
-
-      <td>
-        ${timeText(entry.start)}
-      </td>
-
-      <td>
-        ${timeText(entry.end)}
-      </td>
-
-      <td>
-        ${formatDuration(duration)}
-      </td>
-
-      <td>
-        ${pauseMinutes} min
-      </td>
-
-      <td>
-        ${note || "-"}
-      </td>
-
-      <td>
-        ${
-          entry.deleted
-            ? "GELÖSCHT"
-            : "AKTIV"
-        }
-      </td>
-
-      <td class="actions-cell">
-
-        ${
-          entry.deleted
-            ? `
-              <button
-                class="btn btn-small btn-success"
-                onclick="undoDelete('${entry.id}')"
-              >
-                Wiederherstellen
-              </button>
-            `
-            : `
-              <button
-                class="btn btn-small"
-                onclick="openEdit('${entry.id}')"
-              >
-                Bearbeiten
-              </button>
-
-              <button
-                class="btn btn-small btn-danger"
-                onclick="deleteEntry('${entry.id}')"
-              >
-                Löschen
-              </button>
-            `
-        }
-
-      </td>
-    `;
-
-    body.appendChild(tr);
-  });
+ $("today").textContent = dur(Math.max(t, 0));
+ $("week").textContent = dur(Math.max(w, 0));
 }
 
 
-/* =========================================================
-   STATS
-========================================================= */
-
-function renderStats() {
-
-  const now =
-    new Date();
-
-  const todayStart =
-    new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate()
-    ).getTime();
-
-  const tomorrowStart =
-    todayStart +
-    86400000;
-
-
-  const weekStart =
-    getStartOfWeek(
-      now
-    );
-
-
-  let today = 0;
-  let week = 0;
-  let month = 0;
-
-
-  entries.forEach(entry => {
-
-    const duration =
-      getEntryDuration(
-        entry
-      );
-
-    if (
-      entry.start >= todayStart &&
-      entry.start < tomorrowStart
-    ) {
-      today += duration;
-    }
-
-    if (
-      entry.start >= weekStart
-    ) {
-      week += duration;
-    }
-
-    const d =
-      new Date(entry.start);
-
-    if (
-      d.getFullYear() ===
-        now.getFullYear() &&
-      d.getMonth() ===
-        now.getMonth()
-    ) {
-      month += duration;
-    }
-  });
-
-
-  if (active) {
-
-    const duration =
-      getActiveDuration();
-
-    const start =
-      active.start;
-
-    if (
-      start >= todayStart &&
-      start < tomorrowStart
-    ) {
-      today += duration;
-    }
-
-    if (
-      start >= weekStart
-    ) {
-      week += duration;
-    }
-
-    const d =
-      new Date(start);
-
-    if (
-      d.getFullYear() ===
-        now.getFullYear() &&
-      d.getMonth() ===
-        now.getMonth()
-    ) {
-      month += duration;
-    }
-  }
-
-
-  document.getElementById(
-    "statToday"
-  ).textContent =
-    hoursText(today);
-
-  document.getElementById(
-    "statWeek"
-  ).textContent =
-    hoursText(week);
-
-  document.getElementById(
-    "statMonth"
-  ).textContent =
-    hoursText(month);
-
-  document.getElementById(
-    "statCount"
-  ).textContent =
-    entries.length;
-}
-
-
-function getStartOfWeek(date) {
-
-  const d =
-    new Date(date);
-
-  const day =
-    d.getDay();
-
-  const diff =
-    day === 0
-      ? -6
-      : 1 - day;
-
-  d.setHours(
-    0,
-    0,
-    0,
-    0
-  );
-
-  d.setDate(
-    d.getDate() + diff
-  );
-
-  return d.getTime();
-}
-
-
-/* =========================================================
-   MONTH
-========================================================= */
-
-function changeMonth(delta) {
-
-  currentMonth += delta;
-
-  if (currentMonth < 0) {
-
-    currentMonth = 11;
-    currentYear--;
-
-  } else if (
-    currentMonth > 11
-  ) {
-
-    currentMonth = 0;
-    currentYear++;
-  }
-
-  renderMonth();
-}
-
+/* ============================================================
+   MONATSÜBERSICHT
+   ============================================================ */
 
 function renderMonth() {
+ let y = sel.getFullYear();
+ let m = sel.getMonth();
+ let days = {};
+ let total = 0;
 
-  const names = [
-    "Januar",
-    "Februar",
-    "März",
-    "April",
-    "Mai",
-    "Juni",
-    "Juli",
-    "August",
-    "September",
-    "Oktober",
-    "November",
-    "Dezember"
-  ];
-
-  document.getElementById(
-    "monthName"
-  ).textContent =
-    `${names[currentMonth]} ${currentYear}`;
-
-
-  let total = 0;
-
-  entries.forEach(entry => {
-
-    const date =
-      new Date(
-        entry.start
-      );
-
-    if (
-      date.getFullYear() ===
-        currentYear &&
-      date.getMonth() ===
-        currentMonth
-    ) {
-
-      total +=
-        getEntryDuration(
-          entry
-        );
-    }
+ entries
+  .filter(e => {
+   let d = new Date(e.start);
+   return d.getFullYear() == y && d.getMonth() == m;
+  })
+  .forEach(e => {
+   let k = date(e.start);
+   let net = e.end - e.start - (e.pauseMs || 0);
+   days[k] = (days[k] || 0) + net;
+   total += net;
   });
 
+ let liveTotal = total;
 
-  if (active) {
+ if (active) {
+  let ad = new Date(active.start);
 
-    const date =
-      new Date(
-        active.start
-      );
-
-    if (
-      date.getFullYear() ===
-        currentYear &&
-      date.getMonth() ===
-        currentMonth
-    ) {
-
-      total +=
-        getActiveDuration();
-    }
+  if (ad.getFullYear() == y && ad.getMonth() == m) {
+   let pause = active.pauseMs || 0;
+   if (active.pauseStart) pause += Date.now() - active.pauseStart;
+   liveTotal += Math.max(Date.now() - active.start - pause, 0);
   }
+ }
 
+ $("monthStat").textContent = dur(liveTotal);
+ $("month").textContent = sel.toLocaleDateString("de-DE", { month: "long", year: "numeric" });
 
-  document.getElementById(
-    "monthTotal"
-  ).textContent =
-    hoursText(total);
+ let dayHtml = Object.entries(days)
+  .map(([d, v]) => `
+   <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2c313b">
+    <span>${d}</span>
+    <b>${dur(v)}</b>
+   </div>
+  `).join("");
+
+ $("summary").innerHTML =
+  `<div style="font:22px monospace;margin:10px 0">${dur(total)}</div>` +
+  (dayHtml || `<div class="sub">Keine Einträge in diesem Monat.</div>`);
+}
+
+function month(n) {
+ sel.setMonth(sel.getMonth() + n);
+ renderMonth();
 }
 
 
-/* =========================================================
-   EDIT
-========================================================= */
+/* ============================================================
+   BEARBEITEN
+   ============================================================ */
 
 function openEdit(id) {
+ let e = entries.find(x => x.id === id);
+ if (!e) return;
 
-  const entry =
-    entries.find(
-      e => e.id === id
-    );
+ editId = id;
 
-  if (!entry) {
-    return;
-  }
+ let s = new Date(e.start);
+ let en = new Date(e.end);
+ let pad = n => String(n).padStart(2, "0");
 
-  const start =
-    new Date(entry.start);
+ $("editDate").value = `${s.getFullYear()}-${pad(s.getMonth() + 1)}-${pad(s.getDate())}`;
+ $("editStart").value = `${pad(s.getHours())}:${pad(s.getMinutes())}`;
+ $("editEnd").value = `${pad(en.getHours())}:${pad(en.getMinutes())}`;
+ $("editPause").value = Math.round((e.pauseMs || 0) / 60000);
+ $("editNote").value = e.note || "";
 
-  const end =
-    new Date(entry.end);
-
-  document.getElementById(
-    "editId"
-  ).value = id;
-
-  document.getElementById(
-    "editDate"
-  ).value =
-    dateInputValue(
-      entry.start
-    );
-
-  document.getElementById(
-    "editStart"
-  ).value =
-    timeInputValue(
-      start
-    );
-
-  document.getElementById(
-    "editEnd"
-  ).value =
-    timeInputValue(
-      end
-    );
-
-  document.getElementById(
-    "editPause"
-  ).value =
-    Math.round(
-      (entry.pauseMs || 0) /
-      60000
-    );
-
-  document.getElementById(
-    "editNote"
-  ).value =
-    entry.note || "";
-
-  document.getElementById(
-    "editModal"
-  ).classList.add(
-    "open"
-  );
+ $("editModal").classList.add("show");
 }
-
-
-function timeInputValue(date) {
-
-  return (
-    String(
-      date.getHours()
-    ).padStart(2, "0") +
-    ":" +
-    String(
-      date.getMinutes()
-    ).padStart(2, "0")
-  );
-}
-
 
 function closeEdit() {
-
-  document.getElementById(
-    "editModal"
-  ).classList.remove(
-    "open"
-  );
+ $("editModal").classList.remove("show");
+ editId = null;
 }
-
 
 function saveEdit() {
+ let e = entries.find(x => x.id === editId);
+ if (!e) return;
 
-  const id =
-    document.getElementById(
-      "editId"
-    ).value;
+ let dateVal = $("editDate").value;
+ let [sh, sm] = $("editStart").value.split(":").map(Number);
+ let [eh, em] = $("editEnd").value.split(":").map(Number);
+ let pauseMin = parseInt($("editPause").value) || 0;
 
-  const entry =
-    entries.find(
-      e => e.id === id
-    );
+ if (!dateVal || isNaN(sh) || isNaN(eh)) {
+  alert("Bitte Datum, Start und Ende ausfüllen.");
+  return;
+ }
 
-  if (!entry) {
-    return;
-  }
+ let [y, mo, d] = dateVal.split("-").map(Number);
+ let start = new Date(y, mo - 1, d, sh, sm || 0).getTime();
+ let end = new Date(y, mo - 1, d, eh, em || 0).getTime();
 
-  const date =
-    document.getElementById(
-      "editDate"
-    ).value;
+ if (end <= start) {
+  alert("Ende muss nach Start liegen.");
+  return;
+ }
 
-  const startTime =
-    document.getElementById(
-      "editStart"
-    ).value;
+ e.start = start;
+ e.end = end;
+ e.pauseMs = Math.max(0, pauseMin) * 60000;
+ e.note = $("editNote").value.trim();
 
-  const endTime =
-    document.getElementById(
-      "editEnd"
-    ).value;
-
-  const pauseMinutes =
-    Number(
-      document.getElementById(
-        "editPause"
-      ).value || 0
-    );
-
-  const note =
-    document.getElementById(
-      "editNote"
-    ).value.trim();
-
-
-  if (
-    !date ||
-    !startTime ||
-    !endTime
-  ) {
-
-    toast(
-      "Bitte alle Zeitfelder ausfüllen."
-    );
-
-    return;
-  }
-
-
-  const [
-    year,
-    month,
-    day
-  ] =
-    date
-      .split("-")
-      .map(Number);
-
-
-  const [
-    startHour,
-    startMinute
-  ] =
-    startTime
-      .split(":")
-      .map(Number);
-
-
-  const [
-    endHour,
-    endMinute
-  ] =
-    endTime
-      .split(":")
-      .map(Number);
-
-
-  let start =
-    new Date(
-      year,
-      month - 1,
-      day,
-      startHour,
-      startMinute,
-      0,
-      0
-    ).getTime();
-
-
-  let end =
-    new Date(
-      year,
-      month - 1,
-      day,
-      endHour,
-      endMinute,
-      0,
-      0
-    ).getTime();
-
-
-  /*
-    Übernacht-Schichten:
-    Wenn Ende kleiner/gleich Start ist,
-    wird das Ende auf den nächsten Tag gelegt.
-  */
-
-  if (end <= start) {
-    end += 86400000;
-  }
-
-
-  if (
-    end <= start
-  ) {
-
-    toast(
-      "Ungültige Zeit."
-    );
-
-    return;
-  }
-
-
-  entry.start =
-    start;
-
-  entry.end =
-    end;
-
-  entry.pauseMs =
-    Math.max(
-      0,
-      pauseMinutes
-    ) * 60000;
-
-  entry.note =
-    note;
-
-
-  save(true);
-
-  closeEdit();
-
-  render();
-
-  toast(
-    "Eintrag gespeichert."
-  );
+ save(true);
+ render();
+ closeEdit();
 }
 
 
-/* =========================================================
-   DELETE
-========================================================= */
+/* ============================================================
+   LÖSCHEN
+   ============================================================ */
+
+let lastDeleted = null;
+let lastDeletedTimer = null;
 
 function deleteEntry(id) {
+ let idx = entries.findIndex(e => e.id === id);
+ if (idx === -1) return;
 
-  const index =
-    entries.findIndex(
-      e => e.id === id
-    );
+ const confirmed = confirm(
+  "Möchtest du den Eintrag wirklich löschen?\n\n" +
+  "Der Eintrag bleibt in Google Sheets sichtbar und wird dort als GELÖSCHT markiert."
+ );
 
-  if (index === -1) {
-    return;
-  }
+ if (!confirmed) return;
 
+ const entry = entries[idx];
 
-  if (
-    !confirm(
-      "Diesen Eintrag wirklich löschen?"
-    )
-  ) {
-    return;
-  }
+ lastDeleted = { entry: entry, index: idx };
 
+ deletedEntries = deletedEntries.filter(e => e.id !== entry.id);
+ deletedEntries.push({ ...entry, deletedAt: Date.now(), deleteReason: "Manuell gelöscht" });
 
-  const entry =
-    entries[index];
+ entries.splice(idx, 1);
 
+ save(true);
+ render();
+ showToast("Eintrag gelöscht.");
+}
 
-  entries.splice(
-    index,
-    1
-  );
+function undoDelete() {
+ if (!lastDeleted) return;
 
+ deletedEntries = deletedEntries.filter(e => e.id !== lastDeleted.entry.id);
+ entries.splice(lastDeleted.index, 0, lastDeleted.entry);
+ lastDeleted = null;
 
-  deletedEntries.push({
+ save(true);
+ render();
+ hideToast();
+}
 
-    ...entry,
+function showToast(msg) {
+ clearTimeout(lastDeletedTimer);
+ $("toastMsg").textContent = msg;
+ $("toast").classList.add("show");
 
-    deletedAt:
-      Date.now(),
+ lastDeletedTimer = setTimeout(() => {
+  lastDeleted = null;
+  hideToast();
+ }, 6000);
+}
 
-    deleteReason:
-      "Manuell gelöscht"
-  });
-
-
-  save(true);
-
-  render();
-
-  toast(
-    "Eintrag gelöscht."
-  );
+function hideToast() {
+ $("toast").classList.remove("show");
 }
 
 
-function undoDelete(id) {
-
-  const index =
-    deletedEntries.findIndex(
-      e => e.id === id
-    );
-
-  if (index === -1) {
-    return;
-  }
-
-
-  const entry =
-    deletedEntries[index];
-
-
-  deletedEntries.splice(
-    index,
-    1
-  );
-
-
-  delete entry.deletedAt;
-  delete entry.deleteReason;
-
-
-  entries.push(
-    entry
-  );
-
-
-  save(true);
-
-  render();
-
-  toast(
-    "Eintrag wiederhergestellt."
-  );
-}
-
-
-/* =========================================================
-   DELETE ALL
-========================================================= */
-
-function clearAll() {
-
-  if (!entries.length) {
-
-    toast(
-      "Keine Einträge vorhanden."
-    );
-
-    return;
-  }
-
-
-  if (
-    !confirm(
-      "Wirklich ALLE aktiven Einträge löschen?"
-    )
-  ) {
-    return;
-  }
-
-
-  const timestamp =
-    Date.now();
-
-
-  entries.forEach(entry => {
-
-    deletedEntries.push({
-
-      ...entry,
-
-      deletedAt:
-        timestamp,
-
-      deleteReason:
-        "Alle Einträge gelöscht"
-    });
-  });
-
-
-  entries = [];
-
-
-  save(true);
-
-  render();
-
-  toast(
-    "Alle Einträge wurden gelöscht."
-  );
-}
-
-
-/* =========================================================
-   CLOUD SYNC
-========================================================= */
-
-async function syncNow(manual = false) {
-
-  if (!SYNC_CONFIG.url) {
-
-    updateSyncStatus(
-      "Kein Sync-Server eingerichtet.",
-      "error"
-    );
-
-    return false;
-  }
-
-
-  const employee =
-    document.getElementById(
-      "employeeName"
-    ).value.trim();
-
-
-  if (!employee) {
-
-    updateSyncStatus(
-      "Bitte zuerst einen Mitarbeiternamen eintragen.",
-      "error"
-    );
-
-    if (manual) {
-      toast(
-        "Mitarbeitername fehlt."
-      );
-    }
-
-    return false;
-  }
-
-
-  const payload = {
-
-    employee:
-      employee,
-
-    token:
-      SYNC_CONFIG.token,
-
-    timestamp:
-      Date.now(),
-
-    backup: {
-
-      entries:
-        entries,
-
-      deletedEntries:
-        deletedEntries,
-
-      active:
-        active
-    }
-  };
-
-
-  updateSyncStatus(
-    "Synchronisierung läuft...",
-    "wait"
-  );
-
-
-  try {
-
-    const response =
-      await fetch(
-        SYNC_CONFIG.url,
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "text/plain;charset=utf-8"
-          },
-
-          body:
-            JSON.stringify(
-              payload
-            ),
-
-          redirect:
-            "follow"
-        }
-      );
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        `HTTP ${response.status}`
-      );
-    }
-
-
-    const data =
-      await response.json();
-
-
-    /*
-      WICHTIG:
-      Nur status === "ok" zählt als Erfolg.
-    */
-
-    if (
-      !data ||
-      data.status !== "ok"
-    ) {
-
-      throw new Error(
-        data &&
-        data.message
-          ? data.message
-          : "Server hat die Synchronisierung abgelehnt."
-      );
-    }
-
-
-    const time =
-      Date.now();
-
-
-    localStorage.setItem(
-      "lastSyncTime",
-      String(time)
-    );
-
-
-    localStorage.removeItem(
-      "lastSyncError"
-    );
-
-
-    updateSyncStatus(
-      "Zuletzt erfolgreich synchronisiert: " +
-      new Date(time)
-        .toLocaleString("de-DE"),
-      "ok"
-    );
-
-
-    if (manual) {
-
-      toast(
-        "Synchronisierung erfolgreich."
-      );
-    }
-
-
-    return true;
-
-
-  } catch (error) {
-
-    console.error(
-      "Sync Fehler:",
-      error
-    );
-
-
-    localStorage.setItem(
-      "lastSyncError",
-      String(
-        error.message ||
-        error
-      )
-    );
-
-
-    /*
-      KEIN no-cors-Fallback.
-      Dadurch behauptet die App nicht mehr,
-      dass ein Sync erfolgreich war,
-      obwohl die Serverantwort unbekannt ist.
-    */
-
-    updateSyncStatus(
-      "Synchronisierung fehlgeschlagen: " +
-      (
-        error.message ||
-        "Unbekannter Fehler"
-      ),
-      "error"
-    );
-
-
-    if (manual) {
-
-      toast(
-        "Synchronisierung fehlgeschlagen."
-      );
-    }
-
-
-    return false;
-  }
-}
-
-
-function updateSyncStatus(
-  message,
-  type
-) {
-
-  const element =
-    document.getElementById(
-      "syncStatus"
-    );
-
-  element.textContent =
-    message;
-
-  element.className =
-    "sync-status";
-
-  if (type === "ok") {
-    element.classList.add(
-      "sync-ok"
-    );
-  }
-
-  if (type === "error") {
-    element.classList.add(
-      "sync-error"
-    );
-  }
-
-  if (type === "wait") {
-    element.classList.add(
-      "sync-wait"
-    );
-  }
-}
-
-
-function loadSyncStatus() {
-
-  const last =
-    Number(
-      localStorage.getItem(
-        "lastSyncTime"
-      ) || 0
-    );
-
-  const error =
-    localStorage.getItem(
-      "lastSyncError"
-    );
-
-
-  if (last) {
-
-    updateSyncStatus(
-      "Zuletzt erfolgreich synchronisiert: " +
-      new Date(last)
-        .toLocaleString("de-DE"),
-      "ok"
-    );
-
-  } else if (error) {
-
-    updateSyncStatus(
-      "Letzter Sync fehlgeschlagen: " +
-      error,
-      "error"
-    );
-
-  } else {
-
-    updateSyncStatus(
-      "Noch nicht synchronisiert.",
-      "wait"
-    );
-  }
-}
-
-
-/* =========================================================
+/* ============================================================
    CSV
-========================================================= */
+   ============================================================ */
 
-function exportCSV() {
+function monthEntries() {
+ let y = sel.getFullYear();
+ let m = sel.getMonth();
 
-  const rows = [
+ return entries
+  .filter(e => {
+   let d = new Date(e.start);
+   return d.getFullYear() == y && d.getMonth() == m;
+  })
+  .sort((a, b) => b.start - a.start);
+}
 
-    [
-      "Datum",
-      "Start",
-      "Ende",
-      "Dauer",
-      "Pause",
-      "Notiz",
-      "Status"
-    ]
+function csv() {
+ let list = monthEntries();
 
-  ];
+ if (!list.length) {
+  return alert("Keine Einträge in " + sel.toLocaleDateString("de-DE", { month: "long", year: "numeric" }) + ".");
+ }
 
+ let total = list.reduce((s, e) => s + (e.end - e.start - (e.pauseMs || 0)), 0);
 
-  entries.forEach(entry => {
+ let rows = [
+  ["Datum", "Start", "Ende", "Dauer", "Pause", "Notiz"],
+  ...list.map(e => [
+   date(e.start),
+   time(e.start),
+   time(e.end),
+   dur(e.end - e.start - (e.pauseMs || 0)),
+   e.pauseMs ? dur(e.pauseMs) : "0h 00m",
+   e.note || ""
+  ]),
+  [],
+  ["", "", "", "GESAMT MONAT", dur(total), ""]
+ ];
 
-    rows.push([
+ let text = "\uFEFF" + rows.map(r =>
+  r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(";")
+ ).join("\n");
 
-      dateText(
-        entry.start
-      ),
+ let mname = sel.toLocaleDateString("de-DE", { month: "long", year: "numeric" })
+  .replace(/\s+/g, "_").toLowerCase();
 
-      timeText(
-        entry.start
-      ),
-
-      timeText(
-        entry.end
-      ),
-
-      hoursText(
-        getEntryDuration(
-          entry
-        )
-      ),
-
-      Math.round(
-        (entry.pauseMs || 0) /
-        60000
-      ) + " min",
-
-      entry.note || "",
-
-      "AKTIV"
-    ]);
-  });
-
-
-  deletedEntries.forEach(entry => {
-
-    rows.push([
-
-      dateText(
-        entry.start
-      ),
-
-      timeText(
-        entry.start
-      ),
-
-      timeText(
-        entry.end
-      ),
-
-      hoursText(
-        getEntryDuration(
-          entry
-        )
-      ),
-
-      Math.round(
-        (entry.pauseMs || 0) /
-        60000
-      ) + " min",
-
-      entry.note || "",
-
-      "GELÖSCHT"
-    ]);
-  });
-
-
-  const csv =
-    "\uFEFF" +
-    rows
-      .map(row =>
-        row
-          .map(csvEscape)
-          .join(";")
-      )
-      .join("\n");
-
-
-  downloadFile(
-    csv,
-    "stempeluhr.csv",
-    "text/csv;charset=utf-8"
-  );
+ download(text, `stempeluhr_${mname}.csv`, "text/csv");
 }
 
 
-function csvEscape(value) {
-
-  const text =
-    String(
-      value ?? ""
-    );
-
-  return (
-    '"' +
-    text.replace(
-      /"/g,
-      '""'
-    ) +
-    '"'
-  );
-}
-
-
-/* =========================================================
+/* ============================================================
    PDF
-========================================================= */
+   ============================================================ */
 
-function exportPDF() {
+function pdfExport() {
+ let list = monthEntries();
 
-  const printWindow =
-    window.open(
-      "",
-      "_blank"
-    );
+ if (!list.length) {
+  return alert("Keine Einträge in " + sel.toLocaleDateString("de-DE", { month: "long", year: "numeric" }) + ".");
+ }
 
+ let total = list.reduce((s, e) => s + (e.end - e.start - (e.pauseMs || 0)), 0);
+ let monthLabel = sel.toLocaleDateString("de-DE", { month: "long", year: "numeric" });
 
-  if (!printWindow) {
+ let rows = list.map(e => `
+  <tr>
+   <td>${date(e.start)}</td>
+   <td>${time(e.start)}</td>
+   <td>${time(e.end)}</td>
+   <td>${dur(e.end - e.start - (e.pauseMs || 0))}</td>
+   <td>${e.pauseMs ? dur(e.pauseMs) : "–"}</td>
+   <td>${safe(e.note || "-")}</td>
+  </tr>
+ `).join("");
 
-    toast(
-      "Popup wurde blockiert."
-    );
+ $("printView").innerHTML = `
+  <div class="print-page">
+   <div class="print-head">
+    <div>
+     <h1>⏱️ Stempeluhr</h1>
+     <div class="sub">Monatsbericht · erstellt am ${new Date().toLocaleDateString("de-DE")}</div>
+    </div>
+    <div class="month">${monthLabel}</div>
+   </div>
 
-    return;
-  }
+   <table class="print-table">
+    <thead>
+     <tr><th>Datum</th><th>Start</th><th>Ende</th><th>Dauer</th><th>Pause</th><th>Notiz</th></tr>
+    </thead>
+    <tbody>${rows}</tbody>
+   </table>
 
+   <div class="print-total">
+    <span class="lbl">Gesamtstunden ${monthLabel}</span>
+    <span class="val">${dur(total)}</span>
+   </div>
 
-  const employee =
-    document.getElementById(
-      "employeeName"
-    ).value.trim() ||
-    "Mitarbeiter";
+   <div class="print-foot">Made by Luca Valentine</div>
+  </div>
+ `;
 
-
-  const rows = [
-
-    ...entries.map(
-      entry => ({
-        ...entry,
-        status: "AKTIV"
-      })
-    ),
-
-    ...deletedEntries.map(
-      entry => ({
-        ...entry,
-        status: "GELÖSCHT"
-      })
-    )
-
-  ].sort(
-    (a, b) =>
-      b.start -
-      a.start
-  );
-
-
-  const html = `
-
-<!DOCTYPE html>
-
-<html lang="de">
-
-<head>
-
-<meta charset="UTF-8">
-
-<title>Stempeluhr - ${escapeHTML(employee)}</title>
-
-<style>
-
-body {
-  font-family: Arial, sans-serif;
-  padding: 30px;
-  color: #222;
+ window.print();
 }
 
-h1 {
-  margin-bottom: 5px;
-}
-
-.info {
-  margin-bottom: 25px;
-  color: #666;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  border: 1px solid #ccc;
-  padding: 7px;
-  font-size: 11px;
-}
-
-th {
-  background: #eee;
-}
-
-.deleted {
-  color: #a00;
-  text-decoration: line-through;
-}
-
-@media print {
-  body {
-    padding: 0;
-  }
-}
-
-</style>
-
-</head>
-
-<body>
-
-<h1>Stempeluhr</h1>
-
-<div class="info">
-  Mitarbeiter: ${escapeHTML(employee)}<br>
-  Erstellt: ${new Date().toLocaleString("de-DE")}
-</div>
-
-<table>
-
-<thead>
-
-<tr>
-  <th>Datum</th>
-  <th>Start</th>
-  <th>Ende</th>
-  <th>Dauer</th>
-  <th>Pause</th>
-  <th>Notiz</th>
-  <th>Status</th>
-</tr>
-
-</thead>
-
-<tbody>
-
-${rows.map(entry => `
-
-<tr class="${
-  entry.status === "GELÖSCHT"
-    ? "deleted"
-    : ""
-}">
-
-<td>
-  ${dateText(entry.start)}
-</td>
-
-<td>
-  ${timeText(entry.start)}
-</td>
-
-<td>
-  ${timeText(entry.end)}
-</td>
-
-<td>
-  ${formatDuration(
-    getEntryDuration(entry)
-  )}
-</td>
-
-<td>
-  ${Math.round(
-    (entry.pauseMs || 0) /
-    60000
-  )} min
-</td>
-
-<td>
-  ${escapeHTML(
-    entry.note || ""
-  )}
-</td>
-
-<td>
-  ${entry.status}
-</td>
-
-</tr>
-
-`).join("")}
-
-</tbody>
-
-</table>
-
-</body>
-
-</html>
-`;
+window.addEventListener("afterprint", () => { $("printView").innerHTML = ""; });
 
 
-  printWindow.document.write(
-    html
-  );
-
-  printWindow.document.close();
-
-
-  setTimeout(
-    () => {
-      printWindow.focus();
-      printWindow.print();
-    },
-    300
-  );
-}
-
-
-/* =========================================================
-   BACKUP
-========================================================= */
+/* ============================================================
+   BACKUP (lokale Datei)
+   ============================================================ */
 
 function backup() {
+ download(
+  JSON.stringify({ entries, deletedEntries, active, theme: localStorage.getItem("theme") }, null, 2),
+  "stempeluhr_backup.json",
+  "application/json"
+ );
 
-  const data = {
-
-    version: 2,
-
-    createdAt:
-      Date.now(),
-
-    entries:
-      entries,
-
-    deletedEntries:
-      deletedEntries,
-
-    active:
-      active,
-
-    theme:
-      localStorage.getItem(
-        "theme"
-      ),
-
-    employeeName:
-      document.getElementById(
-        "employeeName"
-      ).value.trim()
-  };
-
-
-  downloadFile(
-
-    JSON.stringify(
-      data,
-      null,
-      2
-    ),
-
-    "stempeluhr-backup.json",
-
-    "application/json"
-  );
-
-
-  toast(
-    "Backup erstellt."
-  );
+ localStorage.setItem("lastBackup", Date.now().toString());
+ dismissReminder(false);
 }
 
 
-/* =========================================================
-   RESTORE
-========================================================= */
+/* ============================================================
+   VALIDIERUNG
+   ============================================================ */
 
-function restore(event) {
+function validEntries(arr) {
+ if (!Array.isArray(arr)) return false;
 
-  const file =
-    event.target.files[0];
+ return arr.every(e =>
+  e && typeof e === "object" &&
+  typeof e.start === "number" && !isNaN(e.start) &&
+  typeof e.end === "number" && !isNaN(e.end) &&
+  e.end >= e.start
+ );
+}
 
-  if (!file) {
+function validActive(a) {
+ if (a === null || a === undefined) return true;
+ return typeof a === "object" && typeof a.start === "number" && !isNaN(a.start);
+}
+
+function normalizeEntries(arr) {
+ return arr.map(en => ({
+  id: en.id || (Date.now() + "_" + Math.random().toString(36).slice(2, 7)),
+  start: en.start,
+  end: en.end,
+  pauseMs: en.pauseMs || 0,
+  note: en.note || ""
+ }));
+}
+
+function applyImportedState(x) {
+ entries = normalizeEntries(x.entries);
+ deletedEntries = Array.isArray(x.deletedEntries) ? x.deletedEntries : [];
+ active = x.active || null;
+
+ if (active && active.pauseMs === undefined) {
+  active.pauseMs = 0;
+ }
+
+ localStorage.setItem("entries", JSON.stringify(entries));
+ localStorage.setItem("deletedEntries", JSON.stringify(deletedEntries));
+
+ if (active) {
+  localStorage.setItem("active", JSON.stringify(active));
+ } else {
+  localStorage.removeItem("active");
+ }
+
+ if (x.theme) localStorage.setItem("theme", x.theme);
+
+ loadTheme();
+ render();
+}
+
+
+/* ============================================================
+   IMPORT (lokale Datei)
+   ============================================================ */
+
+function restore(e) {
+ let f = e.target.files[0];
+ if (!f) return;
+
+ let r = new FileReader();
+
+ r.onload = () => {
+  try {
+   let x = JSON.parse(r.result);
+
+   if (!validEntries(x.entries) || !validActive(x.active)) throw 0;
+
+   let warn = "";
+
+   if (active) {
+    warn = "Du bist aktuell eingestempelt seit " + time(active.start) +
+     " Uhr. Diese laufende Sitzung geht beim Import verloren, falls das Backup keine eigene aktive Sitzung enthält. ";
+   }
+
+   if (entries.length) {
+    warn += `Aktuell vorhanden: ${entries.length} Einträge. Diese werden durch ${x.entries.length} Einträge aus dem Backup ERSETZT.`;
+   }
+
+   if (warn && !confirm(warn + "\n\nWirklich fortfahren?")) {
+    e.target.value = "";
     return;
+   }
+
+   applyImportedState(x);
+   save(true);
+   alert("Backup importiert.");
+
+  } catch {
+   alert("Ungültiges Backup: Die Datei enthält keine gültigen Zeiteinträge.");
   }
 
+  e.target.value = "";
+ };
 
-  const reader =
-    new FileReader();
-
-
-  reader.onload =
-    function() {
-
-      try {
-
-        const data =
-          JSON.parse(
-            reader.result
-          );
-
-
-        if (
-          !data ||
-          !Array.isArray(
-            data.entries
-          )
-        ) {
-
-          throw new Error(
-            "Ungültiges Backup."
-          );
-        }
-
-
-        if (
-          !confirm(
-            "Das Backup ersetzt deine aktuellen Daten. Fortfahren?"
-          )
-        ) {
-          return;
-        }
-
-
-        entries =
-          data.entries
-            .filter(Boolean)
-            .map(entry => {
-
-              if (!entry.id) {
-                entry.id =
-                  generateId();
-              }
-
-              if (
-                typeof entry.pauseMs !==
-                "number"
-              ) {
-                entry.pauseMs = 0;
-              }
-
-              return entry;
-            });
-
-
-        deletedEntries =
-          Array.isArray(
-            data.deletedEntries
-          )
-            ? data.deletedEntries
-                .filter(Boolean)
-                .map(entry => {
-
-                  if (!entry.id) {
-                    entry.id =
-                      generateId();
-                  }
-
-                  if (
-                    typeof entry.pauseMs !==
-                    "number"
-                  ) {
-                    entry.pauseMs = 0;
-                  }
-
-                  return entry;
-                })
-            : [];
-
-
-        active =
-          data.active || null;
-
-
-        if (
-          data.employeeName
-        ) {
-
-          document.getElementById(
-            "employeeName"
-          ).value =
-            data.employeeName;
-        }
-
-
-        if (
-          data.theme ===
-          "light"
-        ) {
-
-          document.body.classList.add(
-            "light"
-          );
-
-          localStorage.setItem(
-            "theme",
-            "light"
-          );
-
-        } else {
-
-          document.body.classList.remove(
-            "light"
-          );
-
-          localStorage.setItem(
-            "theme",
-            "dark"
-          );
-        }
-
-
-        save(true);
-
-        render();
-
-        toast(
-          "Backup erfolgreich importiert."
-        );
-
-      } catch (error) {
-
-        toast(
-          "Import fehlgeschlagen: " +
-          error.message
-        );
-      }
-
-    };
-
-
-  reader.readAsText(
-    file
-  );
-
-
-  event.target.value = "";
+ r.readAsText(f);
 }
 
 
-/* =========================================================
+/* ============================================================
+   DOWNLOAD
+   ============================================================ */
+
+function download(text, name, type) {
+ let a = document.createElement("a");
+ a.href = URL.createObjectURL(new Blob([text], { type }));
+ a.download = name;
+ a.click();
+ URL.revokeObjectURL(a.href);
+}
+
+
+/* ============================================================
+   ALLE LÖSCHEN
+   ============================================================ */
+
+function clearAll() {
+ if (!entries.length) return;
+
+ if (confirm(
+  "Wirklich alle Einträge löschen?\n\n" +
+  "Die Einträge bleiben in Google Sheets sichtbar und werden als GELÖSCHT markiert."
+ )) {
+  const now = Date.now();
+
+  entries.forEach(e => {
+   deletedEntries = deletedEntries.filter(d => d.id !== e.id);
+   deletedEntries.push({ ...e, deletedAt: now, deleteReason: "Alle Einträge gelöscht" });
+  });
+
+  entries = [];
+  save(true);
+  render();
+ }
+}
+
+
+/* ============================================================
+   SAFE HTML
+   ============================================================ */
+
+function safe(x) {
+ let d = document.createElement("div");
+ d.textContent = x;
+ return d.innerHTML;
+}
+
+
+/* ============================================================
+   BACKUP REMINDER
+   ============================================================ */
+
+function maybeShowReminder() {
+ if (!entries.length) {
+  $("backupReminder").style.display = "none";
+  return;
+ }
+
+ let last = parseInt(localStorage.getItem("lastBackup") || "0");
+ let dismissedUntil = parseInt(localStorage.getItem("reminderDismiss") || "0");
+ let now = Date.now();
+ let sevenDays = 7 * 24 * 60 * 60 * 1000;
+
+ if (now - last > sevenDays && now > dismissedUntil) {
+  $("reminderText").textContent = last
+   ? "Dein letztes Backup ist über 7 Tage her. Alle Daten liegen nur lokal in diesem Browser."
+   : "Du hast noch nie ein Backup erstellt. Alle Daten liegen nur lokal in diesem Browser.";
+
+  $("backupReminder").style.display = "flex";
+ } else {
+  $("backupReminder").style.display = "none";
+ }
+}
+
+function dismissReminder(saved) {
+ if (!saved) {
+  localStorage.setItem("reminderDismiss", (Date.now() + 3 * 24 * 60 * 60 * 1000).toString());
+ }
+ $("backupReminder").style.display = "none";
+}
+
+
+/* ============================================================
+   CLOUD SYNC
+   ============================================================ */
+
+function loadSyncSettings() {
+ $("employeeName").value = localStorage.getItem("employeeName") || "";
+ updateSyncStatus();
+}
+
+function saveSyncSettings() {
+ localStorage.setItem("employeeName", $("employeeName").value.trim());
+ $("syncStatus").textContent = "Gespeichert.";
+ maybeAutoSync();
+}
+
+function updateSyncStatus() {
+ let last = parseInt(localStorage.getItem("lastSyncTime") || "0");
+
+ if (last) {
+  $("syncStatus").textContent = "Zuletzt gesendet: " + new Date(last).toLocaleString("de-DE");
+ }
+}
+
+function currentEmployeeName() {
+ return localStorage.getItem("employeeName") || $("employeeName").value.trim();
+}
+
+function syncNow(manual) {
+ let url = SYNC_CONFIG.url;
+ let token = SYNC_CONFIG.token || "";
+ let name = currentEmployeeName();
+
+ if (!url) {
+  if (manual) alert("Cloud-Sync ist noch nicht eingerichtet. Bitte Admin kontaktieren.");
+  return;
+ }
+
+ if (!name) {
+  if (manual) alert("Bitte zuerst deinen Namen eintragen und speichern.");
+  return;
+ }
+
+ let payload = {
+  employee: name,
+  token: token,
+  timestamp: Date.now(),
+  backup: {
+   entries: entries,
+   deletedEntries: deletedEntries,
+   active: active,
+   theme: localStorage.getItem("theme")
+  }
+ };
+
+ fetch(url, {
+  method: "POST",
+  headers: { "Content-Type": "text/plain;charset=utf-8" },
+  body: JSON.stringify(payload),
+  keepalive: true
+ })
+ .then(res => res.json())
+ .then(data => {
+  localStorage.setItem("lastSyncTime", Date.now().toString());
+  updateSyncStatus();
+
+  if (manual) {
+   if (data && data.status === "ok") {
+    $("syncStatus").textContent =
+     "✅ Erfolgreich synchronisiert (" + data.rows + " Einträge, " + (data.deleted || 0) +
+     " gelöscht). Zuletzt: " + new Date().toLocaleString("de-DE");
+   } else {
+    $("syncStatus").textContent = "⚠️ Google meldet ein Problem: " + (data && data.message ? data.message : "Unbekannter Fehler");
+   }
+  }
+ })
+ .catch(() => {
+  fetch(url, {
+   method: "POST",
+   mode: "no-cors",
+   headers: { "Content-Type": "text/plain;charset=utf-8" },
+   body: JSON.stringify(payload),
+   keepalive: true
+  })
+  .then(() => {
+   localStorage.setItem("lastSyncTime", Date.now().toString());
+   updateSyncStatus();
+   if (manual) $("syncStatus").textContent = "Gesendet. Prüfe den Mitarbeiter-Tab in Google Sheets.";
+  })
+  .catch(() => {
+   if (manual) $("syncStatus").textContent = "❌ Senden fehlgeschlagen. URL prüfen und erneut versuchen.";
+  });
+ });
+}
+
+/**
+ * Holt den zuletzt in Google Sheets gesicherten Stand zurück
+ * und ersetzt die lokalen Daten damit (nach Bestätigung).
+ */
+function restoreFromCloud() {
+ let url = SYNC_CONFIG.url;
+ let token = SYNC_CONFIG.token || "";
+ let name = currentEmployeeName();
+
+ if (!url) {
+  alert("Cloud-Sync ist noch nicht eingerichtet. Bitte Admin kontaktieren.");
+  return;
+ }
+
+ if (!name) {
+  alert("Bitte zuerst deinen Namen eintragen und speichern.");
+  return;
+ }
+
+ let warn = `Das ersetzt deine ${entries.length} lokalen Einträge auf diesem Gerät durch den zuletzt in der Cloud gesicherten Stand für "${name}". Fortfahren?`;
+
+ if (!confirm(warn)) return;
+
+ $("syncStatus").textContent = "Lade aus der Cloud…";
+
+ const getUrl = url + (url.includes("?") ? "&" : "?") +
+  "action=restore&employee=" + encodeURIComponent(name) +
+  "&token=" + encodeURIComponent(token);
+
+ fetch(getUrl)
+  .then(res => res.json())
+  .then(data => {
+   if (!data || data.status !== "ok" || !data.backup) {
+    $("syncStatus").textContent = "⚠️ " + (data && data.message ? data.message : "Kein Cloud-Backup gefunden.");
+    return;
+   }
+
+   if (!validEntries(data.backup.entries || [])) {
+    $("syncStatus").textContent = "⚠️ Cloud-Backup enthält keine gültigen Einträge.";
+    return;
+   }
+
+   applyImportedState(data.backup);
+   save(false);
+
+   $("syncStatus").textContent = "✅ Aus der Cloud geladen (" + entries.length + " Einträge). " +
+    new Date().toLocaleString("de-DE");
+  })
+  .catch(() => {
+   $("syncStatus").textContent = "❌ Laden fehlgeschlagen. URL prüfen und erneut versuchen.";
+  });
+}
+
+
+/* ============================================================
    THEME
-========================================================= */
+   ============================================================ */
 
-function toggleTheme() {
-
-  const light =
-    document.body.classList.toggle(
-      "light"
-    );
-
-
-  localStorage.setItem(
-    "theme",
-    light
-      ? "light"
-      : "dark"
-  );
+function theme() {
+ document.body.classList.toggle("light");
+ localStorage.setItem("theme", document.body.classList.contains("light") ? "light" : "dark");
 }
-
 
 function loadTheme() {
-
-  const theme =
-    localStorage.getItem(
-      "theme"
-    );
-
-
-  if (theme === "light") {
-
-    document.body.classList.add(
-      "light"
-    );
-
-  } else {
-
-    document.body.classList.remove(
-      "light"
-    );
-  }
+ if (localStorage.getItem("theme") == "light") {
+  document.body.classList.add("light");
+ }
 }
 
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-function toast(message) {
-
-  const container =
-    document.getElementById(
-      "toastContainer"
-    );
+$("date").textContent = new Date().toLocaleDateString("de-DE", {
+ weekday: "long", day: "2-digit", month: "long", year: "numeric"
+});
 
 
-  const element =
-    document.createElement(
-      "div"
-    );
-
-
-  element.className =
-    "toast";
-
-  element.textContent =
-    message;
-
-
-  container.appendChild(
-    element
-  );
-
-
-  setTimeout(
-    () => {
-
-      element.remove();
-
-    },
-    3500
-  );
-}
-
-
-/* =========================================================
-   DOWNLOAD
-========================================================= */
-
-function downloadFile(
-  content,
-  filename,
-  type
-) {
-
-  const blob =
-    new Blob(
-      [content],
-      {
-        type: type
-      }
-    );
-
-
-  const url =
-    URL.createObjectURL(
-      blob
-    );
-
-
-  const a =
-    document.createElement(
-      "a"
-    );
-
-  a.href =
-    url;
-
-  a.download =
-    filename;
-
-  document.body.appendChild(
-    a
-  );
-
-  a.click();
-
-  a.remove();
-
-
-  setTimeout(
-    () => {
-      URL.revokeObjectURL(
-        url
-      );
-    },
-    1000
-  );
-}
-
-
-/* =========================================================
-   SECURITY / HTML
-========================================================= */
-
-function escapeHTML(value) {
-
-  return String(
-    value ?? ""
-  )
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-}
-
-
-/* =========================================================
-   TICK
-========================================================= */
+/* ============================================================
+   TIMER
+   ============================================================ */
 
 function tick() {
+ if (!active) return;
 
-  render();
+ let pause = active.pauseMs || 0;
+ if (active.pauseStart) pause += Date.now() - active.pauseStart;
+
+ let s = Math.floor((Date.now() - active.start - pause) / 1000);
+ s = Math.max(s, 0);
+
+ $("timer").textContent =
+  String(Math.floor(s / 3600)).padStart(2, "0") + ":" +
+  String(Math.floor(s / 60) % 60).padStart(2, "0") + ":" +
+  String(s % 60).padStart(2, "0");
+
+ stats();
+
+ let y = sel.getFullYear();
+ let m = sel.getMonth();
+ let ad = new Date(active.start);
+
+ if (ad.getFullYear() != y || ad.getMonth() != m) return;
+
+ let total = 0;
+
+ entries
+  .filter(e => {
+   let d = new Date(e.start);
+   return d.getFullYear() == y && d.getMonth() == m;
+  })
+  .forEach(e => { total += e.end - e.start - (e.pauseMs || 0); });
+
+ let activePause = active.pauseMs || 0;
+ if (active.pauseStart) activePause += Date.now() - active.pauseStart;
+
+ total += Math.max(Date.now() - active.start - activePause, 0);
+
+ $("monthStat").textContent = dur(total);
 }
 
 
-/* =========================================================
-   START
-========================================================= */
+/* ============================================================
+   LOADER
+   ============================================================ */
 
-function init() {
+function runLoader() {
+ let bar = $("loadbar");
+ let msg = $("loadmsg");
+ let loader = $("loader");
 
-  migrate();
+ let steps = [
+  [0, "Lade Einträge…"],
+  [35, "Prüfe aktive Sitzung…"],
+  [70, "Baue Monatsübersicht…"],
+  [95, "Fast fertig…"]
+ ];
 
-  loadTheme();
+ let start = Date.now();
+ let duration = 1200;
 
+ function frame() {
+  let elapsed = Date.now() - start;
+  let pct = Math.min(100, (elapsed / duration) * 100);
 
-  const savedEmployee =
-    localStorage.getItem(
-      "employeeName"
-    );
+  bar.style.width = pct + "%";
 
+  let cur = steps[0][1];
+  for (const [p, m] of steps) { if (pct >= p) cur = m; }
+  msg.textContent = cur;
 
-  if (savedEmployee) {
-
-    document.getElementById(
-      "employeeName"
-    ).value =
-      savedEmployee;
+  if (elapsed < duration) {
+   requestAnimationFrame(frame);
+  } else {
+   loader.style.opacity = "0";
+   loader.style.transition = "opacity .4s";
+   setTimeout(() => loader.remove(), 400);
   }
+ }
 
-
-  loadSyncStatus();
-
-  render();
-
-
-  document.getElementById(
-    "loader"
-  ).classList.add(
-    "hidden"
-  );
-
-
-  setInterval(
-    tick,
-    1000
-  );
-
-
-  /*
-    Wenn die Seite wieder sichtbar wird,
-    direkt neu rendern.
-  */
-
-  document.addEventListener(
-    "visibilitychange",
-    () => {
-
-      if (
-        !document.hidden
-      ) {
-        render();
-      }
-
-    }
-  );
+ requestAnimationFrame(frame);
 }
 
 
-init();
+/* ============================================================
+   START
+   ============================================================ */
+
+loadTheme();
+loadSyncSettings();
+render();
+maybeShowReminder();
+setInterval(tick, 1000);
+runLoader();
 
 </script>
 
