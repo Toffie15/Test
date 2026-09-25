@@ -347,7 +347,7 @@ body.light .togglebox{color:#4a5163}
    ============================================================ */
 
 const SYNC_CONFIG = {
- url: "https://script.google.com/macros/s/AKfycbzcJ8LA31VnEJgvWlYJ5uTz-rBv9gqpvQXS2t4J8EOHvqv1VlMcdu2lmj0aJEx0hbZO/exec",
+ url: "https://script.google.com/macros/s/AKfycbz7NHAfj82jxeYqjBZUOrJaP4nubocNuQtdpm4V6f3exDWOJO4LCPqJRWo-1oF_XQ/exec",
  token: "Luca_Valentine."
 };
 
@@ -404,8 +404,6 @@ let autoSyncTimer = null;
 
 function maybeAutoSync() {
  if (!SYNC_CONFIG.url) return;
- if (!currentEmployeeName()) return;
-
  clearTimeout(autoSyncTimer);
  autoSyncTimer = setTimeout(() => syncNow(false), 1500);
 }
@@ -1082,269 +1080,149 @@ function dismissReminder(saved) {
    ============================================================ */
 
 function loadSyncSettings() {
-  $("employeeName").value = localStorage.getItem("employeeName") || "";
-  updateSyncStatus();
+ $("employeeName").value = localStorage.getItem("employeeName") || "";
+ updateSyncStatus();
 }
 
 function saveSyncSettings() {
-  const name = $("employeeName").value.trim();
-
-  if (!name) {
-    $("syncStatus").textContent = "⚠️ Bitte zuerst deinen Namen eintragen.";
-    return;
-  }
-
-  localStorage.setItem("employeeName", name);
-  $("syncStatus").textContent = "Gespeichert. Synchronisierung wird gestartet…";
-
-  syncNow(true);
+ localStorage.setItem("employeeName", $("employeeName").value.trim());
+ $("syncStatus").textContent = "Gespeichert.";
+ maybeAutoSync();
 }
 
 function updateSyncStatus() {
-  const last = parseInt(localStorage.getItem("lastSyncTime") || "0", 10);
+ let last = parseInt(localStorage.getItem("lastSyncTime") || "0");
 
-  if (last) {
-    $("syncStatus").textContent =
-      "Zuletzt synchronisiert: " +
-      new Date(last).toLocaleString("de-DE");
-  }
+ if (last) {
+  $("syncStatus").textContent = "Zuletzt gesendet: " + new Date(last).toLocaleString("de-DE");
+ }
 }
 
 function currentEmployeeName() {
-  return (
-    localStorage.getItem("employeeName") ||
-    $("employeeName").value.trim()
-  ).trim();
+ return localStorage.getItem("employeeName") || $("employeeName").value.trim();
 }
 
-/*
- * Google Apps Script Web Apps funktionieren hier am zuverlässigsten
- * mit text/plain. Wir lesen die Antwort als Text und parsen JSON selbst.
- * Dadurch bekommen wir auch brauchbare Fehlermeldungen, wenn Google
- * statt JSON eine HTML-/Fehlerseite zurückgibt.
- */
-async function postSync(payload) {
-  const response = await fetch(SYNC_CONFIG.url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "text/plain;charset=utf-8"
-    },
-    body: JSON.stringify(payload),
-    redirect: "follow",
-    cache: "no-store"
-  });
+function syncNow(manual) {
+ let url = SYNC_CONFIG.url;
+ let token = SYNC_CONFIG.token || "";
+ let name = currentEmployeeName();
 
-  const text = await response.text();
+ if (!url) {
+  if (manual) alert("Cloud-Sync ist noch nicht eingerichtet. Bitte Admin kontaktieren.");
+  return;
+ }
 
-  if (!text) {
-    throw new Error(
-      "Google hat eine leere Antwort zurückgegeben."
-    );
+ if (!name) {
+  if (manual) alert("Bitte zuerst deinen Namen eintragen und speichern.");
+  return;
+ }
+
+ let payload = {
+  employee: name,
+  token: token,
+  timestamp: Date.now(),
+  backup: {
+   entries: entries,
+   deletedEntries: deletedEntries,
+   active: active,
+   theme: localStorage.getItem("theme")
   }
+ };
 
-  let data;
-
-  try {
-    data = JSON.parse(text);
-  } catch {
-    throw new Error(
-      "Google hat keine gültige JSON-Antwort zurückgegeben. " +
-      "Prüfe, ob die Web-App als /exec bereitgestellt wurde."
-    );
-  }
-
-  if (!data || data.status !== "ok") {
-    throw new Error(
-      data && data.message
-        ? data.message
-        : "Unbekannter Fehler vom Google Apps Script."
-    );
-  }
-
-  return data;
-}
-
-async function getSync(url) {
-  const response = await fetch(url, {
-    method: "GET",
-    redirect: "follow",
-    cache: "no-store"
-  });
-
-  const text = await response.text();
-
-  if (!text) {
-    throw new Error(
-      "Google hat eine leere Antwort zurückgegeben."
-    );
-  }
-
-  let data;
-
-  try {
-    data = JSON.parse(text);
-  } catch {
-    throw new Error(
-      "Google hat keine gültige JSON-Antwort zurückgegeben. " +
-      "Prüfe die Web-App-Bereitstellung."
-    );
-  }
-
-  return data;
-}
-
-async function syncNow(manual = false) {
-  const url = SYNC_CONFIG.url;
-  const token = SYNC_CONFIG.token || "";
-  const name = currentEmployeeName();
-
-  if (!url) {
-    if (manual) {
-      $("syncStatus").textContent =
-        "❌ Cloud-Sync ist nicht eingerichtet.";
-    }
-    return false;
-  }
-
-  if (!name) {
-    if (manual) {
-      $("syncStatus").textContent =
-        "⚠️ Bitte zuerst deinen Namen eintragen und speichern.";
-    }
-    return false;
-  }
+ fetch(url, {
+  method: "POST",
+  headers: { "Content-Type": "text/plain;charset=utf-8" },
+  body: JSON.stringify(payload),
+  keepalive: true
+ })
+ .then(res => res.json())
+ .then(data => {
+  localStorage.setItem("lastSyncTime", Date.now().toString());
+  updateSyncStatus();
 
   if (manual) {
-    $("syncStatus").textContent = "☁️ Synchronisiere…";
-  }
-
-  const payload = {
-    employee: name,
-    token: token,
-    timestamp: Date.now(),
-    backup: {
-      entries: entries,
-      deletedEntries: deletedEntries,
-      active: active,
-      theme: localStorage.getItem("theme") || "dark"
-    }
-  };
-
-  try {
-    const data = await postSync(payload);
-
-    localStorage.setItem("lastSyncTime", Date.now().toString());
-
-    const message =
-      "✅ Erfolgreich synchronisiert (" +
-      (data.rows || 0) +
-      " Einträge, " +
-      (data.deleted || 0) +
-      " gelöscht). Zuletzt: " +
-      new Date().toLocaleString("de-DE");
-
-    $("syncStatus").textContent = message;
-
-    return true;
-
-  } catch (err) {
-    console.error("Cloud-Sync POST Fehler:", err);
-
+   if (data && data.ok === true) {
     $("syncStatus").textContent =
-      "❌ Sync fehlgeschlagen: " +
-      (err && err.message
-        ? err.message
-        : "Unbekannter Fehler.");
-
-    return false;
+     "✅ Erfolgreich synchronisiert. " + (data.added || 0) + " neu, " +
+     (data.updated || 0) + " aktualisiert, " + (data.deleted || 0) +
+     " gelöscht/markiert. Zuletzt: " + new Date().toLocaleString("de-DE");
+   } else {
+    $("syncStatus").textContent = "⚠️ Google meldet ein Problem: " + (data && data.message ? data.message : "Unbekannter Fehler");
+   }
   }
+ })
+ .catch(() => {
+  fetch(url, {
+   method: "POST",
+   mode: "no-cors",
+   headers: { "Content-Type": "text/plain;charset=utf-8" },
+   body: JSON.stringify(payload),
+   keepalive: true
+  })
+  .then(() => {
+   localStorage.setItem("lastSyncTime", Date.now().toString());
+   updateSyncStatus();
+   if (manual) $("syncStatus").textContent = "Gesendet. Prüfe den Mitarbeiter-Tab in Google Sheets.";
+  })
+  .catch(() => {
+   if (manual) $("syncStatus").textContent = "❌ Senden fehlgeschlagen. URL prüfen und erneut versuchen.";
+  });
+ });
 }
 
 /**
- * Holt den zuletzt in Google Sheets gespeicherten Stand
- * und ersetzt die lokalen Daten damit.
+ * Holt den zuletzt in Google Sheets gesicherten Stand zurück
+ * und ersetzt die lokalen Daten damit (nach Bestätigung).
  */
-async function restoreFromCloud() {
-  const url = SYNC_CONFIG.url;
-  const token = SYNC_CONFIG.token || "";
-  const name = currentEmployeeName();
+function restoreFromCloud() {
+ let url = SYNC_CONFIG.url;
+ let token = SYNC_CONFIG.token || "";
+ let name = currentEmployeeName();
 
-  if (!url) {
-    $("syncStatus").textContent =
-      "❌ Cloud-Sync ist nicht eingerichtet.";
+ if (!url) {
+  alert("Cloud-Sync ist noch nicht eingerichtet. Bitte Admin kontaktieren.");
+  return;
+ }
+
+ if (!name) {
+  alert("Bitte zuerst deinen Namen eintragen und speichern.");
+  return;
+ }
+
+ let warn = `Das ersetzt deine ${entries.length} lokalen Einträge auf diesem Gerät durch den zuletzt in der Cloud gesicherten Stand für "${name}". Fortfahren?`;
+
+ if (!confirm(warn)) return;
+
+ $("syncStatus").textContent = "Lade aus der Cloud…";
+
+ const getUrl = url + (url.includes("?") ? "&" : "?") +
+  "action=restore&employee=" + encodeURIComponent(name) +
+  "&token=" + encodeURIComponent(token);
+
+ fetch(getUrl)
+  .then(res => res.json())
+  .then(data => {
+   if (!data || data.ok !== true || !data.backup) {
+    $("syncStatus").textContent = "⚠️ " + (data && data.message ? data.message : "Kein Cloud-Backup gefunden.");
     return;
-  }
+   }
 
-  if (!name) {
-    $("syncStatus").textContent =
-      "⚠️ Bitte zuerst deinen Namen eintragen und speichern.";
+   if (!validEntries(data.backup.entries || [])) {
+    $("syncStatus").textContent = "⚠️ Cloud-Backup enthält keine gültigen Einträge.";
     return;
-  }
+   }
 
-  const warn =
-    "Das ersetzt deine " +
-    entries.length +
-    " lokalen Einträge auf diesem Gerät durch den zuletzt " +
-    "in der Cloud gespeicherten Stand für \"" +
-    name +
-    "\".\n\nFortfahren?";
+   applyImportedState(data.backup);
+   save(false);
 
-  if (!confirm(warn)) return;
-
-  $("syncStatus").textContent = "☁️ Lade aus der Cloud…";
-
-  const getUrl =
-    url +
-    (url.includes("?") ? "&" : "?") +
-    "action=restore" +
-    "&employee=" +
-    encodeURIComponent(name) +
-    "&token=" +
-    encodeURIComponent(token);
-
-  try {
-    const data = await getSync(getUrl);
-
-    if (!data || data.status !== "ok" || !data.backup) {
-      throw new Error(
-        data && data.message
-          ? data.message
-          : "Kein Cloud-Backup gefunden."
-      );
-    }
-
-    if (!validEntries(data.backup.entries || [])) {
-      throw new Error(
-        "Das Cloud-Backup enthält keine gültigen Einträge."
-      );
-    }
-
-    applyImportedState(data.backup);
-
-    /*
-     * Nach dem Restore wird der geladene Stand nicht sofort
-     * wieder unnötig zurückgesendet. Der lokale Stand ist bereits
-     * identisch mit der Cloud.
-     */
-    localStorage.setItem("lastSyncTime", Date.now().toString());
-    updateSyncStatus();
-
-    $("syncStatus").textContent =
-      "✅ Aus der Cloud geladen (" +
-      entries.length +
-      " Einträge). " +
-      new Date().toLocaleString("de-DE");
-
-  } catch (err) {
-    console.error("Cloud-Restore Fehler:", err);
-
-    $("syncStatus").textContent =
-      "❌ Laden fehlgeschlagen: " +
-      (err && err.message
-        ? err.message
-        : "Unbekannter Fehler.");
-  }
+   $("syncStatus").textContent = "✅ Aus der Cloud geladen (" + entries.length + " Einträge). " +
+    new Date().toLocaleString("de-DE");
+  })
+  .catch(() => {
+   $("syncStatus").textContent = "❌ Laden fehlgeschlagen. URL prüfen und erneut versuchen.";
+  });
 }
+
 
 /* ============================================================
    THEME
