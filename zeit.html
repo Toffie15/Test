@@ -189,6 +189,151 @@ body.light #toast{
 .togglebox{display:flex;align-items:center;gap:8px;font-size:13px;color:#c5cad4;margin-top:10px}
 body.light .togglebox{color:#4a5163}
 #syncStatus{font-size:12px;color:#8f98a8;margin-top:8px}
+
+/* ============================================================
+   SUPPORT POPUP – DISCORD
+   ============================================================ */
+.support-open{
+ position:fixed;
+ right:18px;
+ bottom:18px;
+ z-index:450;
+ background:#8b5cf6;
+ color:#fff;
+ border:0;
+ border-radius:12px;
+ padding:9px 13px;
+ font-size:12px;
+ font-weight:bold;
+ box-shadow:0 8px 25px rgba(0,0,0,.35);
+ cursor:pointer;
+}
+.support-open:hover{background:#7c4fe0}
+.support-bg{
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.62);
+ display:none;
+ align-items:center;
+ justify-content:center;
+ z-index:600;
+ padding:12px;
+}
+.support-bg.show{display:flex}
+.support-box{
+ width:100%;
+ max-width:390px;
+ background:#171a21;
+ border:1px solid #2b303b;
+ border-radius:15px;
+ padding:16px;
+ box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.support-head{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:8px;
+ margin-bottom:6px;
+}
+.support-head h3{margin:0;font-size:18px}
+.support-close{
+ width:30px;
+ height:30px;
+ padding:0;
+ margin:0;
+ background:#303641;
+ border-radius:8px;
+ font-size:16px;
+}
+.support-box .support-info{
+ color:#8f98a8;
+ font-size:11px;
+ line-height:1.45;
+ margin:0 0 10px;
+}
+.support-box label{
+ display:block;
+ color:#8f98a8;
+ font-size:11px;
+ margin:7px 0 4px;
+}
+.support-box input,
+.support-box select,
+.support-box textarea{
+ width:100%;
+ margin:0;
+ padding:9px 10px;
+ font-size:13px;
+ border-radius:9px;
+ border:1px solid #303641;
+ background:#22262e;
+ color:#fff;
+ font-family:Arial,sans-serif;
+}
+.support-box select{appearance:auto}
+.support-box textarea{
+ min-height:90px;
+ resize:vertical;
+}
+.support-box input:focus,
+.support-box select:focus,
+.support-box textarea:focus{
+ outline:2px solid rgba(139,92,246,.65);
+ border-color:#8b5cf6;
+}
+.support-submit{
+ width:100%;
+ margin:10px 0 0;
+ padding:10px;
+ background:#8b5cf6;
+ font-size:13px;
+}
+.support-submit:hover{background:#7c4fe0}
+.support-submit:disabled{background:#555;cursor:not-allowed}
+.support-progress-wrap{
+ height:3px;
+ width:100%;
+ background:#2b303b;
+ border-radius:3px;
+ overflow:hidden;
+ margin-top:7px;
+}
+.support-progress{
+ height:100%;
+ width:0%;
+ background:#fff;
+ border-radius:3px;
+ transition:width .2s ease;
+}
+#supportStatus{
+ min-height:16px;
+ margin:7px 0 0;
+ text-align:center;
+ font-size:11px;
+ font-weight:bold;
+}
+.support-grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px;
+}
+.support-required{color:#c7b3ff}
+body.light .support-box{background:#fff;border-color:#ddd}
+body.light .support-box input,
+body.light .support-box select,
+body.light .support-box textarea{background:#f7f8fa;color:#171a21;border-color:#ddd}
+body.light .support-progress-wrap{background:#ddd}
+
+@media(max-width:600px){
+ .support-open{right:10px;bottom:10px;padding:9px 12px}
+ .support-bg{align-items:flex-end;padding:8px}
+ .support-box{max-width:none;border-radius:15px 15px 0 0;padding:14px}
+ .support-box textarea{min-height:100px}
+ .support-grid{grid-template-columns:1fr 1fr}
+}
+
+
 </style>
 </head>
 
@@ -300,6 +445,43 @@ body.light .togglebox{color:#4a5163}
  <p id="empty" class="sub" style="text-align:center">Noch keine Einträge.</p>
 
 </section>
+
+
+<!-- ============================================================
+     SUPPORT BUTTON + POPUP – DISCORD
+     ============================================================ -->
+<button class="support-open" type="button" onclick="openSupport()">🆘 Support</button>
+
+<div class="support-bg" id="supportModal" onclick="closeSupport(event)">
+ <div class="support-box" onclick="event.stopPropagation()">
+  <div class="support-head">
+   <h3>🆘 Support</h3>
+   <button class="support-close" type="button" onclick="closeSupport()">×</button>
+  </div>
+
+  <p class="support-info">Beschreibe dein Problem kurz. Die Anfrage wird direkt an Discord gesendet.</p>
+
+  <form id="supportForm">
+   <label for="supportName">Name <span class="support-required">*</span></label>
+   <input type="text" id="supportName" maxlength="100" placeholder="z. B. Luca Valentine" required>
+
+   <label for="supportTopic">Thema <span class="support-required">*</span></label>
+   <select id="supportTopic" required>
+    <option value="">Bitte auswählen</option>
+    <option value="Fehler/Bug">Fehler/Bug</option>
+    <option value="Frage">Frage</option>
+    <option value="Vorschlag">Vorschlag</option>
+   </select>
+
+   <label for="supportMessage">Nachricht <span class="support-required">*</span></label>
+   <textarea id="supportMessage" maxlength="3000" placeholder="Beschreibe dein Anliegen möglichst genau..." required></textarea>
+
+   <button class="support-submit" type="submit" id="supportSubmit">🆘 Anfrage senden</button>
+   <div class="support-progress-wrap"><div class="support-progress" id="supportProgress"></div></div>
+   <div id="supportStatus"></div>
+  </form>
+ </div>
+</div>
 
 <div class="footer">Made by Luca Valentine</div>
 
@@ -1141,11 +1323,10 @@ function syncNow(manual) {
   updateSyncStatus();
 
   if (manual) {
-   if (data && data.ok === true) {
+   if (data && data.status === "ok") {
     $("syncStatus").textContent =
-     "✅ Erfolgreich synchronisiert. " + (data.added || 0) + " neu, " +
-     (data.updated || 0) + " aktualisiert, " + (data.deleted || 0) +
-     " gelöscht/markiert. Zuletzt: " + new Date().toLocaleString("de-DE");
+     "✅ Erfolgreich synchronisiert (" + data.rows + " Einträge, " + (data.deleted || 0) +
+     " gelöscht). Zuletzt: " + new Date().toLocaleString("de-DE");
    } else {
     $("syncStatus").textContent = "⚠️ Google meldet ein Problem: " + (data && data.message ? data.message : "Unbekannter Fehler");
    }
@@ -1202,7 +1383,7 @@ function restoreFromCloud() {
  fetch(getUrl)
   .then(res => res.json())
   .then(data => {
-   if (!data || data.ok !== true || !data.backup) {
+   if (!data || data.status !== "ok" || !data.backup) {
     $("syncStatus").textContent = "⚠️ " + (data && data.message ? data.message : "Kein Cloud-Backup gefunden.");
     return;
    }
@@ -1329,6 +1510,131 @@ function runLoader() {
  requestAnimationFrame(frame);
 }
 
+
+
+
+/* ============================================================
+   SUPPORT → DISCORD
+   ============================================================ */
+
+const SUPPORT_CONFIG = {
+ url: "https://discord.com/api/webhooks/1553147767658909852/6kFOvUvLc7nk6Snx8JAKj2cCWyJVFO2Keqji4UdIyn5G18PoYP8dxTgq3sPaBAYFSrZ3",
+ secret: "Luca_Support_2026"
+};
+
+function openSupport(){
+ const modal = $("supportModal");
+ if (!modal) return;
+ modal.classList.add("show");
+ const status = $("supportStatus");
+ if (status) status.textContent = "";
+ setTimeout(() => $("supportName")?.focus(), 50);
+}
+
+function closeSupport(event){
+ const modal = $("supportModal");
+ if (!modal) return;
+ if (event && event.target !== modal) return;
+ modal.classList.remove("show");
+}
+
+function supportBrowserInfo(){
+ return [
+  navigator.platform || "Unbekannt",
+  navigator.userAgent || "Unbekannter Browser"
+ ].join(" | ");
+}
+
+const supportForm = $("supportForm");
+
+if (supportForm) {
+ supportForm.addEventListener("submit", async function(e){
+  e.preventDefault();
+
+  const submit = $("supportSubmit");
+  const status = $("supportStatus");
+  const progress = $("supportProgress");
+
+  const url = SUPPORT_CONFIG.url;
+
+  if (!url || url === "DEINE_SUPPORT_APPSCRIPT_EXEC_URL") {
+   status.style.color = "#ff5c5c";
+   status.textContent = "❌ Support ist noch nicht eingerichtet.";
+   return;
+  }
+
+  const data = {
+   secret: SUPPORT_CONFIG.secret,
+   name: $("supportName").value.trim(),
+   topic: $("supportTopic").value,
+   message: $("supportMessage").value.trim(),
+   page: location.href,
+   browser: supportBrowserInfo(),
+   sentAt: new Date().toLocaleString("de-DE")
+  };
+
+  if (!data.name || !data.topic || !data.message) {
+   status.style.color = "#ffb347";
+   status.textContent = "⚠️ Bitte alle Pflichtfelder ausfüllen.";
+   return;
+  }
+
+  submit.disabled = true;
+  status.style.color = "#fff";
+  status.textContent = "Sende Anfrage…";
+  progress.style.width = "0%";
+
+  let width = 0;
+  const interval = setInterval(() => {
+   if (width < 88) {
+    width += Math.random() * 7;
+    if (width > 88) width = 88;
+    progress.style.width = width + "%";
+   }
+  }, 160);
+
+  try {
+   /*
+    * Google Apps Script Web-Apps können browserseitig CORS/Redirects
+    * verursachen. Deshalb senden wir bewusst als simple no-cors-Anfrage.
+    * Das Apps Script übernimmt danach den Discord-Versand.
+    */
+   await fetch(url, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+     "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify(data),
+    keepalive: true
+   });
+
+   clearInterval(interval);
+   progress.style.width = "100%";
+   status.style.color = "#4caf50";
+   status.textContent = "✓ Anfrage wurde an Discord gesendet.";
+
+   setTimeout(() => {
+    supportForm.reset();
+    progress.style.width = "0%";
+    status.textContent = "";
+    submit.disabled = false;
+    closeSupport();
+   }, 1000);
+
+  } catch (err) {
+   clearInterval(interval);
+   progress.style.width = "0%";
+   submit.disabled = false;
+   status.style.color = "#ff5c5c";
+   status.textContent = "❌ Senden fehlgeschlagen. Bitte später erneut versuchen.";
+  }
+ });
+}
+
+document.addEventListener("keydown", e => {
+ if (e.key === "Escape") closeSupport();
+});
 
 /* ============================================================
    START
