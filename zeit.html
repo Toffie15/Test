@@ -189,155 +189,143 @@ body.light #toast{
 .togglebox{display:flex;align-items:center;gap:8px;font-size:13px;color:#c5cad4;margin-top:10px}
 body.light .togglebox{color:#4a5163}
 #syncStatus{font-size:12px;color:#8f98a8;margin-top:8px}
+</style>
 
+<style>
 /* ============================================================
-   SUPPORT POPUP – DISCORD
+   SUPPORT POPUP
    ============================================================ */
-.support-open{
+#supportFab{
  position:fixed;
  right:18px;
  bottom:18px;
- z-index:450;
- background:#8b5cf6;
- color:#fff;
+ z-index:9998;
  border:0;
- border-radius:12px;
- padding:9px 13px;
- font-size:12px;
- font-weight:bold;
- box-shadow:0 8px 25px rgba(0,0,0,.35);
+ border-radius:14px;
+ padding:10px 14px;
+ background:#2a2f3a;
+ color:#fff;
+ font-weight:700;
+ font-size:13px;
  cursor:pointer;
+ box-shadow:0 8px 28px rgba(0,0,0,.28);
+ transition:.2s ease;
 }
-.support-open:hover{background:#7c4fe0}
-.support-bg{
+#supportFab:hover{transform:translateY(-2px);background:#343b49}
+#supportOverlay{
  position:fixed;
  inset:0;
- background:rgba(0,0,0,.62);
+ z-index:9999;
  display:none;
  align-items:center;
  justify-content:center;
- z-index:600;
- padding:12px;
-}
-.support-bg.show{display:flex}
-.support-box{
- width:100%;
- max-width:390px;
- background:#171a21;
- border:1px solid #2b303b;
- border-radius:15px;
  padding:16px;
- box-shadow:0 20px 60px rgba(0,0,0,.5);
+ background:rgba(0,0,0,.55);
+ backdrop-filter:blur(4px);
 }
-.support-head{
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:8px;
- margin-bottom:6px;
-}
-.support-head h3{margin:0;font-size:18px}
-.support-close{
- width:30px;
- height:30px;
- padding:0;
- margin:0;
- background:#303641;
- border-radius:8px;
- font-size:16px;
-}
-.support-box .support-info{
- color:#8f98a8;
- font-size:11px;
- line-height:1.45;
- margin:0 0 10px;
-}
-.support-box label{
- display:block;
- color:#8f98a8;
- font-size:11px;
- margin:7px 0 4px;
-}
-.support-box input,
-.support-box select,
-.support-box textarea{
- width:100%;
- margin:0;
- padding:9px 10px;
- font-size:13px;
- border-radius:9px;
- border:1px solid #303641;
- background:#22262e;
+#supportOverlay.open{display:flex}
+#supportBox{
+ width:min(390px,100%);
+ max-height:calc(100vh - 32px);
+ overflow:auto;
+ background:#171a21;
  color:#fff;
- font-family:Arial,sans-serif;
+ border:1px solid rgba(255,255,255,.09);
+ border-radius:18px;
+ box-shadow:0 24px 70px rgba(0,0,0,.5);
+ padding:18px;
+ position:relative;
 }
-.support-box select{appearance:auto}
-.support-box textarea{
- min-height:90px;
- resize:vertical;
+#supportBox h3{margin:0;font-size:18px}
+.supportSub{margin:4px 0 16px;color:#9da5b4;font-size:12px}
+.supportClose{
+ position:absolute;
+ right:12px;
+ top:10px;
+ width:32px;
+ height:32px;
+ border:0;
+ border-radius:9px;
+ background:#252a34;
+ color:#fff;
+ cursor:pointer;
+ font-size:18px;
 }
-.support-box input:focus,
-.support-box select:focus,
-.support-box textarea:focus{
- outline:2px solid rgba(139,92,246,.65);
- border-color:#8b5cf6;
-}
-.support-submit{
+.supportField{margin-bottom:11px}
+.supportField label{display:block;margin-bottom:5px;font-size:12px;color:#b8bfca}
+.supportField input,.supportField select,.supportField textarea{
  width:100%;
- margin:10px 0 0;
- padding:10px;
- background:#8b5cf6;
+ border:1px solid #303642;
+ border-radius:10px;
+ background:#222631;
+ color:#fff;
+ padding:10px 11px;
+ font:inherit;
  font-size:13px;
+ outline:none;
 }
-.support-submit:hover{background:#7c4fe0}
-.support-submit:disabled{background:#555;cursor:not-allowed}
-.support-progress-wrap{
- height:3px;
- width:100%;
- background:#2b303b;
- border-radius:3px;
- overflow:hidden;
- margin-top:7px;
-}
-.support-progress{
- height:100%;
- width:0%;
- background:#fff;
- border-radius:3px;
- transition:width .2s ease;
-}
-#supportStatus{
- min-height:16px;
- margin:7px 0 0;
- text-align:center;
- font-size:11px;
- font-weight:bold;
-}
-.support-grid{
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:8px;
-}
-.support-required{color:#c7b3ff}
-body.light .support-box{background:#fff;border-color:#ddd}
-body.light .support-box input,
-body.light .support-box select,
-body.light .support-box textarea{background:#f7f8fa;color:#171a21;border-color:#ddd}
-body.light .support-progress-wrap{background:#ddd}
-
-@media(max-width:600px){
- .support-open{right:10px;bottom:10px;padding:9px 12px}
- .support-bg{align-items:flex-end;padding:8px}
- .support-box{max-width:none;border-radius:15px 15px 0 0;padding:14px}
- .support-box textarea{min-height:100px}
- .support-grid{grid-template-columns:1fr 1fr}
-}
-
-
+.supportField textarea{min-height:105px;resize:vertical}
+.supportField input:focus,.supportField select:focus,.supportField textarea:focus{border-color:#667085;box-shadow:0 0 0 2px rgba(102,112,133,.18)}
+.supportActions{display:flex;gap:8px;margin-top:14px}
+.supportBtn{flex:1;border:0;border-radius:10px;padding:10px 12px;font-weight:700;cursor:pointer}
+.supportCancel{background:#2a2f39;color:#fff}
+.supportSend{background:#5865f2;color:#fff}
+.supportSend:disabled{opacity:.6;cursor:not-allowed}
+#supportStatus{min-height:18px;margin:10px 0 0;text-align:center;font-size:12px;font-weight:700}
+.supportSuccess{color:#6ee7a0}
+.supportError{color:#ff7777}
+.supportHint{margin-top:12px;text-align:center;color:#777f8e;font-size:10px}
 </style>
+
 </head>
 
 <body>
+
+<!-- ============================================================
+     SUPPORT
+     ============================================================ -->
+<button id="supportFab" type="button" onclick="openSupport()">🆘 Support</button>
+
+<div id="supportOverlay" onclick="supportOverlayClick(event)">
+  <div id="supportBox" role="dialog" aria-modal="true" aria-labelledby="supportTitle">
+    <button class="supportClose" type="button" onclick="closeSupport()" aria-label="Schließen">×</button>
+    <h3 id="supportTitle">🆘 Support</h3>
+    <div class="supportSub">Schick deine Anfrage direkt an den Support.</div>
+
+    <form id="supportForm">
+      <div class="supportField">
+        <label for="supportName">Name</label>
+        <input id="supportName" type="text" maxlength="80" placeholder="Dein Name" required>
+      </div>
+
+      <div class="supportField">
+        <label for="supportTopic">Thema</label>
+        <select id="supportTopic" required>
+          <option value="">Bitte auswählen</option>
+          <option>Stempeluhr</option>
+          <option>Synchronisierung</option>
+          <option>Google Sheets</option>
+          <option>Fehler</option>
+          <option>Sonstiges</option>
+        </select>
+      </div>
+
+      <div class="supportField">
+        <label for="supportMessage">Nachricht</label>
+        <textarea id="supportMessage" maxlength="2000" placeholder="Beschreibe dein Problem ..." required></textarea>
+      </div>
+
+      <div class="supportActions">
+        <button class="supportBtn supportCancel" type="button" onclick="closeSupport()">Abbrechen</button>
+        <button class="supportBtn supportSend" id="supportSend" type="submit">Anfrage senden</button>
+      </div>
+
+      <div id="supportStatus"></div>
+      <div class="supportHint">© 2026 Luca Valentine</div>
+    </form>
+  </div>
+</div>
+
 
 <div id="loader">
  <div class="logo2">⏱️</div>
@@ -445,43 +433,6 @@ body.light .support-progress-wrap{background:#ddd}
  <p id="empty" class="sub" style="text-align:center">Noch keine Einträge.</p>
 
 </section>
-
-
-<!-- ============================================================
-     SUPPORT BUTTON + POPUP – DISCORD
-     ============================================================ -->
-<button class="support-open" type="button" onclick="openSupport()">🆘 Support</button>
-
-<div class="support-bg" id="supportModal" onclick="closeSupport(event)">
- <div class="support-box" onclick="event.stopPropagation()">
-  <div class="support-head">
-   <h3>🆘 Support</h3>
-   <button class="support-close" type="button" onclick="closeSupport()">×</button>
-  </div>
-
-  <p class="support-info">Beschreibe dein Problem kurz. Die Anfrage wird direkt an Discord gesendet.</p>
-
-  <form id="supportForm">
-   <label for="supportName">Name <span class="support-required">*</span></label>
-   <input type="text" id="supportName" maxlength="100" placeholder="z. B. Luca Valentine" required>
-
-   <label for="supportTopic">Thema <span class="support-required">*</span></label>
-   <select id="supportTopic" required>
-    <option value="">Bitte auswählen</option>
-    <option value="Fehler/Bug">Fehler/Bug</option>
-    <option value="Frage">Frage</option>
-    <option value="Vorschlag">Vorschlag</option>
-   </select>
-
-   <label for="supportMessage">Nachricht <span class="support-required">*</span></label>
-   <textarea id="supportMessage" maxlength="3000" placeholder="Beschreibe dein Anliegen möglichst genau..." required></textarea>
-
-   <button class="support-submit" type="submit" id="supportSubmit">🆘 Anfrage senden</button>
-   <div class="support-progress-wrap"><div class="support-progress" id="supportProgress"></div></div>
-   <div id="supportStatus"></div>
-  </form>
- </div>
-</div>
 
 <div class="footer">Made by Luca Valentine</div>
 
@@ -1511,131 +1462,6 @@ function runLoader() {
 }
 
 
-
-
-/* ============================================================
-   SUPPORT → DISCORD
-   ============================================================ */
-
-const SUPPORT_CONFIG = {
- url: "https://discord.com/api/webhooks/1553147767658909852/6kFOvUvLc7nk6Snx8JAKj2cCWyJVFO2Keqji4UdIyn5G18PoYP8dxTgq3sPaBAYFSrZ3",
- secret: "Luca_Support_2026"
-};
-
-function openSupport(){
- const modal = $("supportModal");
- if (!modal) return;
- modal.classList.add("show");
- const status = $("supportStatus");
- if (status) status.textContent = "";
- setTimeout(() => $("supportName")?.focus(), 50);
-}
-
-function closeSupport(event){
- const modal = $("supportModal");
- if (!modal) return;
- if (event && event.target !== modal) return;
- modal.classList.remove("show");
-}
-
-function supportBrowserInfo(){
- return [
-  navigator.platform || "Unbekannt",
-  navigator.userAgent || "Unbekannter Browser"
- ].join(" | ");
-}
-
-const supportForm = $("supportForm");
-
-if (supportForm) {
- supportForm.addEventListener("submit", async function(e){
-  e.preventDefault();
-
-  const submit = $("supportSubmit");
-  const status = $("supportStatus");
-  const progress = $("supportProgress");
-
-  const url = SUPPORT_CONFIG.url;
-
-  if (!url || url === "DEINE_SUPPORT_APPSCRIPT_EXEC_URL") {
-   status.style.color = "#ff5c5c";
-   status.textContent = "❌ Support ist noch nicht eingerichtet.";
-   return;
-  }
-
-  const data = {
-   secret: SUPPORT_CONFIG.secret,
-   name: $("supportName").value.trim(),
-   topic: $("supportTopic").value,
-   message: $("supportMessage").value.trim(),
-   page: location.href,
-   browser: supportBrowserInfo(),
-   sentAt: new Date().toLocaleString("de-DE")
-  };
-
-  if (!data.name || !data.topic || !data.message) {
-   status.style.color = "#ffb347";
-   status.textContent = "⚠️ Bitte alle Pflichtfelder ausfüllen.";
-   return;
-  }
-
-  submit.disabled = true;
-  status.style.color = "#fff";
-  status.textContent = "Sende Anfrage…";
-  progress.style.width = "0%";
-
-  let width = 0;
-  const interval = setInterval(() => {
-   if (width < 88) {
-    width += Math.random() * 7;
-    if (width > 88) width = 88;
-    progress.style.width = width + "%";
-   }
-  }, 160);
-
-  try {
-   /*
-    * Google Apps Script Web-Apps können browserseitig CORS/Redirects
-    * verursachen. Deshalb senden wir bewusst als simple no-cors-Anfrage.
-    * Das Apps Script übernimmt danach den Discord-Versand.
-    */
-   await fetch(url, {
-    method: "POST",
-    mode: "no-cors",
-    headers: {
-     "Content-Type": "text/plain;charset=utf-8"
-    },
-    body: JSON.stringify(data),
-    keepalive: true
-   });
-
-   clearInterval(interval);
-   progress.style.width = "100%";
-   status.style.color = "#4caf50";
-   status.textContent = "✓ Anfrage wurde an Discord gesendet.";
-
-   setTimeout(() => {
-    supportForm.reset();
-    progress.style.width = "0%";
-    status.textContent = "";
-    submit.disabled = false;
-    closeSupport();
-   }, 1000);
-
-  } catch (err) {
-   clearInterval(interval);
-   progress.style.width = "0%";
-   submit.disabled = false;
-   status.style.color = "#ff5c5c";
-   status.textContent = "❌ Senden fehlgeschlagen. Bitte später erneut versuchen.";
-  }
- });
-}
-
-document.addEventListener("keydown", e => {
- if (e.key === "Escape") closeSupport();
-});
-
 /* ============================================================
    START
    ============================================================ */
@@ -1646,6 +1472,108 @@ render();
 maybeShowReminder();
 setInterval(tick, 1000);
 runLoader();
+
+
+
+/* ============================================================
+   SUPPORT – Discord über Google Apps Script
+   ============================================================
+   WICHTIG:
+   Der Discord-Webhook gehört NICHT in diese HTML-Datei.
+   Das Apps Script nimmt action="support" entgegen und sendet
+   die Anfrage mit dem dort gespeicherten Webhook an Discord.
+*/
+const SUPPORT_CONFIG = {
+  url: SYNC_CONFIG.url,
+  token: SYNC_CONFIG.token
+};
+
+function openSupport(){
+  const overlay = document.getElementById("supportOverlay");
+  if (!overlay) return;
+  overlay.classList.add("open");
+  const name = document.getElementById("supportName");
+  if (name && !name.value) {
+    const stored = localStorage.getItem("supportName");
+    if (stored) name.value = stored;
+  }
+  setTimeout(() => name && name.focus(), 50);
+}
+
+function closeSupport(){
+  const overlay = document.getElementById("supportOverlay");
+  if (overlay) overlay.classList.remove("open");
+}
+
+function supportOverlayClick(event){
+  if (event.target && event.target.id === "supportOverlay") closeSupport();
+}
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeSupport();
+});
+
+const supportForm = document.getElementById("supportForm");
+if (supportForm) {
+  supportForm.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const send = document.getElementById("supportSend");
+    const status = document.getElementById("supportStatus");
+    const name = document.getElementById("supportName").value.trim();
+    const topic = document.getElementById("supportTopic").value;
+    const message = document.getElementById("supportMessage").value.trim();
+
+    if (!name || !topic || !message) {
+      status.className = "supportError";
+      status.textContent = "Bitte alle Felder ausfüllen.";
+      return;
+    }
+
+    localStorage.setItem("supportName", name);
+    send.disabled = true;
+    status.className = "";
+    status.textContent = "Wird gesendet ...";
+
+    try {
+      const response = await fetch(SUPPORT_CONFIG.url, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          action: "support",
+          token: SUPPORT_CONFIG.token,
+          name,
+          topic,
+          message,
+          page: location.href,
+          userAgent: navigator.userAgent,
+          timestamp: new Date().toISOString()
+        })
+      });
+
+      const text = await response.text();
+      let result = {};
+      try { result = JSON.parse(text); } catch (_) {}
+
+      if (!response.ok || result.status === "error") {
+        throw new Error(result.message || "Senden fehlgeschlagen.");
+      }
+
+      status.className = "supportSuccess";
+      status.textContent = "✓ Anfrage wurde an den Support gesendet.";
+      document.getElementById("supportMessage").value = "";
+      document.getElementById("supportTopic").value = "";
+
+      setTimeout(closeSupport, 1200);
+
+    } catch (error) {
+      status.className = "supportError";
+      status.textContent = "✕ " + (error.message || "Fehler beim Senden.");
+    } finally {
+      send.disabled = false;
+    }
+  });
+}
 
 </script>
 
