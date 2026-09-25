@@ -7,1573 +7,3251 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;padding:15px;background:radial-gradient(circle at top,#241b3d,#0d0f14 55%);color:#fff;font-family:Arial}
-.container{max-width:850px;margin:auto}
-.card,.stat{background:#171a21;border:1px solid #2b303b;border-radius:15px;padding:18px;margin-bottom:14px}
-.header{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.logo{font-size:28px}
-h1,h2{margin:0 0 8px}
-.sub,.status,.since,th{color:#8f98a8;font-size:13px}
-.clock{text-align:center;padding:35px 15px}
-.time{font:65px monospace;margin:20px 0}
-input,button{border-radius:10px;padding:12px;border:1px solid #303641}
-input{width:100%;background:#22262e;color:#fff;margin:8px 0}
-button{background:#8b5cf6;color:#fff;font-weight:bold;cursor:pointer;border:0;margin:4px}
-.red{background:#9d3838}
-.gray{background:#303641}
-.punch{width:280px;font-size:16px;margin-top:15px}
-.pausebtn{width:280px;font-size:14px;margin-top:0}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.stat span{color:#8f98a8;font-size:11px;text-transform:uppercase}
-.stat b{display:block;font:22px monospace;margin-top:5px}
-.actions{display:flex;gap:5px;flex-wrap:wrap}
-.table{overflow:auto}
-table{width:100%;min-width:680px;border-collapse:collapse}
-th,td{text-align:left;padding:10px;border-bottom:1px solid #2c313b}
-td{font-family:monospace}
-td.note{font-family:Arial;color:#aab1bd}
-td.actions-cell{font-family:Arial;white-space:nowrap}
-td.actions-cell button{padding:6px 10px;font-size:12px;margin:0 2px}
-.footer{text-align:center;color:#666d7a;font-size:12px;padding:5px 0 15px}
-.hint{color:#8f98a8;font-size:12px;margin-top:-4px}
-.reminder{background:#2a2410;border:1px solid #5a4a1a;color:#e8c96a;border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
-.reminder button{background:#5a4a1a;padding:6px 10px;font-size:12px;margin:0}
-body.light{background:#f2f3f7;color:#171a21}
-body.light .card,body.light .stat{background:#fff;border-color:#ddd}
-body.light input{background:#f7f8fa;color:#171a21}
-body.light .reminder{background:#fff6df;border-color:#e8d9a8;color:#7a5f10}
 
-#loader{position:fixed;inset:0;background:#0d0f14;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px}
-#loader .logo2{font-size:40px}
-.barwrap{width:220px;height:8px;background:#22262e;border-radius:6px;overflow:hidden}
-.bar{height:100%;width:0%;background:#8b5cf6;border-radius:6px;transition:width .1s linear}
-#loader .msg{color:#8f98a8;font-size:13px}
-
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:500;padding:15px}
-.modal-bg.show{display:flex}
-.modal{background:#171a21;border:1px solid #2b303b;border-radius:15px;padding:20px;max-width:380px;width:100%}
-body.light .modal{background:#fff;border-color:#ddd}
-.modal h3{margin:0 0 12px}
-.modal label{display:block;font-size:12px;color:#8f98a8;margin:10px 0 4px}
-.modal .row{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
-
-@media(max-width:600px){
-  body{padding:8px}
-  .container{max-width:100%;width:100%}
-  .header{align-items:flex-start}
-  .time{font-size:42px;margin:14px 0}
-  .punch,.pausebtn{width:100%;min-height:48px}
-  .stats{grid-template-columns:1fr 1fr;gap:7px}
-  .stat{padding:12px 10px}
-  .stat b{font-size:18px}
-  .actions{width:100%}
-  .actions button{flex:1;min-height:42px}
-  input{font-size:16px;min-height:44px}
-
-  .table{overflow:visible}
-  table{min-width:0;width:100%}
-  table thead{display:none}
-  table tbody{display:block}
-  table tr{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:5px 12px;
-    padding:12px 0;
-    border-bottom:1px solid #2c313b;
-  }
-  table td{
-    display:block;
-    padding:2px 0;
-    border:0;
-    font-size:13px;
-    min-width:0;
-  }
-  table td:nth-child(1)::before{content:"Datum: ";color:#8f98a8;font-family:Arial}
-  table td:nth-child(2)::before{content:"Start: ";color:#8f98a8;font-family:Arial}
-  table td:nth-child(3)::before{content:"Ende: ";color:#8f98a8;font-family:Arial}
-  table td:nth-child(4)::before{content:"Dauer: ";color:#8f98a8;font-family:Arial}
-  table td:nth-child(5)::before{content:"Pause: ";color:#8f98a8;font-family:Arial}
-  table td:nth-child(6){
-    grid-column:1 / -1;
-    font-family:Arial;
-    overflow-wrap:anywhere;
-  }
-  table td:nth-child(6)::before{content:"Notiz: ";color:#8f98a8}
-  table td.actions-cell{
-    grid-column:1 / -1;
-    display:flex;
-    gap:8px;
-    padding-top:7px;
-  }
-  table td.actions-cell button{
-    flex:1;
-    min-height:44px;
-    font-size:16px;
+body{
     margin:0;
-  }
-
-  .modal-bg{padding:8px;align-items:flex-end}
-  .modal{max-width:none;width:100%;padding:16px;border-radius:15px 15px 0 0}
-  .modal input{font-size:16px}
-  .modal .row{display:grid;grid-template-columns:1fr 1fr}
-  .modal .row button{min-height:46px;margin:0}
+    padding:15px;
+    background:radial-gradient(circle at top,#241b3d,#0d0f14 55%);
+    color:#fff;
+    font-family:Arial,sans-serif
 }
 
-.print-view{display:none}
+.container{
+    max-width:850px;
+    margin:auto
+}
+
+.card,.stat{
+    background:#171a21;
+    border:1px solid #2b303b;
+    border-radius:15px;
+    padding:18px;
+    margin-bottom:14px
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px
+}
+
+.sub,.status,.since,.hint,th{
+    color:#8f98a8;
+    font-size:13px
+}
+
+h1,h2{
+    margin:0 0 8px
+}
+
+.clock{
+    text-align:center;
+    padding:35px 15px
+}
+
+.time{
+    font:65px monospace;
+    margin:20px 0
+}
+
+input,button,select,textarea{
+    border-radius:10px;
+    padding:12px;
+    border:1px solid #303641
+}
+
+input,select,textarea{
+    width:100%;
+    background:#22262e;
+    color:#fff;
+    margin:8px 0
+}
+
+button{
+    background:#8b5cf6;
+    color:#fff;
+    font-weight:bold;
+    cursor:pointer;
+    border:0;
+    margin:4px
+}
+
+button:disabled{
+    opacity:.5;
+    cursor:not-allowed
+}
+
+.red{
+    background:#9d3838
+}
+
+.gray{
+    background:#303641
+}
+
+.punch,.pausebtn{
+    width:280px;
+    font-size:16px;
+    margin-top:15px
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px
+}
+
+.stat span{
+    color:#8f98a8;
+    font-size:11px;
+    text-transform:uppercase
+}
+
+.stat b{
+    display:block;
+    font:22px monospace;
+    margin-top:5px
+}
+
+.actions{
+    display:flex;
+    gap:5px;
+    flex-wrap:wrap
+}
+
+.table{
+    overflow:auto
+}
+
+table{
+    width:100%;
+    min-width:680px;
+    border-collapse:collapse
+}
+
+th,td{
+    text-align:left;
+    padding:10px;
+    border-bottom:1px solid #2c313b
+}
+
+td{
+    font-family:monospace
+}
+
+td.note,
+td.actions-cell{
+    font-family:Arial
+}
+
+.footer{
+    text-align:center;
+    color:#666d7a;
+    font-size:12px;
+    padding:5px 0 15px
+}
+
+.reminder{
+    background:#2a2410;
+    border:1px solid #5a4a1a;
+    color:#e8c96a;
+    border-radius:10px;
+    padding:10px 14px;
+    font-size:13px;
+    margin-bottom:14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px
+}
+
+.modal-bg,
+#supportOverlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.6);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:500;
+    padding:15px
+}
+
+.modal-bg.show,
+#supportOverlay.open{
+    display:flex
+}
+
+.modal,
+#supportBox{
+    background:#171a21;
+    border:1px solid #2b303b;
+    border-radius:15px;
+    padding:20px;
+    max-width:390px;
+    width:100%
+}
+
+.modal label,
+.supportField label{
+    display:block;
+    font-size:12px;
+    color:#8f98a8;
+    margin:10px 0 4px
+}
+
+.modal .row,
+.supportActions{
+    display:flex;
+    gap:8px;
+    justify-content:flex-end;
+    margin-top:14px
+}
+
+.print-view{
+    display:none
+}
 
 @media print{
- body *{visibility:hidden}
- #printView,#printView *{visibility:visible}
- #printView{position:absolute;top:0;left:0;width:100%;display:block !important}
- @page{margin:0}
+    body *{
+        visibility:hidden
+    }
+
+    #printView,
+    #printView *{
+        visibility:visible
+    }
+
+    #printView{
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        display:block!important
+    }
+
+    @page{
+        margin:0
+    }
 }
 
 .print-page{
- min-height:100vh;padding:50px 45px;
- background:radial-gradient(circle at top left,#3a2a63,#161320 65%);
- color:#fff;font-family:Arial;
- -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    min-height:100vh;
+    padding:50px 45px;
+    background:#20182d;
+    color:#fff;
+    font-family:Arial;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact
 }
-.print-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #8b5cf6;padding-bottom:18px;margin-bottom:24px}
-.print-head h1{margin:0;font-size:26px}
-.print-head .sub{color:#c9b8ec;font-size:13px;margin-top:4px}
-.print-head .month{font-size:20px;font-weight:bold;color:#c9a9ff;text-align:right}
-.print-table{width:100%;border-collapse:collapse;margin-top:10px}
-.print-table th{text-align:left;font-size:11px;text-transform:uppercase;color:#c9b8ec;padding:8px 6px;border-bottom:1px solid rgba(255,255,255,.25)}
-.print-table td{font-size:13px;padding:9px 6px;border-bottom:1px solid rgba(255,255,255,.1)}
-.print-total{margin-top:26px;text-align:right;padding-top:16px;border-top:2px solid #8b5cf6}
-.print-total .lbl{color:#c9b8ec;font-size:12px;text-transform:uppercase;margin-right:10px}
-.print-total .val{font-size:26px;font-weight:bold;color:#fff;font-family:monospace}
-.print-foot{margin-top:40px;text-align:center;color:#8f7fb8;font-size:11px}
+
+.print-table{
+    width:100%;
+    border-collapse:collapse
+}
+
+.print-table th,
+.print-table td{
+    padding:8px;
+    border-bottom:1px solid #555
+}
+
+.print-total{
+    text-align:right;
+    margin-top:20px;
+    border-top:2px solid #8b5cf6;
+    padding-top:15px
+}
+
+.print-foot{
+    text-align:center;
+    margin-top:35px;
+    color:#aaa
+}
+
+#loader{
+    position:fixed;
+    inset:0;
+    background:#0d0f14;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+    gap:16px
+}
+
+.barwrap{
+    width:220px;
+    height:8px;
+    background:#22262e;
+    border-radius:6px;
+    overflow:hidden
+}
+
+.bar{
+    height:100%;
+    width:0;
+    background:#8b5cf6
+}
+
+.supportFab{
+    position:fixed;
+    right:18px;
+    bottom:18px;
+    z-index:9998;
+    background:#2a2f3a;
+    border-radius:14px
+}
+
+.supportClose{
+    float:right;
+    background:#252a34
+}
+
+.supportSub{
+    color:#9da5b4;
+    font-size:12px;
+    margin-bottom:15px
+}
+
+.supportField textarea{
+    min-height:105px;
+    resize:vertical
+}
+
+.supportBtn{
+    flex:1
+}
+
+.supportSuccess{
+    color:#6ee7a0;
+    text-align:center;
+    margin-top:10px
+}
+
+.supportError{
+    color:#ff7777;
+    text-align:center;
+    margin-top:10px
+}
 
 #toast{
- position:fixed;
- left:50%;
- bottom:24px;
- transform:translateX(-50%) translateY(20px);
- background:#22262e;
- border:1px solid #3a4150;
- color:#fff;
- border-radius:12px;
- padding:12px 14px;
- display:flex;
- align-items:center;
- gap:14px;
- font-size:14px;
- box-shadow:0 8px 24px rgba(0,0,0,.4);
- opacity:0;
- pointer-events:none;
- transition:opacity .25s,transform .25s;
- z-index:600;
- max-width:90vw
+    position:fixed;
+    left:50%;
+    bottom:24px;
+    transform:translateX(-50%);
+    background:#22262e;
+    padding:12px 14px;
+    border-radius:12px;
+    display:none;
+    z-index:600
 }
+
 #toast.show{
- opacity:1;
- transform:translateX(-50%) translateY(0);
- pointer-events:auto
-}
-#toast button{
- background:#8b5cf6;
- padding:6px 12px;
- font-size:13px;
- margin:0
-}
-body.light #toast{
- background:#fff;
- border-color:#ddd;
- color:#171a21
+    display:flex;
+    gap:12px;
 }
 
-.syncrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.syncrow input{flex:1;min-width:160px;margin:0}
-.togglebox{display:flex;align-items:center;gap:8px;font-size:13px;color:#c5cad4;margin-top:10px}
-body.light .togglebox{color:#4a5163}
-#syncStatus{font-size:12px;color:#8f98a8;margin-top:8px}
+body.light{
+    background:#f2f3f7;
+    color:#171a21
+}
+
+body.light .card,
+body.light .stat,
+body.light .modal,
+body.light #supportBox{
+    background:#fff;
+    border-color:#ddd
+}
+
+body.light input,
+body.light select,
+body.light textarea{
+    background:#f7f8fa;
+    color:#171a21
+}
+
+@media(max-width:600px){
+
+    body{
+        padding:8px
+    }
+
+    .time{
+        font-size:42px
+    }
+
+    .punch,
+    .pausebtn{
+        width:100%;
+        min-height:48px
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr
+    }
+
+    table{
+        min-width:0
+    }
+
+    thead{
+        display:none
+    }
+
+    tbody,
+    tr,
+    td{
+        display:block
+    }
+
+    tr{
+        padding:12px 0;
+        border-bottom:1px solid #333
+    }
+
+    td{
+        border:0;
+        padding:3px;
+        font-size:13px
+    }
+
+    td:nth-child(1):before{
+        content:"Datum: ";
+        color:#8f98a8
+    }
+
+    td:nth-child(2):before{
+        content:"Start: ";
+        color:#8f98a8
+    }
+
+    td:nth-child(3):before{
+        content:"Ende: ";
+        color:#8f98a8
+    }
+
+    td:nth-child(4):before{
+        content:"Dauer: ";
+        color:#8f98a8
+    }
+
+    td:nth-child(5):before{
+        content:"Pause: ";
+        color:#8f98a8
+    }
+
+    td:nth-child(6):before{
+        content:"Notiz: ";
+        color:#8f98a8
+    }
+
+    td.actions-cell{
+        display:flex;
+        gap:8px
+    }
+
+    td.actions-cell button{
+        flex:1;
+        min-height:42px
+    }
+
+    .modal-bg,
+    #supportOverlay{
+        align-items:flex-end;
+        padding:8px
+    }
+
+    .modal,
+    #supportBox{
+        max-width:none;
+        border-radius:15px 15px 0 0;
+        width:100%
+    }
+}
 </style>
-
-<style>
-/* ============================================================
-   SUPPORT POPUP
-   ============================================================ */
-#supportFab{
- position:fixed;
- right:18px;
- bottom:18px;
- z-index:9998;
- border:0;
- border-radius:14px;
- padding:10px 14px;
- background:#2a2f3a;
- color:#fff;
- font-weight:700;
- font-size:13px;
- cursor:pointer;
- box-shadow:0 8px 28px rgba(0,0,0,.28);
- transition:.2s ease;
-}
-#supportFab:hover{transform:translateY(-2px);background:#343b49}
-#supportOverlay{
- position:fixed;
- inset:0;
- z-index:9999;
- display:none;
- align-items:center;
- justify-content:center;
- padding:16px;
- background:rgba(0,0,0,.55);
- backdrop-filter:blur(4px);
-}
-#supportOverlay.open{display:flex}
-#supportBox{
- width:min(390px,100%);
- max-height:calc(100vh - 32px);
- overflow:auto;
- background:#171a21;
- color:#fff;
- border:1px solid rgba(255,255,255,.09);
- border-radius:18px;
- box-shadow:0 24px 70px rgba(0,0,0,.5);
- padding:18px;
- position:relative;
-}
-#supportBox h3{margin:0;font-size:18px}
-.supportSub{margin:4px 0 16px;color:#9da5b4;font-size:12px}
-.supportClose{
- position:absolute;
- right:12px;
- top:10px;
- width:32px;
- height:32px;
- border:0;
- border-radius:9px;
- background:#252a34;
- color:#fff;
- cursor:pointer;
- font-size:18px;
-}
-.supportField{margin-bottom:11px}
-.supportField label{display:block;margin-bottom:5px;font-size:12px;color:#b8bfca}
-.supportField input,.supportField select,.supportField textarea{
- width:100%;
- border:1px solid #303642;
- border-radius:10px;
- background:#222631;
- color:#fff;
- padding:10px 11px;
- font:inherit;
- font-size:13px;
- outline:none;
-}
-.supportField textarea{min-height:105px;resize:vertical}
-.supportField input:focus,.supportField select:focus,.supportField textarea:focus{border-color:#667085;box-shadow:0 0 0 2px rgba(102,112,133,.18)}
-.supportActions{display:flex;gap:8px;margin-top:14px}
-.supportBtn{flex:1;border:0;border-radius:10px;padding:10px 12px;font-weight:700;cursor:pointer}
-.supportCancel{background:#2a2f39;color:#fff}
-.supportSend{background:#5865f2;color:#fff}
-.supportSend:disabled{opacity:.6;cursor:not-allowed}
-#supportStatus{min-height:18px;margin:10px 0 0;text-align:center;font-size:12px;font-weight:700}
-.supportSuccess{color:#6ee7a0}
-.supportError{color:#ff7777}
-.supportHint{margin-top:12px;text-align:center;color:#777f8e;font-size:10px}
-</style>
-
 </head>
 
 <body>
 
-<!-- ============================================================
-     SUPPORT
-     ============================================================ -->
-<button id="supportFab" type="button" onclick="openSupport()">🆘 Support</button>
+<button class="supportFab" onclick="openSupport()">🆘 Support</button>
 
-<div id="supportOverlay" onclick="supportOverlayClick(event)">
-  <div id="supportBox" role="dialog" aria-modal="true" aria-labelledby="supportTitle">
-    <button class="supportClose" type="button" onclick="closeSupport()" aria-label="Schließen">×</button>
-    <h3 id="supportTitle">🆘 Support</h3>
-    <div class="supportSub">Schick deine Anfrage direkt an den Support.</div>
+<div id="supportOverlay" onclick="if(event.target===this)closeSupport()">
 
-    <form id="supportForm">
-      <div class="supportField">
-        <label for="supportName">Name</label>
-        <input id="supportName" type="text" maxlength="80" placeholder="Dein Name" required>
-      </div>
+    <div id="supportBox">
 
-      <div class="supportField">
-        <label for="supportTopic">Thema</label>
-        <select id="supportTopic" required>
-          <option value="">Bitte auswählen</option>
-          <option>Stempeluhr</option>
-          <option>Synchronisierung</option>
-          <option>Google Sheets</option>
-          <option>Fehler</option>
-          <option>Sonstiges</option>
-        </select>
-      </div>
+        <button class="supportClose" onclick="closeSupport()">×</button>
 
-      <div class="supportField">
-        <label for="supportMessage">Nachricht</label>
-        <textarea id="supportMessage" maxlength="2000" placeholder="Beschreibe dein Problem ..." required></textarea>
-      </div>
+        <h3>🆘 Support</h3>
 
-      <div class="supportActions">
-        <button class="supportBtn supportCancel" type="button" onclick="closeSupport()">Abbrechen</button>
-        <button class="supportBtn supportSend" id="supportSend" type="submit">Anfrage senden</button>
-      </div>
+        <div class="supportSub">
+            Schick deine Anfrage direkt an den Support.
+        </div>
 
-      <div id="supportStatus"></div>
-      <div class="supportHint">© 2026 Luca Valentine</div>
-    </form>
-  </div>
+        <form id="supportForm">
+
+            <div class="supportField">
+                <label>Name</label>
+                <input id="supportName" maxlength="80" required>
+            </div>
+
+            <div class="supportField">
+                <label>Thema</label>
+
+                <select id="supportTopic" required>
+                    <option value="">Bitte auswählen</option>
+                    <option>Stempeluhr</option>
+                    <option>Synchronisierung</option>
+                    <option>Google Sheets</option>
+                    <option>Fehler</option>
+                    <option>Sonstiges</option>
+                </select>
+            </div>
+
+            <div class="supportField">
+
+                <label>Nachricht</label>
+
+                <textarea
+                    id="supportMessage"
+                    maxlength="2000"
+                    required
+                ></textarea>
+
+            </div>
+
+            <div class="supportActions">
+
+                <button
+                    type="button"
+                    class="gray supportBtn"
+                    onclick="closeSupport()"
+                >
+                    Abbrechen
+                </button>
+
+                <button
+                    id="supportSend"
+                    class="supportBtn"
+                    type="submit"
+                >
+                    Anfrage senden
+                </button>
+
+            </div>
+
+            <div id="supportStatus"></div>
+
+        </form>
+
+    </div>
+
 </div>
 
-
 <div id="loader">
- <div class="logo2">⏱️</div>
- <div class="barwrap"><div class="bar" id="loadbar"></div></div>
- <div class="msg" id="loadmsg">Lade Stempeluhr…</div>
+
+    <div style="font-size:40px">
+        ⏱️
+    </div>
+
+    <div class="barwrap">
+        <div class="bar" id="loadbar"></div>
+    </div>
+
+    <div id="loadmsg" class="sub">
+        Lade Stempeluhr…
+    </div>
+
 </div>
 
 <div class="container">
 
 <header class="header">
- <div>
-  <h1>⏱️ Stempeluhr</h1>
-  <div id="date" class="sub"></div>
- </div>
- <button class="gray" onclick="theme()" aria-label="Design umschalten">🌓</button>
+
+    <div>
+
+        <h1>⏱️ Stempeluhr</h1>
+
+        <div id="date" class="sub"></div>
+
+    </div>
+
+    <button class="gray" onclick="theme()">
+        🌓
+    </button>
+
 </header>
 
-<div id="backupReminder" class="reminder" style="display:none">
- <span id="reminderText"></span>
- <button onclick="backup(); dismissReminder(true)">Jetzt sichern</button>
+<div
+    id="backupReminder"
+    class="reminder"
+    style="display:none"
+>
+
+    <span id="reminderText">
+        Zeit für ein Backup.
+    </span>
+
+    <button onclick="backup()">
+        Jetzt sichern
+    </button>
+
 </div>
 
 <section class="card clock">
- <div id="status" class="status">🔴 Ausgestempelt</div>
- <div id="timer" class="time">00:00:00</div>
- <div id="since" class="since"></div>
- <input id="note" placeholder="Notiz, z. B. Büro oder Projekt">
- <div class="hint" id="noteHint" style="display:none">Notiz wird beim Ausstempeln für diesen Eintrag gespeichert.</div>
- <button id="punch" class="punch" onclick="punch()">Einstempeln</button>
- <div id="pauseWrap" style="display:none">
-  <button id="pauseBtn" class="pausebtn gray" onclick="togglePause()">Pause starten</button>
-  <div class="hint" id="pauseInfo"></div>
- </div>
+
+    <div id="status" class="status">
+        🔴 Ausgestempelt
+    </div>
+
+    <div id="timer" class="time">
+        00:00:00
+    </div>
+
+    <div id="since" class="since"></div>
+
+    <input
+        id="note"
+        placeholder="Notiz, z. B. Büro oder Projekt"
+    >
+
+    <button
+        id="punch"
+        class="punch"
+        onclick="punch()"
+    >
+        Einstempeln
+    </button>
+
+    <div id="pauseWrap" style="display:none">
+
+        <button
+            id="pauseBtn"
+            class="pausebtn gray"
+            onclick="togglePause()"
+        >
+            Pause starten
+        </button>
+
+    </div>
+
 </section>
 
 <div class="stats">
- <div class="stat"><span>Heute</span><b id="today">0h 00m</b></div>
- <div class="stat"><span>Woche</span><b id="week">0h 00m</b></div>
- <div class="stat"><span>Monat</span><b id="monthStat">0h 00m</b></div>
- <div class="stat"><span>Einträge</span><b id="count">0</b></div>
-</div>
 
-<section class="card">
- <div class="header">
-  <h2>Monatsübersicht</h2>
-  <div>
-   <button class="gray" onclick="month(-1)" aria-label="Vorheriger Monat">‹</button>
-   <button class="gray" onclick="month(1)" aria-label="Nächster Monat">›</button>
-  </div>
- </div>
- <div id="month" class="sub"></div>
- <div id="summary"></div>
-</section>
+    <div class="stat">
+        <span>Heute</span>
+        <b id="today">0h 00m</b>
+    </div>
 
-<section class="card">
- <h2>☁️ Cloud-Sync</h2>
- <div class="hint" style="margin-bottom:8px">Dein Backup wird automatisch gespeichert – trag einmal deinen Namen ein. Bei Fragen oder Problemen bei Luca melden.</div>
+    <div class="stat">
+        <span>Woche</span>
+        <b id="week">0h 00m</b>
+    </div>
 
- <label class="sub" style="display:block;margin-top:6px">Dein Name</label>
- <input id="employeeName" placeholder="z. B. Luca">
+    <div class="stat">
+        <span>Monat</span>
+        <b id="monthStat">0h 00m</b>
+    </div>
 
- <div class="actions">
-  <button onclick="saveSyncSettings()">Speichern</button>
-  <button class="gray" onclick="syncNow(true)">Jetzt senden</button>
-  <button class="gray" onclick="restoreFromCloud()">Von Cloud laden</button>
- </div>
- <div class="hint" style="margin-top:6px">„Von Cloud laden" holt den letzten gesicherten Stand für diesen Namen zurück – nützlich nach einem Browserwechsel oder Datenverlust. Ersetzt die lokalen Daten auf diesem Gerät.</div>
- <div id="syncStatus" class="hint" style="margin-top:8px"></div>
-</section>
-
-<section class="card">
-
- <div class="header">
-  <h2>Zeiterfassung</h2>
-  <div class="actions">
-   <button onclick="csv()">CSV</button>
-   <button onclick="pdfExport()">PDF</button>
-   <button onclick="backup()">Backup</button>
-   <button onclick="document.getElementById('file').click()">Import</button>
-   <button class="red" onclick="clearAll()">Löschen</button>
-   <input id="file" type="file" accept=".json" hidden onchange="restore(event)">
-  </div>
- </div>
-
- <div class="hint">Auf dem Handy kannst du jeden Eintrag direkt über ✏️ bearbeiten oder 🗑️ löschen.</div>
-
- <div class="table">
-  <table>
-   <thead>
-    <tr>
-     <th>Datum</th>
-     <th>Start</th>
-     <th>Ende</th>
-     <th>Dauer</th>
-     <th>Pause</th>
-     <th>Notiz</th>
-     <th></th>
-    </tr>
-   </thead>
-
-   <tbody id="log"></tbody>
-  </table>
- </div>
-
- <p id="empty" class="sub" style="text-align:center">Noch keine Einträge.</p>
-
-</section>
-
-<div class="footer">Made by Luca Valentine</div>
+    <div class="stat">
+        <span>Einträge</span>
+        <b id="count">0</b>
+    </div>
 
 </div>
 
-<div id="printView" class="print-view"></div>
+<section class="card">
+
+    <div class="header">
+
+        <h2>Monatsübersicht</h2>
+
+        <div>
+            <button class="gray" onclick="month(-1)">
+                ‹
+            </button>
+
+            <button class="gray" onclick="month(1)">
+                ›
+            </button>
+        </div>
+
+    </div>
+
+    <div id="month" class="sub"></div>
+
+    <div id="summary"></div>
+
+</section>
+
+<section class="card">
+
+    <h2>☁️ Cloud-Sync</h2>
+
+    <div class="hint">
+        Dein Backup wird automatisch gespeichert.
+        Trag einmal deinen Namen ein.
+    </div>
+
+    <input
+        id="employeeName"
+        placeholder="z. B. Luca"
+    >
+
+    <div class="actions">
+
+        <button onclick="saveSyncSettings()">
+            Speichern
+        </button>
+
+        <button
+            class="gray"
+            onclick="syncNow(true)"
+        >
+            Jetzt senden
+        </button>
+
+        <button
+            class="gray"
+            onclick="restoreFromCloud()"
+        >
+            Von Cloud laden
+        </button>
+
+    </div>
+
+    <div
+        id="syncStatus"
+        class="hint"
+    ></div>
+
+</section>
+
+<section class="card">
+
+    <div class="header">
+
+        <h2>Zeiterfassung</h2>
+
+        <div class="actions">
+
+            <button onclick="csv()">
+                CSV
+            </button>
+
+            <button onclick="pdfExport()">
+                PDF
+            </button>
+
+            <button onclick="backup()">
+                Backup
+            </button>
+
+            <button onclick="$('file').click()">
+                Import
+            </button>
+
+            <button
+                class="red"
+                onclick="clearAll()"
+            >
+                Löschen
+            </button>
+
+            <input
+                id="file"
+                type="file"
+                accept=".json"
+                hidden
+                onchange="restore(event)"
+            >
+
+        </div>
+
+    </div>
+
+    <div class="hint">
+        Auf dem Handy kannst du Einträge direkt bearbeiten
+        oder löschen.
+    </div>
+
+    <div class="table">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Datum</th>
+                    <th>Start</th>
+                    <th>Ende</th>
+                    <th>Dauer</th>
+                    <th>Pause</th>
+                    <th>Notiz</th>
+                    <th></th>
+                </tr>
+
+            </thead>
+
+            <tbody id="log"></tbody>
+
+        </table>
+
+    </div>
+
+    <p
+        id="empty"
+        class="sub"
+        style="text-align:center"
+    >
+        Noch keine Einträge.
+    </p>
+
+</section>
+
+<div class="footer">
+    Made by Luca Valentine
+</div>
+
+</div>
+
+<div
+    id="printView"
+    class="print-view"
+></div>
 
 <div id="toast">
- <span id="toastMsg"></span>
- <button onclick="undoDelete()">Rückgängig</button>
+
+    <span id="toastMsg"></span>
+
+    <button onclick="undoDelete()">
+        Rückgängig
+    </button>
+
 </div>
 
-<div class="modal-bg" id="editModal">
- <div class="modal">
-  <h3>Eintrag bearbeiten</h3>
+<div
+    class="modal-bg"
+    id="editModal"
+>
 
-  <label>Datum</label>
-  <input id="editDate" type="date">
+    <div class="modal">
 
-  <label>Start</label>
-  <input id="editStart" type="time">
+        <h3>
+            Eintrag bearbeiten
+        </h3>
 
-  <label>Ende</label>
-  <input id="editEnd" type="time">
+        <label>Datum</label>
 
-  <label>Pause (Minuten)</label>
-  <input id="editPause" type="number" min="0" step="1">
+        <input
+            id="editDate"
+            type="date"
+        >
 
-  <label>Notiz</label>
-  <input id="editNote">
+        <label>Start</label>
 
-  <div class="row">
-   <button class="gray" onclick="closeEdit()">Abbrechen</button>
-   <button onclick="saveEdit()">Speichern</button>
-  </div>
- </div>
+        <input
+            id="editStart"
+            type="time"
+        >
+
+        <label>Ende</label>
+
+        <input
+            id="editEnd"
+            type="time"
+        >
+
+        <label>Pause (Minuten)</label>
+
+        <input
+            id="editPause"
+            type="number"
+            min="0"
+        >
+
+        <label>Notiz</label>
+
+        <input id="editNote">
+
+        <div class="row">
+
+            <button
+                class="gray"
+                onclick="closeEdit()"
+            >
+                Abbrechen
+            </button>
+
+            <button onclick="saveEdit()">
+                Speichern
+            </button>
+
+        </div>
+
+    </div>
+
 </div>
 
 <script>
 
-/* ============================================================
-   GOOGLE SHEETS SYNC – Konfiguration
-   Trag hier die Web-App-URL deines Apps-Script-Deployments
-   und dasselbe Token ein, das in Code.gs unter SECRET steht.
-   ============================================================ */
-
 const SYNC_CONFIG = {
- url: "https://script.google.com/macros/s/AKfycbwgCgkI7JeUT-YR57zYXB5NIS8DAj-iWbqvf-XmSD14QNnD9xq9tNNf72HZdKXzYdMV/exec",
- token: "Luca_Valentine."
+
+    url:
+        "https://script.google.com/macros/s/AKfycbwgCgkI7JeUT-YR57zYXB5NIS8DAj-iWbqvf-XmSD14QNnD9xq9tNNf72HZdKXzYdMV/exec",
+
+    token:
+        "Luca_Valentine."
+
 };
 
+const $ = id =>
+    document.getElementById(id);
 
-/* ============================================================
-   DATEN
-   ============================================================ */
+let entries =
+    read("entries", []);
 
-let entries = JSON.parse(localStorage.getItem("entries") || "[]");
-let deletedEntries = JSON.parse(localStorage.getItem("deletedEntries") || "[]");
-let active = JSON.parse(localStorage.getItem("active") || "null");
-let sel = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+let deletedEntries =
+    read("deletedEntries", []);
+
+let active =
+    read("active", null);
+
+let selectedMonth =
+    new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        1
+    );
+
 let editId = null;
 
-
-/* ============================================================
-   MIGRATION (alte lokale Daten ohne id/pauseMs ergänzen)
-   ============================================================ */
-
-let migrated = false;
-
-function ensureFields(e) {
- if (!e.id) {
-  e.id = Date.now() + "_" + Math.random().toString(36).slice(2, 7);
-  migrated = true;
- }
- if (e.pauseMs === undefined) {
-  e.pauseMs = 0;
-  migrated = true;
- }
-}
-
-entries.forEach(ensureFields);
-deletedEntries.forEach(ensureFields);
-
-if (active && active.pauseMs === undefined) {
- active.pauseMs = 0;
- migrated = true;
-}
-
-if (migrated) {
- localStorage.setItem("entries", JSON.stringify(entries));
- localStorage.setItem("deletedEntries", JSON.stringify(deletedEntries));
-}
-
-
-/* ============================================================
-   HELPER
-   ============================================================ */
-
-const $ = id => document.getElementById(id);
-
-let autoSyncTimer = null;
-
-function maybeAutoSync() {
- if (!SYNC_CONFIG.url) return;
- clearTimeout(autoSyncTimer);
- autoSyncTimer = setTimeout(() => syncNow(false), 1500);
-}
-
-
-/* ============================================================
-   SPEICHERN
-   ============================================================ */
-
-function save(immediate = false) {
- localStorage.setItem("entries", JSON.stringify(entries));
- localStorage.setItem("deletedEntries", JSON.stringify(deletedEntries));
-
- if (active) {
-  localStorage.setItem("active", JSON.stringify(active));
- } else {
-  localStorage.removeItem("active");
- }
-
- if (immediate) {
-  clearTimeout(autoSyncTimer);
-  syncNow(false);
- } else {
-  maybeAutoSync();
- }
-}
-
-
-/* ============================================================
-   ZEIT
-   ============================================================ */
-
-const time = t => new Date(t).toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
-const date = t => new Date(t).toLocaleDateString("de-DE");
-
-const dur = ms => {
- let m = Math.round(ms / 60000);
- let h = Math.floor(m / 60);
- return h + "h " + String(m % 60).padStart(2, "0") + "m";
-};
-
-
-/* ============================================================
-   EINSTEMPELN / AUSSTEMPELN
-   ============================================================ */
-
-function punch() {
- if (active) {
-  if (active.pauseStart) {
-   active.pauseMs = (active.pauseMs || 0) + (Date.now() - active.pauseStart);
-   active.pauseStart = null;
-  }
-
-  entries.push({
-   id: Date.now() + "_" + Math.random().toString(36).slice(2, 7),
-   start: active.start,
-   end: Date.now(),
-   pauseMs: active.pauseMs || 0,
-   note: $("note").value.trim()
-  });
-
-  active = null;
-  $("note").value = "";
-  save(true);
-  render();
-  maybeShowReminder();
-
- } else {
-  active = {
-   start: Date.now(),
-   note: $("note").value.trim(),
-   pauseMs: 0,
-   pauseStart: null
-  };
-
-  save();
-  render();
-  maybeShowReminder();
- }
-}
-
-
-/* ============================================================
-   PAUSE
-   ============================================================ */
-
-function togglePause() {
- if (!active) return;
-
- if (active.pauseStart) {
-  active.pauseMs = (active.pauseMs || 0) + (Date.now() - active.pauseStart);
-  active.pauseStart = null;
- } else {
-  active.pauseStart = Date.now();
- }
-
- save();
- render();
-}
-
-
-/* ============================================================
-   RENDER
-   ============================================================ */
-
-function render() {
- $("status").textContent = active
-  ? (active.pauseStart ? "⏸️ Pause" : "🟢 Eingestempelt")
-  : "🔴 Ausgestempelt";
-
- $("punch").textContent = active ? "Ausstempeln" : "Einstempeln";
- $("punch").className = active ? "punch red" : "punch";
- $("since").textContent = active ? "Seit " + time(active.start) + " Uhr" : "";
- $("noteHint").style.display = active ? "block" : "none";
- $("pauseWrap").style.display = active ? "block" : "none";
-
- if (active) {
-  $("pauseBtn").textContent = active.pauseStart ? "Pause beenden" : "Pause starten";
-  $("pauseBtn").className = active.pauseStart ? "pausebtn red" : "pausebtn gray";
- }
-
- if (!active) {
-  $("timer").textContent = "00:00:00";
- }
-
- $("log").innerHTML = [...entries]
-  .sort((a, b) => b.start - a.start)
-  .map(e => `
-   <tr>
-    <td>${date(e.start)}</td>
-    <td>${time(e.start)}</td>
-    <td>${time(e.end)}</td>
-    <td>${dur(e.end - e.start - (e.pauseMs || 0))}</td>
-    <td>${e.pauseMs ? dur(e.pauseMs) : "–"}</td>
-    <td class="note">${safe(e.note || "-")}</td>
-    <td class="actions-cell">
-     <button class="gray" onclick="openEdit('${e.id}')">✏️</button>
-     <button class="red" onclick="deleteEntry('${e.id}')">🗑️</button>
-    </td>
-   </tr>
-  `).join("");
-
- $("empty").style.display = entries.length ? "none" : "block";
- $("count").textContent = entries.length;
-
- stats();
- renderMonth();
-}
-
-
-/* ============================================================
-   STATISTIK
-   ============================================================ */
-
-function stats() {
- let now = new Date();
- let today = new Date(now);
- today.setHours(0, 0, 0, 0);
-
- let week = new Date(today);
- week.setDate(week.getDate() - ((week.getDay() + 6) % 7));
-
- let t = 0;
- let w = 0;
-
- entries.forEach(e => {
-  let d = e.end - e.start - (e.pauseMs || 0);
-  if (e.start >= today) t += d;
-  if (e.start >= week) w += d;
- });
-
- if (active) {
-  let pause = active.pauseMs || 0;
-  if (active.pauseStart) pause += Date.now() - active.pauseStart;
-
-  let d = Date.now() - active.start - pause;
-  if (active.start >= today) t += d;
-  if (active.start >= week) w += d;
- }
-
- $("today").textContent = dur(Math.max(t, 0));
- $("week").textContent = dur(Math.max(w, 0));
-}
-
-
-/* ============================================================
-   MONATSÜBERSICHT
-   ============================================================ */
-
-function renderMonth() {
- let y = sel.getFullYear();
- let m = sel.getMonth();
- let days = {};
- let total = 0;
-
- entries
-  .filter(e => {
-   let d = new Date(e.start);
-   return d.getFullYear() == y && d.getMonth() == m;
-  })
-  .forEach(e => {
-   let k = date(e.start);
-   let net = e.end - e.start - (e.pauseMs || 0);
-   days[k] = (days[k] || 0) + net;
-   total += net;
-  });
-
- let liveTotal = total;
-
- if (active) {
-  let ad = new Date(active.start);
-
-  if (ad.getFullYear() == y && ad.getMonth() == m) {
-   let pause = active.pauseMs || 0;
-   if (active.pauseStart) pause += Date.now() - active.pauseStart;
-   liveTotal += Math.max(Date.now() - active.start - pause, 0);
-  }
- }
-
- $("monthStat").textContent = dur(liveTotal);
- $("month").textContent = sel.toLocaleDateString("de-DE", { month: "long", year: "numeric" });
-
- let dayHtml = Object.entries(days)
-  .map(([d, v]) => `
-   <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2c313b">
-    <span>${d}</span>
-    <b>${dur(v)}</b>
-   </div>
-  `).join("");
-
- $("summary").innerHTML =
-  `<div style="font:22px monospace;margin:10px 0">${dur(total)}</div>` +
-  (dayHtml || `<div class="sub">Keine Einträge in diesem Monat.</div>`);
-}
-
-function month(n) {
- sel.setMonth(sel.getMonth() + n);
- renderMonth();
-}
-
-
-/* ============================================================
-   BEARBEITEN
-   ============================================================ */
-
-function openEdit(id) {
- let e = entries.find(x => x.id === id);
- if (!e) return;
-
- editId = id;
-
- let s = new Date(e.start);
- let en = new Date(e.end);
- let pad = n => String(n).padStart(2, "0");
-
- $("editDate").value = `${s.getFullYear()}-${pad(s.getMonth() + 1)}-${pad(s.getDate())}`;
- $("editStart").value = `${pad(s.getHours())}:${pad(s.getMinutes())}`;
- $("editEnd").value = `${pad(en.getHours())}:${pad(en.getMinutes())}`;
- $("editPause").value = Math.round((e.pauseMs || 0) / 60000);
- $("editNote").value = e.note || "";
-
- $("editModal").classList.add("show");
-}
-
-function closeEdit() {
- $("editModal").classList.remove("show");
- editId = null;
-}
-
-function saveEdit() {
- let e = entries.find(x => x.id === editId);
- if (!e) return;
-
- let dateVal = $("editDate").value;
- let [sh, sm] = $("editStart").value.split(":").map(Number);
- let [eh, em] = $("editEnd").value.split(":").map(Number);
- let pauseMin = parseInt($("editPause").value) || 0;
-
- if (!dateVal || isNaN(sh) || isNaN(eh)) {
-  alert("Bitte Datum, Start und Ende ausfüllen.");
-  return;
- }
-
- let [y, mo, d] = dateVal.split("-").map(Number);
- let start = new Date(y, mo - 1, d, sh, sm || 0).getTime();
- let end = new Date(y, mo - 1, d, eh, em || 0).getTime();
-
- if (end <= start) {
-  alert("Ende muss nach Start liegen.");
-  return;
- }
-
- e.start = start;
- e.end = end;
- e.pauseMs = Math.max(0, pauseMin) * 60000;
- e.note = $("editNote").value.trim();
-
- save(true);
- render();
- closeEdit();
-}
-
-
-/* ============================================================
-   LÖSCHEN
-   ============================================================ */
-
 let lastDeleted = null;
-let lastDeletedTimer = null;
 
-function deleteEntry(id) {
- let idx = entries.findIndex(e => e.id === id);
- if (idx === -1) return;
+let syncTimer = null;
 
- const confirmed = confirm(
-  "Möchtest du den Eintrag wirklich löschen?\n\n" +
-  "Der Eintrag bleibt in Google Sheets sichtbar und wird dort als GELÖSCHT markiert."
- );
 
- if (!confirmed) return;
+/* =========================
+   LOCAL STORAGE
+========================= */
 
- const entry = entries[idx];
+function read(key, fallback){
 
- lastDeleted = { entry: entry, index: idx };
+    try{
 
- deletedEntries = deletedEntries.filter(e => e.id !== entry.id);
- deletedEntries.push({ ...entry, deletedAt: Date.now(), deleteReason: "Manuell gelöscht" });
+        return JSON.parse(
+            localStorage.getItem(key)
+            ||
+            JSON.stringify(fallback)
+        );
 
- entries.splice(idx, 1);
+    }catch{
 
- save(true);
- render();
- showToast("Eintrag gelöscht.");
-}
+        return fallback;
 
-function undoDelete() {
- if (!lastDeleted) return;
+    }
 
- deletedEntries = deletedEntries.filter(e => e.id !== lastDeleted.entry.id);
- entries.splice(lastDeleted.index, 0, lastDeleted.entry);
- lastDeleted = null;
-
- save(true);
- render();
- hideToast();
-}
-
-function showToast(msg) {
- clearTimeout(lastDeletedTimer);
- $("toastMsg").textContent = msg;
- $("toast").classList.add("show");
-
- lastDeletedTimer = setTimeout(() => {
-  lastDeleted = null;
-  hideToast();
- }, 6000);
-}
-
-function hideToast() {
- $("toast").classList.remove("show");
 }
 
 
-/* ============================================================
-   CSV
-   ============================================================ */
+function makeId(){
 
-function monthEntries() {
- let y = sel.getFullYear();
- let m = sel.getMonth();
+    return (
+        Date.now()
+        +
+        "_"
+        +
+        Math.random()
+            .toString(36)
+            .slice(2,8)
+    );
 
- return entries
-  .filter(e => {
-   let d = new Date(e.start);
-   return d.getFullYear() == y && d.getMonth() == m;
-  })
-  .sort((a, b) => b.start - a.start);
-}
-
-function csv() {
- let list = monthEntries();
-
- if (!list.length) {
-  return alert("Keine Einträge in " + sel.toLocaleDateString("de-DE", { month: "long", year: "numeric" }) + ".");
- }
-
- let total = list.reduce((s, e) => s + (e.end - e.start - (e.pauseMs || 0)), 0);
-
- let rows = [
-  ["Datum", "Start", "Ende", "Dauer", "Pause", "Notiz"],
-  ...list.map(e => [
-   date(e.start),
-   time(e.start),
-   time(e.end),
-   dur(e.end - e.start - (e.pauseMs || 0)),
-   e.pauseMs ? dur(e.pauseMs) : "0h 00m",
-   e.note || ""
-  ]),
-  [],
-  ["", "", "", "GESAMT MONAT", dur(total), ""]
- ];
-
- let text = "\uFEFF" + rows.map(r =>
-  r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(";")
- ).join("\n");
-
- let mname = sel.toLocaleDateString("de-DE", { month: "long", year: "numeric" })
-  .replace(/\s+/g, "_").toLowerCase();
-
- download(text, `stempeluhr_${mname}.csv`, "text/csv");
 }
 
 
-/* ============================================================
-   PDF
-   ============================================================ */
+function ensureEntry(entry){
 
-function pdfExport() {
- let list = monthEntries();
+    if(!entry.id)
+        entry.id = makeId();
 
- if (!list.length) {
-  return alert("Keine Einträge in " + sel.toLocaleDateString("de-DE", { month: "long", year: "numeric" }) + ".");
- }
+    if(!Number.isFinite(entry.pauseMs))
+        entry.pauseMs = 0;
 
- let total = list.reduce((s, e) => s + (e.end - e.start - (e.pauseMs || 0)), 0);
- let monthLabel = sel.toLocaleDateString("de-DE", { month: "long", year: "numeric" });
+    return entry;
 
- let rows = list.map(e => `
-  <tr>
-   <td>${date(e.start)}</td>
-   <td>${time(e.start)}</td>
-   <td>${time(e.end)}</td>
-   <td>${dur(e.end - e.start - (e.pauseMs || 0))}</td>
-   <td>${e.pauseMs ? dur(e.pauseMs) : "–"}</td>
-   <td>${safe(e.note || "-")}</td>
-  </tr>
- `).join("");
-
- $("printView").innerHTML = `
-  <div class="print-page">
-   <div class="print-head">
-    <div>
-     <h1>⏱️ Stempeluhr</h1>
-     <div class="sub">Monatsbericht · erstellt am ${new Date().toLocaleDateString("de-DE")}</div>
-    </div>
-    <div class="month">${monthLabel}</div>
-   </div>
-
-   <table class="print-table">
-    <thead>
-     <tr><th>Datum</th><th>Start</th><th>Ende</th><th>Dauer</th><th>Pause</th><th>Notiz</th></tr>
-    </thead>
-    <tbody>${rows}</tbody>
-   </table>
-
-   <div class="print-total">
-    <span class="lbl">Gesamtstunden ${monthLabel}</span>
-    <span class="val">${dur(total)}</span>
-   </div>
-
-   <div class="print-foot">Made by Luca Valentine</div>
-  </div>
- `;
-
- window.print();
-}
-
-window.addEventListener("afterprint", () => { $("printView").innerHTML = ""; });
-
-
-/* ============================================================
-   BACKUP (lokale Datei)
-   ============================================================ */
-
-function backup() {
- download(
-  JSON.stringify({ entries, deletedEntries, active, theme: localStorage.getItem("theme") }, null, 2),
-  "stempeluhr_backup.json",
-  "application/json"
- );
-
- localStorage.setItem("lastBackup", Date.now().toString());
- dismissReminder(false);
 }
 
 
-/* ============================================================
-   VALIDIERUNG
-   ============================================================ */
+entries =
+    entries
+        .map(ensureEntry);
 
-function validEntries(arr) {
- if (!Array.isArray(arr)) return false;
 
- return arr.every(e =>
-  e && typeof e === "object" &&
-  typeof e.start === "number" && !isNaN(e.start) &&
-  typeof e.end === "number" && !isNaN(e.end) &&
-  e.end >= e.start
- );
-}
+deletedEntries =
+    deletedEntries
+        .map(ensureEntry);
 
-function validActive(a) {
- if (a === null || a === undefined) return true;
- return typeof a === "object" && typeof a.start === "number" && !isNaN(a.start);
-}
 
-function normalizeEntries(arr) {
- return arr.map(en => ({
-  id: en.id || (Date.now() + "_" + Math.random().toString(36).slice(2, 7)),
-  start: en.start,
-  end: en.end,
-  pauseMs: en.pauseMs || 0,
-  note: en.note || ""
- }));
-}
+if(active)
+    ensureEntry(active);
 
-function applyImportedState(x) {
- entries = normalizeEntries(x.entries);
- deletedEntries = Array.isArray(x.deletedEntries) ? x.deletedEntries : [];
- active = x.active || null;
 
- if (active && active.pauseMs === undefined) {
-  active.pauseMs = 0;
- }
+/* =========================
+   TIME
+========================= */
 
- localStorage.setItem("entries", JSON.stringify(entries));
- localStorage.setItem("deletedEntries", JSON.stringify(deletedEntries));
+function formatTime(timestamp){
 
- if (active) {
-  localStorage.setItem("active", JSON.stringify(active));
- } else {
-  localStorage.removeItem("active");
- }
+    return new Date(timestamp)
+        .toLocaleTimeString(
+            "de-DE",
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        );
 
- if (x.theme) localStorage.setItem("theme", x.theme);
-
- loadTheme();
- render();
 }
 
 
-/* ============================================================
-   IMPORT (lokale Datei)
-   ============================================================ */
+function formatDate(timestamp){
 
-function restore(e) {
- let f = e.target.files[0];
- if (!f) return;
+    return new Date(timestamp)
+        .toLocaleDateString(
+            "de-DE"
+        );
 
- let r = new FileReader();
-
- r.onload = () => {
-  try {
-   let x = JSON.parse(r.result);
-
-   if (!validEntries(x.entries) || !validActive(x.active)) throw 0;
-
-   let warn = "";
-
-   if (active) {
-    warn = "Du bist aktuell eingestempelt seit " + time(active.start) +
-     " Uhr. Diese laufende Sitzung geht beim Import verloren, falls das Backup keine eigene aktive Sitzung enthält. ";
-   }
-
-   if (entries.length) {
-    warn += `Aktuell vorhanden: ${entries.length} Einträge. Diese werden durch ${x.entries.length} Einträge aus dem Backup ERSETZT.`;
-   }
-
-   if (warn && !confirm(warn + "\n\nWirklich fortfahren?")) {
-    e.target.value = "";
-    return;
-   }
-
-   applyImportedState(x);
-   save(true);
-   alert("Backup importiert.");
-
-  } catch {
-   alert("Ungültiges Backup: Die Datei enthält keine gültigen Zeiteinträge.");
-  }
-
-  e.target.value = "";
- };
-
- r.readAsText(f);
 }
 
 
-/* ============================================================
+function duration(ms){
+
+    let minutes =
+        Math.max(
+            0,
+            Math.round(ms / 60000)
+        );
+
+    let hours =
+        Math.floor(minutes / 60);
+
+    let mins =
+        minutes % 60;
+
+    return (
+        hours +
+        "h " +
+        String(mins).padStart(2,"0") +
+        "m"
+    );
+
+}
+
+
+function netDuration(entry){
+
+    return Math.max(
+        0,
+        entry.end -
+        entry.start -
+        (entry.pauseMs || 0)
+    );
+
+}
+
+
+function activeDuration(){
+
+    if(!active)
+        return 0;
+
+    let pause =
+        active.pauseMs || 0;
+
+    if(active.pauseStart)
+        pause +=
+            Date.now() -
+            active.pauseStart;
+
+    return Math.max(
+        0,
+        Date.now() -
+        active.start -
+        pause
+    );
+
+}
+
+
+/* =========================
+   SAVE
+========================= */
+
+function save(immediate=false){
+
+    localStorage.setItem(
+        "entries",
+        JSON.stringify(entries)
+    );
+
+    localStorage.setItem(
+        "deletedEntries",
+        JSON.stringify(deletedEntries)
+    );
+
+    if(active){
+
+        localStorage.setItem(
+            "active",
+            JSON.stringify(active)
+        );
+
+    }else{
+
+        localStorage.removeItem("active");
+
+    }
+
+    if(immediate){
+
+        syncNow(false);
+
+    }else{
+
+        clearTimeout(syncTimer);
+
+        syncTimer =
+            setTimeout(
+                () => syncNow(false),
+                1500
+            );
+
+    }
+
+}
+
+
+/* =========================
+   STEMPELN
+========================= */
+
+function punch(){
+
+    if(active){
+
+        if(active.pauseStart){
+
+            active.pauseMs +=
+                Date.now() -
+                active.pauseStart;
+
+            active.pauseStart = null;
+
+        }
+
+        entries.push({
+
+            id: makeId(),
+
+            start: active.start,
+
+            end: Date.now(),
+
+            pauseMs:
+                active.pauseMs || 0,
+
+            note:
+                $("note")
+                    .value
+                    .trim()
+
+        });
+
+        active = null;
+
+        $("note").value = "";
+
+        save(true);
+
+    }else{
+
+        active = {
+
+            start: Date.now(),
+
+            pauseMs: 0,
+
+            pauseStart: null
+
+        };
+
+        save();
+
+    }
+
+    render();
+
+}
+
+
+function togglePause(){
+
+    if(!active)
+        return;
+
+    if(active.pauseStart){
+
+        active.pauseMs +=
+            Date.now() -
+            active.pauseStart;
+
+        active.pauseStart = null;
+
+    }else{
+
+        active.pauseStart =
+            Date.now();
+
+    }
+
+    save();
+
+    render();
+
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function render(){
+
+    $("status").textContent =
+        active
+            ?
+            (
+                active.pauseStart
+                    ?
+                    "⏸️ Pause"
+                    :
+                    "🟢 Eingestempelt"
+            )
+            :
+            "🔴 Ausgestempelt";
+
+
+    $("punch").textContent =
+        active
+            ?
+            "Ausstempeln"
+            :
+            "Einstempeln";
+
+
+    $("punch").className =
+        active
+            ?
+            "punch red"
+            :
+            "punch";
+
+
+    $("since").textContent =
+        active
+            ?
+            "Seit " +
+            formatTime(active.start) +
+            " Uhr"
+            :
+            "";
+
+
+    $("pauseWrap").style.display =
+        active
+            ?
+            "block"
+            :
+            "none";
+
+
+    if(active){
+
+        $("pauseBtn").textContent =
+            active.pauseStart
+                ?
+                "Pause beenden"
+                :
+                "Pause starten";
+
+    }
+
+
+    let sorted =
+        [...entries]
+            .sort(
+                (a,b) =>
+                    b.start -
+                    a.start
+            );
+
+
+    $("log").innerHTML =
+        sorted
+            .map(entry => `
+
+                <tr>
+
+                    <td>
+                        ${formatDate(entry.start)}
+                    </td>
+
+                    <td>
+                        ${formatTime(entry.start)}
+                    </td>
+
+                    <td>
+                        ${formatTime(entry.end)}
+                    </td>
+
+                    <td>
+                        ${duration(netDuration(entry))}
+                    </td>
+
+                    <td>
+                        ${
+                            entry.pauseMs
+                                ?
+                                duration(entry.pauseMs)
+                                :
+                                "–"
+                        }
+                    </td>
+
+                    <td class="note">
+                        ${escapeHtml(entry.note || "-")}
+                    </td>
+
+                    <td class="actions-cell">
+
+                        <button
+                            class="gray"
+                            onclick="openEdit('${escapeAttr(entry.id)}')"
+                        >
+                            ✏️
+                        </button>
+
+                        <button
+                            class="red"
+                            onclick="deleteEntry('${escapeAttr(entry.id)}')"
+                        >
+                            🗑️
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `)
+            .join("");
+
+
+    $("empty").style.display =
+        entries.length
+            ?
+            "none"
+            :
+            "block";
+
+
+    $("count").textContent =
+        entries.length;
+
+
+    updateStats();
+
+    renderMonth();
+
+    checkBackupReminder();
+
+}
+
+
+function updateStats(){
+
+    let now =
+        new Date();
+
+    let today =
+        new Date(now);
+
+    today.setHours(
+        0,0,0,0
+    );
+
+
+    let week =
+        new Date(today);
+
+    week.setDate(
+        week.getDate()
+        -
+        (
+            (week.getDay()+6)
+            %7
+        )
+    );
+
+
+    let todayMs = 0;
+
+    let weekMs = 0;
+
+
+    entries.forEach(entry => {
+
+        let value =
+            netDuration(entry);
+
+        if(entry.start >= today)
+            todayMs += value;
+
+        if(entry.start >= week)
+            weekMs += value;
+
+    });
+
+
+    if(active){
+
+        let value =
+            activeDuration();
+
+        if(active.start >= today)
+            todayMs += value;
+
+        if(active.start >= week)
+            weekMs += value;
+
+    }
+
+
+    $("today").textContent =
+        duration(todayMs);
+
+    $("week").textContent =
+        duration(weekMs);
+
+}
+
+
+/* =========================
+   MONAT
+========================= */
+
+function renderMonth(){
+
+    let year =
+        selectedMonth.getFullYear();
+
+    let month =
+        selectedMonth.getMonth();
+
+
+    let total = 0;
+
+    let days = {};
+
+
+    entries
+        .filter(entry => {
+
+            let d =
+                new Date(entry.start);
+
+            return (
+                d.getFullYear() === year &&
+                d.getMonth() === month
+            );
+
+        })
+        .forEach(entry => {
+
+            let key =
+                formatDate(entry.start);
+
+            let value =
+                netDuration(entry);
+
+            days[key] =
+                (days[key] || 0)
+                +
+                value;
+
+            total += value;
+
+        });
+
+
+    if(active){
+
+        let d =
+            new Date(active.start);
+
+        if(
+            d.getFullYear() === year &&
+            d.getMonth() === month
+        ){
+
+            total +=
+                activeDuration();
+
+        }
+
+    }
+
+
+    $("monthStat").textContent =
+        duration(total);
+
+
+    $("month").textContent =
+        selectedMonth.toLocaleDateString(
+            "de-DE",
+            {
+                month:"long",
+                year:"numeric"
+            }
+        );
+
+
+    let dayTotal =
+        Object.values(days)
+            .reduce(
+                (a,b) => a+b,
+                0
+            );
+
+
+    $("summary").innerHTML = `
+
+        <div
+            style="
+                font:22px monospace;
+                margin:10px 0
+            "
+        >
+            ${duration(dayTotal)}
+        </div>
+
+        ${
+            Object.entries(days)
+                .map(
+                    ([day,value]) => `
+
+                        <div
+                            style="
+                                display:flex;
+                                justify-content:space-between;
+                                padding:8px 0;
+                                border-bottom:1px solid #2c313b
+                            "
+                        >
+
+                            <span>
+                                ${day}
+                            </span>
+
+                            <b>
+                                ${duration(value)}
+                            </b>
+
+                        </div>
+
+                    `
+                )
+                .join("")
+        }
+
+    `;
+
+}
+
+
+function month(change){
+
+    selectedMonth.setMonth(
+        selectedMonth.getMonth()
+        +
+        change
+    );
+
+    renderMonth();
+
+}
+
+
+/* =========================
+   EDIT
+========================= */
+
+function openEdit(id){
+
+    let entry =
+        entries.find(
+            x => x.id === id
+        );
+
+    if(!entry)
+        return;
+
+
+    editId = id;
+
+
+    let start =
+        new Date(entry.start);
+
+    let end =
+        new Date(entry.end);
+
+
+    const pad =
+        n =>
+            String(n)
+                .padStart(2,"0");
+
+
+    $("editDate").value =
+        start.getFullYear()
+        +
+        "-"
+        +
+        pad(start.getMonth()+1)
+        +
+        "-"
+        +
+        pad(start.getDate());
+
+
+    $("editStart").value =
+        pad(start.getHours())
+        +
+        ":"
+        +
+        pad(start.getMinutes());
+
+
+    $("editEnd").value =
+        pad(end.getHours())
+        +
+        ":"
+        +
+        pad(end.getMinutes());
+
+
+    $("editPause").value =
+        Math.round(
+            (entry.pauseMs || 0)
+            /
+            60000
+        );
+
+
+    $("editNote").value =
+        entry.note || "";
+
+
+    $("editModal")
+        .classList
+        .add("show");
+
+}
+
+
+function closeEdit(){
+
+    $("editModal")
+        .classList
+        .remove("show");
+
+    editId = null;
+
+}
+
+
+function saveEdit(){
+
+    let entry =
+        entries.find(
+            x => x.id === editId
+        );
+
+    if(!entry)
+        return;
+
+
+    let dateValue =
+        $("editDate").value;
+
+    let startValue =
+        $("editStart").value;
+
+    let endValue =
+        $("editEnd").value;
+
+
+    if(
+        !dateValue ||
+        !startValue ||
+        !endValue
+    ){
+
+        alert(
+            "Bitte alle Zeitfelder ausfüllen."
+        );
+
+        return;
+
+    }
+
+
+    let [
+        year,
+        month,
+        day
+    ] =
+        dateValue
+            .split("-")
+            .map(Number);
+
+
+    let [
+        startHour,
+        startMinute
+    ] =
+        startValue
+            .split(":")
+            .map(Number);
+
+
+    let [
+        endHour,
+        endMinute
+    ] =
+        endValue
+            .split(":")
+            .map(Number);
+
+
+    let start =
+        new Date(
+            year,
+            month-1,
+            day,
+            startHour,
+            startMinute
+        ).getTime();
+
+
+    let end =
+        new Date(
+            year,
+            month-1,
+            day,
+            endHour,
+            endMinute
+        ).getTime();
+
+
+    if(end <= start){
+
+        alert(
+            "Das Ende muss nach dem Start liegen."
+        );
+
+        return;
+
+    }
+
+
+    let pauseMinutes =
+        Math.max(
+            0,
+            parseInt(
+                $("editPause").value
+            ) || 0
+        );
+
+
+    let pauseMs =
+        pauseMinutes * 60000;
+
+
+    if(pauseMs > end-start){
+
+        alert(
+            "Die Pause darf nicht länger als die Arbeitszeit sein."
+        );
+
+        return;
+
+    }
+
+
+    Object.assign(
+        entry,
+        {
+            start,
+            end,
+            pauseMs,
+            note:
+                $("editNote")
+                    .value
+                    .trim()
+        }
+    );
+
+
+    save(true);
+
+    render();
+
+    closeEdit();
+
+}
+
+
+/* =========================
+   DELETE
+========================= */
+
+function deleteEntry(id){
+
+    let index =
+        entries.findIndex(
+            x => x.id === id
+        );
+
+
+    if(index < 0)
+        return;
+
+
+    if(
+        !confirm(
+            "Eintrag löschen?\n\n" +
+            "Der Eintrag bleibt in Google Sheets " +
+            "als GELÖSCHT erhalten."
+        )
+    )
+        return;
+
+
+    let entry =
+        entries[index];
+
+
+    lastDeleted = {
+
+        entry,
+
+        index
+
+    };
+
+
+    deletedEntries =
+        deletedEntries.filter(
+            x => x.id !== id
+        );
+
+
+    deletedEntries.push({
+
+        ...entry,
+
+        deletedAt:
+            Date.now(),
+
+        deleteReason:
+            "Manuell gelöscht"
+
+    });
+
+
+    entries.splice(
+        index,
+        1
+    );
+
+
+    save(true);
+
+    render();
+
+
+    $("toastMsg").textContent =
+        "Eintrag gelöscht.";
+
+
+    $("toast")
+        .classList
+        .add("show");
+
+
+    setTimeout(
+        () =>
+            $("toast")
+                .classList
+                .remove("show"),
+        6000
+    );
+
+}
+
+
+function undoDelete(){
+
+    if(!lastDeleted)
+        return;
+
+
+    deletedEntries =
+        deletedEntries.filter(
+            entry =>
+                entry.id !==
+                lastDeleted.entry.id
+        );
+
+
+    entries.splice(
+        lastDeleted.index,
+        0,
+        lastDeleted.entry
+    );
+
+
+    lastDeleted = null;
+
+
+    save(true);
+
+    render();
+
+    $("toast")
+        .classList
+        .remove("show");
+
+}
+
+
+/* =========================
+   EXPORT
+========================= */
+
+function getMonthEntries(){
+
+    return entries
+        .filter(entry => {
+
+            let d =
+                new Date(entry.start);
+
+            return (
+                d.getFullYear()
+                ===
+                selectedMonth.getFullYear()
+                &&
+                d.getMonth()
+                ===
+                selectedMonth.getMonth()
+            );
+
+        })
+        .sort(
+            (a,b) =>
+                b.start-a.start
+        );
+
+}
+
+
+function csv(){
+
+    let list =
+        getMonthEntries();
+
+
+    if(!list.length){
+
+        alert(
+            "Keine Einträge in diesem Monat."
+        );
+
+        return;
+
+    }
+
+
+    let rows = [
+
+        [
+            "Datum",
+            "Start",
+            "Ende",
+            "Dauer",
+            "Pause",
+            "Notiz"
+        ]
+
+    ];
+
+
+    list.forEach(entry => {
+
+        rows.push([
+
+            formatDate(entry.start),
+
+            formatTime(entry.start),
+
+            formatTime(entry.end),
+
+            duration(
+                netDuration(entry)
+            ),
+
+            entry.pauseMs
+                ?
+                duration(entry.pauseMs)
+                :
+                "0h 00m",
+
+            entry.note || ""
+
+        ]);
+
+    });
+
+
+    let text =
+        "\uFEFF"
+        +
+        rows
+            .map(
+                row =>
+                    row
+                        .map(
+                            value =>
+                                `"${String(value)
+                                    .replace(/"/g,'""')}"`
+                        )
+                        .join(";")
+            )
+            .join("\n");
+
+
+    download(
+        text,
+        "stempeluhr.csv",
+        "text/csv"
+    );
+
+}
+
+
+function pdfExport(){
+
+    let list =
+        getMonthEntries();
+
+
+    if(!list.length){
+
+        alert(
+            "Keine Einträge in diesem Monat."
+        );
+
+        return;
+
+    }
+
+
+    let total =
+        list.reduce(
+            (sum,entry) =>
+                sum +
+                netDuration(entry),
+            0
+        );
+
+
+    $("printView").innerHTML = `
+
+        <div class="print-page">
+
+            <h1>
+                ⏱️ Stempeluhr
+            </h1>
+
+            <p>
+                Monatsbericht ·
+                ${
+                    selectedMonth.toLocaleDateString(
+                        "de-DE",
+                        {
+                            month:"long",
+                            year:"numeric"
+                        }
+                    )
+                }
+            </p>
+
+            <table class="print-table">
+
+                <tr>
+
+                    <th>Datum</th>
+                    <th>Start</th>
+                    <th>Ende</th>
+                    <th>Dauer</th>
+                    <th>Pause</th>
+                    <th>Notiz</th>
+
+                </tr>
+
+                ${
+                    list
+                        .map(
+                            entry => `
+
+                                <tr>
+
+                                    <td>
+                                        ${formatDate(entry.start)}
+                                    </td>
+
+                                    <td>
+                                        ${formatTime(entry.start)}
+                                    </td>
+
+                                    <td>
+                                        ${formatTime(entry.end)}
+                                    </td>
+
+                                    <td>
+                                        ${duration(
+                                            netDuration(entry)
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        ${
+                                            entry.pauseMs
+                                                ?
+                                                duration(entry.pauseMs)
+                                                :
+                                                "–"
+                                        }
+                                    </td>
+
+                                    <td>
+                                        ${escapeHtml(entry.note || "-")}
+                                    </td>
+
+                                </tr>
+
+                            `
+                        )
+                        .join("")
+                }
+
+            </table>
+
+            <div class="print-total">
+
+                Gesamt:
+                ${duration(total)}
+
+            </div>
+
+            <div class="print-foot">
+                Made by Luca Valentine
+            </div>
+
+        </div>
+
+    `;
+
+
+    window.print();
+
+    setTimeout(
+        () =>
+            $("printView").innerHTML = "",
+        500
+    );
+
+}
+
+
+/* =========================
+   BACKUP
+========================= */
+
+function backup(){
+
+    let data = {
+
+        entries,
+
+        deletedEntries,
+
+        active,
+
+        theme:
+            localStorage.getItem("theme")
+
+    };
+
+
+    download(
+        JSON.stringify(
+            data,
+            null,
+            2
+        ),
+        "stempeluhr_backup.json",
+        "application/json"
+    );
+
+
+    localStorage.setItem(
+        "lastBackup",
+        Date.now()
+    );
+
+}
+
+
+function restore(event){
+
+    let file =
+        event.target.files[0];
+
+
+    if(!file)
+        return;
+
+
+    let reader =
+        new FileReader();
+
+
+    reader.onload = () => {
+
+        try{
+
+            let data =
+                JSON.parse(
+                    reader.result
+                );
+
+
+            if(
+                !Array.isArray(data.entries)
+            )
+                throw Error();
+
+
+            if(
+                !confirm(
+                    "Das aktuelle lokale Backup wird ersetzt. Fortfahren?"
+                )
+            )
+                return;
+
+
+            entries =
+                normalizeEntries(
+                    data.entries
+                );
+
+
+            deletedEntries =
+                normalizeEntries(
+                    data.deletedEntries || []
+                );
+
+
+            active =
+                data.active &&
+                Number.isFinite(
+                    Number(data.active.start)
+                )
+                    ?
+                    data.active
+                    :
+                    null;
+
+
+            localStorage.setItem(
+                "entries",
+                JSON.stringify(entries)
+            );
+
+
+            localStorage.setItem(
+                "deletedEntries",
+                JSON.stringify(deletedEntries)
+            );
+
+
+            if(active){
+
+                localStorage.setItem(
+                    "active",
+                    JSON.stringify(active)
+                );
+
+            }else{
+
+                localStorage.removeItem(
+                    "active"
+                );
+
+            }
+
+
+            if(data.theme)
+                localStorage.setItem(
+                    "theme",
+                    data.theme
+                );
+
+
+            loadTheme();
+
+            save(true);
+
+            render();
+
+            alert(
+                "Backup erfolgreich importiert."
+            );
+
+        }catch{
+
+            alert(
+                "Ungültiges Backup."
+            );
+
+        }
+
+
+        event.target.value = "";
+
+    };
+
+
+    reader.readAsText(file);
+
+}
+
+
+function clearAll(){
+
+    if(!entries.length)
+        return;
+
+
+    if(
+        !confirm(
+            "Wirklich alle Einträge löschen?"
+        )
+    )
+        return;
+
+
+    let now =
+        Date.now();
+
+
+    entries.forEach(entry => {
+
+        deletedEntries.push({
+
+            ...entry,
+
+            deletedAt: now,
+
+            deleteReason:
+                "Alle Einträge gelöscht"
+
+        });
+
+    });
+
+
+    entries = [];
+
+
+    save(true);
+
+    render();
+
+}
+
+
+/* =========================
    DOWNLOAD
-   ============================================================ */
+========================= */
 
-function download(text, name, type) {
- let a = document.createElement("a");
- a.href = URL.createObjectURL(new Blob([text], { type }));
- a.download = name;
- a.click();
- URL.revokeObjectURL(a.href);
+function download(
+    content,
+    filename,
+    type
+){
+
+    let blob =
+        new Blob(
+            [content],
+            {type}
+        );
+
+
+    let url =
+        URL.createObjectURL(blob);
+
+
+    let a =
+        document.createElement("a");
+
+
+    a.href = url;
+
+    a.download =
+        filename;
+
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+
+    setTimeout(
+        () =>
+            URL.revokeObjectURL(url),
+        1000
+    );
+
 }
 
 
-/* ============================================================
-   ALLE LÖSCHEN
-   ============================================================ */
+/* =========================
+   CLOUD
+========================= */
 
-function clearAll() {
- if (!entries.length) return;
+function loadSyncSettings(){
 
- if (confirm(
-  "Wirklich alle Einträge löschen?\n\n" +
-  "Die Einträge bleiben in Google Sheets sichtbar und werden als GELÖSCHT markiert."
- )) {
-  const now = Date.now();
+    $("employeeName").value =
+        localStorage.getItem(
+            "employeeName"
+        ) || "";
 
-  entries.forEach(e => {
-   deletedEntries = deletedEntries.filter(d => d.id !== e.id);
-   deletedEntries.push({ ...e, deletedAt: now, deleteReason: "Alle Einträge gelöscht" });
-  });
-
-  entries = [];
-  save(true);
-  render();
- }
 }
 
 
-/* ============================================================
-   SAFE HTML
-   ============================================================ */
+function saveSyncSettings(){
 
-function safe(x) {
- let d = document.createElement("div");
- d.textContent = x;
- return d.innerHTML;
-}
+    let name =
+        $("employeeName")
+            .value
+            .trim();
 
 
-/* ============================================================
-   BACKUP REMINDER
-   ============================================================ */
+    if(!name){
 
-function maybeShowReminder() {
- if (!entries.length) {
-  $("backupReminder").style.display = "none";
-  return;
- }
+        alert(
+            "Bitte deinen Namen eintragen."
+        );
 
- let last = parseInt(localStorage.getItem("lastBackup") || "0");
- let dismissedUntil = parseInt(localStorage.getItem("reminderDismiss") || "0");
- let now = Date.now();
- let sevenDays = 7 * 24 * 60 * 60 * 1000;
+        return;
 
- if (now - last > sevenDays && now > dismissedUntil) {
-  $("reminderText").textContent = last
-   ? "Dein letztes Backup ist über 7 Tage her. Alle Daten liegen nur lokal in diesem Browser."
-   : "Du hast noch nie ein Backup erstellt. Alle Daten liegen nur lokal in diesem Browser.";
-
-  $("backupReminder").style.display = "flex";
- } else {
-  $("backupReminder").style.display = "none";
- }
-}
-
-function dismissReminder(saved) {
- if (!saved) {
-  localStorage.setItem("reminderDismiss", (Date.now() + 3 * 24 * 60 * 60 * 1000).toString());
- }
- $("backupReminder").style.display = "none";
-}
+    }
 
 
-/* ============================================================
-   CLOUD SYNC
-   ============================================================ */
+    localStorage.setItem(
+        "employeeName",
+        name
+    );
 
-function loadSyncSettings() {
- $("employeeName").value = localStorage.getItem("employeeName") || "";
- updateSyncStatus();
-}
 
-function saveSyncSettings() {
- localStorage.setItem("employeeName", $("employeeName").value.trim());
- $("syncStatus").textContent = "Gespeichert.";
- maybeAutoSync();
-}
-
-function updateSyncStatus() {
- let last = parseInt(localStorage.getItem("lastSyncTime") || "0");
-
- if (last) {
-  $("syncStatus").textContent = "Zuletzt gesendet: " + new Date(last).toLocaleString("de-DE");
- }
-}
-
-function currentEmployeeName() {
- return localStorage.getItem("employeeName") || $("employeeName").value.trim();
-}
-
-function syncNow(manual) {
- let url = SYNC_CONFIG.url;
- let token = SYNC_CONFIG.token || "";
- let name = currentEmployeeName();
-
- if (!url) {
-  if (manual) alert("Cloud-Sync ist noch nicht eingerichtet. Bitte Admin kontaktieren.");
-  return;
- }
-
- if (!name) {
-  if (manual) alert("Bitte zuerst deinen Namen eintragen und speichern.");
-  return;
- }
-
- let payload = {
-  employee: name,
-  token: token,
-  timestamp: Date.now(),
-  backup: {
-   entries: entries,
-   deletedEntries: deletedEntries,
-   active: active,
-   theme: localStorage.getItem("theme")
-  }
- };
-
- fetch(url, {
-  method: "POST",
-  headers: { "Content-Type": "text/plain;charset=utf-8" },
-  body: JSON.stringify(payload),
-  keepalive: true
- })
- .then(res => res.json())
- .then(data => {
-  localStorage.setItem("lastSyncTime", Date.now().toString());
-  updateSyncStatus();
-
-  if (manual) {
-   if (data && data.status === "ok") {
     $("syncStatus").textContent =
-     "✅ Erfolgreich synchronisiert (" + data.rows + " Einträge, " + (data.deleted || 0) +
-     " gelöscht). Zuletzt: " + new Date().toLocaleString("de-DE");
-   } else {
-    $("syncStatus").textContent = "⚠️ Google meldet ein Problem: " + (data && data.message ? data.message : "Unbekannter Fehler");
-   }
-  }
- })
- .catch(() => {
-  fetch(url, {
-   method: "POST",
-   mode: "no-cors",
-   headers: { "Content-Type": "text/plain;charset=utf-8" },
-   body: JSON.stringify(payload),
-   keepalive: true
-  })
-  .then(() => {
-   localStorage.setItem("lastSyncTime", Date.now().toString());
-   updateSyncStatus();
-   if (manual) $("syncStatus").textContent = "Gesendet. Prüfe den Mitarbeiter-Tab in Google Sheets.";
-  })
-  .catch(() => {
-   if (manual) $("syncStatus").textContent = "❌ Senden fehlgeschlagen. URL prüfen und erneut versuchen.";
-  });
- });
-}
+        "Name gespeichert.";
 
-/**
- * Holt den zuletzt in Google Sheets gesicherten Stand zurück
- * und ersetzt die lokalen Daten damit (nach Bestätigung).
- */
-function restoreFromCloud() {
- let url = SYNC_CONFIG.url;
- let token = SYNC_CONFIG.token || "";
- let name = currentEmployeeName();
 
- if (!url) {
-  alert("Cloud-Sync ist noch nicht eingerichtet. Bitte Admin kontaktieren.");
-  return;
- }
+    syncNow(false);
 
- if (!name) {
-  alert("Bitte zuerst deinen Namen eintragen und speichern.");
-  return;
- }
-
- let warn = `Das ersetzt deine ${entries.length} lokalen Einträge auf diesem Gerät durch den zuletzt in der Cloud gesicherten Stand für "${name}". Fortfahren?`;
-
- if (!confirm(warn)) return;
-
- $("syncStatus").textContent = "Lade aus der Cloud…";
-
- const getUrl = url + (url.includes("?") ? "&" : "?") +
-  "action=restore&employee=" + encodeURIComponent(name) +
-  "&token=" + encodeURIComponent(token);
-
- fetch(getUrl)
-  .then(res => res.json())
-  .then(data => {
-   if (!data || data.status !== "ok" || !data.backup) {
-    $("syncStatus").textContent = "⚠️ " + (data && data.message ? data.message : "Kein Cloud-Backup gefunden.");
-    return;
-   }
-
-   if (!validEntries(data.backup.entries || [])) {
-    $("syncStatus").textContent = "⚠️ Cloud-Backup enthält keine gültigen Einträge.";
-    return;
-   }
-
-   applyImportedState(data.backup);
-   save(false);
-
-   $("syncStatus").textContent = "✅ Aus der Cloud geladen (" + entries.length + " Einträge). " +
-    new Date().toLocaleString("de-DE");
-  })
-  .catch(() => {
-   $("syncStatus").textContent = "❌ Laden fehlgeschlagen. URL prüfen und erneut versuchen.";
-  });
 }
 
 
-/* ============================================================
-   THEME
-   ============================================================ */
+function syncNow(manual=false){
 
-function theme() {
- document.body.classList.toggle("light");
- localStorage.setItem("theme", document.body.classList.contains("light") ? "light" : "dark");
+    let employee =
+        localStorage.getItem(
+            "employeeName"
+        )
+        ||
+        $("employeeName")
+            .value
+            .trim();
+
+
+    if(!employee){
+
+        if(manual){
+
+            alert(
+                "Bitte zuerst deinen Namen speichern."
+            );
+
+        }
+
+        return;
+
+    }
+
+
+    let payload = {
+
+        employee,
+
+        token:
+            SYNC_CONFIG.token,
+
+        timestamp:
+            Date.now(),
+
+        backup: {
+
+            entries,
+
+            deletedEntries,
+
+            active,
+
+            theme:
+                localStorage.getItem(
+                    "theme"
+                )
+
+        }
+
+    };
+
+
+    fetch(
+        SYNC_CONFIG.url,
+        {
+            method:"POST",
+
+            headers:{
+                "Content-Type":
+                    "text/plain;charset=utf-8"
+            },
+
+            body:
+                JSON.stringify(payload)
+
+        }
+    )
+
+    .then(response => {
+
+        if(!response.ok)
+            throw Error(
+                "Serverfehler "+response.status
+            );
+
+        return response.json();
+
+    })
+
+    .then(data => {
+
+        if(data.status !== "ok")
+            throw Error(
+                data.message ||
+                "Synchronisierung fehlgeschlagen."
+            );
+
+
+        localStorage.setItem(
+            "lastSyncTime",
+            Date.now()
+        );
+
+
+        $("syncStatus").textContent =
+            "✅ Synchronisiert: "
+            +
+            new Date()
+                .toLocaleString("de-DE");
+
+    })
+
+    .catch(error => {
+
+        $("syncStatus").textContent =
+            "❌ Sync: "
+            +
+            error.message;
+
+    });
+
 }
 
-function loadTheme() {
- if (localStorage.getItem("theme") == "light") {
-  document.body.classList.add("light");
- }
+
+async function restoreFromCloud(){
+
+    let employee =
+        localStorage.getItem(
+            "employeeName"
+        )
+        ||
+        $("employeeName")
+            .value
+            .trim();
+
+
+    if(!employee){
+
+        alert(
+            "Bitte zuerst deinen Namen speichern."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        !confirm(
+            "Lokale Daten durch den Cloud-Stand ersetzen?"
+        )
+    )
+        return;
+
+
+    $("syncStatus").textContent =
+        "☁️ Cloud-Daten werden geladen…";
+
+
+    let url =
+        SYNC_CONFIG.url
+        +
+        "?action=restore"
+        +
+        "&employee="
+        +
+        encodeURIComponent(employee)
+        +
+        "&token="
+        +
+        encodeURIComponent(
+            SYNC_CONFIG.token
+        );
+
+
+    try{
+
+        let response =
+            await fetch(url);
+
+
+        if(!response.ok)
+            throw Error(
+                "Serverfehler "+response.status
+            );
+
+
+        let data =
+            await response.json();
+
+
+        if(data.status !== "ok")
+            throw Error(
+                data.message ||
+                "Cloud-Backup nicht gefunden."
+            );
+
+
+        let backup =
+            data.backup;
+
+
+        entries =
+            normalizeEntries(
+                backup.entries
+            );
+
+
+        deletedEntries =
+            normalizeEntries(
+                backup.deletedEntries
+            );
+
+
+        active =
+            backup.active || null;
+
+
+        localStorage.setItem(
+            "entries",
+            JSON.stringify(entries)
+        );
+
+
+        localStorage.setItem(
+            "deletedEntries",
+            JSON.stringify(deletedEntries)
+        );
+
+
+        if(active){
+
+            localStorage.setItem(
+                "active",
+                JSON.stringify(active)
+            );
+
+        }else{
+
+            localStorage.removeItem(
+                "active"
+            );
+
+        }
+
+
+        if(backup.theme){
+
+            localStorage.setItem(
+                "theme",
+                backup.theme
+            );
+
+            loadTheme();
+
+        }
+
+
+        render();
+
+
+        $("syncStatus").textContent =
+            "✅ Cloud-Stand geladen.";
+
+    }catch(error){
+
+        $("syncStatus").textContent =
+            "❌ Cloud: "
+            +
+            error.message;
+
+    }
+
 }
 
-$("date").textContent = new Date().toLocaleDateString("de-DE", {
- weekday: "long", day: "2-digit", month: "long", year: "numeric"
-});
 
-
-/* ============================================================
-   TIMER
-   ============================================================ */
-
-function tick() {
- if (!active) return;
-
- let pause = active.pauseMs || 0;
- if (active.pauseStart) pause += Date.now() - active.pauseStart;
-
- let s = Math.floor((Date.now() - active.start - pause) / 1000);
- s = Math.max(s, 0);
-
- $("timer").textContent =
-  String(Math.floor(s / 3600)).padStart(2, "0") + ":" +
-  String(Math.floor(s / 60) % 60).padStart(2, "0") + ":" +
-  String(s % 60).padStart(2, "0");
-
- stats();
-
- let y = sel.getFullYear();
- let m = sel.getMonth();
- let ad = new Date(active.start);
-
- if (ad.getFullYear() != y || ad.getMonth() != m) return;
-
- let total = 0;
-
- entries
-  .filter(e => {
-   let d = new Date(e.start);
-   return d.getFullYear() == y && d.getMonth() == m;
-  })
-  .forEach(e => { total += e.end - e.start - (e.pauseMs || 0); });
-
- let activePause = active.pauseMs || 0;
- if (active.pauseStart) activePause += Date.now() - active.pauseStart;
-
- total += Math.max(Date.now() - active.start - activePause, 0);
-
- $("monthStat").textContent = dur(total);
-}
-
-
-/* ============================================================
-   LOADER
-   ============================================================ */
-
-function runLoader() {
- let bar = $("loadbar");
- let msg = $("loadmsg");
- let loader = $("loader");
-
- let steps = [
-  [0, "Lade Einträge…"],
-  [35, "Prüfe aktive Sitzung…"],
-  [70, "Baue Monatsübersicht…"],
-  [95, "Fast fertig…"]
- ];
-
- let start = Date.now();
- let duration = 1200;
-
- function frame() {
-  let elapsed = Date.now() - start;
-  let pct = Math.min(100, (elapsed / duration) * 100);
-
-  bar.style.width = pct + "%";
-
-  let cur = steps[0][1];
-  for (const [p, m] of steps) { if (pct >= p) cur = m; }
-  msg.textContent = cur;
-
-  if (elapsed < duration) {
-   requestAnimationFrame(frame);
-  } else {
-   loader.style.opacity = "0";
-   loader.style.transition = "opacity .4s";
-   setTimeout(() => loader.remove(), 400);
-  }
- }
-
- requestAnimationFrame(frame);
-}
-
-
-/* ============================================================
-   START
-   ============================================================ */
-
-loadTheme();
-loadSyncSettings();
-render();
-maybeShowReminder();
-setInterval(tick, 1000);
-runLoader();
-
-
-
-/* ============================================================
-   SUPPORT – Discord über Google Apps Script
-   ============================================================
-   WICHTIG:
-   Der Discord-Webhook gehört NICHT in diese HTML-Datei.
-   Das Apps Script nimmt action="support" entgegen und sendet
-   die Anfrage mit dem dort gespeicherten Webhook an Discord.
-*/
-const SUPPORT_CONFIG = {
-  url: SYNC_CONFIG.url,
-  token: SYNC_CONFIG.token
-};
+/* =========================
+   SUPPORT
+========================= */
 
 function openSupport(){
-  const overlay = document.getElementById("supportOverlay");
-  if (!overlay) return;
-  overlay.classList.add("open");
-  const name = document.getElementById("supportName");
-  if (name && !name.value) {
-    const stored = localStorage.getItem("supportName");
-    if (stored) name.value = stored;
-  }
-  setTimeout(() => name && name.focus(), 50);
+
+    $("supportOverlay")
+        .classList
+        .add("open");
+
+
+    $("supportName").value =
+        localStorage.getItem(
+            "supportName"
+        )
+        ||
+        localStorage.getItem(
+            "employeeName"
+        )
+        ||
+        "";
+
+
+    $("supportName").focus();
+
 }
+
 
 function closeSupport(){
-  const overlay = document.getElementById("supportOverlay");
-  if (overlay) overlay.classList.remove("open");
+
+    $("supportOverlay")
+        .classList
+        .remove("open");
+
 }
 
-function supportOverlayClick(event){
-  if (event.target && event.target.id === "supportOverlay") closeSupport();
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(event.key === "Escape")
+            closeSupport();
+
+    }
+);
+
+
+$("supportForm")
+    .addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            let button =
+                $("supportSend");
+
+            let status =
+                $("supportStatus");
+
+
+            let name =
+                $("supportName")
+                    .value
+                    .trim();
+
+
+            let topic =
+                $("supportTopic")
+                    .value;
+
+
+            let message =
+                $("supportMessage")
+                    .value
+                    .trim();
+
+
+            if(
+                !name ||
+                !topic ||
+                !message
+            ){
+
+                status.className =
+                    "supportError";
+
+                status.textContent =
+                    "Bitte alle Felder ausfüllen.";
+
+                return;
+
+            }
+
+
+            localStorage.setItem(
+                "supportName",
+                name
+            );
+
+
+            button.disabled = true;
+
+
+            status.className = "";
+
+            status.textContent =
+                "Wird gesendet …";
+
+
+            try{
+
+                let response =
+                    await fetch(
+                        SYNC_CONFIG.url,
+                        {
+                            method:"POST",
+
+                            headers:{
+                                "Content-Type":
+                                    "text/plain;charset=utf-8"
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    action:
+                                        "support",
+
+                                    token:
+                                        SYNC_CONFIG.token,
+
+                                    name,
+
+                                    topic,
+
+                                    message,
+
+                                    page:
+                                        location.href,
+
+                                    userAgent:
+                                        navigator.userAgent,
+
+                                    timestamp:
+                                        new Date()
+                                            .toISOString()
+
+                                })
+
+                        }
+                    );
+
+
+                if(!response.ok)
+                    throw Error(
+                        "Serverfehler "+response.status
+                    );
+
+
+                let data =
+                    await response.json();
+
+
+                if(data.status !== "ok")
+                    throw Error(
+                        data.message ||
+                        "Senden fehlgeschlagen."
+                    );
+
+
+                status.className =
+                    "supportSuccess";
+
+
+                status.textContent =
+                    "✓ Anfrage wurde gesendet.";
+
+
+                $("supportMessage").value = "";
+
+
+                setTimeout(
+                    closeSupport,
+                    1200
+                );
+
+            }catch(error){
+
+                status.className =
+                    "supportError";
+
+
+                status.textContent =
+                    "✕ "
+                    +
+                    error.message;
+
+            }finally{
+
+                button.disabled = false;
+
+            }
+
+        }
+    );
+
+
+/* =========================
+   THEME
+========================= */
+
+function theme(){
+
+    document.body
+        .classList
+        .toggle("light");
+
+
+    localStorage.setItem(
+        "theme",
+        document.body.classList.contains(
+            "light"
+        )
+            ?
+            "light"
+            :
+            "dark"
+    );
+
 }
 
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape") closeSupport();
-});
 
-const supportForm = document.getElementById("supportForm");
-if (supportForm) {
-  supportForm.addEventListener("submit", async event => {
-    event.preventDefault();
+function loadTheme(){
 
-    const send = document.getElementById("supportSend");
-    const status = document.getElementById("supportStatus");
-    const name = document.getElementById("supportName").value.trim();
-    const topic = document.getElementById("supportTopic").value;
-    const message = document.getElementById("supportMessage").value.trim();
+    document.body
+        .classList
+        .toggle(
+            "light",
+            localStorage.getItem(
+                "theme"
+            ) === "light"
+        );
 
-    if (!name || !topic || !message) {
-      status.className = "supportError";
-      status.textContent = "Bitte alle Felder ausfüllen.";
-      return;
+}
+
+
+/* =========================
+   BACKUP REMINDER
+========================= */
+
+function checkBackupReminder(){
+
+    let last =
+        Number(
+            localStorage.getItem(
+                "lastBackup"
+            )
+        ) || 0;
+
+
+    if(
+        entries.length &&
+        Date.now()-last >
+        7*24*60*60*1000
+    ){
+
+        $("backupReminder")
+            .style
+            .display = "flex";
+
+    }else{
+
+        $("backupReminder")
+            .style
+            .display = "none";
+
     }
 
-    localStorage.setItem("supportName", name);
-    send.disabled = true;
-    status.className = "";
-    status.textContent = "Wird gesendet ...";
-
-    try {
-      const response = await fetch(SUPPORT_CONFIG.url, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({
-          action: "support",
-          token: SUPPORT_CONFIG.token,
-          name,
-          topic,
-          message,
-          page: location.href,
-          userAgent: navigator.userAgent,
-          timestamp: new Date().toISOString()
-        })
-      });
-
-      const text = await response.text();
-      let result = {};
-      try { result = JSON.parse(text); } catch (_) {}
-
-      if (!response.ok || result.status === "error") {
-        throw new Error(result.message || "Senden fehlgeschlagen.");
-      }
-
-      status.className = "supportSuccess";
-      status.textContent = "✓ Anfrage wurde an den Support gesendet.";
-      document.getElementById("supportMessage").value = "";
-      document.getElementById("supportTopic").value = "";
-
-      setTimeout(closeSupport, 1200);
-
-    } catch (error) {
-      status.className = "supportError";
-      status.textContent = "✕ " + (error.message || "Fehler beim Senden.");
-    } finally {
-      send.disabled = false;
-    }
-  });
 }
+
+
+/* =========================
+   HELPERS
+========================= */
+
+function normalizeEntries(array){
+
+    if(!Array.isArray(array))
+        return [];
+
+
+    return array
+        .filter(
+            entry =>
+                entry &&
+                Number.isFinite(
+                    Number(entry.start)
+                ) &&
+                Number.isFinite(
+                    Number(entry.end)
+                ) &&
+                Number(entry.end)
+                >=
+                Number(entry.start)
+        )
+        .map(
+            ensureEntry
+        );
+
+}
+
+
+function escapeHtml(value){
+
+    let div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        value;
+
+
+    return div.innerHTML;
+
+}
+
+
+function escapeAttr(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#39;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;");
+
+}
+
+
+/* =========================
+   TIMER
+========================= */
+
+function tick(){
+
+    if(!active){
+
+        $("timer").textContent =
+            "00:00:00";
+
+        return;
+
+    }
+
+
+    let seconds =
+        Math.floor(
+            activeDuration()
+            /
+            1000
+        );
+
+
+    let hours =
+        Math.floor(
+            seconds/3600
+        );
+
+
+    let minutes =
+        Math.floor(
+            seconds/60
+        )
+        %
+        60;
+
+
+    let secs =
+        seconds % 60;
+
+
+    $("timer").textContent = [
+
+        hours,
+
+        minutes,
+
+        secs
+
+    ]
+        .map(
+            value =>
+                String(value)
+                    .padStart(2,"0")
+        )
+        .join(":");
+
+
+    updateStats();
+
+    renderMonth();
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+$("date").textContent =
+    new Date()
+        .toLocaleDateString(
+            "de-DE",
+            {
+                weekday:"long",
+                day:"2-digit",
+                month:"long",
+                year:"numeric"
+            }
+        );
+
+
+loadTheme();
+
+loadSyncSettings();
+
+render();
+
+
+setInterval(
+    tick,
+    1000
+);
+
+
+let loaderStart =
+    Date.now();
+
+
+(function loader(){
+
+    let percent =
+        Math.min(
+            100,
+            (
+                (Date.now()-loaderStart)
+                /
+                900
+            )*100
+        );
+
+
+    $("loadbar")
+        .style
+        .width =
+        percent+"%";
+
+
+    if(percent < 100){
+
+        requestAnimationFrame(
+            loader
+        );
+
+    }else{
+
+        setTimeout(
+            () =>
+                $("loader").remove(),
+            250
+        );
+
+    }
+
+})();
 
 </script>
 
