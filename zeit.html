@@ -7,1884 +7,3351 @@
 <title>Stempeluhr</title>
 
 <style>
+
 *{
-  box-sizing:border-box;
+    box-sizing:border-box;
 }
 
-html,body{
-  margin:0;
-  padding:0;
-  min-height:100%;
+html,
+body{
+    margin:0;
+    padding:0;
+    min-height:100%;
 }
 
 body{
-  background:
-    radial-gradient(circle at top,#241b3d 0%,#0d0f14 55%,#08090d 100%);
-  color:#fff;
-  font-family:Arial,Helvetica,sans-serif;
-  padding:15px;
-  transition:.25s;
-}
-
-body.light{
-  background:#f2f4f8;
-  color:#111;
-}
-
-.container{
-  max-width:1100px;
-  margin:auto;
-}
-
-.card{
-  background:rgba(20,22,30,.94);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:18px;
-  padding:18px;
-  margin-bottom:15px;
-  box-shadow:0 10px 35px rgba(0,0,0,.25);
-}
-
-body.light .card{
-  background:#fff;
-  border-color:#ddd;
-}
-
-h1,h2,h3{
-  margin-top:0;
+    padding:15px;
+    background:
+        radial-gradient(
+            circle at top,
+            #241b3d,
+            #0d0f14 55%
+        );
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+    transition:
+        background .25s,
+        color .25s;
 }
 
 button,
 input,
-textarea,
-select{
-  font:inherit;
+textarea{
+    font-family:inherit;
 }
 
 button{
-  border:0;
-  border-radius:10px;
-  padding:10px 14px;
-  cursor:pointer;
-  background:#6d45d8;
-  color:#fff;
-  transition:.2s;
+    cursor:pointer;
 }
 
-button:hover{
-  transform:translateY(-1px);
-  filter:brightness(1.08);
+.container{
+    max-width:850px;
+    margin:0 auto;
 }
 
-button.secondary{
-  background:#303542;
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:15px;
 }
 
-button.danger{
-  background:#b82e3d;
+.header h1{
+    margin:0;
+    font-size:28px;
 }
 
-button.success{
-  background:#278c59;
+.header-actions{
+    display:flex;
+    gap:8px;
 }
+
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+
+.card{
+    background:
+        rgba(20,18,30,.92);
+    border:1px solid
+        rgba(255,255,255,.08);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:15px;
+    box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.25);
+}
+
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.btn{
+    border:0;
+    border-radius:10px;
+    padding:10px 14px;
+    font-weight:700;
+    color:#fff;
+    background:#633cff;
+    transition:.2s;
+}
+
+.btn:hover{
+    transform:translateY(-1px);
+    filter:brightness(1.1);
+}
+
+.btn.secondary{
+    background:#292534;
+}
+
+.btn.danger{
+    background:#a92738;
+}
+
+.btn.success{
+    background:#238b57;
+}
+
+.btn.small{
+    padding:7px 10px;
+    font-size:13px;
+}
+
+
+/* ============================================================
+   INPUTS
+   ============================================================ */
 
 input,
 textarea{
-  width:100%;
-  border:1px solid rgba(255,255,255,.12);
-  background:#11141b;
-  color:#fff;
-  padding:11px;
-  border-radius:10px;
-  outline:none;
+    width:100%;
+    padding:11px 12px;
+    border-radius:10px;
+    border:1px solid
+        rgba(255,255,255,.12);
+    background:#121019;
+    color:#fff;
+    outline:none;
 }
 
-body.light input,
-body.light textarea{
-  background:#fff;
-  color:#111;
-  border-color:#ccc;
+input:focus,
+textarea:focus{
+    border-color:#704cff;
 }
 
 textarea{
-  resize:vertical;
-  min-height:80px;
+    resize:vertical;
+    min-height:80px;
 }
+
+
+/* ============================================================
+   GRID
+   ============================================================ */
 
 .grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:12px;
+    display:grid;
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+    gap:12px;
 }
 
-.stat{
-  background:rgba(255,255,255,.045);
-  border-radius:14px;
-  padding:15px;
+.grid-4{
+    display:grid;
+    grid-template-columns:
+        repeat(4,minmax(0,1fr));
+    gap:10px;
 }
 
-body.light .stat{
-  background:#f4f5f7;
-}
 
-.stat small{
-  opacity:.65;
-  display:block;
-  margin-bottom:5px;
-}
-
-.stat strong{
-  font-size:24px;
-}
-
-.row{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  align-items:center;
-}
-
-.row>*{
-  flex:0 0 auto;
-}
-
-.full{
-  flex:1 1 100%;
-}
-
-label{
-  display:block;
-  font-size:13px;
-  opacity:.75;
-  margin-bottom:5px;
-}
-
-.status{
-  padding:14px;
-  border-radius:14px;
-  background:rgba(109,69,216,.12);
-  border:1px solid rgba(109,69,216,.25);
-  margin-bottom:12px;
-}
+/* ============================================================
+   TIMER
+   ============================================================ */
 
 .timer{
-  font-size:40px;
-  font-weight:bold;
-  letter-spacing:1px;
+    text-align:center;
+    padding:20px 10px;
+}
+
+.timer-status{
+    font-size:14px;
+    opacity:.7;
+    margin-bottom:8px;
+}
+
+.timer-value{
+    font-size:48px;
+    font-weight:800;
+    letter-spacing:2px;
+}
+
+.timer-buttons{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:15px;
+}
+
+
+/* ============================================================
+   STATS
+   ============================================================ */
+
+.stat{
+    background:
+        rgba(255,255,255,.04);
+    border-radius:12px;
+    padding:13px;
+}
+
+.stat-label{
+    font-size:12px;
+    opacity:.6;
+    margin-bottom:5px;
+}
+
+.stat-value{
+    font-size:20px;
+    font-weight:800;
+}
+
+
+/* ============================================================
+   SECTION TITLE
+   ============================================================ */
+
+.section-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:12px;
+}
+
+.section-title h2{
+    margin:0;
+    font-size:18px;
+}
+
+
+/* ============================================================
+   MONTH NAVIGATION
+   ============================================================ */
+
+.month-nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:12px;
 }
 
 .month-title{
-  font-size:22px;
-  font-weight:bold;
+    font-weight:800;
+    text-align:center;
 }
 
-.month-nav{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:12px;
-}
+
+/* ============================================================
+   TABLE
+   ============================================================ */
 
 .table-wrap{
-  overflow-x:auto;
+    overflow-x:auto;
 }
 
 table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:700px;
+    width:100%;
+    border-collapse:collapse;
+    min-width:650px;
 }
 
 th,
 td{
-  padding:11px 9px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-  text-align:left;
-}
-
-body.light th,
-body.light td{
-  border-bottom-color:#ddd;
+    padding:10px 8px;
+    border-bottom:1px solid
+        rgba(255,255,255,.08);
+    text-align:left;
+    font-size:13px;
 }
 
 th{
-  font-size:13px;
-  opacity:.7;
+    color:#bfaeff;
+    font-size:12px;
+    text-transform:uppercase;
 }
 
-.actions{
-  display:flex;
-  gap:6px;
+.action-buttons{
+    display:flex;
+    gap:5px;
+    flex-wrap:wrap;
 }
 
-.actions button{
-  padding:7px 9px;
-  font-size:13px;
+
+/* ============================================================
+   CLOUD
+   ============================================================ */
+
+.sync-status{
+    margin-top:10px;
+    font-size:13px;
+    opacity:.75;
 }
 
-.toast{
-  position:fixed;
-  left:50%;
-  bottom:25px;
-  transform:translateX(-50%);
-  background:#20232c;
-  color:#fff;
-  padding:12px 18px;
-  border-radius:12px;
-  box-shadow:0 10px 30px rgba(0,0,0,.4);
-  z-index:9999;
-  display:none;
+.sync-info{
+    margin-top:10px;
+    padding:10px;
+    border-radius:10px;
+    background:
+        rgba(99,60,255,.08);
+    font-size:13px;
+    line-height:1.5;
 }
 
-.toast.show{
-  display:block;
+
+/* ============================================================
+   SUPPORT
+   ============================================================ */
+
+.support{
+    text-align:center;
+    margin:20px 0 5px;
 }
 
-.loader{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.75);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:9998;
+.support a{
+    color:#bcaeff;
+    text-decoration:none;
 }
 
-.loader.show{
-  display:flex;
+.support a:hover{
+    text-decoration:underline;
+}
+
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+
+#toast{
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    transform:
+        translateX(-50%)
+        translateY(20px);
+    background:#211d2c;
+    border:1px solid
+        rgba(255,255,255,.1);
+    padding:12px 16px;
+    border-radius:10px;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+    z-index:9999;
+}
+
+#toast.show{
+    opacity:1;
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+
+/* ============================================================
+   LOADER
+   ============================================================ */
+
+#loader{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#0d0f14;
+    z-index:10000;
+    transition:.25s;
 }
 
 .loader-box{
-  background:#181b23;
-  padding:25px;
-  border-radius:15px;
+    text-align:center;
 }
 
-.hidden{
-  display:none!important;
+.spinner{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:4px solid
+        rgba(255,255,255,.1);
+    border-top-color:#704cff;
+    animation:
+        spin .8s linear infinite;
+    margin:auto auto 12px;
 }
 
-.support{
-  position:fixed;
-  right:18px;
-  bottom:18px;
-  z-index:5000;
-  background:#6d45d8;
-  color:#fff;
-  text-decoration:none;
-  padding:12px 16px;
-  border-radius:12px;
-  box-shadow:0 8px 25px rgba(0,0,0,.35);
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
 }
 
-.note{
-  font-size:13px;
-  opacity:.7;
-  line-height:1.5;
+
+/* ============================================================
+   LIGHT MODE
+   ============================================================ */
+
+body.light{
+    background:
+        linear-gradient(
+            180deg,
+            #f2effb,
+            #ffffff
+        );
+    color:#15131c;
 }
 
-@media(max-width:600px){
-  body{
-    padding:8px;
-  }
-
-  .card{
-    padding:13px;
-  }
-
-  .timer{
-    font-size:30px;
-  }
+body.light .card{
+    background:#fff;
+    border-color:#ddd7ec;
+    box-shadow:
+        0 8px 25px
+        rgba(40,30,70,.08);
 }
+
+body.light input,
+body.light textarea{
+    background:#faf9fd;
+    color:#15131c;
+    border-color:#d8d2e5;
+}
+
+body.light .btn.secondary{
+    background:#e9e5f1;
+    color:#24202d;
+}
+
+body.light .stat{
+    background:#f5f2fa;
+}
+
+body.light th{
+    color:#6245a8;
+}
+
+body.light #toast{
+    background:#fff;
+    color:#15131c;
+    border-color:#ddd7ec;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media(max-width:700px){
+
+    body{
+        padding:10px;
+    }
+
+    .grid,
+    .grid-4{
+        grid-template-columns:1fr;
+    }
+
+    .timer-value{
+        font-size:38px;
+    }
+
+    .header{
+        align-items:flex-start;
+    }
+
+    .header h1{
+        font-size:23px;
+    }
+
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="loader" id="loader">
-  <div class="loader-box">
-    Synchronisiere...
-  </div>
+<div id="loader">
+
+    <div class="loader-box">
+
+        <div class="spinner"></div>
+
+        <div>
+            Stempeluhr wird geladen...
+        </div>
+
+    </div>
+
 </div>
+
 
 <div class="container">
 
-  <div class="card">
-    <div class="row">
-      <div style="flex:1">
-        <h1>Stempeluhr</h1>
-        <div class="note">
-          Arbeitszeit einfach erfassen und mit Google Sheets synchronisieren.
+
+    <!-- ======================================================
+         HEADER
+         ====================================================== -->
+
+    <div class="header">
+
+        <h1>
+            Stempeluhr
+        </h1>
+
+        <div class="header-actions">
+
+            <button
+                class="btn secondary"
+                onclick="toggleTheme()"
+                title="Theme wechseln"
+            >
+                🌓
+            </button>
+
         </div>
-      </div>
-
-      <button class="secondary" onclick="toggleTheme()">
-        🌓 Design
-      </button>
-    </div>
-  </div>
-
-  <div class="card">
-
-    <div class="status">
-      <div id="workStatus">
-        Nicht eingestempelt
-      </div>
-
-      <div class="timer" id="timer">
-        00:00:00
-      </div>
-    </div>
-
-    <div class="grid">
-
-      <div>
-        <label>Notiz</label>
-        <textarea
-          id="note"
-          placeholder="z.B. Kundenanruf, Büroarbeit..."
-        ></textarea>
-      </div>
 
     </div>
 
-    <div class="row" style="margin-top:12px">
 
-      <button
-        class="success"
-        id="startBtn"
-        onclick="startWork()">
-        ▶ Einstempeln
-      </button>
+    <!-- ======================================================
+         TIMER
+         ====================================================== -->
 
-      <button
-        class="danger"
-        id="endBtn"
-        onclick="endWork()">
-        ■ Ausstempeln
-      </button>
-
-      <button
-        class="secondary"
-        id="pauseStartBtn"
-        onclick="startPause()">
-        ⏸ Pause
-      </button>
-
-      <button
-        class="secondary"
-        id="pauseEndBtn"
-        onclick="endPause()">
-        ▶ Pause beenden
-      </button>
-
-    </div>
-
-  </div>
-
-  <div class="card">
-
-    <h2>Übersicht</h2>
-
-    <div class="grid">
-
-      <div class="stat">
-        <small>Heute</small>
-        <strong id="todayHours">0,00 h</strong>
-      </div>
-
-      <div class="stat">
-        <small>Diese Woche</small>
-        <strong id="weekHours">0,00 h</strong>
-      </div>
-
-      <div class="stat">
-        <small>Dieser Monat</small>
-        <strong id="monthHours">0,00 h</strong>
-      </div>
-
-      <div class="stat">
-        <small>Einträge</small>
-        <strong id="entryCount">0</strong>
-      </div>
-
-    </div>
-
-  </div>
-
-  <div class="card">
-
-    <div class="month-nav">
-
-      <button
-        class="secondary"
-        onclick="changeMonth(-1)">
-        ◀
-      </button>
-
-      <div
-        class="month-title"
-        id="monthTitle">
-      </div>
-
-      <button
-        class="secondary"
-        onclick="changeMonth(1)">
-        ▶
-      </button>
-
-    </div>
-
-    <div id="monthOverview"></div>
-
-  </div>
-
-  <div class="card">
-
-    <h2>Cloud Sync</h2>
-
-    <div class="grid">
-
-      <div>
-        <label>Mitarbeiter</label>
-
-        <input
-          id="employeeName"
-          placeholder="Vorname Nachname">
-      </div>
-
-      <div>
-        <label>Synchronisationsstatus</label>
+    <div class="card timer">
 
         <div
-          id="syncStatus"
-          class="status">
-          Noch nicht synchronisiert
+            class="timer-status"
+            id="timerStatus"
+        >
+            Nicht eingestempelt
         </div>
-      </div>
+
+        <div
+            class="timer-value"
+            id="timerValue"
+        >
+            00:00:00
+        </div>
+
+
+        <div class="timer-buttons">
+
+            <button
+                class="btn success"
+                id="startBtn"
+                onclick="clockIn()"
+            >
+                Einstempeln
+            </button>
+
+            <button
+                class="btn danger"
+                id="stopBtn"
+                onclick="clockOut()"
+                style="display:none"
+            >
+                Ausstempeln
+            </button>
+
+            <button
+                class="btn secondary"
+                id="pauseBtn"
+                onclick="togglePause()"
+                style="display:none"
+            >
+                Pause
+            </button>
+
+        </div>
 
     </div>
 
-    <div class="row" style="margin-top:12px">
 
-      <button
-        class="success"
-        onclick="saveSyncSettings()">
-        💾 Mitarbeiter speichern
-      </button>
+    <!-- ======================================================
+         NOTIZ
+         ====================================================== -->
 
-      <button
-        class="secondary"
-        onclick="syncNow(true)">
-        ☁ Jetzt synchronisieren
-      </button>
+    <div class="card">
 
-    </div>
+        <div class="section-title">
 
-    <div
-      class="note"
-      id="deletedInfo"
-      style="margin-top:10px">
-      Gelöschte Einträge werden beim Sync in Google Sheets als „GELÖSCHT“ markiert.
-    </div>
+            <h2>
+                Notiz
+            </h2>
 
-  </div>
+        </div>
 
-  <div class="card">
-
-    <h2>Alle Einträge</h2>
-
-    <div class="row" style="margin-bottom:12px">
-
-      <button
-        class="secondary"
-        onclick="exportCSV()">
-        📄 CSV
-      </button>
-
-      <button
-        class="secondary"
-        onclick="exportPDF()">
-        🖨 PDF
-      </button>
-
-      <button
-        class="secondary"
-        onclick="downloadBackup()">
-        💾 Backup
-      </button>
-
-      <button
-        class="secondary"
-        onclick="document.getElementById('importFile').click()">
-        📥 Import
-      </button>
-
-      <button
-        class="danger"
-        onclick="clearAll()">
-        🗑 Alle löschen
-      </button>
-
-      <input
-        id="importFile"
-        type="file"
-        accept=".json"
-        class="hidden"
-        onchange="importBackup(event)">
+        <textarea
+            id="noteInput"
+            placeholder="Optionale Notiz..."
+        ></textarea>
 
     </div>
 
-    <div class="table-wrap">
 
-      <table>
+    <!-- ======================================================
+         STATISTIK
+         ====================================================== -->
 
-        <thead>
-          <tr>
-            <th>Datum</th>
-            <th>Start</th>
-            <th>Ende</th>
-            <th>Dauer</th>
-            <th>Pause</th>
-            <th>Notiz</th>
-            <th>Aktion</th>
-          </tr>
-        </thead>
+    <div class="card">
 
-        <tbody id="entriesBody"></tbody>
+        <div class="section-title">
 
-      </table>
+            <h2>
+                Übersicht
+            </h2>
+
+        </div>
+
+        <div class="grid-4">
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Heute
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="todayTotal"
+                >
+                    0:00 h
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Woche
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="weekTotal"
+                >
+                    0:00 h
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Monat
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="monthTotal"
+                >
+                    0:00 h
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Einträge
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="entryCount"
+                >
+                    0
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
-  </div>
+
+    <!-- ======================================================
+         MONATSÜBERSICHT
+         ====================================================== -->
+
+    <div class="card">
+
+        <div class="section-title">
+
+            <h2>
+                Monatsübersicht
+            </h2>
+
+        </div>
+
+
+        <div class="month-nav">
+
+            <button
+                class="btn secondary small"
+                onclick="changeMonth(-1)"
+            >
+                ←
+            </button>
+
+            <div
+                class="month-title"
+                id="monthTitle"
+            >
+                -
+            </div>
+
+            <button
+                class="btn secondary small"
+                onclick="changeMonth(1)"
+            >
+                →
+            </button>
+
+        </div>
+
+
+        <div
+            id="monthSummary"
+        ></div>
+
+    </div>
+
+
+    <!-- ======================================================
+         CLOUD SYNC
+         ====================================================== -->
+
+    <div class="card">
+
+        <div class="section-title">
+
+            <h2>
+                Cloud Sync
+            </h2>
+
+        </div>
+
+
+        <div class="grid">
+
+            <div>
+
+                <label>
+                    Mitarbeiter
+                </label>
+
+                <input
+                    id="employeeName"
+                    placeholder="Dein Name"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Sync
+                </label>
+
+                <button
+                    class="btn"
+                    style="width:100%;margin-top:22px"
+                    onclick="syncNow(true)"
+                >
+                    Jetzt synchronisieren
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="sync-info">
+
+            Gelöschte Einträge bleiben in
+            Google Sheets sichtbar und werden dort
+            als <b>GELÖSCHT</b> markiert.
+
+            Sie werden nicht in ein Archiv verschoben.
+
+        </div>
+
+
+        <div
+            class="sync-status"
+            id="syncStatus"
+        >
+            Noch nicht synchronisiert.
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         EINTRÄGE
+         ====================================================== -->
+
+    <div class="card">
+
+        <div class="section-title">
+
+            <h2>
+                Zeiteinträge
+            </h2>
+
+            <button
+                class="btn danger small"
+                onclick="clearAll()"
+            >
+                Alle löschen
+            </button>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Datum
+                        </th>
+
+                        <th>
+                            Start
+                        </th>
+
+                        <th>
+                            Ende
+                        </th>
+
+                        <th>
+                            Dauer
+                        </th>
+
+                        <th>
+                            Pause
+                        </th>
+
+                        <th>
+                            Notiz
+                        </th>
+
+                        <th>
+                            Aktionen
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="entriesBody"
+                ></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         DATEN
+         ====================================================== -->
+
+    <div class="card">
+
+        <div class="section-title">
+
+            <h2>
+                Daten
+            </h2>
+
+        </div>
+
+
+        <div
+            style="
+                display:flex;
+                flex-wrap:wrap;
+                gap:8px;
+            "
+        >
+
+            <button
+                class="btn secondary"
+                onclick="exportCSV()"
+            >
+                CSV
+            </button>
+
+
+            <button
+                class="btn secondary"
+                onclick="exportPDF()"
+            >
+                PDF
+            </button>
+
+
+            <button
+                class="btn secondary"
+                onclick="downloadBackup()"
+            >
+                Backup
+            </button>
+
+
+            <button
+                class="btn secondary"
+                onclick="document.getElementById('importFile').click()"
+            >
+                Import
+            </button>
+
+            <input
+                id="importFile"
+                type="file"
+                accept=".json"
+                style="display:none"
+                onchange="importBackup(event)"
+            >
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         SUPPORT
+         ====================================================== -->
+
+    <div class="support">
+
+        <a
+            href="https://forms.gle/D8BGiwNmEJe1ronx9"
+            target="_blank"
+        >
+            Support
+        </a>
+
+    </div>
+
 
 </div>
 
-<a
-  class="support"
-  href="https://forms.gle/D8BGiwNmEJe1ronx9"
-  target="_blank">
-  Support
-</a>
 
-<div
-  class="toast"
-  id="toast">
-</div>
+<div id="toast"></div>
+
 
 <script>
 
+/* ============================================================
+   SYNC CONFIG
+   ============================================================ */
+
 const SYNC_CONFIG = {
-  url: "https://script.google.com/macros/s/AKfycbwDTAAvu_Xj49qPKDAHnWftnw_vNYL7fQEEndK1RLYO6vejdOaE5AON5Svta2X0feg8/exec",
-  token: "2007"
+
+    url:
+        "https://script.google.com/macros/s/AKfycbwDTAAvu_Xj49qPKDAHnWftnw_vNYL7fQEEndK1RLYO6vejdOaE5AON5Svta2X0feg8/exec",
+
+    token:
+        "2007"
+
 };
 
-let entries =
-  JSON.parse(localStorage.getItem("entries") || "[]");
 
-let deletedEntries =
-  JSON.parse(localStorage.getItem("deletedEntries") || "[]");
+/* ============================================================
+   STORAGE
+   ============================================================ */
+
+let entries =
+    JSON.parse(
+        localStorage.getItem(
+            "entries"
+        ) || "[]"
+    );
+
 
 let active =
-  JSON.parse(localStorage.getItem("active") || "null");
+    JSON.parse(
+        localStorage.getItem(
+            "active"
+        ) || "null"
+    );
 
-let currentMonth = new Date();
+
+let deletedEntries =
+    JSON.parse(
+        localStorage.getItem(
+            "deletedEntries"
+        ) || "[]"
+    );
+
 
 let lastDeleted = null;
 
-let timerInterval = null;
+
+let selectedMonth =
+    new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        1
+    );
+
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
 
 function $(id){
-  return document.getElementById(id);
+
+    return document.getElementById(
+        id
+    );
+
 }
+
 
 function safe(value){
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
 }
 
-function showToast(message){
 
-  const toast = $("toast");
+function formatDate(
+    timestamp
+){
 
-  toast.textContent = message;
-  toast.classList.add("show");
+    const d =
+        new Date(
+            timestamp
+        );
 
-  clearTimeout(showToast.timer);
+    return d.toLocaleDateString(
+        "de-DE"
+    );
 
-  showToast.timer =
-    setTimeout(() => {
-      toast.classList.remove("show");
-    },3000);
 }
 
-function setLoader(show){
-  $("loader").classList.toggle("show",show);
+
+function formatTime(
+    timestamp
+){
+
+    const d =
+        new Date(
+            timestamp
+        );
+
+    return d.toLocaleTimeString(
+        "de-DE",
+        {
+            hour:"2-digit",
+            minute:"2-digit"
+        }
+    );
+
 }
 
-function save(autoSync = true){
 
-  localStorage.setItem(
-    "entries",
-    JSON.stringify(entries)
-  );
+function formatDuration(
+    ms
+){
 
-  localStorage.setItem(
-    "deletedEntries",
-    JSON.stringify(deletedEntries)
-  );
+    ms =
+        Math.max(
+            Number(ms) || 0,
+            0
+        );
 
-  localStorage.setItem(
-    "active",
-    JSON.stringify(active)
-  );
+    const totalMinutes =
+        Math.floor(
+            ms /
+            60000
+        );
 
-  render();
+    const hours =
+        Math.floor(
+            totalMinutes /
+            60
+        );
 
-  if(autoSync){
-    clearTimeout(save.syncTimer);
+    const minutes =
+        totalMinutes %
+        60;
 
-    save.syncTimer =
-      setTimeout(() => {
-        syncNow(false);
-      },1200);
-  }
+    return (
+        hours +
+        ":" +
+        String(
+            minutes
+        ).padStart(
+            2,
+            "0"
+        ) +
+        " h"
+    );
+
 }
+
+
+function showToast(
+    message
+){
+
+    const toast =
+        $("toast");
+
+    toast.textContent =
+        message;
+
+    toast.classList.add(
+        "show"
+    );
+
+    clearTimeout(
+        showToast.timer
+    );
+
+    showToast.timer =
+        setTimeout(
+            function(){
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2500
+        );
+
+}
+
+
+/* ============================================================
+   STORAGE SPEICHERN
+   ============================================================ */
+
+function save(
+    sync = false
+){
+
+    localStorage.setItem(
+        "entries",
+        JSON.stringify(
+            entries
+        )
+    );
+
+
+    localStorage.setItem(
+        "active",
+        JSON.stringify(
+            active
+        )
+    );
+
+
+    localStorage.setItem(
+        "deletedEntries",
+        JSON.stringify(
+            deletedEntries
+        )
+    );
+
+
+    render();
+
+
+    if(sync){
+
+        syncNow(
+            false
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   THEME
+   ============================================================ */
 
 function toggleTheme(){
 
-  document.body.classList.toggle("light");
+    document.body.classList.toggle(
+        "light"
+    );
 
-  localStorage.setItem(
-    "theme",
-    document.body.classList.contains("light")
-      ? "light"
-      : "dark"
-  );
+
+    const theme =
+        document.body.classList.contains(
+            "light"
+        )
+            ? "light"
+            : "dark";
+
+
+    localStorage.setItem(
+        "theme",
+        theme
+    );
+
+
+    save();
+
 }
+
 
 function loadTheme(){
 
-  if(localStorage.getItem("theme") === "light"){
-    document.body.classList.add("light");
-  }
-}
+    const theme =
+        localStorage.getItem(
+            "theme"
+        );
 
-function generateId(){
 
-  return Date.now().toString(36)
-    + Math.random().toString(36).substring(2,10);
-}
+    if(
+        theme ===
+        "light"
+    ){
 
-function formatDate(timestamp){
+        document.body.classList.add(
+            "light"
+        );
 
-  return new Date(timestamp)
-    .toLocaleDateString("de-DE");
-}
-
-function formatTime(timestamp){
-
-  return new Date(timestamp)
-    .toLocaleTimeString("de-DE",{
-      hour:"2-digit",
-      minute:"2-digit"
-    });
-}
-
-function formatDuration(ms){
-
-  ms = Math.max(ms || 0,0);
-
-  const totalSeconds =
-    Math.floor(ms / 1000);
-
-  const hours =
-    Math.floor(totalSeconds / 3600);
-
-  const minutes =
-    Math.floor((totalSeconds % 3600) / 60);
-
-  const seconds =
-    totalSeconds % 60;
-
-  return String(hours).padStart(2,"0")
-    + ":"
-    + String(minutes).padStart(2,"0")
-    + ":"
-    + String(seconds).padStart(2,"0");
-}
-
-function netDuration(entry){
-
-  return Math.max(
-    (entry.end || 0)
-    - (entry.start || 0)
-    - (entry.pauseMs || 0),
-    0
-  );
-}
-
-function getEmployeeName(){
-
-  return $("employeeName").value.trim();
-}
-
-function saveSyncSettings(){
-
-  const name =
-    getEmployeeName();
-
-  if(!name){
-
-    showToast(
-      "Bitte zuerst einen Mitarbeiternamen eingeben."
-    );
-
-    return;
-  }
-
-  localStorage.setItem(
-    "employeeName",
-    name
-  );
-
-  showToast(
-    "Mitarbeiter gespeichert."
-  );
-
-  syncNow(true);
-}
-
-function loadSyncSettings(){
-
-  $("employeeName").value =
-    localStorage.getItem("employeeName") || "";
-
-  updateSyncStatus();
-}
-
-function updateSyncStatus(){
-
-  const last =
-    localStorage.getItem("lastSyncTime");
-
-  const deleted =
-    deletedEntries.length;
-
-  $("deletedInfo").textContent =
-    deleted > 0
-      ? `${deleted} gelöschte Einträge werden beim nächsten Sync in Google Sheets als GELÖSCHT markiert.`
-      : "Keine gelöschten Einträge vorhanden.";
-
-  if(last){
-
-    $("syncStatus").textContent =
-      "Letzter Sync: "
-      + new Date(Number(last))
-        .toLocaleString("de-DE");
-
-  }else{
-
-    $("syncStatus").textContent =
-      "Noch nicht synchronisiert";
-  }
-}
-
-function startWork(){
-
-  if(active){
-
-    showToast(
-      "Du bist bereits eingestempelt."
-    );
-
-    return;
-  }
-
-  active = {
-    start:Date.now(),
-    pauseMs:0,
-    pauseStart:null,
-    note:$("note").value.trim()
-  };
-
-  $("note").value = "";
-
-  save(true);
-
-  showToast(
-    "Eingestempelt."
-  );
-}
-
-function endWork(){
-
-  if(!active){
-
-    showToast(
-      "Du bist nicht eingestempelt."
-    );
-
-    return;
-  }
-
-  if(active.pauseStart){
-
-    showToast(
-      "Bitte zuerst die Pause beenden."
-    );
-
-    return;
-  }
-
-  const now = Date.now();
-
-  const entry = {
-
-    id:generateId(),
-
-    start:active.start,
-
-    end:now,
-
-    pauseMs:active.pauseMs || 0,
-
-    note:active.note || ""
-
-  };
-
-  entries.push(entry);
-
-  active = null;
-
-  save(true);
-
-  showToast(
-    "Ausstempeln erfolgreich."
-  );
-}
-
-function startPause(){
-
-  if(!active){
-
-    showToast(
-      "Du bist nicht eingestempelt."
-    );
-
-    return;
-  }
-
-  if(active.pauseStart){
-
-    showToast(
-      "Die Pause läuft bereits."
-    );
-
-    return;
-  }
-
-  active.pauseStart =
-    Date.now();
-
-  save(false);
-
-  showToast(
-    "Pause gestartet."
-  );
-}
-
-function endPause(){
-
-  if(!active){
-
-    showToast(
-      "Du bist nicht eingestempelt."
-    );
-
-    return;
-  }
-
-  if(!active.pauseStart){
-
-    showToast(
-      "Es läuft keine Pause."
-    );
-
-    return;
-  }
-
-  active.pauseMs =
-    (active.pauseMs || 0)
-    + (Date.now() - active.pauseStart);
-
-  active.pauseStart = null;
-
-  save(false);
-
-  showToast(
-    "Pause beendet."
-  );
-}
-
-function updateTimer(){
-
-  if(!active){
-
-    $("timer").textContent =
-      "00:00:00";
-
-    $("workStatus").textContent =
-      "Nicht eingestempelt";
-
-    return;
-  }
-
-  let pause =
-    active.pauseMs || 0;
-
-  if(active.pauseStart){
-
-    pause +=
-      Date.now() - active.pauseStart;
-
-    $("workStatus").textContent =
-      "Pause läuft";
-
-  }else{
-
-    $("workStatus").textContent =
-      "Eingestempelt";
-  }
-
-  const elapsed =
-    Date.now()
-    - active.start
-    - pause;
-
-  $("timer").textContent =
-    formatDuration(elapsed);
-}
-
-function getStartOfDay(date){
-
-  const d =
-    new Date(date);
-
-  d.setHours(0,0,0,0);
-
-  return d;
-}
-
-function getStartOfWeek(date){
-
-  const d =
-    getStartOfDay(date);
-
-  const day =
-    d.getDay();
-
-  const diff =
-    day === 0 ? 6 : day - 1;
-
-  d.setDate(
-    d.getDate() - diff
-  );
-
-  return d;
-}
-
-function getStartOfMonth(date){
-
-  const d =
-    new Date(date);
-
-  d.setDate(1);
-  d.setHours(0,0,0,0);
-
-  return d;
-}
-
-function calculateHours(filter){
-
-  let total = 0;
-
-  entries.forEach(entry => {
-
-    if(!entry.start || !entry.end){
-      return;
     }
 
-    if(filter(entry)){
-      total += netDuration(entry);
+}
+
+
+/* ============================================================
+   CLOCK IN
+   ============================================================ */
+
+function clockIn(){
+
+    if(active){
+
+        showToast(
+            "Du bist bereits eingestempelt."
+        );
+
+        return;
+
     }
 
-  });
 
-  return total / 3600000;
+    const note =
+        $("noteInput")
+            .value
+            .trim();
+
+
+    active = {
+
+        start:
+            Date.now(),
+
+        pauseMs:
+            0,
+
+        pauseStart:
+            null,
+
+        note:
+            note
+
+    };
+
+
+    $("noteInput")
+        .value = "";
+
+
+    save(
+        true
+    );
+
+
+    showToast(
+        "Eingestempelt."
+    );
+
 }
 
-function renderStats(){
 
-  const now =
-    new Date();
+/* ============================================================
+   CLOCK OUT
+   ============================================================ */
 
-  const day =
-    getStartOfDay(now).getTime();
+function clockOut(){
 
-  const week =
-    getStartOfWeek(now).getTime();
+    if(!active){
 
-  const month =
-    getStartOfMonth(now).getTime();
+        return;
 
-  const todayHours =
-    calculateHours(
-      e => e.start >= day
+    }
+
+
+    if(
+        active.pauseStart
+    ){
+
+        active.pauseMs +=
+            Math.max(
+                Date.now() -
+                active.pauseStart,
+                0
+            );
+
+        active.pauseStart =
+            null;
+
+    }
+
+
+    const entry = {
+
+        id:
+            crypto.randomUUID
+            ? crypto.randomUUID()
+            : String(
+                Date.now()
+            ) +
+            Math.random()
+                .toString(16)
+                .slice(2),
+
+        start:
+            active.start,
+
+        end:
+            Date.now(),
+
+        pauseMs:
+            active.pauseMs || 0,
+
+        note:
+            active.note || ""
+
+    };
+
+
+    entries.push(
+        entry
     );
 
-  const weekHours =
-    calculateHours(
-      e => e.start >= week
+
+    active =
+        null;
+
+
+    save(
+        true
     );
 
-  const monthHours =
-    calculateHours(
-      e => e.start >= month
+
+    showToast(
+        "Ausstempeln erfolgreich."
     );
 
-  $("todayHours").textContent =
-    todayHours.toFixed(2).replace(".",",")
-    + " h";
-
-  $("weekHours").textContent =
-    weekHours.toFixed(2).replace(".",",")
-    + " h";
-
-  $("monthHours").textContent =
-    monthHours.toFixed(2).replace(".",",")
-    + " h";
-
-  $("entryCount").textContent =
-    entries.length;
 }
 
-function renderEntries(){
 
-  const body =
-    $("entriesBody");
+/* ============================================================
+   PAUSE
+   ============================================================ */
 
-  const sorted =
-    entries
-      .slice()
-      .sort((a,b) => b.start - a.start);
+function togglePause(){
 
-  if(!sorted.length){
+    if(!active){
 
-    body.innerHTML =
-      `<tr>
-        <td colspan="7">
-          Keine Einträge vorhanden.
-        </td>
-      </tr>`;
+        return;
 
-    return;
-  }
+    }
 
-  body.innerHTML =
-    sorted.map(entry => {
 
-      return `
-        <tr>
+    if(
+        active.pauseStart
+    ){
 
-          <td>
-            ${safe(formatDate(entry.start))}
-          </td>
+        active.pauseMs +=
+            Math.max(
+                Date.now() -
+                active.pauseStart,
+                0
+            );
 
-          <td>
-            ${safe(formatTime(entry.start))}
-          </td>
+        active.pauseStart =
+            null;
 
-          <td>
-            ${safe(formatTime(entry.end))}
-          </td>
 
-          <td>
-            ${safe(formatDuration(netDuration(entry)))}
-          </td>
+        showToast(
+            "Pause beendet."
+        );
 
-          <td>
-            ${safe(formatDuration(entry.pauseMs || 0))}
-          </td>
+    }else{
 
-          <td>
-            ${safe(entry.note || "-")}
-          </td>
+        active.pauseStart =
+            Date.now();
 
-          <td>
-            <div class="actions">
 
-              <button
-                class="secondary"
-                onclick="editEntry('${safe(entry.id)}')">
-                ✏️
-              </button>
+        showToast(
+            "Pause gestartet."
+        );
 
-              <button
-                class="danger"
-                onclick="deleteEntry('${safe(entry.id)}')">
-                🗑
-              </button>
+    }
 
-            </div>
-          </td>
 
-        </tr>
-      `;
+    save();
 
-    }).join("");
 }
 
-function renderMonth(){
 
-  const year =
-    currentMonth.getFullYear();
+/* ============================================================
+   DELETE ENTRY
+   ============================================================ */
 
-  const month =
-    currentMonth.getMonth();
+function deleteEntry(
+    id
+){
 
-  $("monthTitle").textContent =
-    currentMonth.toLocaleDateString(
-      "de-DE",
-      {
-        month:"long",
-        year:"numeric"
-      }
-    );
+    const index =
+        entries.findIndex(
+            e =>
+                e.id === id
+        );
 
-  const monthEntries =
-    entries.filter(entry => {
 
-      const date =
-        new Date(entry.start);
+    if(
+        index === -1
+    ){
 
-      return date.getFullYear() === year
-        && date.getMonth() === month;
+        return;
+
+    }
+
+
+    const entry =
+        entries[index];
+
+
+    const confirmed =
+        confirm(
+            "Möchtest du den Eintrag wirklich löschen?\n\n" +
+            "Der Eintrag bleibt in Google Sheets sichtbar " +
+            "und wird dort als GELÖSCHT markiert."
+        );
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    /**
+     * Undo-Daten
+     */
+
+    lastDeleted = {
+
+        entry:
+            entry,
+
+        index:
+            index
+
+    };
+
+
+    /**
+     * Eventuell vorhandene
+     * alte Löschung entfernen
+     */
+
+    deletedEntries =
+        deletedEntries.filter(
+            e =>
+                e.id !==
+                entry.id
+        );
+
+
+    /**
+     * Gelöschten Eintrag speichern
+     */
+
+    deletedEntries.push({
+
+        ...entry,
+
+        deletedAt:
+            Date.now(),
+
+        deleteReason:
+            "Manuell gelöscht"
 
     });
 
-  if(!monthEntries.length){
 
-    $("monthOverview").innerHTML =
-      `<div class="note">
-        Keine Einträge in diesem Monat.
-      </div>`;
+    /**
+     * Aus aktiven Einträgen entfernen
+     */
 
-    return;
-  }
-
-  const days = {};
-
-  monthEntries.forEach(entry => {
-
-    const key =
-      new Date(entry.start)
-        .toLocaleDateString("de-DE");
-
-    if(!days[key]){
-      days[key] = 0;
-    }
-
-    days[key] +=
-      netDuration(entry);
-
-  });
-
-  let html = "";
-
-  Object.keys(days)
-    .sort((a,b) => {
-
-      const [ad,am,ay] =
-        a.split(".").map(Number);
-
-      const [bd,bm,by] =
-        b.split(".").map(Number);
-
-      return new Date(by,bm-1,bd)
-        - new Date(ay,am-1,ad);
-
-    })
-    .forEach(day => {
-
-      html += `
-        <div
-          class="stat"
-          style="margin-bottom:8px">
-
-          <strong>
-            ${safe(day)}
-          </strong>
-
-          <div class="note">
-            ${(days[day] / 3600000)
-              .toFixed(2)
-              .replace(".",",")} Stunden
-          </div>
-
-        </div>
-      `;
-
-    });
-
-  $("monthOverview").innerHTML =
-    html;
-}
-
-function changeMonth(amount){
-
-  currentMonth.setMonth(
-    currentMonth.getMonth() + amount
-  );
-
-  renderMonth();
-}
-
-function editEntry(id){
-
-  const entry =
-    entries.find(
-      e => e.id === id
+    entries.splice(
+        index,
+        1
     );
 
-  if(!entry){
-    return;
-  }
 
-  const newStart =
-    prompt(
-      "Startzeit ändern (HH:MM):",
-      formatTime(entry.start)
+    /**
+     * Sofort speichern + sync
+     */
+
+    save(
+        true
     );
 
-  if(newStart === null){
-    return;
-  }
-
-  const newEnd =
-    prompt(
-      "Endzeit ändern (HH:MM):",
-      formatTime(entry.end)
-    );
-
-  if(newEnd === null){
-    return;
-  }
-
-  const startParts =
-    newStart.split(":");
-
-  const endParts =
-    newEnd.split(":");
-
-  if(
-    startParts.length !== 2 ||
-    endParts.length !== 2
-  ){
 
     showToast(
-      "Ungültige Uhrzeit."
+        "Eintrag gelöscht."
     );
 
-    return;
-  }
-
-  const startDate =
-    new Date(entry.start);
-
-  startDate.setHours(
-    Number(startParts[0]),
-    Number(startParts[1]),
-    0,
-    0
-  );
-
-  const endDate =
-    new Date(entry.end);
-
-  endDate.setHours(
-    Number(endParts[0]),
-    Number(endParts[1]),
-    0,
-    0
-  );
-
-  if(
-    Number.isNaN(startDate.getTime()) ||
-    Number.isNaN(endDate.getTime()) ||
-    endDate <= startDate
-  ){
-
-    showToast(
-      "Ungültige Zeitangabe."
-    );
-
-    return;
-  }
-
-  entry.start =
-    startDate.getTime();
-
-  entry.end =
-    endDate.getTime();
-
-  const note =
-    prompt(
-      "Notiz:",
-      entry.note || ""
-    );
-
-  if(note !== null){
-    entry.note = note;
-  }
-
-  save(true);
-
-  showToast(
-    "Eintrag geändert."
-  );
 }
 
-function deleteEntry(id){
 
-  const index =
-    entries.findIndex(
-      e => e.id === id
-    );
-
-  if(index === -1){
-    return;
-  }
-
-  const entry =
-    entries[index];
-
-  const confirmed =
-    confirm(
-      "Möchtest du den Eintrag wirklich löschen?\n\n" +
-      "Der Eintrag wird aus der Stempeluhr entfernt " +
-      "und in Google Sheets nur als GELÖSCHT markiert."
-    );
-
-  if(!confirmed){
-    return;
-  }
-
-  lastDeleted = {
-    entry:entry,
-    index:index
-  };
-
-  deletedEntries =
-    deletedEntries.filter(
-      e => e.id !== entry.id
-    );
-
-  deletedEntries.push({
-    ...entry,
-    deletedAt:Date.now(),
-    deleteReason:"Manuell gelöscht"
-  });
-
-  entries.splice(index,1);
-
-  save(false);
-
-  syncNow(false);
-
-  showToast(
-    "Eintrag gelöscht. In Google Sheets wird er als GELÖSCHT angezeigt."
-  );
-}
+/* ============================================================
+   UNDO DELETE
+   ============================================================ */
 
 function undoDelete(){
 
-  if(!lastDeleted){
-    return;
-  }
+    if(
+        !lastDeleted
+    ){
 
-  entries.splice(
-    lastDeleted.index,
-    0,
-    lastDeleted.entry
-  );
+        showToast(
+            "Nichts zum Rückgängig machen."
+        );
 
-  deletedEntries =
-    deletedEntries.filter(
-      e => e.id !== lastDeleted.entry.id
+        return;
+
+    }
+
+
+    const entry =
+        lastDeleted.entry;
+
+
+    /**
+     * Aus gelöschten Einträgen entfernen
+     */
+
+    deletedEntries =
+        deletedEntries.filter(
+            e =>
+                e.id !==
+                entry.id
+        );
+
+
+    /**
+     * Wieder einsetzen
+     */
+
+    entries.splice(
+        lastDeleted.index,
+        0,
+        entry
     );
 
-  lastDeleted = null;
 
-  save(true);
+    lastDeleted =
+        null;
 
-  showToast(
-    "Löschen rückgängig gemacht."
-  );
+
+    save(
+        true
+    );
+
+
+    showToast(
+        "Löschen rückgängig gemacht."
+    );
+
 }
+
+
+/* ============================================================
+   ALLE LÖSCHEN
+   ============================================================ */
 
 function clearAll(){
 
-  if(!entries.length){
-
-    showToast(
-      "Keine Einträge vorhanden."
-    );
-
-    return;
-  }
-
-  const confirmed =
-    confirm(
-      "Möchtest du wirklich ALLE Einträge löschen?\n\n" +
-      "Sie werden in Google Sheets nicht ins Archiv verschoben. " +
-      "Dort werden sie als GELÖSCHT markiert."
-    );
-
-  if(!confirmed){
-    return;
-  }
-
-  const now =
-    Date.now();
-
-  entries.forEach(entry => {
-
-    deletedEntries =
-      deletedEntries.filter(
-        e => e.id !== entry.id
-      );
-
-    deletedEntries.push({
-      ...entry,
-      deletedAt:now,
-      deleteReason:"Alle Einträge gelöscht"
-    });
-
-  });
-
-  entries = [];
-
-  lastDeleted = null;
-
-  save(false);
-
-  syncNow(false);
-
-  showToast(
-    "Alle Einträge wurden gelöscht."
-  );
-}
-
-function downloadBackup(){
-
-  const data = {
-
-    version:2,
-
-    exportedAt:Date.now(),
-
-    entries:entries,
-
-    deletedEntries:deletedEntries,
-
-    active:active,
-
-    theme:localStorage.getItem("theme"),
-
-    employeeName:
-      localStorage.getItem("employeeName") || ""
-
-  };
-
-  const blob =
-    new Blob(
-      [JSON.stringify(data,null,2)],
-      {type:"application/json"}
-    );
-
-  const url =
-    URL.createObjectURL(blob);
-
-  const a =
-    document.createElement("a");
-
-  a.href = url;
-
-  a.download =
-    "stempeluhr-backup-"
-    + new Date()
-      .toISOString()
-      .slice(0,10)
-    + ".json";
-
-  a.click();
-
-  URL.revokeObjectURL(url);
-}
-
-function importBackup(event){
-
-  const file =
-    event.target.files[0];
-
-  if(!file){
-    return;
-  }
-
-  const reader =
-    new FileReader();
-
-  reader.onload = function(){
-
-    try{
-
-      const data =
-        JSON.parse(reader.result);
-
-      if(
-        !Array.isArray(data.entries)
-      ){
-
-        throw new Error(
-          "Ungültiges Backup"
-        );
-      }
-
-      const confirmed =
-        confirm(
-          "Backup wirklich importieren?\n\n" +
-          "Die aktuellen Daten werden ersetzt."
-        );
-
-      if(!confirmed){
-        return;
-      }
-
-      entries =
-        data.entries;
-
-      deletedEntries =
-        Array.isArray(data.deletedEntries)
-          ? data.deletedEntries
-          : [];
-
-      active =
-        data.active || null;
-
-      if(data.employeeName){
-
-        $("employeeName").value =
-          data.employeeName;
-
-        localStorage.setItem(
-          "employeeName",
-          data.employeeName
-        );
-      }
-
-      if(data.theme){
-
-        localStorage.setItem(
-          "theme",
-          data.theme
-        );
-
-        loadTheme();
-      }
-
-      save(false);
-
-      showToast(
-        "Backup importiert."
-      );
-
-      syncNow(false);
-
-    }catch(error){
-
-      showToast(
-        "Backup konnte nicht importiert werden."
-      );
-
-    }finally{
-
-      event.target.value = "";
-
-    }
-
-  };
-
-  reader.readAsText(file);
-}
-
-function exportCSV(){
-
-  const rows = [
-    [
-      "ID",
-      "Datum",
-      "Start",
-      "Ende",
-      "Dauer",
-      "Pause",
-      "Notiz"
-    ]
-  ];
-
-  entries.forEach(entry => {
-
-    rows.push([
-      entry.id,
-      formatDate(entry.start),
-      formatTime(entry.start),
-      formatTime(entry.end),
-      formatDuration(netDuration(entry)),
-      formatDuration(entry.pauseMs || 0),
-      entry.note || ""
-    ]);
-
-  });
-
-  const csv =
-    rows
-      .map(row =>
-        row.map(value =>
-          `"${String(value)
-            .replace(/"/g,'""')}"`
-        ).join(";")
-      )
-      .join("\n");
-
-  const blob =
-    new Blob(
-      ["\ufeff" + csv],
-      {type:"text/csv;charset=utf-8"}
-    );
-
-  const url =
-    URL.createObjectURL(blob);
-
-  const a =
-    document.createElement("a");
-
-  a.href = url;
-
-  a.download =
-    "stempeluhr.csv";
-
-  a.click();
-
-  URL.revokeObjectURL(url);
-}
-
-function exportPDF(){
-
-  window.print();
-}
-
-async function syncNow(showMessage = true){
-
-  const name =
-    getEmployeeName();
-
-  if(!name){
-
-    if(showMessage){
-
-      showToast(
-        "Bitte zuerst einen Mitarbeiternamen eingeben."
-      );
-
-    }
-
-    return;
-  }
-
-  const payload = {
-
-    employee:name,
-
-    token:SYNC_CONFIG.token,
-
-    timestamp:Date.now(),
-
-    backup:{
-
-      entries:entries,
-
-      deletedEntries:deletedEntries,
-
-      active:active,
-
-      theme:localStorage.getItem("theme")
-
-    }
-
-  };
-
-  if(showMessage){
-    setLoader(true);
-  }
-
-  try{
-
-    const response =
-      await fetch(
-        SYNC_CONFIG.url,
-        {
-          method:"POST",
-          headers:{
-            "Content-Type":
-              "text/plain;charset=utf-8"
-          },
-          body:JSON.stringify(payload)
-        }
-      );
-
-    let result = null;
-
-    try{
-      result = await response.json();
-    }catch(e){}
-
     if(
-      result &&
-      result.status === "error"
+        entries.length === 0
     ){
 
-      throw new Error(
-        result.message || "Sync-Fehler"
-      );
+        showToast(
+            "Keine Einträge vorhanden."
+        );
+
+        return;
+
     }
 
-    localStorage.setItem(
-      "lastSyncTime",
-      Date.now().toString()
+
+    const confirmed =
+        confirm(
+            "Möchtest du wirklich ALLE Einträge löschen?\n\n" +
+            "Die Einträge bleiben in Google Sheets sichtbar " +
+            "und werden dort als GELÖSCHT markiert."
+        );
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    /**
+     * Alle aktuellen Einträge
+     * als gelöscht speichern.
+     */
+
+    entries.forEach(
+        function(entry){
+
+            deletedEntries =
+                deletedEntries.filter(
+                    e =>
+                        e.id !==
+                        entry.id
+                );
+
+
+            deletedEntries.push({
+
+                ...entry,
+
+                deletedAt:
+                    Date.now(),
+
+                deleteReason:
+                    "Alle Einträge gelöscht"
+
+            });
+
+        }
     );
 
-    updateSyncStatus();
 
-    if(showMessage){
+    /**
+     * Aktuelle Einträge entfernen
+     */
 
-      showToast(
-        "Synchronisierung erfolgreich."
-      );
-    }
+    entries = [];
 
-  }catch(error){
 
-    /*
-      Google Apps Script kann bei bestimmten
-      Browsern/CORS-Konstellationen trotzdem
-      erfolgreich speichern, obwohl fetch einen
-      Response-Fehler meldet.
-    */
+    lastDeleted =
+        null;
 
-    try{
 
-      await fetch(
-        SYNC_CONFIG.url,
-        {
-          method:"POST",
-          mode:"no-cors",
-          headers:{
-            "Content-Type":
-              "text/plain;charset=utf-8"
-          },
-          body:JSON.stringify(payload)
-        }
-      );
+    save(
+        true
+    );
 
-      localStorage.setItem(
-        "lastSyncTime",
-        Date.now().toString()
-      );
 
-      updateSyncStatus();
+    showToast(
+        "Alle Einträge wurden gelöscht."
+    );
 
-      if(showMessage){
-
-        showToast(
-          "Sync wurde an Google Sheets gesendet."
-        );
-      }
-
-    }catch(fallbackError){
-
-      if(showMessage){
-
-        showToast(
-          "Synchronisierung fehlgeschlagen."
-        );
-      }
-
-    }
-
-  }finally{
-
-    if(showMessage){
-      setLoader(false);
-    }
-
-  }
 }
+
+
+/* ============================================================
+   TIMER ANZEIGE
+   ============================================================ */
+
+function updateTimer(){
+
+    if(!active){
+
+        $("timerStatus")
+            .textContent =
+            "Nicht eingestempelt";
+
+        $("timerValue")
+            .textContent =
+            "00:00:00";
+
+        $("startBtn")
+            .style.display =
+            "";
+
+        $("stopBtn")
+            .style.display =
+            "none";
+
+        $("pauseBtn")
+            .style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    let pause =
+        active.pauseMs ||
+        0;
+
+
+    if(
+        active.pauseStart
+    ){
+
+        pause +=
+            Math.max(
+                Date.now() -
+                active.pauseStart,
+                0
+            );
+
+    }
+
+
+    const elapsed =
+        Math.max(
+            Date.now() -
+            active.start -
+            pause,
+            0
+        );
+
+
+    const totalSeconds =
+        Math.floor(
+            elapsed /
+            1000
+        );
+
+
+    const hours =
+        Math.floor(
+            totalSeconds /
+            3600
+        );
+
+
+    const minutes =
+        Math.floor(
+            (
+                totalSeconds %
+                3600
+            ) /
+            60
+        );
+
+
+    const seconds =
+        totalSeconds %
+        60;
+
+
+    $("timerValue")
+        .textContent =
+        String(
+            hours
+        ).padStart(
+            2,
+            "0"
+        ) +
+        ":" +
+        String(
+            minutes
+        ).padStart(
+            2,
+            "0"
+        ) +
+        ":" +
+        String(
+            seconds
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    $("timerStatus")
+        .textContent =
+        active.pauseStart
+            ? "Pause"
+            : "Arbeitszeit";
+
+
+    $("startBtn")
+        .style.display =
+        "none";
+
+
+    $("stopBtn")
+        .style.display =
+        "";
+
+
+    $("pauseBtn")
+        .style.display =
+        "";
+
+
+    $("pauseBtn")
+        .textContent =
+        active.pauseStart
+            ? "Pause beenden"
+            : "Pause";
+
+}
+
+
+/* ============================================================
+   STATS
+   ============================================================ */
+
+function getNetMs(
+    entry
+){
+
+    return Math.max(
+
+        (
+            entry.end -
+            entry.start -
+            (
+                entry.pauseMs ||
+                0
+            )
+        ),
+
+        0
+
+    );
+
+}
+
+
+function isSameDay(
+    timestamp,
+    date
+){
+
+    const d =
+        new Date(
+            timestamp
+        );
+
+
+    return (
+        d.getFullYear() ===
+            date.getFullYear() &&
+
+        d.getMonth() ===
+            date.getMonth() &&
+
+        d.getDate() ===
+            date.getDate()
+    );
+
+}
+
+
+function startOfWeek(
+    date
+){
+
+    const d =
+        new Date(
+            date
+        );
+
+
+    const day =
+        d.getDay();
+
+
+    const diff =
+        day === 0
+            ? -6
+            : 1 - day;
+
+
+    d.setDate(
+        d.getDate() +
+        diff
+    );
+
+
+    d.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+
+    return d;
+
+}
+
+
+function updateStats(){
+
+    const now =
+        new Date();
+
+
+    let today =
+        0;
+
+    let week =
+        0;
+
+    let month =
+        0;
+
+
+    const weekStart =
+        startOfWeek(
+            now
+        );
+
+
+    entries.forEach(
+        function(entry){
+
+            const ms =
+                getNetMs(
+                    entry
+                );
+
+
+            if(
+                isSameDay(
+                    entry.start,
+                    now
+                )
+            ){
+
+                today +=
+                    ms;
+
+            }
+
+
+            const d =
+                new Date(
+                    entry.start
+                );
+
+
+            if(
+                d >=
+                weekStart &&
+                d <=
+                now
+            ){
+
+                week +=
+                    ms;
+
+            }
+
+
+            if(
+                d.getFullYear() ===
+                    now.getFullYear() &&
+
+                d.getMonth() ===
+                    now.getMonth()
+            ){
+
+                month +=
+                    ms;
+
+            }
+
+        }
+    );
+
+
+    $("todayTotal")
+        .textContent =
+        formatDuration(
+            today
+        );
+
+
+    $("weekTotal")
+        .textContent =
+        formatDuration(
+            week
+        );
+
+
+    $("monthTotal")
+        .textContent =
+        formatDuration(
+            month
+        );
+
+
+    $("entryCount")
+        .textContent =
+        entries.length;
+
+}
+
+
+/* ============================================================
+   MONTH VIEW
+   ============================================================ */
+
+function changeMonth(
+    amount
+){
+
+    selectedMonth =
+        new Date(
+            selectedMonth.getFullYear(),
+            selectedMonth.getMonth() +
+                amount,
+            1
+        );
+
+
+    renderMonth();
+
+}
+
+
+function renderMonth(){
+
+    const year =
+        selectedMonth.getFullYear();
+
+
+    const month =
+        selectedMonth.getMonth();
+
+
+    const title =
+        selectedMonth.toLocaleDateString(
+            "de-DE",
+            {
+                month:
+                    "long",
+                year:
+                    "numeric"
+            }
+        );
+
+
+    $("monthTitle")
+        .textContent =
+        title;
+
+
+    const monthEntries =
+        entries.filter(
+            function(entry){
+
+                const d =
+                    new Date(
+                        entry.start
+                    );
+
+
+                return (
+                    d.getFullYear() ===
+                        year &&
+
+                    d.getMonth() ===
+                        month
+                );
+
+            }
+        );
+
+
+    if(
+        monthEntries.length === 0
+    ){
+
+        $("monthSummary")
+            .innerHTML =
+            `
+            <div style="
+                opacity:.65;
+                padding:10px 0;
+            ">
+                Keine Einträge in diesem Monat.
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+    const days = {};
+
+
+    monthEntries.forEach(
+        function(entry){
+
+            const date =
+                new Date(
+                    entry.start
+                );
+
+
+            const key =
+                date.toISOString()
+                    .slice(
+                        0,
+                        10
+                    );
+
+
+            if(
+                !days[key]
+            ){
+
+                days[key] =
+                    0;
+
+            }
+
+
+            days[key] +=
+                getNetMs(
+                    entry
+                );
+
+        }
+    );
+
+
+    let html =
+        "";
+
+
+    Object.keys(days)
+        .sort()
+        .forEach(
+            function(day){
+
+                html +=
+                    `
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                        padding:9px 0;
+                        border-bottom:
+                            1px solid
+                            rgba(255,255,255,.06);
+                    ">
+                        <span>
+                            ${new Date(
+                                day +
+                                "T00:00:00"
+                            ).toLocaleDateString(
+                                "de-DE"
+                            )}
+                        </span>
+
+                        <b>
+                            ${formatDuration(
+                                days[day]
+                            )}
+                        </b>
+                    </div>
+                    `;
+
+            }
+        );
+
+
+    $("monthSummary")
+        .innerHTML =
+        html;
+
+}
+
+
+/* ============================================================
+   RENDER ENTRIES
+   ============================================================ */
 
 function render(){
 
-  renderStats();
+    updateTimer();
 
-  renderEntries();
+    updateStats();
 
-  renderMonth();
+    renderMonth();
 
-  updateTimer();
 
-  updateSyncStatus();
+    const body =
+        $("entriesBody");
 
-  $("startBtn").disabled =
-    !!active;
 
-  $("endBtn").disabled =
-    !active;
+    if(
+        entries.length === 0
+    ){
 
-  $("pauseStartBtn").disabled =
-    !active || !!active.pauseStart;
+        body.innerHTML =
+            `
+            <tr>
 
-  $("pauseEndBtn").disabled =
-    !active || !active.pauseStart;
+                <td
+                    colspan="7"
+                    style="
+                        text-align:center;
+                        opacity:.6;
+                        padding:20px;
+                    "
+                >
+                    Keine Einträge vorhanden.
+                </td>
+
+            </tr>
+            `;
+
+        return;
+
+    }
+
+
+    const sorted =
+        entries
+            .slice()
+            .sort(
+                (
+                    a,
+                    b
+                ) =>
+                    b.start -
+                    a.start
+            );
+
+
+    body.innerHTML =
+        sorted
+            .map(
+                function(entry){
+
+                    const duration =
+                        getNetMs(
+                            entry
+                        );
+
+
+                    return `
+
+                    <tr>
+
+                        <td>
+                            ${safe(
+                                formatDate(
+                                    entry.start
+                                )
+                            )}
+                        </td>
+
+                        <td>
+                            ${safe(
+                                formatTime(
+                                    entry.start
+                                )
+                            )}
+                        </td>
+
+                        <td>
+                            ${safe(
+                                formatTime(
+                                    entry.end
+                                )
+                            )}
+                        </td>
+
+                        <td>
+                            ${safe(
+                                formatDuration(
+                                    duration
+                                )
+                            )}
+                        </td>
+
+                        <td>
+                            ${Math.round(
+                                (
+                                    entry.pauseMs ||
+                                    0
+                                ) /
+                                60000
+                            )} Min
+                        </td>
+
+                        <td>
+                            ${safe(
+                                entry.note ||
+                                ""
+                            )}
+                        </td>
+
+                        <td>
+
+                            <div
+                                class="action-buttons"
+                            >
+
+                                <button
+                                    class="btn danger small"
+                                    onclick="deleteEntry('${safe(
+                                        entry.id
+                                    )}')"
+                                >
+                                    Löschen
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    `;
+
+                }
+            )
+            .join("");
+
 }
 
-loadTheme();
 
-loadSyncSettings();
+/* ============================================================
+   SYNC
+   ============================================================ */
 
-render();
+async function syncNow(
+    showMessage = true
+){
 
-timerInterval =
-  setInterval(
-    () => {
-      updateTimer();
-      renderStats();
+    const name =
+        $("employeeName")
+            .value
+            .trim();
+
+
+    if(!name){
+
+        if(
+            showMessage
+        ){
+
+            showToast(
+                "Bitte zuerst deinen Namen eintragen."
+            );
+
+        }
+
+        return;
+
+    }
+
+
+    localStorage.setItem(
+        "employeeName",
+        name
+    );
+
+
+    const payload = {
+
+        employee:
+            name,
+
+        token:
+            SYNC_CONFIG.token,
+
+        timestamp:
+            Date.now(),
+
+        backup: {
+
+            entries:
+                entries,
+
+            deletedEntries:
+                deletedEntries,
+
+            active:
+                active,
+
+            theme:
+                localStorage.getItem(
+                    "theme"
+                )
+
+        }
+
+    };
+
+
+    $("syncStatus")
+        .textContent =
+        "Synchronisierung läuft...";
+
+
+    try{
+
+        const response =
+            await fetch(
+                SYNC_CONFIG.url,
+                {
+
+                    method:
+                        "POST",
+
+                    headers:{
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            payload
+                        )
+
+                }
+            );
+
+
+        let result =
+            null;
+
+
+        try{
+
+            result =
+                await response.json();
+
+        }catch(e){}
+
+
+        if(
+            result &&
+            result.status ===
+                "error"
+        ){
+
+            throw new Error(
+                result.message ||
+                "Synchronisierung fehlgeschlagen."
+            );
+
+        }
+
+
+        localStorage.setItem(
+            "lastSyncTime",
+            Date.now()
+        );
+
+
+        $("syncStatus")
+            .textContent =
+            "Zuletzt synchronisiert: " +
+            new Date()
+                .toLocaleString(
+                    "de-DE"
+                ) +
+            " · " +
+            deletedEntries.length +
+            " gelöschte Einträge";
+
+
+        if(
+            showMessage
+        ){
+
+            showToast(
+                "Synchronisierung erfolgreich."
+            );
+
+        }
+
+
+    }catch(error){
+
+        /**
+         * Google Apps Script kann bei
+         * bestimmten Browsern/CORS-Einstellungen
+         * keine normale Antwort liefern.
+         *
+         * Deshalb Fallback mit no-cors.
+         */
+
+        try{
+
+            await fetch(
+                SYNC_CONFIG.url,
+                {
+
+                    method:
+                        "POST",
+
+                    mode:
+                        "no-cors",
+
+                    headers:{
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            payload
+                        )
+
+                }
+            );
+
+
+            localStorage.setItem(
+                "lastSyncTime",
+                Date.now()
+            );
+
+
+            $("syncStatus")
+                .textContent =
+                "Sync gesendet: " +
+                new Date()
+                    .toLocaleString(
+                        "de-DE"
+                    );
+
+
+            if(
+                showMessage
+            ){
+
+                showToast(
+                    "Synchronisierung gesendet."
+                );
+
+            }
+
+
+        }catch(fallbackError){
+
+            $("syncStatus")
+                .textContent =
+                "Sync fehlgeschlagen.";
+
+
+            if(
+                showMessage
+            ){
+
+                showToast(
+                    "Synchronisierung fehlgeschlagen."
+                );
+
+            }
+
+        }
+
+    }
+
+}
+
+
+/* ============================================================
+   EMPLOYEE NAME
+   ============================================================ */
+
+function loadEmployeeName(){
+
+    const name =
+        localStorage.getItem(
+            "employeeName"
+        );
+
+
+    if(name){
+
+        $("employeeName")
+            .value =
+            name;
+
+    }
+
+}
+
+
+/* ============================================================
+   BACKUP
+   ============================================================ */
+
+function downloadBackup(){
+
+    const backup = {
+
+        version:
+            2,
+
+        createdAt:
+            Date.now(),
+
+        entries:
+            entries,
+
+        deletedEntries:
+            deletedEntries,
+
+        active:
+            active,
+
+        theme:
+            localStorage.getItem(
+                "theme"
+            ),
+
+        employeeName:
+            localStorage.getItem(
+                "employeeName"
+            )
+
+    };
+
+
+    const blob =
+        new Blob(
+            [
+                JSON.stringify(
+                    backup,
+                    null,
+                    2
+                )
+            ],
+            {
+                type:
+                    "application/json"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const a =
+        document.createElement(
+            "a"
+        );
+
+
+    a.href =
+        url;
+
+
+    a.download =
+        "stempeluhr-backup-" +
+        new Date()
+            .toISOString()
+            .slice(
+                0,
+                10
+            ) +
+        ".json";
+
+
+    document.body.appendChild(
+        a
+    );
+
+
+    a.click();
+
+
+    a.remove();
+
+
+    URL.revokeObjectURL(
+        url
+    );
+
+
+    showToast(
+        "Backup erstellt."
+    );
+
+}
+
+
+/* ============================================================
+   IMPORT
+   ============================================================ */
+
+function importBackup(
+    event
+){
+
+    const file =
+        event.target.files[0];
+
+
+    if(!file){
+
+        return;
+
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(){
+
+            try{
+
+                const backup =
+                    JSON.parse(
+                        reader.result
+                    );
+
+
+                if(
+                    !Array.isArray(
+                        backup.entries
+                    )
+                ){
+
+                    throw new Error(
+                        "Ungültiges Backup."
+                    );
+
+                }
+
+
+                const confirmed =
+                    confirm(
+                        "Möchtest du dieses Backup wirklich importieren?\n\n" +
+                        "Die aktuell gespeicherten Daten werden ersetzt."
+                    );
+
+
+                if(!confirmed){
+
+                    return;
+
+                }
+
+
+                entries =
+                    backup.entries;
+
+
+                deletedEntries =
+                    Array.isArray(
+                        backup.deletedEntries
+                    )
+                        ? backup.deletedEntries
+                        : [];
+
+
+                active =
+                    backup.active ||
+                    null;
+
+
+                if(
+                    backup.employeeName
+                ){
+
+                    localStorage.setItem(
+                        "employeeName",
+                        backup.employeeName
+                    );
+
+
+                    $("employeeName")
+                        .value =
+                        backup.employeeName;
+
+                }
+
+
+                if(
+                    backup.theme
+                ){
+
+                    localStorage.setItem(
+                        "theme",
+                        backup.theme
+                    );
+
+
+                    loadTheme();
+
+                }
+
+
+                lastDeleted =
+                    null;
+
+
+                save(
+                    true
+                );
+
+
+                showToast(
+                    "Backup importiert."
+                );
+
+
+            }catch(error){
+
+                showToast(
+                    "Backup konnte nicht importiert werden."
+                );
+
+            }
+
+        };
+
+
+    reader.readAsText(
+        file
+    );
+
+
+    event.target.value =
+        "";
+
+}
+
+
+/* ============================================================
+   CSV EXPORT
+   ============================================================ */
+
+function exportCSV(){
+
+    const rows = [
+
+        [
+            "Datum",
+            "Start",
+            "Ende",
+            "Dauer",
+            "Pause",
+            "Notiz"
+        ]
+
+    ];
+
+
+    entries.forEach(
+        function(entry){
+
+            rows.push([
+
+                formatDate(
+                    entry.start
+                ),
+
+                formatTime(
+                    entry.start
+                ),
+
+                formatTime(
+                    entry.end
+                ),
+
+                formatDuration(
+                    getNetMs(
+                        entry
+                    )
+                ),
+
+                Math.round(
+                    (
+                        entry.pauseMs ||
+                        0
+                    ) /
+                    60000
+                ) +
+                " Min",
+
+                entry.note ||
+                    ""
+
+            ]);
+
+        }
+    );
+
+
+    const csv =
+        rows
+            .map(
+                row =>
+                    row
+                        .map(
+                            value =>
+                                '"' +
+                                String(
+                                    value
+                                )
+                                .replace(
+                                    /"/g,
+                                    '""'
+                                ) +
+                                '"'
+                        )
+                        .join(";")
+            )
+            .join("\n");
+
+
+    const blob =
+        new Blob(
+            [
+                "\uFEFF" +
+                csv
+            ],
+            {
+                type:
+                    "text/csv;charset=utf-8"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const a =
+        document.createElement(
+            "a"
+        );
+
+
+    a.href =
+        url;
+
+
+    a.download =
+        "stempeluhr.csv";
+
+
+    document.body.appendChild(
+        a
+    );
+
+
+    a.click();
+
+
+    a.remove();
+
+
+    URL.revokeObjectURL(
+        url
+    );
+
+
+    showToast(
+        "CSV exportiert."
+    );
+
+}
+
+
+/* ============================================================
+   PDF EXPORT
+   ============================================================ */
+
+function exportPDF(){
+
+    const popup =
+        window.open(
+            "",
+            "_blank"
+        );
+
+
+    if(!popup){
+
+        showToast(
+            "Popup wurde blockiert."
+        );
+
+        return;
+
+    }
+
+
+    const rows =
+        entries
+            .slice()
+            .sort(
+                (
+                    a,
+                    b
+                ) =>
+                    a.start -
+                    b.start
+            )
+            .map(
+                function(entry){
+
+                    return `
+
+                    <tr>
+
+                        <td>
+                            ${safe(
+                                formatDate(
+                                    entry.start
+                                )
+                            )}
+                        </td>
+
+                        <td>
+                            ${safe(
+                                formatTime(
+                                    entry.start
+                                )
+                            )}
+                        </td>
+
+                        <td>
+                            ${safe(
+                                formatTime(
+                                    entry.end
+                                )
+                            )}
+                        </td>
+
+                        <td>
+                            ${safe(
+                                formatDuration(
+                                    getNetMs(
+                                        entry
+                                    )
+                                )
+                            )}
+                        </td>
+
+                        <td>
+                            ${Math.round(
+                                (
+                                    entry.pauseMs ||
+                                    0
+                                ) /
+                                60000
+                            )} Min
+                        </td>
+
+                        <td>
+                            ${safe(
+                                entry.note ||
+                                ""
+                            )}
+                        </td>
+
+                    </tr>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+
+    popup.document.write(`
+
+        <!DOCTYPE html>
+
+        <html>
+
+        <head>
+
+            <title>
+                Stempeluhr
+            </title>
+
+            <style>
+
+                body{
+                    font-family:Arial;
+                    padding:30px;
+                }
+
+                h1{
+                    margin-bottom:5px;
+                }
+
+                table{
+                    width:100%;
+                    border-collapse:collapse;
+                    margin-top:20px;
+                }
+
+                th,
+                td{
+                    border:1px solid #ccc;
+                    padding:8px;
+                    text-align:left;
+                }
+
+                th{
+                    background:#eee;
+                }
+
+            </style>
+
+        </head>
+
+        <body>
+
+            <h1>
+                Stempeluhr
+            </h1>
+
+            <div>
+                ${safe(
+                    $("employeeName")
+                        .value
+                )}
+            </div>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Datum
+                        </th>
+
+                        <th>
+                            Start
+                        </th>
+
+                        <th>
+                            Ende
+                        </th>
+
+                        <th>
+                            Dauer
+                        </th>
+
+                        <th>
+                            Pause
+                        </th>
+
+                        <th>
+                            Notiz
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    ${rows}
+
+                </tbody>
+
+            </table>
+
+            <script>
+
+                window.onload =
+                    function(){
+
+                        window.print();
+
+                    };
+
+            <\/script>
+
+        </body>
+
+        </html>
+
+    `);
+
+
+    popup.document.close();
+
+}
+
+
+/* ============================================================
+   AUTO SAVE / TIMER
+   ============================================================ */
+
+setInterval(
+    function(){
+
+        updateTimer();
+
     },
     1000
-  );
+);
+
+
+/* ============================================================
+   INITIALISIERUNG
+   ============================================================ */
+
+function init(){
+
+    loadTheme();
+
+    loadEmployeeName();
+
+    render();
+
+    updateTimer();
+
+
+    const lastSync =
+        localStorage.getItem(
+            "lastSyncTime"
+        );
+
+
+    if(lastSync){
+
+        $("syncStatus")
+            .textContent =
+            "Zuletzt synchronisiert: " +
+            new Date(
+                Number(
+                    lastSync
+                )
+            ).toLocaleString(
+                "de-DE"
+            );
+
+    }
+
+
+    setTimeout(
+        function(){
+
+            $("loader")
+                .style.opacity =
+                "0";
+
+
+            setTimeout(
+                function(){
+
+                    $("loader")
+                        .style.display =
+                        "none";
+
+                },
+                250
+            );
+
+        },
+        350
+    );
+
+}
+
+
+init();
 
 </script>
 
