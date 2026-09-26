@@ -922,7 +922,15 @@ function ensureEntry(entry){
         entry.pauseMs = 0;
 
     entry.start = Number(entry.start);
-    entry.end = Number(entry.end);
+
+    /*
+     * FIX: eine laufende (aktive) Sitzung hat noch kein
+     * "end". Vorher wurde hier unconditional Number(entry.end)
+     * berechnet, was bei aktiven Sitzungen zu end:NaN führte
+     * und unnötigen Datenmüll in localStorage/Backups erzeugte.
+     */
+    if(entry.end !== undefined && entry.end !== null)
+        entry.end = Number(entry.end);
 
     return entry;
 
@@ -1473,9 +1481,27 @@ function renderMonth(){
             let value =
                 netDuration(entry);
 
-            days[key] =
-                (days[key] || 0) +
-                value;
+            if(!days[key]){
+
+                days[key] = {
+
+                    value: 0,
+
+                    /*
+                     * FIX: Zeitstempel des Tages mitspeichern,
+                     * damit die Übersicht chronologisch statt
+                     * in zufälliger Einfüge-Reihenfolge
+                     * sortiert werden kann.
+                     */
+                    ts:
+                        new Date(entry.start)
+                            .setHours(0,0,0,0)
+
+                };
+
+            }
+
+            days[key].value += value;
 
             total += value;
 
@@ -1517,8 +1543,17 @@ function renderMonth(){
     let dayTotal =
         Object.values(days)
             .reduce(
-                (a,b) => a+b,
+                (a,b) => a+b.value,
                 0
+            );
+
+
+    let sortedDays =
+        Object.entries(days)
+            .sort(
+                (a,b) =>
+                    b[1].ts -
+                    a[1].ts
             );
 
 
@@ -1534,9 +1569,9 @@ function renderMonth(){
         </div>
 
         ${
-            Object.entries(days)
+            sortedDays
                 .map(
-                    ([day,value]) => `
+                    ([day,info]) => `
 
                         <div
                             style="
@@ -1549,7 +1584,7 @@ function renderMonth(){
 
                             <span>${day}</span>
 
-                            <b>${duration(value)}</b>
+                            <b>${duration(info.value)}</b>
 
                         </div>
 
@@ -2190,6 +2225,8 @@ function backup(){
         Date.now()
     );
 
+    checkBackupReminder();
+
 }
 
 
@@ -2247,7 +2284,7 @@ function restore(event){
                     Number(data.active.start)
                 )
                     ?
-                    data.active
+                    ensureEntry(data.active)
                     :
                     null;
 
@@ -2751,7 +2788,14 @@ async function restoreFromCloud(){
 
 
         active =
-            cloudBackup.active || null;
+            cloudBackup.active &&
+            Number.isFinite(
+                Number(cloudBackup.active.start)
+            )
+                ?
+                ensureEntry(cloudBackup.active)
+                :
+                null;
 
 
         localStorage.setItem(
