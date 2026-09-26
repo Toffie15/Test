@@ -841,10 +841,59 @@ body.light textarea{
 const SYNC_CONFIG = {
 
     url:
-        "https://script.google.com/macros/s/AKfycbwgCgkI7JeUT-Y57zYXB5NIS8DAj-iWbqvf-XmSD14QNnD9xq9tNNf72HZdKXzYdMV/exec",
+        "https://script.google.com/macros/s/AKfycbwgCgkI7JeUT-YR57zYXB5NIS8DAj-iWbqvf-XmSD14QNnD9xq9tNNf72HZdKXzYdMV/exec",
 
     token:
         "Luca_Valentine."
+
+};
+
+
+/*
+ * SUPPORT_FORM: Das Support-Formular geht NICHT mehr über
+ * SYNC_CONFIG / Apps-Script-Web-App, sondern direkt an ein
+ * Google Formular. Das ist deutlich robuster, weil Google
+ * Forms selbst die Netzwerk-/CORS-Seite übernimmt.
+ *
+ * So füllst du die drei Werte unten aus:
+ *
+ * 1. action:
+ *    Öffne dein Google Formular zum Bearbeiten, klick auf
+ *    "Senden" (oben rechts) -> Link-Symbol -> Link kopieren.
+ *    Die Adresse sieht so aus:
+ *      https://docs.google.com/forms/d/e/XXXXXXXX/viewform
+ *    Ersetze am Ende "viewform" durch "formResponse":
+ *      https://docs.google.com/forms/d/e/XXXXXXXX/formResponse
+ *    Das ist dein action-Wert.
+ *
+ * 2. fields.name / fields.topic / fields.message:
+ *    Im Formular-Editor oben rechts auf die drei Punkte (⋮)
+ *    -> "Vorausgefüllten Link abrufen". Trag in jedes Feld
+ *    einen Testwert ein (z.B. "TESTNAME", "TESTTHEMA",
+ *    "TESTNACHRICHT") und klick auf "Link abrufen". Die
+ *    erzeugte URL enthält für jede Frage ein Stück wie
+ *    "entry.123456789=TESTNAME" - genau diese "entry.xxxxx"
+ *    Kennung (ohne den Testwert) gehört hier rein, passend
+ *    zur jeweiligen Frage.
+ */
+
+const SUPPORT_FORM = {
+
+    action:
+        "GOOGLE_FORM_ACTION_URL_HIER_EINFÜGEN",
+
+    fields:{
+
+        name:
+            "entry.NAME_ID_HIER_EINFÜGEN",
+
+        topic:
+            "entry.THEMA_ID_HIER_EINFÜGEN",
+
+        message:
+            "entry.NACHRICHT_ID_HIER_EINFÜGEN"
+
+    }
 
 };
 
@@ -2967,70 +3016,77 @@ $("supportForm")
 
             try{
 
-                const response =
-                    await fetch(
-                        SYNC_CONFIG.url,
-                        {
-                            method:"POST",
+                if(
 
-                            headers:{
-                                "Content-Type":
-                                    "text/plain;charset=utf-8"
-                            },
+                    SUPPORT_FORM.action.includes(
+                        "HIER_EINFÜGEN"
+                    )
+                    ||
+                    SUPPORT_FORM.fields.name.includes(
+                        "HIER_EINFÜGEN"
+                    )
+                    ||
+                    SUPPORT_FORM.fields.topic.includes(
+                        "HIER_EINFÜGEN"
+                    )
+                    ||
+                    SUPPORT_FORM.fields.message.includes(
+                        "HIER_EINFÜGEN"
+                    )
 
-                            body:
-                                JSON.stringify({
-
-                                    action:
-                                        "support",
-
-                                    token:
-                                        SYNC_CONFIG.token,
-
-                                    name,
-
-                                    topic,
-
-                                    message,
-
-                                    page:
-                                        location.href,
-
-                                    userAgent:
-                                        navigator.userAgent,
-
-                                    timestamp:
-                                        new Date()
-                                            .toISOString()
-
-                                })
-
-                        }
-                    );
-
-
-                if(!response.ok){
+                ){
 
                     throw new Error(
-                        "Serverfehler " +
-                        response.status
+                        "Formular ist noch nicht eingerichtet (SUPPORT_FORM im Code ausfüllen)."
                     );
 
                 }
 
 
-                const data =
-                    await response.json();
+                const formData =
+                    new URLSearchParams();
 
 
-                if(data.status !== "ok"){
+                formData.append(
+                    SUPPORT_FORM.fields.name,
+                    name
+                );
 
-                    throw new Error(
-                        data.message ||
-                        "Senden fehlgeschlagen."
-                    );
+                formData.append(
+                    SUPPORT_FORM.fields.topic,
+                    topic
+                );
 
-                }
+                formData.append(
+                    SUPPORT_FORM.fields.message,
+                    message
+                );
+
+
+                /*
+                 * WICHTIG: mode:"no-cors" ist hier Absicht,
+                 * nicht Notlösung. Google Forms erlaubt
+                 * Einsendungen von fremden Seiten aus, gibt
+                 * dabei aber keine lesbare Antwort zurück
+                 * (Sicherheitsvorgabe des Browsers). Wir
+                 * können den Erfolg also nicht am HTTP-Status
+                 * ablesen - wenn fetch() nicht mit einem
+                 * Netzwerkfehler abbricht, ist die Einsendung
+                 * praktisch immer angekommen.
+                 */
+
+                await fetch(
+                    SUPPORT_FORM.action,
+                    {
+                        method:"POST",
+
+                        mode:"no-cors",
+
+                        body:
+                            formData
+
+                    }
+                );
 
 
                 status.className =
