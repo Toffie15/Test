@@ -1,21 +1,27 @@
 <!DOCTYPE html>
-<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Regelwerk-Quiz</title>
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Regelwerk-Quiz Ja/Nein</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;background:#12151c;color:#e8eaf0;display:flex;justify-content:center;padding:20px}
 .box{width:100%;max-width:760px}.card{background:#1c212c;border-radius:12px;padding:20px;margin-bottom:14px}
 .tag{display:inline-block;background:#2d3550;border-radius:6px;padding:3px 10px;font-size:.85rem;margin:0 6px 10px 0}
-.rule{line-height:1.5;margin:8px 0 16px}button{font:inherit;cursor:pointer;border:0;border-radius:8px;padding:12px 16px;background:#3b5bdb;color:#fff}
-.opt{display:block;width:100%;text-align:left;background:#283046;margin-bottom:8px}.ok{background:#2b8a3e!important}.bad{background:#c92a2a!important}
+.rule{line-height:1.5;margin:8px 0 14px}.pen{background:#283046;border-radius:8px;padding:12px;margin-bottom:14px;line-height:1.5}
+button{font:inherit;cursor:pointer;border:0;border-radius:8px;padding:12px 22px;background:#3b5bdb;color:#fff;margin-right:8px}
+.nein{background:#a61e4d}.ja{background:#2b8a3e}
 input{font:inherit;width:80px;padding:8px;border-radius:8px;border:0}table{width:100%;border-collapse:collapse;font-size:.9rem}
 td,th{padding:8px;border-bottom:1px solid #2d3550;text-align:left;vertical-align:top}.r{color:#51cf66;font-weight:700}.f{color:#ff6b6b;font-weight:700}.hide{display:none}
+#fb{margin:12px 0;font-weight:700}
 </style></head><body><div class="box">
-<h1>Regelwerk-Quiz</h1>
-<div id="start" class="card"><p>Zufällige Fragen aus dem Regelwerk. Wähle die richtige Strafe.</p>
+<h1>Regelwerk-Quiz (Ja/Nein)</h1>
+<div id="start" class="card"><p>Zufällige Fragen aus dem Regelwerk. Gehört die genannte Strafe zur Regel? Ja oder Nein.</p>
 <p>Anzahl: <input type="number" id="anz" min="1" value="10"> <span id="max"></span></p><button onclick="starten()">Starten</button></div>
 <div id="quiz" class="card hide"><span id="fp" class="tag"></span><span id="sec" class="tag"></span>
-<div class="rule" id="regel"></div><div id="opts"></div><button id="weiter" class="hide" onclick="weiter()">Weiter</button></div>
+<div class="rule" id="regel"></div>
+<div class="pen">Steht auf diesen Regelbruch diese Strafe?<br><b id="strafe"></b></div>
+<div id="btns"><button class="ja" onclick="antw(true)">Ja</button><button class="nein" onclick="antw(false)">Nein</button></div>
+<div id="fb"></div>
+<button id="weiter" class="hide" onclick="weiter()">Weiter</button></div>
 <div id="ende" class="hide"><div class="card"><h2 id="score"></h2><button onclick="location.reload()">Neues Quiz</button></div>
-<div class="card" style="overflow-x:auto"><table><thead><tr><th>Regelwerk</th><th>Nr.</th><th>Ergebnis</th><th>Richtige Strafe</th><th>Deine Antwort</th></tr></thead><tbody id="tb"></tbody></table></div></div>
+<div class="card" style="overflow-x:auto"><table><thead><tr><th>Regelwerk</th><th>Nr.</th><th>Ergebnis</th><th>Gezeigte Strafe</th><th>Richtige Strafe</th><th>Deine Antwort</th></tr></thead><tbody id="tb"></tbody></table></div></div>
 </div>
 <script>
 const KS="Keine Strafe angegeben";
@@ -210,16 +216,36 @@ const D={
 const R=[];for(const s in D)D[s].forEach(r=>R.push([s,r[0],r[1],r[2]||KS]));
 const pool=[...new Set(R.map(r=>r[3]))];
 const mix=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
-let F=[],idx=0,pt=0,log=[];const $=id=>document.getElementById(id);
+let F=[],idx=0,pt=0,log=[],cur=null;const $=id=>document.getElementById(id);
 $("max").textContent="(max. "+R.length+")";$("anz").max=R.length;
 function starten(){const n=Math.max(1,Math.min(R.length,parseInt($("anz").value)||10));F=mix(R).slice(0,n);idx=0;pt=0;log=[];$("start").classList.add("hide");$("quiz").classList.remove("hide");zeige()}
-function zeige(){const f=F[idx];$("fp").textContent="Frage "+(idx+1)+"/"+F.length;$("sec").textContent=f[0]+" · Regel "+f[1];$("regel").textContent=f[2];$("weiter").classList.add("hide");$("opts").innerHTML="";
-mix([f[3],...mix(pool.filter(p=>p!==f[3])).slice(0,3)]).forEach(o=>{const b=document.createElement("button");b.className="opt";b.textContent=o;b.onclick=()=>antw(b,o,f);$("opts").appendChild(b)})}
-function antw(b,o,f){const ok=o===f[3];if(ok)pt++;log.push({s:f[0],n:f[1],ok,r:f[3],g:o});
-[...$("opts").children].forEach(x=>{x.disabled=true;if(x.textContent===f[3])x.classList.add("ok")});if(!ok)b.classList.add("bad");
-$("weiter").textContent=idx+1<F.length?"Weiter":"Auswertung";$("weiter").classList.remove("hide")}
+function zeige(){
+  const f=F[idx];
+  const stimmt=Math.random()<0.5;
+  const falsche=pool.filter(p=>p!==f[3]);
+  const gezeigt=stimmt?f[3]:falsche[Math.floor(Math.random()*falsche.length)];
+  cur={f,stimmt,gezeigt};
+  $("fp").textContent="Frage "+(idx+1)+"/"+F.length;
+  $("sec").textContent=f[0]+" · Regel "+f[1];
+  $("regel").textContent=f[2];
+  $("strafe").textContent=gezeigt;
+  $("fb").textContent="";
+  $("btns").classList.remove("hide");
+  $("weiter").classList.add("hide");
+}
+function antw(ja){
+  const ok=(ja===cur.stimmt);
+  if(ok)pt++;
+  log.push({s:cur.f[0],n:cur.f[1],ok,z:cur.gezeigt,r:cur.f[3],a:ja?"Ja":"Nein"});
+  $("btns").classList.add("hide");
+  $("fb").innerHTML=ok?"<span class='r'>Richtig</span>":"<span class='f'>Falsch</span> – richtige Strafe: "+cur.f[3];
+  $("weiter").textContent=idx+1<F.length?"Weiter":"Auswertung";
+  $("weiter").classList.remove("hide");
+}
 function weiter(){idx++;idx<F.length?zeige():ende()}
-function ende(){$("quiz").classList.add("hide");$("ende").classList.remove("hide");
-$("score").textContent=pt+" von "+F.length+" richtig ("+Math.round(pt/F.length*100)+"%)";
-$("tb").innerHTML=log.map(l=>"<tr><td>"+l.s+"</td><td>"+l.n+"</td><td class='"+(l.ok?"r'>Richtig":"f'>Falsch")+"</td><td>"+l.r+"</td><td>"+(l.ok?"–":l.g)+"</td></tr>").join("")}
+function ende(){
+  $("quiz").classList.add("hide");$("ende").classList.remove("hide");
+  $("score").textContent=pt+" von "+F.length+" richtig ("+Math.round(pt/F.length*100)+"%)";
+  $("tb").innerHTML=log.map(l=>"<tr><td>"+l.s+"</td><td>"+l.n+"</td><td class='"+(l.ok?"r'>Richtig":"f'>Falsch")+"</td><td>"+l.z+"</td><td>"+l.r+"</td><td>"+l.a+"</td></tr>").join("");
+}
 </script></body></html>
