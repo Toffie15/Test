@@ -1,251 +1,2217 @@
 <!DOCTYPE html>
-<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Regelwerk-Quiz Ja/Nein</title>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Regelwerk – Ja / Nein Test</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;background:#12151c;color:#e8eaf0;display:flex;justify-content:center;padding:20px}
-.box{width:100%;max-width:760px}.card{background:#1c212c;border-radius:12px;padding:20px;margin-bottom:14px}
-.tag{display:inline-block;background:#2d3550;border-radius:6px;padding:3px 10px;font-size:.85rem;margin:0 6px 10px 0}
-.rule{line-height:1.5;margin:8px 0 14px}.pen{background:#283046;border-radius:8px;padding:12px;margin-bottom:14px;line-height:1.5}
-button{font:inherit;cursor:pointer;border:0;border-radius:8px;padding:12px 22px;background:#3b5bdb;color:#fff;margin-right:8px}
-.nein{background:#a61e4d}.ja{background:#2b8a3e}
-input{font:inherit;width:80px;padding:8px;border-radius:8px;border:0}table{width:100%;border-collapse:collapse;font-size:.9rem}
-td,th{padding:8px;border-bottom:1px solid #2d3550;text-align:left;vertical-align:top}.r{color:#51cf66;font-weight:700}.f{color:#ff6b6b;font-weight:700}.hide{display:none}
-#fb{margin:12px 0;font-weight:700}
-</style></head><body><div class="box">
-<h1>Regelwerk-Quiz (Ja/Nein)</h1>
-<div id="start" class="card"><p>Zufällige Fragen aus dem Regelwerk. Gehört die genannte Strafe zur Regel? Ja oder Nein.</p>
-<p>Anzahl: <input type="number" id="anz" min="1" value="10"> <span id="max"></span></p><button onclick="starten()">Starten</button></div>
-<div id="quiz" class="card hide"><span id="fp" class="tag"></span><span id="sec" class="tag"></span>
-<div class="rule" id="regel"></div>
-<div class="pen">Steht auf diesen Regelbruch diese Strafe?<br><b id="strafe"></b></div>
-<div id="btns"><button class="ja" onclick="antw(true)">Ja</button><button class="nein" onclick="antw(false)">Nein</button></div>
-<div id="fb"></div>
-<button id="weiter" class="hide" onclick="weiter()">Weiter</button></div>
-<div id="ende" class="hide"><div class="card"><h2 id="score"></h2><button onclick="location.reload()">Neues Quiz</button></div>
-<div class="card" style="overflow-x:auto"><table><thead><tr><th>Regelwerk</th><th>Nr.</th><th>Ergebnis</th><th>Gezeigte Strafe</th><th>Richtige Strafe</th><th>Deine Antwort</th></tr></thead><tbody id="tb"></tbody></table></div></div>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at top, #18243a 0%, #0b1018 45%, #06090e 100%);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    padding: 30px 15px;
+}
+
+.container {
+    width: 100%;
+    max-width: 950px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    margin: 0 0 8px;
+    font-size: 34px;
+}
+
+.header p {
+    margin: 0;
+    color: #9da8b8;
+}
+
+.progress-area {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px;
+    padding: 15px;
+    margin-bottom: 18px;
+}
+
+.progress-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: #b8c2d0;
+    font-size: 14px;
+}
+
+.progress {
+    width: 100%;
+    height: 8px;
+    background: #202936;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #4d8dff;
+    transition: width .3s ease;
+}
+
+.card {
+    background: rgba(13, 19, 29, .94);
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 70px rgba(0,0,0,.35);
+}
+
+.category {
+    display: inline-block;
+    background: rgba(77,141,255,.12);
+    color: #72a6ff;
+    border: 1px solid rgba(77,141,255,.25);
+    padding: 7px 11px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.question-number {
+    color: #8e99a9;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.question {
+    font-size: 25px;
+    line-height: 1.45;
+    margin: 0 0 28px;
+    font-weight: 600;
+}
+
+.answers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.answer-btn {
+    border: 1px solid rgba(255,255,255,.1);
+    background: #151d29;
+    color: white;
+    border-radius: 14px;
+    padding: 18px;
+    font-size: 17px;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.answer-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    background: #1b2636;
+    border-color: rgba(255,255,255,.2);
+}
+
+.answer-btn:disabled {
+    cursor: default;
+}
+
+.answer-btn.yes {
+    border-color: rgba(50,205,130,.3);
+}
+
+.answer-btn.no {
+    border-color: rgba(255,75,85,.3);
+}
+
+.answer-btn.correct {
+    background: rgba(35,180,105,.15);
+    border-color: #28c77a;
+}
+
+.answer-btn.wrong {
+    background: rgba(235,65,75,.15);
+    border-color: #ed515b;
+}
+
+.result {
+    display: none;
+    margin-top: 22px;
+    border-radius: 14px;
+    padding: 18px;
+    line-height: 1.55;
+}
+
+.result.correct {
+    display: block;
+    background: rgba(35,180,105,.1);
+    border: 1px solid rgba(35,180,105,.35);
+}
+
+.result.wrong {
+    display: block;
+    background: rgba(235,65,75,.1);
+    border: 1px solid rgba(235,65,75,.35);
+}
+
+.result-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.rule-box {
+    margin-top: 12px;
+    background: rgba(0,0,0,.2);
+    padding: 13px;
+    border-radius: 10px;
+    color: #d8dee8;
+}
+
+.penalty {
+    margin-top: 10px;
+    color: #ffbd6b;
+}
+
+.next-btn,
+.restart-btn {
+    width: 100%;
+    margin-top: 18px;
+    border: 0;
+    border-radius: 13px;
+    padding: 16px;
+    background: #4d8dff;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.next-btn:hover,
+.restart-btn:hover {
+    background: #397ce8;
+}
+
+.final {
+    display: none;
+    text-align: center;
+}
+
+.final h2 {
+    font-size: 32px;
+    margin-top: 0;
+}
+
+.score {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.final-info {
+    color: #aab4c2;
+    line-height: 1.7;
+}
+
+.small {
+    color: #7f8997;
+    font-size: 13px;
+    margin-top: 20px;
+}
+
+@media(max-width: 650px) {
+    body {
+        padding: 15px 10px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .question {
+        font-size: 21px;
+    }
+
+    .answers {
+        grid-template-columns: 1fr;
+    }
+
+    .header h1 {
+        font-size: 27px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Regelwerk – Ja / Nein Test</h1>
+        <p>Beantworte die Fragen anhand des Regelwerks.</p>
+    </div>
+
+    <div class="progress-area">
+        <div class="progress-top">
+            <span id="progressText">Frage 1</span>
+            <span id="scoreText">0 Punkte</span>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+
+    <div class="card" id="quizCard">
+
+        <div class="category" id="category"></div>
+
+        <div class="question-number" id="questionNumber"></div>
+
+        <div class="question" id="question"></div>
+
+        <div class="answers">
+
+            <button
+                class="answer-btn yes"
+                id="yesBtn"
+                onclick="answer(true)">
+                🟢 Ja
+            </button>
+
+            <button
+                class="answer-btn no"
+                id="noBtn"
+                onclick="answer(false)">
+                🔴 Nein
+            </button>
+
+        </div>
+
+        <div id="result" class="result"></div>
+
+        <button
+            id="nextBtn"
+            class="next-btn"
+            style="display:none;"
+            onclick="nextQuestion()">
+            Nächste Frage
+        </button>
+
+    </div>
+
+    <div class="card final" id="finalCard">
+
+        <h2>Test abgeschlossen</h2>
+
+        <div class="score" id="finalScore"></div>
+
+        <div class="final-info" id="finalInfo"></div>
+
+        <button class="restart-btn" onclick="restartQuiz()">
+            🔄 Neuen Test starten
+        </button>
+
+    </div>
+
 </div>
+
 <script>
-const KS="Keine Strafe angegeben";
-const D={
-"Legale Organisationen – Allgemeine Regeln":[
-["1.1",`Alle Mitarbeiter sind verpflichtet, die Regeln einzuhalten.`,""],
-["1.2",`Es ist verboten, die Mitarbeiter verschiedener Organisationen zu tauschen. Ausnahme: Wenn beide Leader einverstanden sind.`,"Mündlicher Warn an Leader"],
-["1.3",`Es ist verboten, Personen mit Vorstrafen aufzunehmen.`,""],
-["1.4",`Es ist verboten, ohne Begleitung von einer Kolonne, gepanzerte Fahrzeuge durch die Stadt zu fahren (Kuruma, Insurgents, Btr.)`,""],
-["1.5",`Mitarbeiter des LSPD’s haben das Recht, ein Auto zu durchsuchen. Wenn sie illegalen Waffen oder Drogen finden, haben sie das Recht, diese zu beschlagnahmen. All dies sollte auf Video gespeichert sein.`,""],
-["1.6",`Es ist verboten, ein Auto ohne die RP-Begriffe /try, /do, /me zu durchsuchen.`,""],
-["1.7",`Das FIB kann bei Sondereinsätzen die Führung übernehmen, wenn sich andere Organisationen daran beteiligen.`,""],
-["1.8",`Gesetze werden von der Regierung verfasst und jede legale Organisation sollte sich daran halten.`,""],
-["1.9",`Bei einem Notstand müssen alle Legalen Organisationen reagieren, einschließlich dem EMS: diese müssen zwei Notfallwagen zum ausgewählten Punkt schicken.`,""],
-["1.10",`Alle Legalen Organisationen dürfen im Dienst keine Maske tragen. Ausnahmen: Spezialeinheiten FIB/LSPD/SAHP/USSS/NG - diese dürfen im Dienst nur Masken verwenden, die im Lager der Organisation sind.`,""],
-["1.11",`Für Staatsbedienstete ist es verboten, eine Person/ein Fahrzeug ohne RP-Befehle oder einen RP-Hintergrund zu durchsuchen. Anmerkung: Bei einer Razzia benötigen alle Staatsbediensteten einen Durchsuchungsbefehl.`,""],
-["1.12",`Spieler, die in einer legalen Organisation sind, können als Bad-Cop/Korrupter Beamter auftreten. 5 Bad-Cops sind das Limit pro Organisation. Der Spieler muss eine Biografie schreiben und diese im Forum einreichen. Erst wenn diese vom Senior Berater Staat angenommen wurde, ist es erlaubt, als Bad-Cop zu agieren. Info: Für den Konsum von Drogen und die Annahme von Bestechungsgeldern (bis zu 100.000$) gibt es IC-Strafen, nicht OOC. Anmerkung: Bad-Cops dürfen nach illegalen Gegenständen fragen und diese an sich nehmen.`,""],
-["1.13",`Das HQ einer Gang ist der Ort (Schädel auf der Karte), an dem die Gang am aktivsten ist und das HQ der Gang gilt als krimineller Ort, an den Staatsangestellte ohne RP-Grund nicht hinkommen dürfen. Beispiel: Razzia.`,""],
-["1.14",`Du hast 25 Minuten Zeit, eine Person ins Gefängnis zu bekommen. Die Zeit beginnt, beim anlegen der Handschellen. Wenn ein Anwalt gefordert wird, kann die Zeit sich verlängern.`,"Jail 120 Minuten"],
-["1.15",`Looten ist für Staatsbedienstete während aktivem Schussgefecht verboten`,"Jail 120 Minuten"],
-["1.16",`Es ist verboten, mit einer Person zu rennen, wenn sie Handschellen an hat.`,"Jail 120 Minuten"],
-["1.17",`Es ist verboten aus gepanzerten Fahrzeugen (z. B. Kuruma) zu schießen.`,"Jail 120 Minuten"],
-["1.18",`EMS-Mitarbeitern dürfen bewusstlosen Personen während einer aktiven Schießerei nicht helfen. Sie müssen das Gebiet verlassen, bis es als sicher gilt.`,"Jail 120 Minuten"],
-["1.19",`Es ist verboten Barrikaden vor den Alarm Punkten aufzustellen (Alle Punkte müssen leicht für die Gangs erreichbar sein)`,""],
-["1.20",`Der Gouverneur muss ein Meeting mit allen Leadern von staatlichen Organisationen vereinbaren, um Gesetzesänderungen vorzunehmen. Nach dem Meeting muss der Senior Berater Staat diese Gesetzesänderungen genehmigen.`,"Warn"],
-["1.21",`Jede staatliche Organisation muss 3 Mal pro Woche Ghetto-Patrouillen durchführen (mindestens 8 Personen)`,""]],
-"Legale Organisationen – Regierung":[
-["2.1",`Die Beschäftigten haben das Recht, im Falle einer Gefahr für leitende Beamte alle verfügbaren Verteidigungsmittel einzusetzen.`,""],
-["2.2",`Die Regierung hat das Recht, einmal täglich Veranstaltungen für die Spieler mit großem Umfang durchzuführen: Eine Automesse, eine Handelsplattform usw.`,""],
-["2.3",`Veranstaltungen größeren ausmaßes müssen immer mit dem Berater Ihrer Fraktion abgestimmt werden.`,""],
-["2.4",`Die Regierung hat das Recht, Vorschriften für den besuch von Zivilpersonen in der Regierung zu erlassen.`,""],
-["2.5",`Ein Anwalt hat das Recht, Beweise gegen einen Angeklagten anzufordern. Beweise gegen den Angeklagten sowie die Anfrage des Anwalts darf nicht verweigert werden.`,""],
-["2.6",`Die Regierung hat das Recht Vorschriften für öffentliche und private Inspektionen festzulegen. (Nicht mehr als 7 Kontrollen pro Woche und ebenfalls nicht mehr als 2 Kontrollen der selben Fraktion pro Woche)`,""],
-["2.7",`Die Regierung hat das Recht, einen Mitarbeiter einer öffentlichen und privaten Organisation zu entlassen, wenn sie nach interner Prüfung Verstöße festgestellt werden.`,""],
-["2.8",`Die Regierung ist verpflichtet, alle Gesetze und Gesetzesvorlagen mit anderen Leitern öffentlicher und privater Organisationen oder dem vom Leiter ernannten stellvertreter abzustimmen, wenn die Gesetze die Arbeit dieser öffentlichen Organisationen betreffen. (unter der Leitung der Regierung)`,""],
-["2.9",`Die Regierung hat das Recht, Gesetze/Gesetzesentwürfe zu erlassen, sofern sie nicht grundsätzlich dem RP-Strang oder dem Regelwerk widerspricht.`,""],
-["2.10",`Die Regierung ist nicht berechtigt, die Staatskasse für persönliche Zwecke zu verwenden.`,""],
-["2.11",`Die Regierung ist befugt dazu, verschiedene Lizenzen zu verkaufen. Der Preis wird vom Leader der Regierung geregelt.`,""],
-["2.12",`Die Regierung sollte über mindestens zwei qualifizierte Anwälte verfügen, die bei Bedarf in der Lage sind, die Interessen einer Person zu vertreten.`,""],
-["2.13",`Die Regierung ist verpflichtet, mindestens ein Mal in 3 Tagen ein kleines oder mittleres Event für alle Einwohner des Staates zu veranstalten.`,""]],
-"Razzia-Beschreibung":[
-["Beschreibung 1",`Razzia - Beamte des FIB’s, des LSPD’s, der Nationalgarde und der SAHP nehmen an den Razzien teil. Das Ziel der Razzia besteht darin, eine spezielle Formation aus den Mitarbeiter aller Fraktionen zu bilden.`,""],
-["Beschreibung 2",`Die Aufgabe der Razzien besteht darin, das Gebiet zu durchsuchen, das einer kriminellen Organisation gehört. Während einer Razzia können Mitarbeiter der o.g. Organisationen verdächtige Personen für weitere Interaktionen festnehmen.`,""],
-["Beschreibung 3",`Man braucht einen IC-Grund, um eine Razzia durchzuführen. Im Falle einer erfolgreichen Razzia werden 30% der Waffen aus dem Lager der kriminellen Organisation abgezogen und entsorgt.`,""],
-["Gründe",`Gründe für Razzien: Häufige Verstöße gegen Staatsgesetze durch Personen der kriminellen Organisation / Durchführung eines terroristischen Akts oder terroristischen Aktionen / Geiselnahmen von Mitarbeitern oder Zivilisten. / Ermittlungen Das Material, dass in einer Fallakte gesammelt wird, sollte 4-7 Tage lang aufbewahrt werden.`,""]],
-"Razzia Regeln":[
-["6.1",`Es ist verboten, eine Razzia ohne einen schwerwiegenden IC-Grund durchzuführen. (Bsp.: Fallakte).`,""],
-["6.2",`Es ist verboten, das Spiel zu verlassen, während eine Razzia stattfindet.`,""],
-["6.3",`Razzien dürfen nur in dem Gebiet der kriminellen Organisation durchgeführt werden.`,""],
-["6.4",`Während einer Razzia darf jede Person von den Staatsbediensteten durchsucht werden in dem Gebiet.`,""],
-["6.5",`Es müssen mindestens 20 Beamte an der Razzia teilnehmen.`,""],
-["6.6",`Jede staatliche Organisation kann höchstens einmal in 48 Stunden eine Razzia durchführen.`,""],
-["6.7",`Hauptzeit für Razzien sind 19:00 Uhr bis 00:00 Uhr.`,""],
-["6.8",`Der Durchsuchungsbefehl muss von der Regierung ausgestellt werden. Berechtigt sind folgende Ämter: Gouverneur /Vize-Gouverneur und Generalstaatsanwalt. In Abwesenheit einer aktiven Regierung wird der Durchsuchungsbefehl vom Leiter des FIBs ausgestellt.`,""],
-["6.9",`Es ist erlaubt, Fahrzeuge zu durchsuchen, die sich in dem Gebiet befinden.`,""],
-["6.10",`Das PDA gilt als OOC-Information. Wenn man einen gesuchten Kriminellen gefunden hat und man diesen festnehmen möchte, muss man sich den Reisepass zeigen lassen. Wenn sich dieser weigert, den Reisepass zu zeigen, haben Beamte das Recht, die Person zur Identifikation festzusetzen.`,""]],
-"Allgemeine Regeln – Accountinhaber":[
-["1.1",`Der erstellte Account ist Eigentum des Erstellers. Der Account darf nicht geteilt oder verkauft werden.`,"Permanenter Bann"],
-["1.2",`Der Inhaber ist für sein Account voll verantwortlich. Die Administration trägt keine Verantwortung für dein Account. Wenn der Zugang zum Account verloren geht (z. B. durch Hacking), wird dein Account mit denselben Strafen belangt.`,""],
-["1.3",`Jeder Betrug gegenüber anderen Spielern ist verboten.`,"Permanenter Bann - Es wird kein Geld ersetzt"],
-["1.4",`Es ist verboten, mehr als ein zusätzlichen Account zu haben (Twinking)`,"Permanenter Bann für alle zusätzlichen Konten | Hauptaccount Bann bis zu 60 Tage"],
-["1.5",`Es ist verboten, mehr als 1 Unternehmen zu haben, einschließlich zusätzlicher Konten. 1 Person - 1 Unternehmen. (Familienbusiness ausgeschlossen)`,"Bann 30 Tage für jeden Account"],
-["1.6",`Der Versuch, Spieleigentum für Echtgeld zu verkaufen/kaufen ist verboten`,"Permanenter Bann"],
-["1.7",`Es ist verboten, Eigentum als Geschenk zu übertragen (einschließlich Neon-Schuhe), dessen Gesamtbetrag 5.000.000$ übersteigt (Sie dürfen 5.000.000$ erhalten und 5.000.000$ pro Tag überweisen.) (Es ist erlaubt, Geld vom/auf das Familienguthaben abzuheben/einzuzahlen.)`,"Ban 60 Tage"],
-["1.8",`Es ist verboten, zwischen dem Hauptaccount und dem Twink zu interagieren. Jeglicher Austausch von Besitztümern oder Geld wird zu einer PERMANENTEN Sperre beider Accounts führen.`,""],
-["1.9",`Es ist verboten, die Systeme für den Verkauf/Kauf zu umgehen um Steuern zu sparen (Verkauf/Kauf/Handel von Häusern/Gegenständen/Autos/Kleidung für 1k und dann Geld auf die Hand oä. beokmmen)`,"Bann 60 Tage"]],
-"Allgemeine Regeln – Nicknamen-Erstellung":[
-["2.1",`Die Ingamenamen müssen realistische Namen sein. Der Name muss sich auf die reale Welt beziehen und Namen berühmter Personen/beleidigen/Anspielung dürfen nicht verwendet werden. Beispiel: Max Mustermann`,"Jail 10 Minuten und Name ändern"]],
-"Allgemeine Regeln – Kommunikationsregeln":[
-["3.1",`OOC Beleidigungen sind untersagt`,"Mute 180 Minuten / Bann 1-7 Tage"],
-["3.2",`Jegliche Verwandte dürfen in keinerlei Chats/Voice oä. erwähnt werden.`,"Mute 180 Minuten / Bann 1-7 Tage"],
-["3.3",`Alle Spieler müssen in der Lage sein sich auf Deutsch zu verständigen und IC-Chats dürfen nur auf Deutsch sein. (Andere Sprachen dürfen nur im Privaten verwendet werden, wenn alle Beteiligten zustimmen)`,"Mute 120 Minuten"]],
-"Allgemeine Regeln – Hacking und externe Software":[
-["4.1",`Spieler dürfen keine externe Software benutzen, die einem einen Vorteil verschaffen (Hacks, Bots usw.).`,"Bann 60 Tage - Bis permanenter Ban"]],
-"Allgemeine Regeln – Umgang mit der Administration":[
-["5.1",`Es ist verboten, den Ingame-Report für Fragen zu verwenden, die nichts mit dem Spiel zu tun haben.`,"Mute 20-60 Minuten"],
-["5.2",`Alle Spieler müssen sich angemessen Verhalten im Gespräch mit der Administration. Im Falle einer Meinungsverschiedenheit bezüglich einer Entscheidung der Administration - steht es einem offen, eine Adminbeschwerde einzureichen, welche vom Chief Administrator bearbeitet wird.`,""],
-["5.3",`Beleidigungen an die Administration sind verboten. Sollte ein Administrator beleidigen, kann dies im Forum gemeldet werden.`,"Bann 7 Tage"]],
-"Allgemeine Regeln – Regeln des Spiels":[
-["6.1",`Die falsche Verwendung der /me /do /try /todo - Befehle ist verboten. Der Spieler ist verpflichtet die Wahrheit auszuspielen. Anmerkung: /try kann nur 2 mal pro Situation verwendet werden.`,""],
-["6.2",`Es ist verboten, eine RP Situation zu verlassen in dem man sich weigert diese fortzusetzen, Erste-Hilfe nicht annimmt, das Spiel verlässt, AFK geht, einen Innenraum betritt etc.`,"Warn"],
-["6.3",`Es ist verboten, das Lager von Familien/Organisationen für persönliche Zwecke zu leeren.`,"Permanenter Bann"],
-["6.4",`Es ist verboten, einen Bad-Angestellten der staatlichen Organisationen zu spielen, ohne eine RP-Biographie zu haben`,"Warn"],
-["6.5",`Es ist verboten, kriminelle Handlungen gegen EMS-Mitarbeitern zu begehen (töten, ausrauben usw.)`,"Warn"],
-["6.6",`Es ist verboten, sich in einer Schießerei zu heilen oder zu looten`,"Jail 60 Minuten"],
-["6.7",`Wenn du getötet wurdest (und im Krankenhaus spawnst), darfst du 15 Minuten lang nicht mehr in die selbe RP-Situation/an den Ort zurückkehren`,"Warn"],
-["6.8",`Es ist verboten, nichtypische Handlungen im Bezug auf eine bewusstlose Person durchzuführen (z.B. Spucken, sexuelle Animationen usw.)`,"Bann 3-7 Tage"],
-["6.9",`Es ist verboten, sexuelle Handlungen an einer Person vorzunehmen. Wenn du Opfer einer sexuellen Belästigung (RP-Vergewaltigung) wirst, hast du die Erlaubnis von dort zu flüchten.`,"Bann 3-7 Tage"],
-["6.10",`Es ist verboten, IC-Situationen in den OOC-Bereich zu verlagern (z.B. jemanden in Discord-Chats in Bezug auf eine IC-Situation zu beleidigen). Jeder Vorfall dieser Art wird zusätzlich mit einer Discord Strafe bestraft.`,"Bann 1-7 Tage"],
-["6.11",`Es ist verboten, mit deinem Twink Account für "die andere Seite" zu spielen. Wenn dein Hauptaccount teil einer staatlichen Organisation ist, darf dein Zweitaccount(Twink) auch nur in einer staatlichen Organisation sein - wenn dein Hauptaccount in einer Gang (kriminelle Organisation) ist, dann darf dein Zweitaccount(Twink) ebenfalls nur ein Mitglied einer Gang sein.`,"Warn für beide Accounts"],
-["6.12",`Das Belästigen von EMS-Mitarbeitern im Dienst oder das unangemessene Verhalten gegenüber EMS-Mitarbeitern ist verboten. Ausnahme: Der EMS-Mitarbeiter war respektlos.`,"Bann 1-7 Tage"],
-["6.13",`Es ist verboten, eine Person zu töten, die bewusstlos ist, um ihr zu helfen, eine RP-Situation zu vermeiden (Mercy Killing).`,"Jail 120 Minuten | Warn"],
-["6.14",`Es ist nur erlaubt, Munition, Waffen, jegliche Westen (Gang, FIB, LSPD etc.), Balaclava und Drogen von anderen Spielern zu klauen. Geld, darf nur über die Systemfunktion von kriminellen Organisationen(Gang, Inoff) geklaut werden`,"Bann 1-7 Tage"],
-["6.15",`Wenn du dich außerhalb des GHETTOS befindest, musst du dich auf das RP einlassen, bevor du jemanden erschießt. Stelle z.B. Forderungen und wenn derjenige nicht innerhalb von 5 Sekunden auf deine Forderung eingeht, kannst du die Person erschießen`,"Warn"],
-["6.16",`Bei einem Überfall auf eine Person, gepanzertes Fahrzeug, Trucks (jegliche Art von Transport) müssen mindestens 2 Autos (gleicher Farbe) und 4 Personen beteiligt sein, um das Fahrzeug zum Stehen zu bringen und zu überfallen. Sollte das Fahrzeug nicht stehen bleiben, fällt dies unter "Powergaming".`,"Jail 120 oder Warn"],
-["6.18",`Es ist verboten, Helikopter zu benutzen um auf Dächer zu gelangen, die nicht zu Fuß oder über eine Leiter erreicht werden können.`,"Jail 120 Minuten"],
-["6.19",`H-Wort und N-Wort sind verboten.`,"Bann 1-3 Tage"],
-["6.20",`Das Muten von anderen Spielern, was zur Vermeidung von RP führt, entbindet nicht von einer Bestrafung und fällt unter Fail RP`,"Warn"],
-["6.21",`Es ist verboten, gepanzerte Fahrzeuge(in welchem Spieler im Fahrzeug nicht erschossen werden können) zu missbrauchen.`,"Warn"],
-["6.22",`Es ist verboten, Familienunternehmen zu verkaufen/kaufen oder Geld von/auf das Familienkonto abzuheben/einzuzahlen, ohne die Zustimmung des Familien Leaders, sowie aus dem Lager und den Familienautos Gegenstände zu nehmen`,"Fällt unter 1.3"],
-["6.23",`Jegliche Art von Bugabuse sind verboten`,"Bann - Bis permanenter Bann"],
-["6.24",`Es ist verboten, Personen auszurauben oder zu kidnappen, welche Anfangsjobs (Busfahrer/Taxi-Fahrer/Elektriker etc.) ausüben.`,"Warn"],
-["6.25",`Es ist verboten, Menschen auf dem Gebiet von Fort Zancudo (Nationalgarde) auszurauben/zu entführen.`,"Warn"],
-["6.26",`Es ist verboten, EMS-Kleidung zu missbrauchen, wenn man kein EMS-Mitarbeiter ist.`,"Warn oder Bann bis zu 7 Tagen"],
-["6.27",`Das Platzieren von Schmuggelmaschinen in anderen Objekten oder in physisch unzugänglichen Bereichen ist nicht erlaubt`,"Bann 1–3 Tage"],
-["7.2",`Das vermehrte Verstoßen gegen die gleichen Regeln führt zu härteren Sanktionen.`,"Bann 1-30 Tage"]],
-"Leader-Regeln":[
-["1.1",`Die Leader müssen mindestens 30 Tage Leader sein, andernfalls wird der Leader von seinem Posten entfernt und das Konto 3 Tage gesperrt. Wenn der Leader seinen Posten aus schwerwiegenden Gründen verlässt, wird er ohne Bann entfernt und sein Posten wird an einen vertrauenswürdigen Co-Leader übertragen oder es wird ein neuer Leader gesucht.`,""],
-["1.2",`Es ist verboten, das Lager der Organisation für persönliche Zwecke zu nutzen.`,""],
-["1.3",`Wenn der Leader gewechselt wird, hat er das Recht, die Organisation für 24 Stunden einzufrieren (Aufbau-Schutz)`,""],
-["1.4",`Der Leader von einer Gang hat das Recht auf 4 Co-Leader.`,""],
-["1.5",`Der Leader von staatlichen Organisationen (+ Lifeinvader) hat das Recht auf 2 Co-Leader.`,""],
-["1.6",`Der Leader einer Organisation hat den Rang 10`,""],
-["1.7",`Der Leader der Organisation hat das Recht, Mitarbeiter seiner Organisation zu entlassen, wenn er mit Zustimmung des Kurators das Vertrauen in sie verloren hat.`,""],
-["1.8",`Der Leader kann einmal pro Wahlperiode mit Genehmigung des Kurators eine Pause von 12-24 Stunden einlegen.`,""],
-["1.9",`Jeder Leader muss mindestens einmal in 2 Wochen ein globales Ereignis veranstalten.`,""],
-["1.10",`Die Leitung einer inoffiziellen Organisation darf nicht übertragen/Fusioniert/Verkauft oä. werden, der Status wird hierbei sofort entzogen.`,""]],
-"Leader – Pflichten eines Leaders":[
-["2.1",`Kenntnis des gesamten Regelwerks.`,""],
-["2.2",`Mindest-Onlinezeit von 2+ Stunden am Tag`,""],
-["2.3",`Keine Provokativen und Konfliktreichen Situationen zwischen den Mitgliedern und der Organisationen.`,""],
-["2.4",`Den Anforderungen des Kurators ist immer folge zu leisten und diese zu erfüllen.`,""]],
-"Leader – Verboten für Leader":[
-["3.1",`An anderen RP-Projekten für GTA V und SAMP mitwirken und eine beliebige Position innehaben (Leader, Admin, Mitglied auf dem Discord eines anderen Servers usw.)`,""],
-["3.2",`Wenn du mit deinem Twink-Account für die gleiche Organisation spielst, aber in einem anderen Bereich/Abteilung bist.`,""],
-["3.3",`Toxisches und unangemessenes Verhalten gegenüber seiner und anderen Organisationen (Leitung) ist strikt untersagt.`,""]],
-"Greenzone-Regeln":[
-["1.1",`Das Töten in einer Greenzone ist verboten`,"Warn"],
-["1.2",`Das Verkaufen und Kaufen von Waffen und Drogen ist verboten. Personen zu entführen, auszurauben und/oder den Spielern Säcke auf den Kopf zu setzen ist verboten.`,"Warn"],
-["1.3",`Es ist verboten, eine RP-Situation zu verlassen, indem man in eine Greenzone flüchtet.`,"Warn"],
-["Liste",`Liste aller Greenzonen: Regierungsbehörden: Zentralkrankenhaus, Regierung, FIB, LSPD, SAHP. Startpunkt für Anfangsjobs sowie die ausführenden Personen: Trucker, Elektriker, Sägewerk, Farm 1-2, Busfahrer, Taxifahrer, Ölpumpen. Unternehmen: Autohäuser, Motorradhändler, Bootsverkäufer, Lufttransport Verkäufer, Tankstellen, 24/7 Shops, Bekleidungsgeschäfte, Juwelier, Parkplätze, Burgerladen, Baustellen, Bar, Schwarzmarkt. Sonstiges: Lifeinvader, LS Airport, Licensing Center, Markt, Stadion, Casino, Gefängnis, Post, Automesse, Immobilienagentur, Rekrutierungsbüro, Waffenmontage, Strandgymnastik, Ressourcentauschpunkte, Innenräume von Geschäften, Bank, Geldautomat, Angelpier, Wohnanlagen, Autodiebstahl, Bunker, der gekennzeichnete Teil des Würfelparks.`,""]],
-"Event-Regeln":[
-["1.1",`Teaming ist strengstens verboten (außer bei Events, bei denen es erlaubt ist) In Team oder Familien Events ist es verboten seine eigenen Teammitglieder zu töten`,"Jail 120 Minuten"],
-["1.2",`Es ist verboten, 10 Minuten vor Beginn, während und 5 Minuten nach des Events jemanden zu töten/auszurauben/kidnappen/etc.`,"Warn"],
-["1.3",`Es ist verboten, den Gebietsbereich vor Beginn des Events zu betreten.`,"Jail 120 Minuten"],
-["1.4",`Das Limit von Überfällen auf Waffenläden und 24/7 sind 40/40 Personen.`,"Jail 180 Minuten"],
-["1.5",`Bei Überfällen auf Waffenläden und 24/7 muss ein Rollenspiel sein und die Beamten müssen mit den kriminellen reden`,"Jail 180 Minuten"],
-["1.6",`Maschinengewehre und Scharfschützengewehre sind verboten`,"Jail 120 Minuten"],
-["1.7",`Alle Mitglieder des Events, müssen eine POV haben und 48 Stunden aufheben`,"Bann 30 Tage"],
-["1.8",`Es ist verboten, Familienmitglieder zwischen Familien für Familienkriege/Übernahme des Geschäffts(Business war) zu tauschen`,"Warn"],
-["1.9",`Es ist verboten, die Durchgänge mit Barrikaden oder Autos zu blockieren. Es muss eine Durchfahrt offen gelassen werden, wo ein Fahrzeug durchfahren kann.`,"Jail 120 Minuten"],
-["1.10",`Während der Purge, ist es verboten, Waffen aus jeglichen Organisationslagern zu benutzen. Alle Organisationslager müssen eine Stunde vor Beginn der Purge geschlossen sein.`,"Bann 30 Tage"],
-["1.11",`Während eines Events mit einer roten Zone müssen sich alle Spieler innerhalb der Zone aufhalten. Es ist verboten außerhalb der Zone zu schießen.`,"Jail 120 Minuten"],
-["1.12",`Bei Überfall-Events und Entführungen gibt es ein Limit von 2 Geiseln`,"Warn"],
-["1.13",`Familien dürfen bei Flugzeugträger-, sowie bei dem Bankraub keine anderen Familienmitglieder absichtlich töten.`,"Jail 120 Minuten"],
-["1.14",`Während des Überfalls auf das Fort Zancudo ist es verboten, Dächer zu besetzen`,"Jail 120 Minuten"],
-["1.15",`Während des U-Boot-Events ist es verboten, Dächer zu besetzen`,"Jail 120 Minuten"],
-["1.16",`Während jeglichen Geiselnahme (Raub eines 24/7 oder Waffenladen), können Kriminelle für eine Geisel nur einen bestimmten Geldbetrag verlangen (Nur eine Forderung pro Geisel) - Zivilist: 100k - Beamte: 200k - High Command: 300k - Leader: 400k (Beispiel: Wenn du zwei Geiseln hast, kannst du für die erste Geisel freie Fluchtwege fordern und für die zweite Geisel einen Geldbetrag)`,""],
-["1.17",`Es ist verboten private Fahrzeuge bei Events zu benutzen, während man als Gangmitglied agiert. (Man darf nur Gang-Autos nutzen)`,""],
-["1.18",`Nach Eventstart ist es verboten, an Orte zu gelangen, welche man nicht zu Fuß oder per Leiter innerhalb des Gebiets erreichen kann. Ebenfalls ist es verboten, sich vor Beginn des Events auf einen Highground zu begeben, welchen man nach Start nicht mehr erreichen kann (Autobahn etc.)`,"Jail 120 Minuten"],
-["1.19",`Während eines Raubes auf einen 24/7 oder einen Waffenladen, dürfen das FIB, SAHP oder LSPD einen Austausch von Geiseln fordern.`,""],
-["1.20",`Beim Bankraub-Event ist es nicht erlaubt zu töten, zu schießen oder auszurauben, während beim Spieler das Interieur noch lädt. (z.B. Spieler geht in Tunnel 3 und wird sofort getötet, während Texturen und andere Spieler noch geladen werden)`,"Warn"],
-["1.21",`Während des Flugzeugträger-Events, dürfen Beamte nicht auf Personen schießen, während diese im Wasser sind. Sie müssen die Personen auf den Träger kommen lassen.`,"Warn"],
-["1.22",`Fallschirme sind verboten (Bug-Abuse). Bsp: 'Fliegen in die rote Zone mit einem Fallschirm'`,"Bann 1-30 Tage"],
-["Hinweis",`Bei allen IC Events ist das nutzen von Discord verboten. Bei allen OOC Events ist das nutzen von Discord erlaubt.`,""],
-["IC Events",`König der Insel Cayo Perico | Mittwochs um 20:20 Uhr • Kaperung eines Flugzeugträgers | Donnerstags um 21:30 Uhr • Angriff auf das Gefängnis | Freitags um 20:20 Uhr • Ladendiebstahl | alle 3 Stunden • Übrige Komponenten | jeden Tag um 20:30 Uhr • Banküberfall | Mittwochs und Samstags um 21:30 Uhr`,""],
-["OOC Events",`Übernahme des Hotels | jeden Tag um 02:20 Uhr • Raub Waffenfabrik | immer um 03:20 Uhr • Überfall auf ein Drogenlabor | jeden Tag von 10:00 Uhr - 23:00 Uhr • Familie Razzia | ganzen Tag • Erfassen die Gießerei | jeden Tag um 14:20 Uhr • Übernahme des Geschäfts | jeden Tag um 19:05 Uhr und um 01:05 Uhr • Kampf um die Rangfolge | jeden Tag um 20:50 Uhr`,""]],
-"Wahl-Regeln":[
-["1",`Jeder kann eine Partei gründen, um an den Wahlen teilzunehmen.`,""],
-["2",`Der Vorsitzende einer Partei wird zum neuen Gouverneur ernannt.`,""],
-["3",`Die Partei muss aus mindestens 20 Mitgliedern bestehen diese müssen einzigartig sein.`,""],
-["4",`Jede Partei muss ein Wahlprogramm haben, welches den Regeln des Servers entsprechen muss. Die Regeln für die eigene Kampagne bei den Wahlen:`,""],
-["5",`Die Wahl ist ein kompletter IC Prozess. Die Verwendung von OOC ist verboten. Ausnahme ist unser offizielle Discord Kanal (#partei-ankündigungen)`,""],
-["6",`Man darf keine Wahlwerbung im Staatsfunk/Welle, Department Funk/Chat, Ingrand oder in jeglichem weiteren Funk/Radio etc., betreiben. (Referenz zu Regel 15)`,"-20 Stimmen"],
-["7",`Es darf keine Werbung für deine Partei im Funk für Berufe gemacht werden (LKW, Taxifahrer etc.).`,"- 10 Stimmen"],
-["8",`Am Tag vor den Wahlen finden Debatten statt, an den alle Kandidaten teilnehmen müssen. Die Kandidaten, die nicht an den Debatten teilnehmen, werden von den Wahlen ausgeschlossen.`,""],
-["9",`Bei den Debatten hat jeder Kandidat 10 Minuten Zeit für seine erste Rede, um sein Wahlprogramm vorzustellen.`,""],
-["10",`Jeder Kandidat kann bis zu 5 Fragen an seinen Gegner stellen.`,""],
-["11",`Jeder Kandidat kann bis zu 5 Fragen von Bürgern erhalten.`,""],
-["12",`Ein Parteivorsitzender der Partei muss eine saubere Akte haben. (Keinen aktiven Warn)`,""],
-["13",`Nachdem die Bewerbung für eine Partei angenommen wurde, findet ein Gespräch mit dem zuständigen Berater statt.`,""],
-["14",`Am Tag nach den Debatten starten die Wahlen.`,""],
-["15",`Du kannst für deine Partei werben, indem du eigene Events erstellst und/oder Anzeigen über LiveInvader schaltest.`,"-20"],
-["16",`Es ist verboten, bei den Wahlen Versprechungen zu machen, die gegen die Serverregeln verstoßen.`,""]],
-"Ghetto-Regeln":[
-["1.1",`Die Ghetto Gebiete sind farblich auf der Karte markiert, je nachdem zu welcher Gang sie gehören.`,""],
-["1.2",`Wenn du dich im HQ einer Gang befindest, musst du allen Forderungen der Gang nachkommen.`,"Warn"],
-["1.3",`Das Betreten eines HQ’s ist ohne IC-Grund (z.B. Razzia, Gespräch mit dem Co/Leader) für alle Organisationen verboten.`,"Warn"],
-["1.4",`Es ist verboten, Gangmitglieder in ihrem HQ zu verletzen/töten. Es ist verboten, das HQ einer Gang ohne Erlaubnis zu betreten.`,"Warn"],
-["1.5",`Wenn du dich in deinem HQ befindest, ist es verboten aus dem HQ rauszuschießen.`,"Warn"],
-["1.6",`Wenn ein Gangmitglied von Cops/Gangs gejagt wird, darf er erst 5 Minuten später ins HQ zurückkehren.`,"Warn"],
-["1.7",`Alle Gangmitglieder müssen das Oberteil und die Hose in der jeweiligen Gangfarbe tragen`,"Jail 180 Minuten"],
-["1.8",`Ein Raub/Kidnapping ist nur im Ghetto oder außerhalb der Stadt erlaubt.`,"Warn"],
-["1.9",`Raubüberfälle auf das Fort Zancudo sind nur von 12:00 Uhr bis 22:00 Uhr erlaubt.`,""],
-["1.10",`Gangmitglieder dürfen im HQ jeden töten, wenn die Forderungen nicht erfüllt werden.`,""],
-["1.11",`Es ist verboten, Personen zu Animationen zu zwingen. Ausnahmen: Hände hoch oder auf die Knie gehen(ausschließlich für Beamte).`,"Warn"],
-["1.12",`Wenn eine Person den Forderungen nachkommt, darf man diese nicht töten.`,"Jail 120 Minuten"],
-["1.13",`Leader oder Co-Leader müssen den Zeitpunkt für den Überfall auf das Fort Zancudo innerhalb von 1-2 Stunden vor Beginn ankündigen`,"Warn"],
-["1.14",`Jeder Überfall auf das Fort Zancudo unterliegt einem Cooldown von 2 Stunden`,"Warn"],
-["1.15",`Gangs, Familien (inkl. Inoffizielle Organisationen), dürfen nach einem gerade beendeten Event keine Geiseln nehmen oder Personen ausrauben.`,""]]
-};
-const R=[];for(const s in D)D[s].forEach(r=>R.push([s,r[0],r[1],r[2]||KS]));
-const pool=[...new Set(R.map(r=>r[3]))];
-const mix=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
-let F=[],idx=0,pt=0,log=[],cur=null;const $=id=>document.getElementById(id);
-$("max").textContent="(max. "+R.length+")";$("anz").max=R.length;
-function starten(){const n=Math.max(1,Math.min(R.length,parseInt($("anz").value)||10));F=mix(R).slice(0,n);idx=0;pt=0;log=[];$("start").classList.add("hide");$("quiz").classList.remove("hide");zeige()}
-function zeige(){
-  const f=F[idx];
-  const stimmt=Math.random()<0.5;
-  const falsche=pool.filter(p=>p!==f[3]);
-  const gezeigt=stimmt?f[3]:falsche[Math.floor(Math.random()*falsche.length)];
-  cur={f,stimmt,gezeigt};
-  $("fp").textContent="Frage "+(idx+1)+"/"+F.length;
-  $("sec").textContent=f[0]+" · Regel "+f[1];
-  $("regel").textContent=f[2];
-  $("strafe").textContent=gezeigt;
-  $("fb").textContent="";
-  $("btns").classList.remove("hide");
-  $("weiter").classList.add("hide");
+
+/*
+==========================================================
+REGELWERK
+==========================================================
+
+Nur Regeln aus dem vom Nutzer bereitgestellten Regelwerk.
+
+type:
+true  = Die Aussage ist erlaubt / gilt.
+false = Die Aussage ist verboten / gilt nicht.
+
+question:
+Die eigentliche Ja/Nein-Frage.
+
+rule:
+Originalinhalt der Regel.
+
+penalty:
+Strafe, sofern im Regelwerk angegeben.
+==========================================================
+*/
+
+const rules = [
+
+/* ======================================================
+   ALLGEMEINE REGELN – ACCOUNT
+====================================================== */
+
+{
+    category: "Allgemeine Regeln – Accountinhaber",
+    number: "1.1",
+    question: "Darf der erstellte Account geteilt oder verkauft werden?",
+    answer: false,
+    rule: "Der erstellte Account ist Eigentum des Erstellers. Der Account darf nicht geteilt oder verkauft werden.",
+    penalty: "Permanenter Bann"
+},
+
+{
+    category: "Allgemeine Regeln – Accountinhaber",
+    number: "1.2",
+    question: "Ist der Inhaber für seinen Account voll verantwortlich?",
+    answer: true,
+    rule: "Der Inhaber ist für sein Account voll verantwortlich. Die Administration trägt keine Verantwortung für dein Account. Wenn der Zugang zum Account verloren geht (z. B. durch Hacking), wird dein Account mit denselben Strafen belangt.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Allgemeine Regeln – Accountinhaber",
+    number: "1.3",
+    question: "Ist jeder Betrug gegenüber anderen Spielern verboten?",
+    answer: true,
+    rule: "Jeder Betrug gegenüber anderen Spielern ist verboten.",
+    penalty: "Permanenter Bann – Es wird kein Geld ersetzt"
+},
+
+{
+    category: "Allgemeine Regeln – Accountinhaber",
+    number: "1.4",
+    question: "Ist es erlaubt, mehr als einen zusätzlichen Account zu haben?",
+    answer: false,
+    rule: "Es ist verboten, mehr als ein zusätzlichen Account zu haben (Twinking).",
+    penalty: "Permanenter Bann für alle zusätzlichen Konten / Hauptaccount Bann bis zu 60 Tage"
+},
+
+{
+    category: "Allgemeine Regeln – Accountinhaber",
+    number: "1.5",
+    question: "Darf eine Person mehr als ein Unternehmen besitzen, einschließlich zusätzlicher Accounts?",
+    answer: false,
+    rule: "Es ist verboten, mehr als 1 Unternehmen zu haben, einschließlich zusätzlicher Konten. 1 Person – 1 Unternehmen. (Familienbusiness ausgeschlossen)",
+    penalty: "Bann 30 Tage für jeden Account"
+},
+
+{
+    category: "Allgemeine Regeln – Accountinhaber",
+    number: "1.6",
+    question: "Ist der Versuch, Spieleigentum für Echtgeld zu verkaufen oder zu kaufen, erlaubt?",
+    answer: false,
+    rule: "Der Versuch, Spieleigentum für Echtgeld zu verkaufen/kaufen ist verboten.",
+    penalty: "Permanenter Bann"
+},
+
+{
+    category: "Allgemeine Regeln – Accountinhaber",
+    number: "1.7",
+    question: "Darf Eigentum als Geschenk übertragen werden, wenn der Gesamtbetrag 5.000.000$ übersteigt?",
+    answer: false,
+    rule: "Es ist verboten, Eigentum als Geschenk zu übertragen (einschließlich Neon-Schuhe), dessen Gesamtbetrag 5.000.000$ übersteigt. Sie dürfen 5.000.000$ erhalten und 5.000.000$ pro Tag überweisen. Es ist erlaubt, Geld vom/auf das Familienguthaben abzuheben/einzuzahlen.",
+    penalty: "Ban 60 Tage"
+},
+
+{
+    category: "Allgemeine Regeln – Accountinhaber",
+    number: "1.8",
+    question: "Darf man zwischen dem Hauptaccount und dem Twink interagieren?",
+    answer: false,
+    rule: "Es ist verboten, zwischen dem Hauptaccount und dem Twink zu interagieren. Jeglicher Austausch von Besitztümern oder Geld wird zu einer PERMANENTEN Sperre beider Accounts führen.",
+    penalty: "Permanente Sperre beider Accounts bei Austausch von Besitztümern oder Geld"
+},
+
+{
+    category: "Allgemeine Regeln – Accountinhaber",
+    number: "1.9",
+    question: "Ist es erlaubt, die Systeme für Verkauf, Kauf oder Handel zu umgehen, um Steuern zu sparen?",
+    answer: false,
+    rule: "Es ist verboten, die Systeme für den Verkauf/Kauf zu umgehen um Steuern zu sparen.",
+    penalty: "Bann 60 Tage"
+},
+
+/* ======================================================
+   NICKNAMEN
+====================================================== */
+
+{
+    category: "Nicknamen-Erstellung",
+    number: "2.1",
+    question: "Müssen die Ingamenamen realistische Namen sein?",
+    answer: true,
+    rule: "Die Ingamenamen müssen realistische Namen sein. Der Name muss sich auf die reale Welt beziehen und Namen berühmter Personen/beleidigen/Anspielung dürfen nicht verwendet werden. Beispiel: Max Mustermann.",
+    penalty: "Jail 10 Minuten und Name ändern"
+},
+
+/* ======================================================
+   KOMMUNIKATION
+====================================================== */
+
+{
+    category: "Kommunikationsregeln",
+    number: "3.1",
+    question: "Sind OOC-Beleidigungen erlaubt?",
+    answer: false,
+    rule: "OOC Beleidigungen sind untersagt.",
+    penalty: "Mute 180 Minuten / Bann 1–7 Tage"
+},
+
+{
+    category: "Kommunikationsregeln",
+    number: "3.2",
+    question: "Dürfen Verwandte in Chats oder Voice erwähnt werden?",
+    answer: false,
+    rule: "Jegliche Verwandte dürfen in keinerlei Chats/Voice o.ä. erwähnt werden.",
+    penalty: "Mute 180 Minuten / Bann 1–7 Tage"
+},
+
+{
+    category: "Kommunikationsregeln",
+    number: "3.3",
+    question: "Müssen alle Spieler in der Lage sein, sich auf Deutsch zu verständigen?",
+    answer: true,
+    rule: "Alle Spieler müssen in der Lage sein sich auf Deutsch zu verständigen und IC-Chats dürfen nur auf Deutsch sein. Andere Sprachen dürfen nur im Privaten verwendet werden, wenn alle Beteiligten zustimmen.",
+    penalty: "Mute 120 Minuten"
+},
+
+/* ======================================================
+   HACKING
+====================================================== */
+
+{
+    category: "Hacking und externe Software",
+    number: "4.1",
+    question: "Dürfen Spieler externe Software benutzen, die ihnen einen Vorteil verschafft?",
+    answer: false,
+    rule: "Spieler dürfen keine externe Software benutzen, die einem einen Vorteil verschaffen (Hacks, Bots usw.).",
+    penalty: "Bann 60 Tage – bis permanenter Ban"
+},
+
+/* ======================================================
+   ADMINISTRATION
+====================================================== */
+
+{
+    category: "Umgang mit der Administration",
+    number: "5.1",
+    question: "Darf der Ingame-Report für Fragen verwendet werden, die nichts mit dem Spiel zu tun haben?",
+    answer: false,
+    rule: "Es ist verboten, den Ingame-Report für Fragen zu verwenden, die nichts mit dem Spiel zu tun haben.",
+    penalty: "Mute 20–60 Minuten"
+},
+
+{
+    category: "Umgang mit der Administration",
+    number: "5.2",
+    question: "Dürfen Spieler bei einer Meinungsverschiedenheit mit einer Entscheidung der Administration eine Adminbeschwerde einreichen?",
+    answer: true,
+    rule: "Alle Spieler müssen sich angemessen Verhalten im Gespräch mit der Administration. Im Falle einer Meinungsverschiedenheit bezüglich einer Entscheidung der Administration steht es einem offen, eine Adminbeschwerde einzureichen, welche vom Chief Administrator bearbeitet wird.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Umgang mit der Administration",
+    number: "5.3",
+    question: "Sind Beleidigungen gegenüber der Administration erlaubt?",
+    answer: false,
+    rule: "Beleidigungen an die Administration sind verboten. Sollte ein Administrator beleidigen, kann dies im Forum gemeldet werden.",
+    penalty: "Bann 7 Tage"
+},
+
+/* ======================================================
+   REGELN DES SPIELS
+====================================================== */
+
+{
+    category: "Regeln des Spiels",
+    number: "6.1",
+    question: "Ist die falsche Verwendung der /me /do /try /todo-Befehle verboten?",
+    answer: true,
+    rule: "Die falsche Verwendung der /me /do /try /todo-Befehle ist verboten. Der Spieler ist verpflichtet die Wahrheit auszuspielen. /try kann nur 2 mal pro Situation verwendet werden.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.2",
+    question: "Darf man eine RP-Situation verlassen, indem man sich weigert sie fortzusetzen, Erste-Hilfe nicht annimmt, das Spiel verlässt, AFK geht oder einen Innenraum betritt?",
+    answer: false,
+    rule: "Es ist verboten, eine RP Situation zu verlassen in dem man sich weigert diese fortzusetzen, Erste-Hilfe nicht annimmt, das Spiel verlässt, AFK geht, einen Innenraum betritt etc.",
+    penalty: "Warn"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.3",
+    question: "Darf das Lager von Familien oder Organisationen für persönliche Zwecke geleert werden?",
+    answer: false,
+    rule: "Es ist verboten, das Lager von Familien/Organisationen für persönliche Zwecke zu leeren.",
+    penalty: "Permanenter Bann"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.4",
+    question: "Darf man einen Bad-Angestellten einer staatlichen Organisation ohne RP-Biographie spielen?",
+    answer: false,
+    rule: "Es ist verboten, einen Bad-Angestellten der staatlichen Organisationen zu spielen, ohne eine RP-Biographie zu haben.",
+    penalty: "Warn"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.5",
+    question: "Sind kriminelle Handlungen gegen EMS-Mitarbeiter erlaubt?",
+    answer: false,
+    rule: "Es ist verboten, kriminelle Handlungen gegen EMS-Mitarbeitern zu begehen (töten, ausrauben usw.).",
+    penalty: "Warn"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.6",
+    question: "Darf man sich während einer Schießerei heilen oder looten?",
+    answer: false,
+    rule: "Es ist verboten, sich in einer Schießerei zu heilen oder zu looten.",
+    penalty: "Jail 60 Minuten"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.7",
+    question: "Darf man nach dem Tod und Spawn im Krankenhaus innerhalb von 15 Minuten zur selben RP-Situation oder zum selben Ort zurückkehren?",
+    answer: false,
+    rule: "Wenn du getötet wurdest (und im Krankenhaus spawnst), darfst du 15 Minuten lang nicht mehr in die selbe RP-Situation/an den Ort zurückkehren.",
+    penalty: "Warn"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.8",
+    question: "Sind untypische Handlungen gegenüber einer bewusstlosen Person erlaubt?",
+    answer: false,
+    rule: "Es ist verboten, nichtypische Handlungen im Bezug auf eine bewusstlose Person durchzuführen (z.B. Spucken, sexuelle Animationen usw.).",
+    penalty: "Bann 3–7 Tage"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.9",
+    question: "Sind sexuelle Handlungen an einer Person erlaubt?",
+    answer: false,
+    rule: "Es ist verboten, sexuelle Handlungen an einer Person vorzunehmen. Wenn du Opfer einer sexuellen Belästigung (RP-Vergewaltigung) wirst, hast du die Erlaubnis von dort zu flüchten.",
+    penalty: "Bann 3–7 Tage"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.10",
+    question: "Darf man IC-Situationen in den OOC-Bereich verlagern?",
+    answer: false,
+    rule: "Es ist verboten, IC-Situationen in den OOC-Bereich zu verlagern. Jeder Vorfall dieser Art wird zusätzlich mit einer Discord Strafe bestraft.",
+    penalty: "Bann 1–7 Tage"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.11",
+    question: "Darf ein Twink auf der anderen Seite spielen, wenn der Hauptaccount in einer staatlichen Organisation ist?",
+    answer: false,
+    rule: "Es ist verboten, mit deinem Twink Account für die andere Seite zu spielen. Ist der Hauptaccount Teil einer staatlichen Organisation, darf der Zweitaccount ebenfalls nur in einer staatlichen Organisation sein. Ist der Hauptaccount in einer Gang, darf der Zweitaccount ebenfalls nur Mitglied einer Gang sein.",
+    penalty: "Warn für beide Accounts"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.12",
+    question: "Ist das Belästigen von EMS-Mitarbeitern im Dienst erlaubt?",
+    answer: false,
+    rule: "Das Belästigen von EMS-Mitarbeitern im Dienst oder das unangemessene Verhalten gegenüber EMS-Mitarbeitern ist verboten. Ausnahme: Der EMS-Mitarbeiter war respektlos.",
+    penalty: "Bann 1–7 Tage"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.13",
+    question: "Darf man eine bewusstlose Person töten, um ihr zu helfen, eine RP-Situation zu vermeiden?",
+    answer: false,
+    rule: "Es ist verboten, eine Person zu töten, die bewusstlos ist, um ihr zu helfen, eine RP-Situation zu vermeiden (Mercy Killing).",
+    penalty: "Jail 120 Minuten / Warn"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.14",
+    question: "Darf man Geld von anderen Spielern direkt stehlen?",
+    answer: false,
+    rule: "Es ist nur erlaubt, Munition, Waffen, jegliche Westen (Gang, FIB, LSPD etc.), Balaclava und Drogen von anderen Spielern zu klauen. Geld darf nur über die Systemfunktion von kriminellen Organisationen (Gang, Inoff) geklaut werden.",
+    penalty: "Bann 1–7 Tage"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.15",
+    question: "Muss man sich außerhalb des Ghettos auf das RP einlassen, bevor man jemanden erschießt?",
+    answer: true,
+    rule: "Wenn du dich außerhalb des GHETTOS befindest, musst du dich auf das RP einlassen, bevor du jemanden erschießt. Stelle z.B. Forderungen und wenn derjenige nicht innerhalb von 5 Sekunden auf deine Forderung eingeht, kannst du die Person erschießen.",
+    penalty: "Warn"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.16",
+    question: "Müssen bei einem Überfall auf eine Person, ein gepanzertes Fahrzeug oder einen Truck mindestens 2 Autos gleicher Farbe und 4 Personen beteiligt sein?",
+    answer: true,
+    rule: "Bei einem Überfall auf eine Person, gepanzertes Fahrzeug, Trucks (jegliche Art von Transport) müssen mindestens 2 Autos (gleicher Farbe) und 4 Personen beteiligt sein, um das Fahrzeug zum Stehen zu bringen und zu überfallen. Sollte das Fahrzeug nicht stehen bleiben, fällt dies unter Powergaming.",
+    penalty: "Jail 120 oder Warn"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.18",
+    question: "Darf man einen Helikopter benutzen, um auf Dächer zu gelangen, die nicht zu Fuß oder über eine Leiter erreichbar sind?",
+    answer: false,
+    rule: "Es ist verboten, Helikopter zu benutzen um auf Dächer zu gelangen, die nicht zu Fuß oder über eine Leiter erreicht werden können.",
+    penalty: "Jail 120 Minuten"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.19",
+    question: "Sind H-Wort und N-Wort erlaubt?",
+    answer: false,
+    rule: "H-Wort und N-Wort sind verboten.",
+    penalty: "Bann 1–3 Tage"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.20",
+    question: "Entbindet das Muten anderer Spieler, um RP zu vermeiden, von einer Bestrafung?",
+    answer: false,
+    rule: "Das Muten von anderen Spielern, was zur Vermeidung von RP führt, entbindet nicht von einer Bestrafung und fällt unter Fail RP.",
+    penalty: "Warn"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.21",
+    question: "Darf man gepanzerte Fahrzeuge missbrauchen, in denen Spieler nicht erschossen werden können?",
+    answer: false,
+    rule: "Es ist verboten, gepanzerte Fahrzeuge, in welchem Spieler im Fahrzeug nicht erschossen werden können, zu missbrauchen.",
+    penalty: "Warn"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.22",
+    question: "Darf man Familienunternehmen ohne Zustimmung des Familienleaders verkaufen oder kaufen?",
+    answer: false,
+    rule: "Es ist verboten, Familienunternehmen zu verkaufen/kaufen oder Geld von/auf das Familienkonto abzuheben/einzuzahlen, ohne die Zustimmung des Familien Leaders, sowie aus dem Lager und den Familienautos Gegenstände zu nehmen.",
+    penalty: "Fällt unter 1.3"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.23",
+    question: "Sind jegliche Arten von Bugabuse erlaubt?",
+    answer: false,
+    rule: "Jegliche Art von Bugabuse sind verboten.",
+    penalty: "Bann – bis permanenter Bann"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.24",
+    question: "Darf man Personen ausrauben oder kidnappen, die einen Anfangsjob wie Busfahrer, Taxifahrer oder Elektriker ausüben?",
+    answer: false,
+    rule: "Es ist verboten, Personen auszurauben oder zu kidnappen, welche Anfangsjobs (Busfahrer/Taxi-Fahrer/Elektriker etc.) ausüben.",
+    penalty: "Warn"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.25",
+    question: "Darf man Menschen auf dem Gebiet von Fort Zancudo ausrauben oder entführen?",
+    answer: false,
+    rule: "Es ist verboten, Menschen auf dem Gebiet von Fort Zancudo (Nationalgarde) auszurauben/zu entführen.",
+    penalty: "WARN"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.26",
+    question: "Darf man EMS-Kleidung benutzen, wenn man kein EMS-Mitarbeiter ist?",
+    answer: false,
+    rule: "Es ist verboten, EMS-Kleidung zu missbrauchen, wenn man kein EMS-Mitarbeiter ist.",
+    penalty: "Warn oder Bann bis zu 7 Tagen"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "6.27",
+    question: "Darf man Schmuggelmaschinen in anderen Objekten oder physisch unzugänglichen Bereichen platzieren?",
+    answer: false,
+    rule: "Das Platzieren von Schmuggelmaschinen in anderen Objekten oder in physisch unzugänglichen Bereichen ist nicht erlaubt.",
+    penalty: "Bann 1–3 Tage"
+},
+
+{
+    category: "Regeln des Spiels",
+    number: "7.2",
+    question: "Führt wiederholtes Verstossen gegen dieselben Regeln zu härteren Sanktionen?",
+    answer: true,
+    rule: "Das vermehrte Verstoßen gegen die gleichen Regeln führt zu härteren Sanktionen.",
+    penalty: "Bann 1–30 Tage"
+},
+
+/* ======================================================
+   LEADER
+====================================================== */
+
+{
+    category: "Leader-Regeln",
+    number: "1.1",
+    question: "Müssen Leader mindestens 30 Tage Leader sein?",
+    answer: true,
+    rule: "Die Leader müssen mindestens 30 Tage Leader sein, andernfalls wird der Leader von seinem Posten entfernt und das Konto 3 Tage gesperrt. Wenn der Leader seinen Posten aus schwerwiegenden Gründen verlässt, wird er ohne Bann entfernt und sein Posten wird an einen vertrauenswürdigen Co-Leader übertragen oder es wird ein neuer Leader gesucht.",
+    penalty: "Entfernung vom Posten und Kontosperre 3 Tage bei vorzeitigem Verlassen, außer bei schwerwiegenden Gründen"
+},
+
+{
+    category: "Leader-Regeln",
+    number: "1.2",
+    question: "Darf ein Leader das Lager der Organisation für persönliche Zwecke nutzen?",
+    answer: false,
+    rule: "Es ist verboten, das Lager der Organisation für persönliche Zwecke zu nutzen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Leader-Regeln",
+    number: "1.3",
+    question: "Darf ein Leader nach einem Leaderwechsel die Organisation für 24 Stunden einfrieren?",
+    answer: true,
+    rule: "Wenn der Leader gewechselt wird, hat er das Recht, die Organisation für 24 Stunden einzufrieren (Aufbau-Schutz).",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Leader-Regeln",
+    number: "1.4",
+    question: "Hat der Leader einer Gang das Recht auf 4 Co-Leader?",
+    answer: true,
+    rule: "Der Leader von einer Gang hat das Recht auf 4 Co-Leader.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Leader-Regeln",
+    number: "1.5",
+    question: "Hat der Leader einer staatlichen Organisation inklusive Lifeinvader das Recht auf 2 Co-Leader?",
+    answer: true,
+    rule: "Der Leader von staatlichen Organisationen (+ Lifeinvader) hat das Recht auf 2 Co-Leader.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Leader-Regeln",
+    number: "1.6",
+    question: "Hat der Leader einer Organisation den Rang 10?",
+    answer: true,
+    rule: "Der Leader einer Organisation hat den Rang 10.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Leader-Regeln",
+    number: "1.7",
+    question: "Darf der Leader Mitarbeiter mit Zustimmung des Kurators entlassen, wenn er das Vertrauen in sie verloren hat?",
+    answer: true,
+    rule: "Der Leader der Organisation hat das Recht, Mitarbeiter seiner Organisation zu entlassen, wenn er mit Zustimmung des Kurators das Vertrauen in sie verloren hat.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Leader-Regeln",
+    number: "1.8",
+    question: "Darf der Leader einmal pro Wahlperiode mit Genehmigung des Kurators eine Pause von 12–24 Stunden einlegen?",
+    answer: true,
+    rule: "Der Leader kann einmal pro Wahlperiode mit Genehmigung des Kurators eine Pause von 12–24 Stunden einlegen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Leader-Regeln",
+    number: "1.9",
+    question: "Muss jeder Leader mindestens einmal in 2 Wochen ein globales Ereignis veranstalten?",
+    answer: true,
+    rule: "Jeder Leader muss mindestens einmal in 2 Wochen ein globales Ereignis veranstalten.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Leader-Regeln",
+    number: "1.10",
+    question: "Darf die Leitung einer inoffiziellen Organisation übertragen, fusioniert oder verkauft werden?",
+    answer: false,
+    rule: "Die Leitung einer inoffiziellen Organisation darf nicht übertragen/Fusioniert/Verkauft o.ä. werden, der Status wird hierbei sofort entzogen.",
+    penalty: "Status wird sofort entzogen"
+},
+
+{
+    category: "Pflichten eines Leaders",
+    number: "2.1",
+    question: "Muss ein Leader das gesamte Regelwerk kennen?",
+    answer: true,
+    rule: "Kenntnis des gesamten Regelwerks.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Pflichten eines Leaders",
+    number: "2.2",
+    question: "Muss ein Leader mindestens 2 Stunden pro Tag online sein?",
+    answer: true,
+    rule: "Mindest-Onlinezeit von 2+ Stunden am Tag.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Pflichten eines Leaders",
+    number: "2.3",
+    question: "Sind provokative und konfliktreiche Situationen zwischen Mitgliedern und Organisationen erlaubt?",
+    answer: false,
+    rule: "Keine Provokativen und Konfliktreichen Situationen zwischen den Mitgliedern und der Organisationen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Pflichten eines Leaders",
+    number: "2.4",
+    question: "Muss ein Leader den Anforderungen des Kurators Folge leisten und diese erfüllen?",
+    answer: true,
+    rule: "Den Anforderungen des Kurators ist immer Folge zu leisten und diese zu erfüllen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Verboten für Leader",
+    number: "3.1",
+    question: "Darf ein Leader an anderen RP-Projekten für GTA V und SAMP mitwirken und dort eine Position innehaben?",
+    answer: false,
+    rule: "An anderen RP-Projekten für GTA V und SAMP mitwirken und eine beliebige Position innehaben (Leader, Admin, Mitglied auf dem Discord eines anderen Servers usw.).",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Verboten für Leader",
+    number: "3.2",
+    question: "Darf ein Leader mit seinem Twink-Account für die gleiche Organisation spielen, aber in einem anderen Bereich oder einer anderen Abteilung sein?",
+    answer: false,
+    rule: "Wenn du mit deinem Twink-Account für die gleiche Organisation spielst, aber in einem anderen Bereich/Abteilung bist.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Verboten für Leader",
+    number: "3.3",
+    question: "Ist toxisches und unangemessenes Verhalten gegenüber der eigenen oder anderen Organisationen erlaubt?",
+    answer: false,
+    rule: "Toxisches und unangemessenes Verhalten gegenüber seiner und anderen Organisationen (Leitung) ist strikt untersagt.",
+    penalty: "Keine Strafe angegeben."
+},
+
+/* ======================================================
+   GREENZONE
+====================================================== */
+
+{
+    category: "Greenzone-Regeln",
+    number: "1.1",
+    question: "Ist das Töten in einer Greenzone erlaubt?",
+    answer: false,
+    rule: "Das Töten in einer Greenzone ist verboten.",
+    penalty: "Warn"
+},
+
+{
+    category: "Greenzone-Regeln",
+    number: "1.2",
+    question: "Darf man in einer Greenzone Waffen und Drogen verkaufen oder kaufen, Personen entführen oder ausrauben?",
+    answer: false,
+    rule: "Das Verkaufen und Kaufen von Waffen und Drogen ist verboten. Personen zu entführen, auszurauben und/oder den Spielern Säcke auf den Kopf zu setzen ist verboten.",
+    penalty: "Warn"
+},
+
+{
+    category: "Greenzone-Regeln",
+    number: "1.3",
+    question: "Darf man eine RP-Situation verlassen, indem man in eine Greenzone flüchtet?",
+    answer: false,
+    rule: "Es ist verboten, eine RP-Situation zu verlassen, indem man in eine Greenzone flüchtet.",
+    penalty: "Warn"
+},
+
+/* ======================================================
+   EVENT-REGELN
+====================================================== */
+
+{
+    category: "Event-Regeln",
+    number: "1.1",
+    question: "Ist Teaming bei Events erlaubt, außer bei Events, bei denen es erlaubt ist?",
+    answer: false,
+    rule: "Teaming ist strengstens verboten (außer bei Events, bei denen es erlaubt ist). In Team oder Familien Events ist es verboten seine eigenen Teammitglieder zu töten.",
+    penalty: "Jail 120 Minuten"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.2",
+    question: "Darf man 10 Minuten vor Beginn, während und 5 Minuten nach einem Event jemanden töten, ausrauben oder kidnappen?",
+    answer: false,
+    rule: "Es ist verboten, 10 Minuten vor Beginn, während und 5 Minuten nach des Events jemanden zu töten/auszurauben/kidnappen/etc.",
+    penalty: "Warn"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.3",
+    question: "Darf man den Gebietsbereich vor Beginn des Events betreten?",
+    answer: false,
+    rule: "Es ist verboten, den Gebietsbereich vor Beginn des Events zu betreten.",
+    penalty: "Jail 120 Minuten"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.4",
+    question: "Liegt das Limit bei Überfällen auf Waffenläden und 24/7 bei 40/40 Personen?",
+    answer: true,
+    rule: "Das Limit von Überfällen auf Waffenläden und 24/7 sind 40/40 Personen.",
+    penalty: "Jail 180 Minuten"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.5",
+    question: "Muss bei Überfällen auf Waffenläden und 24/7 ein Rollenspiel stattfinden und müssen die Beamten mit den Kriminellen reden?",
+    answer: true,
+    rule: "Bei Überfällen auf Waffenläden und 24/7 muss ein Rollenspiel sein und die Beamten müssen mit den kriminellen reden.",
+    penalty: "Jail 180 Minuten"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.6",
+    question: "Sind Maschinengewehre und Scharfschützengewehre bei Events erlaubt?",
+    answer: false,
+    rule: "Maschinengewehre und Scharfschützengewehre sind verboten.",
+    penalty: "Jail 120 Minuten"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.7",
+    question: "Müssen alle Mitglieder eines Events eine POV haben und diese 48 Stunden aufheben?",
+    answer: true,
+    rule: "Alle Mitglieder des Events müssen eine POV haben und 48 Stunden aufheben.",
+    penalty: "Bann 30 Tage"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.8",
+    question: "Darf man Familienmitglieder zwischen Familien für Familienkriege oder die Übernahme eines Geschäfts tauschen?",
+    answer: false,
+    rule: "Es ist verboten, Familienmitglieder zwischen Familien für Familienkriege/Übernahme des Geschäfts (Business war) zu tauschen.",
+    penalty: "Warn"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.9",
+    question: "Darf man Durchgänge mit Barrikaden oder Autos vollständig blockieren?",
+    answer: false,
+    rule: "Es ist verboten, die Durchgänge mit Barrikaden oder Autos zu blockieren. Es muss eine Durchfahrt offen gelassen werden, wo ein Fahrzeug durchfahren kann.",
+    penalty: "Jail 120 Minuten"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.10",
+    question: "Darf man während der Purge Waffen aus Organisationslagern benutzen?",
+    answer: false,
+    rule: "Während der Purge ist es verboten, Waffen aus jeglichen Organisationslagern zu benutzen. Alle Organisationslager müssen eine Stunde vor Beginn der Purge geschlossen sein.",
+    penalty: "Bann 30 Tage"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.11",
+    question: "Darf man während eines Events mit einer roten Zone außerhalb der Zone schießen?",
+    answer: false,
+    rule: "Während eines Events mit einer roten Zone müssen sich alle Spieler innerhalb der Zone aufhalten. Es ist verboten außerhalb der Zone zu schießen.",
+    penalty: "Jail 120 Minuten"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.12",
+    question: "Gibt es bei Überfall-Events und Entführungen ein Limit von 2 Geiseln?",
+    answer: true,
+    rule: "Bei Überfall-Events und Entführungen gibt es ein Limit von 2 Geiseln.",
+    penalty: "Warn"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.13",
+    question: "Dürfen Familien beim Flugzeugträger- oder Bankraub andere Familienmitglieder absichtlich töten?",
+    answer: false,
+    rule: "Familien dürfen bei Flugzeugträger-, sowie bei dem Bankraub keine anderen Familienmitglieder absichtlich töten.",
+    penalty: "Jail 120 Minuten"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.14",
+    question: "Darf man während des Überfalls auf Fort Zancudo Dächer besetzen?",
+    answer: false,
+    rule: "Während des Überfalls auf das Fort Zancudo ist es verboten, Dächer zu besetzen.",
+    penalty: "Jail 120 Minuten"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.15",
+    question: "Darf man während des U-Boot-Events Dächer besetzen?",
+    answer: false,
+    rule: "Während des U-Boot-Events ist es verboten, Dächer zu besetzen.",
+    penalty: "Jail 120 Minuten"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.16",
+    question: "Darf für eine Geisel mehr als eine Geldforderung gestellt werden?",
+    answer: false,
+    rule: "Während jeglicher Geiselnahme können Kriminelle für eine Geisel nur einen bestimmten Geldbetrag verlangen. Nur eine Forderung pro Geisel. Zivilist: 100k – Beamte: 200k – High Command: 300k – Leader: 400k.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.17",
+    question: "Darf ein Gangmitglied während eines Events private Fahrzeuge benutzen?",
+    answer: false,
+    rule: "Es ist verboten private Fahrzeuge bei Events zu benutzen, während man als Gangmitglied agiert. Man darf nur Gang-Autos nutzen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.18",
+    question: "Darf man nach Eventstart Orte erreichen, die man innerhalb des Gebiets nicht zu Fuß oder per Leiter erreichen kann?",
+    answer: false,
+    rule: "Nach Eventstart ist es verboten, an Orte zu gelangen, welche man nicht zu Fuß oder per Leiter innerhalb des Gebiets erreichen kann. Ebenfalls ist es verboten, sich vor Beginn des Events auf einen Highground zu begeben, welchen man nach Start nicht mehr erreichen kann.",
+    penalty: "Jail 120 Minuten"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.19",
+    question: "Dürfen FIB, SAHP oder LSPD bei einem Raub auf einen 24/7 oder Waffenladen einen Austausch von Geiseln fordern?",
+    answer: true,
+    rule: "Während eines Raubes auf einen 24/7 oder einen Waffenladen dürfen das FIB, SAHP oder LSPD einen Austausch von Geiseln fordern.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.20",
+    question: "Darf man beim Bankraub töten, schießen oder ausrauben, während beim Spieler das Interieur noch lädt?",
+    answer: false,
+    rule: "Beim Bankraub-Event ist es nicht erlaubt zu töten, zu schießen oder auszurauben, während beim Spieler das Interieur noch lädt.",
+    penalty: "WARN"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.21",
+    question: "Dürfen Beamte während des Flugzeugträger-Events auf Personen schießen, während diese im Wasser sind?",
+    answer: false,
+    rule: "Während des Flugzeugträger-Events dürfen Beamte nicht auf Personen schießen, während diese im Wasser sind. Sie müssen die Personen auf den Träger kommen lassen.",
+    penalty: "Warn"
+},
+
+{
+    category: "Event-Regeln",
+    number: "1.22",
+    question: "Sind Fallschirme bei Events erlaubt?",
+    answer: false,
+    rule: "Fallschirme sind verboten (Bug-Abuse). Beispiel: Fliegen in die rote Zone mit einem Fallschirm.",
+    penalty: "Bann 1–30 Tage"
+},
+
+/* ======================================================
+   WAHL-REGELN
+====================================================== */
+
+{
+    category: "Wahl-Regeln",
+    number: "1",
+    question: "Kann jeder eine Partei gründen, um an den Wahlen teilzunehmen?",
+    answer: true,
+    rule: "Jeder kann eine Partei gründen, um an den Wahlen teilzunehmen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Wahl-Regeln",
+    number: "2",
+    question: "Wird der Vorsitzende einer Partei zum neuen Gouverneur ernannt?",
+    answer: true,
+    rule: "Der Vorsitzende einer Partei wird zum neuen Gouverneur ernannt.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Wahl-Regeln",
+    number: "3",
+    question: "Muss eine Partei aus mindestens 20 einzigartigen Mitgliedern bestehen?",
+    answer: true,
+    rule: "Die Partei muss aus mindestens 20 Mitgliedern bestehen, diese müssen einzigartig sein.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Wahl-Regeln",
+    number: "4",
+    question: "Muss jede Partei ein Wahlprogramm haben, welches den Serverregeln entspricht?",
+    answer: true,
+    rule: "Jede Partei muss ein Wahlprogramm haben, welches den Regeln des Servers entsprechen muss.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Wahl-Regeln",
+    number: "5",
+    question: "Ist die Wahl ein kompletter IC-Prozess?",
+    answer: true,
+    rule: "Die Wahl ist ein kompletter IC Prozess. Die Verwendung von OOC ist verboten. Ausnahme ist unser offizieller Discord Kanal (#partei-ankündigungen).",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Wahl-Regeln",
+    number: "6",
+    question: "Darf man Wahlwerbung im Staatsfunk, Department-Funk, Chat, Ingrand oder weiteren Funk/Radio betreiben?",
+    answer: false,
+    rule: "Man darf keine Wahlwerbung im Staatsfunk/Welle, Department Funk/Chat, Ingrand oder in jeglichem weiteren Funk/Radio etc. betreiben.",
+    penalty: "-20 Stimmen"
+},
+
+{
+    category: "Wahl-Regeln",
+    number: "7",
+    question: "Darf man Werbung für seine Partei im Funk für Berufe wie LKW oder Taxifahrer machen?",
+    answer: false,
+    rule: "Es darf keine Werbung für deine Partei im Funk für Berufe gemacht werden (LKW, Taxifahrer etc.).",
+    penalty: "-10 Stimmen"
+},
+
+{
+    category: "Wahl-Regeln",
+    number: "8",
+    question: "Müssen alle Kandidaten an den Debatten am Tag vor den Wahlen teilnehmen?",
+    answer: true,
+    rule: "Am Tag vor den Wahlen finden Debatten statt, an denen alle Kandidaten teilnehmen müssen. Die Kandidaten, die nicht an den Debatten teilnehmen, werden von den Wahlen ausgeschlossen.",
+    penalty: "Ausschluss von den Wahlen"
+},
+
+{
+    category: "Wahl-Regeln",
+    number: "9",
+    question: "Hat jeder Kandidat bei den Debatten 10 Minuten Zeit für seine erste Rede?",
+    answer: true,
+    rule: "Bei den Debatten hat jeder Kandidat 10 Minuten Zeit für seine erste Rede, um sein Wahlprogramm vorzustellen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Wahl-Regeln",
+    number: "10",
+    question: "Kann jeder Kandidat bis zu 5 Fragen an seinen Gegner stellen?",
+    answer: true,
+    rule: "Jeder Kandidat kann bis zu 5 Fragen an seinen Gegner stellen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Wahl-Regeln",
+    number: "11",
+    question: "Kann jeder Kandidat bis zu 5 Fragen von Bürgern erhalten?",
+    answer: true,
+    rule: "Jeder Kandidat kann bis zu 5 Fragen von Bürgern erhalten.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Wahl-Regeln",
+    number: "12",
+    question: "Muss ein Parteivorsitzender eine saubere Akte ohne aktiven Warn haben?",
+    answer: true,
+    rule: "Ein Parteivorsitzender der Partei muss eine saubere Akte haben. (Keinen aktiven Warn)",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Wahl-Regeln",
+    number: "13",
+    question: "Findet nach Annahme der Bewerbung für eine Partei ein Gespräch mit dem zuständigen Berater statt?",
+    answer: true,
+    rule: "Nachdem die Bewerbung für eine Partei angenommen wurde, findet ein Gespräch mit dem zuständigen Berater statt.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Wahl-Regeln",
+    number: "14",
+    question: "Starten die Wahlen am Tag nach den Debatten?",
+    answer: true,
+    rule: "Am Tag nach den Debatten starten die Wahlen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Wahl-Regeln",
+    number: "15",
+    question: "Darf man für seine Partei durch eigene Events oder Anzeigen über LiveInvader werben?",
+    answer: true,
+    rule: "Du kannst für deine Partei werben, indem du eigene Events erstellst und/oder Anzeigen über LiveInvader schaltest.",
+    penalty: "-20"
+},
+
+{
+    category: "Wahl-Regeln",
+    number: "16",
+    question: "Darf man bei den Wahlen Versprechungen machen, die gegen die Serverregeln verstoßen?",
+    answer: false,
+    rule: "Es ist verboten, bei den Wahlen Versprechungen zu machen, die gegen die Serverregeln verstoßen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+/* ======================================================
+   GHETTO
+====================================================== */
+
+{
+    category: "Ghetto-Regeln",
+    number: "1.1",
+    question: "Sind die Ghetto-Gebiete auf der Karte farblich markiert, je nachdem zu welcher Gang sie gehören?",
+    answer: true,
+    rule: "Die Ghetto Gebiete sind farblich auf der Karte markiert, je nachdem zu welcher Gang sie gehören.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Ghetto-Regeln",
+    number: "1.2",
+    question: "Muss man allen Forderungen der Gang nachkommen, wenn man sich im HQ einer Gang befindet?",
+    answer: true,
+    rule: "Wenn du dich im HQ einer Gang befindest, musst du allen Forderungen der Gang nachkommen.",
+    penalty: "Warn"
+},
+
+{
+    category: "Ghetto-Regeln",
+    number: "1.3",
+    question: "Darf man ein Gang-HQ ohne IC-Grund betreten?",
+    answer: false,
+    rule: "Das Betreten eines HQ’s ist ohne IC-Grund (z.B. Razzia, Gespräch mit dem Co/Leader) für alle Organisationen verboten.",
+    penalty: "Warn"
+},
+
+{
+    category: "Ghetto-Regeln",
+    number: "1.4",
+    question: "Darf man Gangmitglieder in ihrem HQ verletzen oder töten?",
+    answer: false,
+    rule: "Es ist verboten, Gangmitglieder in ihrem HQ zu verletzen/töten. Es ist verboten, das HQ einer Gang ohne Erlaubnis zu betreten.",
+    penalty: "Warn"
+},
+
+{
+    category: "Ghetto-Regeln",
+    number: "1.5",
+    question: "Darf man aus dem eigenen HQ herausschießen?",
+    answer: false,
+    rule: "Wenn du dich in deinem HQ befindest, ist es verboten aus dem HQ rauszuschießen.",
+    penalty: "Warn"
+},
+
+{
+    category: "Ghetto-Regeln",
+    number: "1.6",
+    question: "Darf ein Gangmitglied, das von Cops oder Gangs gejagt wird, sofort wieder ins HQ zurückkehren?",
+    answer: false,
+    rule: "Wenn ein Gangmitglied von Cops/Gangs gejagt wird, darf er erst 5 Minuten später ins HQ zurückkehren.",
+    penalty: "Warn"
+},
+
+{
+    category: "Ghetto-Regeln",
+    number: "1.7",
+    question: "Müssen alle Gangmitglieder das Oberteil und die Hose in der jeweiligen Gangfarbe tragen?",
+    answer: true,
+    rule: "Alle Gangmitglieder müssen das Oberteil und die Hose in der jeweiligen Gangfarbe tragen.",
+    penalty: "Jail 180 Minuten"
+},
+
+{
+    category: "Ghetto-Regeln",
+    number: "1.8",
+    question: "Ist ein Raub oder Kidnapping nur im Ghetto oder außerhalb der Stadt erlaubt?",
+    answer: true,
+    rule: "Ein Raub/Kidnapping ist nur im Ghetto oder außerhalb der Stadt erlaubt.",
+    penalty: "Warn"
+},
+
+{
+    category: "Ghetto-Regeln",
+    number: "1.9",
+    question: "Sind Raubüberfälle auf Fort Zancudo von 12:00 Uhr bis 22:00 Uhr erlaubt?",
+    answer: true,
+    rule: "Raubüberfälle auf das Fort Zancudo sind nur von 12:00 Uhr bis 22:00 Uhr erlaubt.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Ghetto-Regeln",
+    number: "1.10",
+    question: "Dürfen Gangmitglieder im HQ jeden töten, wenn die Forderungen nicht erfüllt werden?",
+    answer: true,
+    rule: "Gangmitglieder dürfen im HQ jeden töten, wenn die Forderungen nicht erfüllt werden.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Ghetto-Regeln",
+    number: "1.11",
+    question: "Darf man Personen zu Animationen zwingen?",
+    answer: false,
+    rule: "Es ist verboten, Personen zu Animationen zu zwingen. Ausnahmen: Hände hoch oder auf die Knie gehen (ausschließlich für Beamte).",
+    penalty: "Warn"
+},
+
+{
+    category: "Ghetto-Regeln",
+    number: "1.12",
+    question: "Darf man eine Person töten, nachdem sie den Forderungen nachgekommen ist?",
+    answer: false,
+    rule: "Wenn eine Person den Forderungen nachkommt, darf man diese nicht töten.",
+    penalty: "Jail 120 Minuten"
+},
+
+{
+    category: "Ghetto-Regeln",
+    number: "1.13",
+    question: "Müssen Leader oder Co-Leader den Zeitpunkt für den Überfall auf Fort Zancudo innerhalb von 1–2 Stunden vor Beginn ankündigen?",
+    answer: true,
+    rule: "Leader oder Co-Leader müssen den Zeitpunkt für den Überfall auf das Fort Zancudo innerhalb von 1–2 Stunden vor Beginn ankündigen.",
+    penalty: "Warn"
+},
+
+{
+    category: "Ghetto-Regeln",
+    number: "1.14",
+    question: "Unterliegt jeder Überfall auf Fort Zancudo einem Cooldown von 2 Stunden?",
+    answer: true,
+    rule: "Jeder Überfall auf das Fort Zancudo unterliegt einem Cooldown von 2 Stunden.",
+    penalty: "Warn"
+},
+
+{
+    category: "Ghetto-Regeln",
+    number: "1.15",
+    question: "Dürfen Gangs, Familien und inoffizielle Organisationen nach einem gerade beendeten Event Geiseln nehmen oder Personen ausrauben?",
+    answer: false,
+    rule: "Gangs, Familien (inkl. Inoffizielle Organisationen), dürfen nach einem gerade beendeten Event keine Geiseln nehmen oder Personen ausrauben.",
+    penalty: "Keine Strafe angegeben."
+},
+
+/* ======================================================
+   LEGALE ORGANISATIONEN
+====================================================== */
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.1",
+    question: "Sind alle Mitarbeiter verpflichtet, die Regeln einzuhalten?",
+    answer: true,
+    rule: "Alle Mitarbeiter sind verpflichtet, die Regeln einzuhalten.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.2",
+    question: "Dürfen Mitarbeiter verschiedener Organisationen getauscht werden, wenn beide Leader einverstanden sind?",
+    answer: true,
+    rule: "Es ist verboten, die Mitarbeiter verschiedener Organisationen zu tauschen. Ausnahme: Wenn beide Leader einverstanden sind.",
+    penalty: "Mündlicher Warn an Leader"
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.3",
+    question: "Darf eine Person mit Vorstrafen aufgenommen werden?",
+    answer: false,
+    rule: "Es ist verboten, Personen mit Vorstrafen aufzunehmen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.4",
+    question: "Darf man ohne Begleitung einer Kolonne gepanzerte Fahrzeuge durch die Stadt fahren?",
+    answer: false,
+    rule: "Es ist verboten, ohne Begleitung von einer Kolonne, gepanzerte Fahrzeuge durch die Stadt zu fahren (Kuruma, Insurgents, Btr.).",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.5",
+    question: "Dürfen Mitarbeiter des LSPD ein Auto durchsuchen und illegale Waffen oder Drogen beschlagnahmen?",
+    answer: true,
+    rule: "Mitarbeiter des LSPD’s haben das Recht, ein Auto zu durchsuchen. Wenn sie illegalen Waffen oder Drogen finden, haben sie das Recht, diese zu beschlagnahmen. All dies sollte auf Video gespeichert sein.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.6",
+    question: "Darf man ein Auto ohne die RP-Begriffe /try, /do und /me durchsuchen?",
+    answer: false,
+    rule: "Es ist verboten, ein Auto ohne die RP-Begriffe /try, /do, /me zu durchsuchen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.7",
+    question: "Kann das FIB bei Sondereinsätzen die Führung übernehmen, wenn andere Organisationen beteiligt sind?",
+    answer: true,
+    rule: "Das FIB kann bei Sondereinsätzen die Führung übernehmen, wenn sich andere Organisationen daran beteiligen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.8",
+    question: "Werden die Gesetze von der Regierung verfasst?",
+    answer: true,
+    rule: "Gesetze werden von der Regierung verfasst und jede legale Organisation sollte sich daran halten.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.9",
+    question: "Müssen bei einem Notstand alle legalen Organisationen reagieren, einschließlich EMS?",
+    answer: true,
+    rule: "Bei einem Notstand müssen alle Legalen Organisationen reagieren, einschließlich dem EMS: diese müssen zwei Notfallwagen zum ausgewählten Punkt schicken.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.10",
+    question: "Dürfen alle legalen Organisationen im Dienst eine Maske tragen?",
+    answer: false,
+    rule: "Alle Legalen Organisationen dürfen im Dienst keine Maske tragen. Ausnahmen: Spezialeinheiten FIB/LSPD/SAHP/USSS/NG – diese dürfen im Dienst nur Masken verwenden, die im Lager der Organisation sind.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.11",
+    question: "Darf ein Staatsbediensteter eine Person oder ein Fahrzeug ohne RP-Befehle oder RP-Hintergrund durchsuchen?",
+    answer: false,
+    rule: "Für Staatsbedienstete ist es verboten, eine Person/ein Fahrzeug ohne RP-Befehle oder einen RP-Hintergrund zu durchsuchen. Bei einer Razzia benötigen alle Staatsbediensteten einen Durchsuchungsbefehl.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.12",
+    question: "Dürfen Spieler in einer legalen Organisation als Bad-Cop/Korrupter Beamter auftreten, wenn die vorgeschriebenen Voraussetzungen erfüllt sind?",
+    answer: true,
+    rule: "Spieler, die in einer legalen Organisation sind, können als Bad-Cop/Korrupter Beamter auftreten. 5 Bad-Cops sind das Limit pro Organisation. Der Spieler muss eine Biografie schreiben und diese im Forum einreichen. Erst wenn diese vom Senior Berater Staat angenommen wurde, ist es erlaubt, als Bad-Cop zu agieren.",
+    penalty: "Für Konsum von Drogen und Annahme von Bestechungsgeldern bis zu 100.000$ gibt es IC-Strafen, nicht OOC."
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.13",
+    question: "Darf ein Staatsangestellter ohne RP-Grund in das HQ einer Gang kommen?",
+    answer: false,
+    rule: "Das HQ einer Gang gilt als krimineller Ort, an den Staatsangestellte ohne RP-Grund nicht hinkommen dürfen. Beispiel: Razzia.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.14",
+    question: "Hat man 25 Minuten Zeit, eine Person ins Gefängnis zu bekommen?",
+    answer: true,
+    rule: "Du hast 25 Minuten Zeit, eine Person ins Gefängnis zu bekommen. Die Zeit beginnt beim Anlegen der Handschellen. Wenn ein Anwalt gefordert wird, kann die Zeit sich verlängern.",
+    penalty: "Jail 120 Minuten"
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.15",
+    question: "Dürfen Staatsbedienstete während eines aktiven Schussgefechts looten?",
+    answer: false,
+    rule: "Looten ist für Staatsbedienstete während aktivem Schussgefecht verboten.",
+    penalty: "Jail 120 Minuten"
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.16",
+    question: "Darf man mit einer Person rennen, wenn sie Handschellen an hat?",
+    answer: false,
+    rule: "Es ist verboten, mit einer Person zu rennen, wenn sie Handschellen an hat.",
+    penalty: "Jail 120 Minuten"
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.17",
+    question: "Darf man aus gepanzerten Fahrzeugen wie einem Kuruma schießen?",
+    answer: false,
+    rule: "Es ist verboten aus gepanzerten Fahrzeugen (z. B. Kuruma) zu schießen.",
+    penalty: "Jail 120 Minuten"
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.18",
+    question: "Dürfen EMS-Mitarbeiter bewusstlosen Personen während einer aktiven Schießerei helfen?",
+    answer: false,
+    rule: "EMS-Mitarbeitern dürfen bewusstlosen Personen während einer aktiven Schießerei nicht helfen. Sie müssen das Gebiet verlassen, bis es als sicher gilt.",
+    penalty: "Jail 120 Minuten"
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.19",
+    question: "Darf man Barrikaden vor den Alarm-Punkten aufstellen?",
+    answer: false,
+    rule: "Es ist verboten Barrikaden vor den Alarm Punkten aufzustellen. Alle Punkte müssen leicht für die Gangs erreichbar sein.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.20",
+    question: "Muss der Gouverneur ein Meeting mit allen Leadern staatlicher Organisationen vereinbaren, um Gesetzesänderungen vorzunehmen?",
+    answer: true,
+    rule: "Der Gouverneur muss ein Meeting mit allen Leadern von staatlichen Organisationen vereinbaren, um Gesetzesänderungen vorzunehmen. Nach dem Meeting muss der Senior Berater Staat diese Gesetzesänderungen genehmigen.",
+    penalty: "Warn"
+},
+
+{
+    category: "Legale Organisationen – Allgemeine Regeln",
+    number: "1.21",
+    question: "Muss jede staatliche Organisation 3 Mal pro Woche Ghetto-Patrouillen mit mindestens 8 Personen durchführen?",
+    answer: true,
+    rule: "Jede staatliche Organisation muss 3 Mal pro Woche Ghetto-Patrouillen durchführen (mindestens 8 Personen).",
+    penalty: "Keine Strafe angegeben."
+},
+
+/* ======================================================
+   REGIERUNG
+====================================================== */
+
+{
+    category: "Legale Organisationen – Regierung",
+    number: "2.1",
+    question: "Dürfen Beschäftigte im Falle einer Gefahr für leitende Beamte alle verfügbaren Verteidigungsmittel einsetzen?",
+    answer: true,
+    rule: "Die Beschäftigten haben das Recht, im Falle einer Gefahr für leitende Beamte alle verfügbaren Verteidigungsmittel einzusetzen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Regierung",
+    number: "2.2",
+    question: "Darf die Regierung einmal täglich eine Veranstaltung großen Umfangs für Spieler durchführen?",
+    answer: true,
+    rule: "Die Regierung hat das Recht, einmal täglich Veranstaltungen für die Spieler mit großem Umfang durchzuführen: Eine Automesse, eine Handelsplattform usw.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Regierung",
+    number: "2.3",
+    question: "Müssen Veranstaltungen größeren Ausmaßes mit dem Berater der Fraktion abgestimmt werden?",
+    answer: true,
+    rule: "Veranstaltungen größeren Ausmaßes müssen immer mit dem Berater Ihrer Fraktion abgestimmt werden.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Regierung",
+    number: "2.4",
+    question: "Darf die Regierung Vorschriften für den Besuch von Zivilpersonen in der Regierung erlassen?",
+    answer: true,
+    rule: "Die Regierung hat das Recht Vorschriften für den Besuch von Zivilpersonen in der Regierung zu erlassen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Regierung",
+    number: "2.5",
+    question: "Hat ein Anwalt das Recht, Beweise gegen einen Angeklagten anzufordern?",
+    answer: true,
+    rule: "Ein Anwalt hat das Recht, Beweise gegen einen Angeklagten anzufordern. Beweise gegen den Angeklagten sowie die Anfrage des Anwalts darf nicht verweigert werden.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Regierung",
+    number: "2.6",
+    question: "Darf die Regierung mehr als 7 öffentliche und private Kontrollen pro Woche durchführen?",
+    answer: false,
+    rule: "Die Regierung hat das Recht Vorschriften für öffentliche und private Inspektionen festzulegen. Nicht mehr als 7 Kontrollen pro Woche und ebenfalls nicht mehr als 2 Kontrollen der selben Fraktion pro Woche.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Regierung",
+    number: "2.7",
+    question: "Darf die Regierung einen Mitarbeiter einer öffentlichen oder privaten Organisation nach interner Prüfung bei festgestellten Verstößen entlassen?",
+    answer: true,
+    rule: "Die Regierung hat das Recht, einen Mitarbeiter einer öffentlichen und privaten Organisation zu entlassen, wenn sie nach interner Prüfung Verstöße festgestellt werden.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Regierung",
+    number: "2.8",
+    question: "Muss die Regierung Gesetze und Gesetzesvorlagen mit den betroffenen Leitern öffentlicher und privater Organisationen abstimmen?",
+    answer: true,
+    rule: "Die Regierung ist verpflichtet, alle Gesetze und Gesetzesvorlagen mit anderen Leitern öffentlicher und privater Organisationen oder dem vom Leiter ernannten Stellvertreter abzustimmen, wenn die Gesetze die Arbeit dieser öffentlichen Organisationen betreffen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Regierung",
+    number: "2.9",
+    question: "Darf die Regierung Gesetze und Gesetzesentwürfe erlassen, sofern diese nicht grundsätzlich dem RP-Strang oder Regelwerk widersprechen?",
+    answer: true,
+    rule: "Die Regierung hat das Recht, Gesetze/Gesetzesentwürfe zu erlassen, sofern sie nicht grundsätzlich dem RP-Strang oder dem Regelwerk widerspricht.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Regierung",
+    number: "2.10",
+    question: "Darf die Regierung die Staatskasse für persönliche Zwecke verwenden?",
+    answer: false,
+    rule: "Die Regierung ist nicht berechtigt, die Staatskasse für persönliche Zwecke zu verwenden.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Regierung",
+    number: "2.11",
+    question: "Ist die Regierung befugt, verschiedene Lizenzen zu verkaufen?",
+    answer: true,
+    rule: "Die Regierung ist befugt dazu, verschiedene Lizenzen zu verkaufen. Der Preis wird vom Leader der Regierung geregelt.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Regierung",
+    number: "2.12",
+    question: "Sollte die Regierung mindestens zwei qualifizierte Anwälte haben?",
+    answer: true,
+    rule: "Die Regierung sollte über mindestens zwei qualifizierte Anwälte verfügen, die bei Bedarf in der Lage sind, die Interessen einer Person zu vertreten.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Legale Organisationen – Regierung",
+    number: "2.13",
+    question: "Muss die Regierung mindestens einmal in 3 Tagen ein kleines oder mittleres Event für alle Einwohner veranstalten?",
+    answer: true,
+    rule: "Die Regierung ist verpflichtet, mindestens ein Mal in 3 Tagen ein kleines oder mittleres Event für alle Einwohner des Staates zu veranstalten.",
+    penalty: "Keine Strafe angegeben."
+},
+
+/* ======================================================
+   RAZZIA
+====================================================== */
+
+{
+    category: "Razzia-Regeln",
+    number: "6.1",
+    question: "Darf eine Razzia ohne einen schwerwiegenden IC-Grund durchgeführt werden?",
+    answer: false,
+    rule: "Es ist verboten, eine Razzia ohne einen schwerwiegenden IC-Grund durchzuführen. Beispiel: Fallakte.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Razzia-Regeln",
+    number: "6.2",
+    question: "Darf man das Spiel verlassen, während eine Razzia stattfindet?",
+    answer: false,
+    rule: "Es ist verboten, das Spiel zu verlassen, während eine Razzia stattfindet.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Razzia-Regeln",
+    number: "6.3",
+    question: "Dürfen Razzien nur im Gebiet der kriminellen Organisation durchgeführt werden?",
+    answer: true,
+    rule: "Razzien dürfen nur in dem Gebiet der kriminellen Organisation durchgeführt werden.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Razzia-Regeln",
+    number: "6.4",
+    question: "Darf während einer Razzia jede Person von Staatsbediensteten im Gebiet durchsucht werden?",
+    answer: true,
+    rule: "Während einer Razzia darf jede Person von den Staatsbediensteten durchsucht werden in dem Gebiet.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Razzia-Regeln",
+    number: "6.5",
+    question: "Müssen mindestens 20 Beamte an einer Razzia teilnehmen?",
+    answer: true,
+    rule: "Es müssen mindestens 20 Beamte an der Razzia teilnehmen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Razzia-Regeln",
+    number: "6.6",
+    question: "Kann jede staatliche Organisation höchstens einmal in 48 Stunden eine Razzia durchführen?",
+    answer: true,
+    rule: "Jede staatliche Organisation kann höchstens einmal in 48 Stunden eine Razzia durchführen.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Razzia-Regeln",
+    number: "6.7",
+    question: "Ist die Hauptzeit für Razzien von 19:00 Uhr bis 00:00 Uhr?",
+    answer: true,
+    rule: "Hauptzeit für Razzien sind 19:00 Uhr bis 00:00 Uhr.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Razzia-Regeln",
+    number: "6.8",
+    question: "Muss der Durchsuchungsbefehl von der Regierung ausgestellt werden?",
+    answer: true,
+    rule: "Der Durchsuchungsbefehl muss von der Regierung ausgestellt werden. Berechtigt sind Gouverneur, Vize-Gouverneur und Generalstaatsanwalt. In Abwesenheit einer aktiven Regierung wird der Durchsuchungsbefehl vom Leiter des FIBs ausgestellt.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Razzia-Regeln",
+    number: "6.9",
+    question: "Ist es erlaubt, Fahrzeuge zu durchsuchen, die sich im Gebiet befinden?",
+    answer: true,
+    rule: "Es ist erlaubt, Fahrzeuge zu durchsuchen, die sich in dem Gebiet befinden.",
+    penalty: "Keine Strafe angegeben."
+},
+
+{
+    category: "Razzia-Regeln",
+    number: "6.10",
+    question: "Gilt das PDA als OOC-Information?",
+    answer: true,
+    rule: "Das PDA gilt als OOC-Information. Wenn man einen gesuchten Kriminellen gefunden hat und man diesen festnehmen möchte, muss man sich den Reisepass zeigen lassen. Wenn sich dieser weigert, den Reisepass zu zeigen, haben Beamte das Recht, die Person zur Identifikation festzusetzen.",
+    penalty: "Keine Strafe angegeben."
 }
-function antw(ja){
-  const ok=(ja===cur.stimmt);
-  if(ok)pt++;
-  log.push({s:cur.f[0],n:cur.f[1],ok,z:cur.gezeigt,r:cur.f[3],a:ja?"Ja":"Nein"});
-  $("btns").classList.add("hide");
-  $("fb").innerHTML=ok?"<span class='r'>Richtig</span>":"<span class='f'>Falsch</span> – richtige Strafe: "+cur.f[3];
-  $("weiter").textContent=idx+1<F.length?"Weiter":"Auswertung";
-  $("weiter").classList.remove("hide");
+
+];
+
+
+/*
+==========================================================
+QUIZ-SYSTEM
+==========================================================
+*/
+
+let questions = [];
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+
+/*
+----------------------------------------------------------
+Fisher-Yates Shuffle
+----------------------------------------------------------
+*/
+
+function shuffle(array) {
+
+    const copy = [...array];
+
+    for (let i = copy.length - 1; i > 0; i--) {
+
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+
+    return copy;
 }
-function weiter(){idx++;idx<F.length?zeige():ende()}
-function ende(){
-  $("quiz").classList.add("hide");$("ende").classList.remove("hide");
-  $("score").textContent=pt+" von "+F.length+" richtig ("+Math.round(pt/F.length*100)+"%)";
-  $("tb").innerHTML=log.map(l=>"<tr><td>"+l.s+"</td><td>"+l.n+"</td><td class='"+(l.ok?"r'>Richtig":"f'>Falsch")+"</td><td>"+l.z+"</td><td>"+l.r+"</td><td>"+l.a+"</td></tr>").join("");
+
+
+/*
+----------------------------------------------------------
+Quiz starten
+----------------------------------------------------------
+*/
+
+function startQuiz() {
+
+    score = 0;
+    currentQuestion = 0;
+    answered = false;
+
+    /*
+     * Alle Fragen werden jedes Mal neu gemischt.
+     */
+    questions = shuffle(rules);
+
+    document.getElementById("quizCard").style.display = "block";
+    document.getElementById("finalCard").style.display = "none";
+
+    showQuestion();
 }
-</script></body></html>
+
+
+/*
+----------------------------------------------------------
+Frage anzeigen
+----------------------------------------------------------
+*/
+
+function showQuestion() {
+
+    answered = false;
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("category").textContent =
+        q.category;
+
+    document.getElementById("questionNumber").textContent =
+        "Regelwerk-Frage " +
+        (currentQuestion + 1) +
+        " von " +
+        questions.length;
+
+    document.getElementById("question").textContent =
+        q.question;
+
+    document.getElementById("progressText").textContent =
+        "Frage " +
+        (currentQuestion + 1) +
+        " / " +
+        questions.length;
+
+    document.getElementById("scoreText").textContent =
+        score +
+        " Punkte";
+
+    const percentage =
+        (currentQuestion / questions.length) * 100;
+
+    document.getElementById("progressBar").style.width =
+        percentage + "%";
+
+    const yesBtn =
+        document.getElementById("yesBtn");
+
+    const noBtn =
+        document.getElementById("noBtn");
+
+    yesBtn.disabled = false;
+    noBtn.disabled = false;
+
+    yesBtn.classList.remove("correct", "wrong");
+    noBtn.classList.remove("correct", "wrong");
+
+    document.getElementById("result").className =
+        "result";
+
+    document.getElementById("result").innerHTML =
+        "";
+
+    document.getElementById("nextBtn").style.display =
+        "none";
+}
+
+
+/*
+----------------------------------------------------------
+Antwort prüfen
+----------------------------------------------------------
+*/
+
+function answer(selectedAnswer) {
+
+    if (answered) {
+        return;
+    }
+
+    answered = true;
+
+    const q = questions[currentQuestion];
+
+    const correct =
+        selectedAnswer === q.answer;
+
+    const yesBtn =
+        document.getElementById("yesBtn");
+
+    const noBtn =
+        document.getElementById("noBtn");
+
+    yesBtn.disabled = true;
+    noBtn.disabled = true;
+
+    /*
+     * Richtige Antwort markieren.
+     */
+
+    if (q.answer === true) {
+        yesBtn.classList.add("correct");
+
+        if (!correct) {
+            noBtn.classList.add("wrong");
+        }
+
+    } else {
+
+        noBtn.classList.add("correct");
+
+        if (!correct) {
+            yesBtn.classList.add("wrong");
+        }
+    }
+
+    if (correct) {
+
+        score++;
+
+        document.getElementById("scoreText").textContent =
+            score + " Punkte";
+    }
+
+    showResult(correct, q);
+
+    document.getElementById("nextBtn").style.display =
+        "block";
+}
+
+
+/*
+----------------------------------------------------------
+Ergebnis nach Frage
+----------------------------------------------------------
+*/
+
+function showResult(correct, q) {
+
+    const result =
+        document.getElementById("result");
+
+    result.className =
+        correct
+            ? "result correct"
+            : "result wrong";
+
+    const answerText =
+        q.answer
+            ? "🟢 Ja"
+            : "🔴 Nein";
+
+    result.innerHTML = `
+
+        <div class="result-title">
+            ${correct ? "✅ Richtig!" : "❌ Falsch!"}
+        </div>
+
+        <div>
+            Richtige Antwort:
+            <strong>${answerText}</strong>
+        </div>
+
+        <div class="rule-box">
+
+            <strong>
+                📖 Regel ${escapeHTML(q.number)}
+            </strong>
+
+            <br><br>
+
+            ${escapeHTML(q.rule)}
+
+        </div>
+
+        <div class="penalty">
+
+            ⚠️ <strong>Strafe bei Regelbruch:</strong><br>
+
+            ${escapeHTML(q.penalty)}
+
+        </div>
+    `;
+}
+
+
+/*
+----------------------------------------------------------
+Nächste Frage
+----------------------------------------------------------
+*/
+
+function nextQuestion() {
+
+    currentQuestion++;
+
+    if (currentQuestion >= questions.length) {
+
+        showFinal();
+
+        return;
+    }
+
+    showQuestion();
+}
+
+
+/*
+----------------------------------------------------------
+Endergebnis
+----------------------------------------------------------
+*/
+
+function showFinal() {
+
+    document.getElementById("quizCard").style.display =
+        "none";
+
+    document.getElementById("finalCard").style.display =
+        "block";
+
+    const total =
+        questions.length;
+
+    const percentage =
+        Math.round((score / total) * 100);
+
+    document.getElementById("progressBar").style.width =
+        "100%";
+
+    document.getElementById("finalScore").textContent =
+        score + " / " + total;
+
+    document.getElementById("finalInfo").innerHTML = `
+
+        Du hast <strong>${score}</strong> von
+        <strong>${total}</strong> Fragen richtig beantwortet.
+
+        <br><br>
+
+        Ergebnis:
+        <strong>${percentage}%</strong>
+
+        <br><br>
+
+        Die Fragen werden beim nächsten Durchlauf
+        erneut zufällig gemischt.
+
+    `;
+}
+
+
+/*
+----------------------------------------------------------
+Neuen Test starten
+----------------------------------------------------------
+*/
+
+function restartQuiz() {
+
+    startQuiz();
+
+}
+
+
+/*
+----------------------------------------------------------
+HTML-Sicherheit
+----------------------------------------------------------
+*/
+
+function escapeHTML(text) {
+
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/*
+==========================================================
+START
+==========================================================
+*/
+
+startQuiz();
+
+</script>
+
+</body>
+</html>
