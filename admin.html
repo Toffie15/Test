@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="de"><head><base target="_top"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Stempeluhr Admin</title>
+<style>
+:root{--bg:#0f1218;--card:#1a1f29;--line:#2a303c;--tx:#eee;--mut:#97a2ae;--sig:#FFC400;--bad:#ff6b61;--ok:#8fd18f}
+*{box-sizing:border-box}body{font:15px system-ui,sans-serif;background:var(--bg);color:var(--tx);margin:0;padding:16px;max-width:980px;margin:auto}
+h2{margin:6px 0 12px}h3{margin:0 0 10px}small,.mut{color:var(--mut)}a{color:#6ea8ff;cursor:pointer}
+.card{background:var(--card);border-radius:14px;padding:16px;margin:0 0 14px}
+table{width:100%;border-collapse:collapse;margin:8px 0}td,th{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--mut);font-weight:600;font-size:13px}
+input,select,button,textarea{font:inherit;padding:9px;border-radius:8px;border:1px solid #333;background:var(--bg);color:var(--tx)}
+button{background:#2f7bff;border:0;font-weight:700;cursor:pointer;color:#fff}button.g{background:#555}button.y{background:var(--sig);color:#111}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{background:var(--card);color:var(--tx)}.tabs button.on{background:var(--sig);color:#111}
+.msg{background:#3a2a10;border-radius:8px;padding:9px 12px;margin:0 0 12px}.err{background:#4a1d1d}.live{color:var(--sig)}.off{opacity:.5}.wrap{overflow:auto}
+#login{max-width:320px;margin:12vh auto}#login input,#login button{width:100%;margin-top:10px}
+</style></head><body>
+<div id="login" class="card" style="display:none"><h2>Admin</h2><input id="lurl" placeholder="Google-Skript-URL (…/exec)" style="display:none" autocapitalize="off" spellcheck="false"><input id="lu" placeholder="Benutzer" autocomplete="username" autocapitalize="off"><input id="lp" type="password" placeholder="Passwort" autocomplete="current-password"><button id="lb">Anmelden</button><p id="le" style="color:var(--bad)"></p></div>
+<div id="app" style="display:none">
+  <h2>Stempeluhr Admin <small id="who"></small> <small><a id="out">Abmelden</a></small></h2>
+  <div id="msg"></div>
+  <div class="tabs" id="tabs"></div>
+  <div id="view"></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let mem={}; const ss={get:k=>{try{return sessionStorage.getItem(k)}catch(e){return mem[k]||null}},set:(k,v)=>{try{sessionStorage.setItem(k,v)}catch(e){mem[k]=v}},del:k=>{try{sessionStorage.removeItem(k)}catch(e){delete mem[k]}}};
+const DEFAULT_URL='';   // optional: Web-App-URL fest eintragen (ohne Geheimnisse – die URL ist ohne Login nutzlos)
+const inGoogle=!!(window.google&&google.script&&google.script.run);
+const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return mem['ls'+k]||null}},lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){mem['ls'+k]=v}};
+function remote(fn,a){
+  const url=($('lurl').value||lsGet('url')||DEFAULT_URL).trim();if(!/^https:\/\/script\.google(usercontent)?\.com\//.test(url))return Promise.reject(new Error('Bitte die Google-Skript-URL (https://script.google.com/…/exec) eintragen.'));
+  const body=fn==='adminLogin'?{action:'adminLogin',user:a[0],pass:a[1]}:fn==='adminApi'?{action:'adminApi',token:a[0],act:a[1],p:a[2]}:{action:'adminLogout',token:a[0]};
+  return fetch(url,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)}).then(r=>r.json()).then(d=>{if(d.status!=='ok')throw new Error(d.message||'Fehler');return d.r}).catch(e=>{throw new Error(e.message==='Failed to fetch'?'Skript nicht erreichbar (URL / Bereitstellung prüfen).':e.message)});}
+const run=(fn,...a)=>inGoogle?new Promise((res,rej)=>google.script.run.withSuccessHandler(res).withFailureHandler(e=>rej(new Error(e&&e.message||e)))[fn](...a)):remote(fn,a);
+let token=ss.get('tok'), role=ss.get('role')||'', tab='home', month=new Date().toLocaleDateString('sv-SE').slice(0,7), cur=null, timer=null;
+const hm=s=>Math.floor(s/3600)+':'+String(Math.floor(s%3600/60)).padStart(2,'0');
+const d2=ms=>new Date(ms).toLocaleDateString('de-DE'),t2=ms=>new Date(ms).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}),dt2=ms=>ms?d2(ms)+' '+t2(ms):'–';
+function note(m,bad){$('msg').innerHTML=m?`<div class="msg ${bad?'err':''}">${esc(m)}</div>`:'';}
+async function api(a,p){const r=await run('adminApi',token,a,p||{});if(!r.ok){if(r.code===401){logout(true);throw new Error(r.msg)}throw new Error(r.msg||'Fehler')}return r}
+async function act(a,p,after){try{const r=await api(a,p);note(r.msg||'');(after||render)();return r}catch(e){note(e.message,true)}}
+function logout(silent){if(token)run('adminLogout',token).catch(()=>{});ss.del('tok');token=null;clearInterval(timer);$('app').style.display='none';$('login').style.display='block';if(!silent)note('')}
+$('out').onclick=()=>logout();
+$('lb').onclick=async()=>{$('le').textContent='';if(!inGoogle&&$('lurl').value)lsSet('url',$('lurl').value.trim());try{const r=await run('adminLogin',$('lu').value,$('lp').value);if(!r.ok){$('le').textContent=r.msg;return}token=r.token;role=r.role;ss.set('tok',token);ss.set('role',role);ss.set('me',r.user);ss.set('who',r.name+' · '+r.roleLabel);start()}catch(e){$('le').textContent=e.message}};
+$('lp').addEventListener('keydown',e=>{if(e.key==='Enter')$('lb').click()});
+function start(){$('login').style.display='none';$('app').style.display='block';$('who').textContent=ss.get('who')||'';
+  const tabs=[['home','Übersicht'],['users','Benutzer'],['tasks','Aufgaben'],['msgs','Nachrichten'],['veh','Fahrzeuge']];if(role==='dev')tabs.push(['sys','System']);
+  $('tabs').innerHTML=tabs.map(([k,l])=>`<button data-t="${k}" class="${tab===k?'on':''}">${l}</button>`).join('');
+  $('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{tab=b.dataset.t;cur=null;note('');start()});
+  render();clearInterval(timer);timer=setInterval(()=>{if(tab==='home'&&!cur&&!document.hidden)render()},60000)}
+const selStyle='';
+async function render(){
+  const v=$('view');
+  try{
+    if(cur)return renderUser();
+    if(tab==='home'){const r=await api('overview',{month});
+      v.innerHTML=`<div class="card"><h3>Mitarbeiter heute <small>(aktualisiert jede Minute · Monat ${esc(r.month)})</small></h3><div class="wrap"><table><tr><th>Mitarbeiter</th><th>Status</th><th>Heute</th><th>Monat</th><th>km</th><th>Aufgaben</th><th>Letzter Sync</th></tr>`+
+      r.rows.map(o=>`<tr><td><a data-u="${esc(o.user)}">${esc(o.name)}</a></td><td class="${o.live?'live':'mut'}">${esc(o.status)}${o.trip?' · Fahrt '+esc(o.trip):''}</td><td>${hm(o.today)}</td><td>${hm(o.month)}</td><td>${o.km}</td><td>${o.tasks}</td><td>${dt2(o.sync)}</td></tr>`).join('')+
+      `</table></div><div class="row"><button class="g" id="rl">Log-Blätter aktualisieren</button> <a href="${esc(r.sheetUrl)}" target="_blank" rel="noopener">Google Sheet öffnen</a></div></div>`;
+      v.querySelectorAll('[data-u]').forEach(a=>a.onclick=()=>{cur=a.dataset.u;render()});$('rl').onclick=()=>act('refreshLogs');
+    }else if(tab==='users'){const r=await api('users');
+      v.innerHTML=`<div class="card"><h3>Benutzer</h3><div class="wrap"><table><tr><th>Name</th><th>Login</th><th>Rolle</th><th>Sync</th><th></th></tr>`+
+      r.users.map(u=>`<tr class="${u.active?'':'off'}"><td><a data-u="${esc(u.user)}">${esc(u.name)}</a></td><td>${esc(u.user)}</td><td>${esc(u.roleLabel)}</td><td>${dt2(u.sync)}</td><td><div class="row"><input type="password" placeholder="neues Passwort" style="width:130px" data-pw="${esc(u.user)}"><button data-set="${esc(u.user)}">Setzen</button>`+
+      (u.user===me()?'':`<button class="g" data-tg="${esc(u.user)}">${u.active?'Sperren':'Aktivieren'}</button>`+(role==='dev'?`<select data-rs="${esc(u.user)}">${Object.keys(r.roles).map(k=>`<option value="${k}" ${k===u.role?'selected':''}>${esc(r.roles[k])}</option>`).join('')}</select><button data-rb="${esc(u.user)}">Rolle</button>`:''))+`</div></td></tr>`).join('')+`</table></div></div>
+      <div class="card"><h3>Neuer ${role==='dev'?'Benutzer':'Mitarbeiter'}</h3><div class="row"><input id="nn" placeholder="Anzeigename"><input id="nu" placeholder="Benutzername" autocapitalize="off"><input id="np" type="password" placeholder="Passwort (min. 8)">${role==='dev'?`<select id="nr">${['user','admin','dev'].map(k=>`<option value="${k}">${{user:'Mitarbeiter',admin:'Admin',dev:'Entwickler'}[k]}</option>`).join('')}</select>`:''}<button id="nb">Anlegen</button></div></div>`;
+      v.querySelectorAll('[data-u]').forEach(a=>a.onclick=()=>{cur=a.dataset.u;render()});
+      v.querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>act('resetPw',{user:b.dataset.set,pass:v.querySelector(`[data-pw="${b.dataset.set}"]`).value}));
+      v.querySelectorAll('[data-tg]').forEach(b=>b.onclick=()=>act('toggle',{user:b.dataset.tg}));
+      v.querySelectorAll('[data-rb]').forEach(b=>b.onclick=()=>act('setRole',{user:b.dataset.rb,role:v.querySelector(`[data-rs="${b.dataset.rb}"]`).value}));
+      $('nb').onclick=()=>act('createUser',{name:$('nn').value,user:$('nu').value,pass:$('np').value,role:$('nr')?$('nr').value:'user'});
+    }else if(tab==='tasks'){const [r,u]=await Promise.all([api('tasks'),api('users')]);
+      v.innerHTML=`<div class="card"><h3>Aufgabe zuweisen</h3><div class="row"><select id="at"><option value="all">Alle Mitarbeiter</option>${u.users.filter(x=>x.active&&x.role==='user').map(x=>`<option value="${esc(x.user)}">${esc(x.name)}</option>`).join('')}</select><input id="ati" placeholder="Aufgabe" maxlength="160" style="flex:1;min-width:160px"><input id="ad" type="date"><input id="an" placeholder="Notiz (optional)" maxlength="200"><label><input id="ap" type="checkbox"> hoch</label><button id="ab">Zuweisen</button></div>
+      <div class="wrap"><table><tr><th>Mitarbeiter</th><th>Aufgabe</th><th>Fällig</th><th>Status</th><th></th></tr>${r.tasks.map(t=>`<tr><td>${esc(t.name)}</td><td>${t.prio?'<b>!</b> ':''}${esc(t.title)} <small>${esc(t.note)}</small></td><td>${esc(t.due||'–')}</td><td>${t.done?'<span style="color:var(--ok)">erledigt '+d2(t.done)+'</span>':'offen'}</td><td><button class="g" data-dt="${t.id}">Löschen</button></td></tr>`).join('')}</table></div></div>`;
+      $('ab').onclick=()=>act('assign',{to:$('at').value,title:$('ati').value,due:$('ad').value,note:$('an').value,prio:$('ap').checked});
+      v.querySelectorAll('[data-dt]').forEach(b=>b.onclick=()=>act('delTask',{id:b.dataset.dt}));
+    }else if(tab==='msgs'){const [r,u]=await Promise.all([api('messages'),api('users')]);
+      v.innerHTML=`<div class="card"><h3>Nachricht senden</h3><div class="row"><select id="mt"><option value="all">Alle Mitarbeiter</option>${u.users.filter(x=>x.active&&x.role==='user').map(x=>`<option value="${esc(x.user)}">${esc(x.name)}</option>`).join('')}</select><input id="mti" placeholder="Titel" maxlength="80" style="flex:1;min-width:140px"><input id="mb" placeholder="Text (optional)" maxlength="500" style="flex:2;min-width:200px"><button id="mbn">Senden</button></div>
+      <p class="mut" style="font-size:12px">Erscheint in der App beim Öffnen und danach etwa alle 2 Minuten als Karte und Benachrichtigung, bis „Gelesen“ gedrückt wird.</p>
+      <table><tr><th>An</th><th>Titel</th><th>Gesendet</th><th>Gelesen</th></tr>${r.msgs.map(m=>`<tr><td>${esc(m.user)}</td><td>${esc(m.title)}</td><td>${dt2(m.created)}</td><td>${m.read?dt2(m.read):'<span class="live">offen</span>'}</td></tr>`).join('')}</table></div>`;
+      $('mbn').onclick=()=>act('sendMsg',{to:$('mt').value,title:$('mti').value,body:$('mb').value});
+    }else if(tab==='veh'){const r=await api('vehicles');const soon=d=>d&&(new Date(d)-Date.now())/864e5<=30;
+      const badge=d=>!d?'<span class="mut">–</span>':(new Date(d)<new Date(new Date().toDateString())?`<b style="color:var(--bad)">${esc(new Date(d).toLocaleDateString('de-DE'))} überfällig</b>`:soon(d)?`<b style="color:var(--sig)">${esc(new Date(d).toLocaleDateString('de-DE'))}</b>`:esc(new Date(d).toLocaleDateString('de-DE')));
+      v.innerHTML=`<div class="card"><h3>Fahrzeuge</h3>${r.vehicles.some(x=>soon(x.tuev)||soon(x.service))?'<div class="msg">Fristen fällig oder bald fällig.</div>':''}<div class="wrap"><table><tr><th>Kennzeichen</th><th>Name</th><th>TÜV</th><th>Service</th><th>Verbrauch</th><th></th></tr>${r.vehicles.map(x=>`<tr><td>${esc(x.plate)}</td><td>${esc(x.name)}</td><td>${badge(x.tuev)}</td><td>${badge(x.service)}</td><td>${x.l100!=null?String(x.l100).replace('.',',')+' l/100 km':'–'}</td>
+      <td><div class="row"><input type="date" value="${esc(x.tuev)}" data-tv="${esc(x.plate)}" title="TÜV"><input type="date" value="${esc(x.service)}" data-sv="${esc(x.plate)}" title="Service"><button data-vs="${esc(x.plate)}" data-n="${esc(x.name)}">Speichern</button><button class="g" data-vd="${esc(x.plate)}">Löschen</button></div></td></tr>`).join('')}</table></div>
+      <p class="mut" style="font-size:12px">Verbrauch = Näherung aus den Tankungen (Volltanken angenommen, mind. 2 Tankungen). Fahrzeuge erscheinen in der App als Auswahl; TÜV/Service ≤ 30 Tage werden dort angezeigt.</p>
+      <div class="row"><input id="vp" placeholder="Kennzeichen" maxlength="20"><input id="vn" placeholder="Bezeichnung" maxlength="60"><label>TÜV <input id="vt" type="date"></label><label>Service <input id="vsv" type="date"></label><button id="vb">Fahrzeug anlegen</button></div></div>`;
+      v.querySelectorAll('[data-vs]').forEach(b=>b.onclick=()=>act('vehSave',{plate:b.dataset.vs,name:b.dataset.n,tuev:v.querySelector(`[data-tv="${b.dataset.vs}"]`).value,service:v.querySelector(`[data-sv="${b.dataset.vs}"]`).value}));
+      v.querySelectorAll('[data-vd]').forEach(b=>b.onclick=()=>confirm('Fahrzeug löschen?')&&act('vehDel',{plate:b.dataset.vd}));
+      $('vb').onclick=()=>act('vehSave',{plate:$('vp').value,name:$('vn').value,tuev:$('vt').value,service:$('vsv').value});
+    }else if(tab==='sys'){const [b,a]=await Promise.all([api('backups'),api('activity')]);
+      v.innerHTML=`<div class="card"><h3>Sicherungen</h3><p class="mut">Täglich um ca. 3 Uhr als Kopie des gesamten Sheets im Drive-Ordner „Stempeluhr Backups“ (letzte 14). Zurückspielen: Kopie öffnen und deren Inhalt/Script übernehmen, oder im Original die Versionsgeschichte nutzen.</p><table><tr><th>Datei</th><th>Zeit</th></tr>${b.files.map(f=>`<tr><td>${esc(f.name)}</td><td>${dt2(f.ts)}</td></tr>`).join('')}</table><button id="bn">Jetzt sichern</button></div>
+      <div class="card"><h3>Aktivität</h3><div class="wrap"><table><tr><th>Zeit</th><th>Wer</th><th>Aktion</th><th>Details</th></tr>${a.rows.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('')}</table></div></div>`;
+      $('bn').onclick=()=>act('backupNow');
+    }
+  }catch(e){note(e.message,true)}
+}
+const me=()=>ss.get('me')||'';
+async function renderUser(){
+  const v=$('view');const r=await api('userView',{user:cur,month});let tot=0,km=0;
+  v.innerHTML=`<div class="card"><h3>${esc(r.name)} – ${esc(r.month)}</h3><div class="row"><input type="month" id="mm" value="${esc(r.month)}"><button id="mg">Anzeigen</button><button class="g" id="c1">Zeiten CSV</button><button class="g" id="c2">Fahrtenbuch CSV</button><a id="bk">Zurück</a></div>
+  <div class="wrap"><table><tr><th>Datum</th><th>Start</th><th>Ende</th><th>Pause</th><th>Netto</th><th>Tätigkeit</th><th>Notiz</th></tr>${r.entries.map(e=>{const n=Math.max(0,(e.e-e.s-e.p)/1000);tot+=n;return`<tr><td>${d2(e.s)}</td><td>${t2(e.s)}</td><td>${t2(e.e)}</td><td>${Math.round(e.p/60000)} min</td><td>${hm(n)}</td><td>${esc(e.act)}</td><td>${esc(e.note)}</td></tr>`}).join('')}<tr><th colspan="4">Summe</th><th colspan="3">${hm(tot)} h</th></tr></table></div>
+  <h3>Fahrtenbuch</h3>${r.locks.length?`<p class="mut">Abschluss ${esc(r.month)}: ${r.locks.map(l=>esc(l.a)+' am '+dt2(l.ts)).join('; ')}</p>`:''}
+  <div class="wrap"><table><tr><th>Datum</th><th>Fahrzeug</th><th>km Start</th><th>km Ende</th><th>km</th><th>Von → Nach</th><th>Zweck</th><th>Getankt</th></tr>${r.trips.map(t=>{const k=Math.max(0,t.kmE-t.kmS);km+=k;return`<tr><td>${d2(t.s)} ${t2(t.s)}</td><td>${esc(t.veh)}</td><td>${t.kmS}</td><td>${t.kmE}</td><td>${k}</td><td>${esc(t.from)} → ${esc(t.to)}</td><td>${esc(t.purpose)}</td><td>${t.fuel?'ja'+(t.liters?' · '+String(t.liters).replace('.',',')+' l':''):''}</td></tr>`}).join('')}<tr><th colspan="4">Summe</th><th colspan="4">${km} km</th></tr></table></div></div>`;
+  $('mg').onclick=()=>{month=$('mm').value||month;render()};$('bk').onclick=()=>{cur=null;render()};
+  const cs=x=>{x=String(x==null?'':x).replace(/[\r\n;]+/g,' ');return /^[=+\-@]/.test(x)?"'"+x:x};
+  const dl=(name,lines)=>{const b=new Blob(['﻿'+lines.join('\n')],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();a.remove()};
+  $('c1').onclick=()=>dl(`zeiten_${r.user}_${r.month}.csv`,['Datum;Start;Ende;Pause (min);Netto (h);Tätigkeit;Notiz'].concat(r.entries.map(e=>[d2(e.s),t2(e.s),t2(e.e),Math.round(e.p/60000),String(Math.round(Math.max(0,e.e-e.s-e.p)/36000)/100).replace('.',','),cs(e.act),cs(e.note)].join(';'))));
+  $('c2').onclick=()=>dl(`fahrten_${r.user}_${r.month}.csv`,['Datum;Fahrzeug;km Start;km Ende;km;Von;Nach;Zweck;Getankt;Liter'].concat(r.trips.map(t=>[d2(t.s)+' '+t2(t.s),cs(t.veh),t.kmS,t.kmE,Math.max(0,t.kmE-t.kmS),cs(t.from),cs(t.to),cs(t.purpose),t.fuel?'ja':'',t.liters?String(t.liters).replace('.',','):''].join(';'))));
+}
+if(!inGoogle){$('lurl').style.display='block';$('lurl').value=lsGet('url')||DEFAULT_URL}
+if(token){$('login').style.display='none';start()}else $('login').style.display='block';
+</script></body></html>
